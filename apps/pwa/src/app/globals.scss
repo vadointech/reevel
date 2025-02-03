@@ -1,4 +1,6 @@
 @use "@/theme/fonts";
+@use "@/theme/colors/scheme";
+@use "@/theme/colors";
 
 html,
 body {
@@ -8,6 +10,8 @@ body {
 }
 
 body {
+  background: colors.$background;
+  color: colors.$primary;
   @include fonts.font-creata();
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
