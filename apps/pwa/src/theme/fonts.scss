@@ -1,0 +1,25 @@
+@use "sass:map";
+
+$base-font-size: 16px;
+$font-creata: var(--font-creata);
+
+$font-size: (
+    "xs": 0.75rem, // 12px
+    "sm": 0.875rem, // 14px
+    "base": 1rem, // 16px
+    "lg": 1.25rem, // 20px
+    "xl": 1.5rem, // 24px
+    "2xl": 1.75rem, // 28px
+    "3xl": 2rem, // 32px
+);
+
+@mixin font-creata(
+    $font-size-key: 'base',
+    $font-weight: 400,
+    $line-height: 1
+) {
+    font-family: $font-creata;
+    font-weight: $font-weight;
+    line-height: $line-height;
+    font-size: map.get($font-size, $font-size-key);
+}
