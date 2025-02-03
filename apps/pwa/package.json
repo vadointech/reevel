@@ -6,7 +6,7 @@
     "build": "next build",
     "dev": "next dev --turbopack",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "pnpm dlx eslint"
   },
   "dependencies": {
     "react": "^19.0.0",

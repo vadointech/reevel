@@ -3,18 +3,16 @@
   "version": "0.0.0",
   "private": true,
   "type": "module",
-  "files": [
-    "base.config.mjs",
-    "./next.config.mjs",
-    "./nest.config.mjs"
-  ],
   "exports": {
-    "./next": "./next.config.mjs",
-    "./nest": "./nest.config.mjs"
+    ".": "./base.config.js",
+    "./nest": "./nest.config.js",
+    "./next": "./next.config.js"
   },
   "devDependencies": {
-    "eslint": "^9",
-    "@eslint/eslintrc": "^3",
-    "eslint-config-next": "15.1.6"
+    "@eslint/js": "^9.19.0",
+    "eslint": "^9.19.0",
+    "eslint-plugin-react": "^7.37.4",
+    "globals": "^15.14.0",
+    "typescript-eslint": "^8.22.0"
   }
 }
