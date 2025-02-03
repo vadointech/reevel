@@ -1,0 +1,11 @@
+{
+  "compilerOptions": {
+    "target": "ES2021",
+    "strictNullChecks": true,
+    "removeComments": true,
+    "skipLibCheck": true,
+    "incremental": true,
+    "allowJs": true,
+    "strict": true
+  }
+}

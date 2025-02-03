@@ -1,0 +1,7 @@
+{
+  "extends": "@repo/typescript-config/nest.config.json",
+  "compilerOptions": {
+    "outDir": "./dist",
+    "baseUrl": "./"
+  },
+}
