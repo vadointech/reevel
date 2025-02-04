@@ -1,8 +1,17 @@
-import { getTranslations } from "next-intl/server";
+"use client";
 
-export default async function Home() {
 
-    const t = await getTranslations();
+import { useTranslations } from "next-intl";
+import { useEffect } from "react";
+
+export default function Home() {
+
+    const t = useTranslations();
+
+
+    useEffect(() => {
+        console.log("Da nu nah");
+    }, []);
 
     return (
         <div>

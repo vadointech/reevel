@@ -1,0 +1,9 @@
+{
+  "extends": "@repo/typescript-config/base.config.json",
+  "compilerOptions": {
+    "outDir": "./public",
+    "lib": ["ES2021", "webworker"],
+    "incremental": false
+  },
+  "include": ["service-worker.ts"]
+}

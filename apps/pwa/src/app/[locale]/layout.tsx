@@ -4,8 +4,8 @@ import { Providers } from "@/app/[locale]/providers";
 import { type ParamsWithLocale } from "@/types/common";
 import { getMessages, setRequestLocale } from "next-intl/server";
 import { fonts } from "@/fonts.config";
-import "../globals.scss";
 import { locales } from "@/i18n/locales";
+import "../globals.scss";
 
 export const metadata: Metadata = {
     title: "Create Next App",
@@ -16,7 +16,7 @@ export function generateStaticParams() {
     return locales.map((locale) => ({locale}));
 }
 
-export default async function RootLayout({ children, params }: PropsWithChildren<ParamsWithLocale>) {
+export default async function AppLayout({ children, params }: PropsWithChildren<ParamsWithLocale>) {
     const { locale } = await params;
 
     setRequestLocale(locale);

@@ -3,10 +3,12 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "build": "next build",
+    "build": "next build && pnpm sw:build",
     "dev": "next dev --turbopack",
     "start": "next start",
-    "lint": "pnpm dlx eslint"
+    "lint": "pnpm dlx eslint",
+    "sw": "npx tsc --project ./tsconfig.sw.json --watch",
+    "sw:build": "npx tsc --project ./tsconfig.sw.json"
   },
   "dependencies": {
     "classnames": "^2.5.1",
@@ -21,6 +23,7 @@
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",
+    "@types/serviceworker": "^0.0.119",
     "sass": "^1.83.4",
     "typescript": "^5"
   }
