@@ -10,7 +10,7 @@ body {
 }
 
 body {
-  background: colors.$background;
+  // background: colors.$background;
   color: colors.$primary;
   @include fonts.font-creata();
   -webkit-font-smoothing: antialiased;
