@@ -1,6 +1,10 @@
 import { Container } from "@/components/ui/container";
 import { Title } from "@/components/ui/title";
 import { getTranslations } from "next-intl/server";
+import movie_img from "@/../public/assets/temp/test.jpg";
+import { CarouselCard } from "@/components/ui/carousel-card/carousel-card.component";
+
+
 
 export default async function Home() {
 
@@ -15,6 +19,7 @@ export default async function Home() {
                     weight={500}
                     align="center"
                 />
+                <CarouselCard img={movie_img} />
             </Container>
         </div>
     );
