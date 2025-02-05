@@ -5,20 +5,20 @@ import cx from "classnames";
 
 export namespace Title {
     export type Props = ComponentProps<"div"> & {
-        title?: string;
         size?: "xs" | "sm" | "base" | "lg" | "xl" | "2xl" | "3xl";
         weight?: 400 | 500 | 600 | 700;
         align?: "left" | "center" | "right";
         className?: string;
+        children: React.ReactNode;
     }
 }
 
 export const Title = ({
-    title,
     size = "base",
     weight = 400,
     align = "left",
     className,
+    children,
     ...props
 }: Title.Props) => {
     return (
@@ -33,7 +33,7 @@ export const Title = ({
             {...props}
         >
             <div className={styles.title__head}>
-                {title}
+                {children}
             </div>
         </div>
     );

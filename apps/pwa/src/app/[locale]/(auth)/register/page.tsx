@@ -10,11 +10,12 @@ export default async function Home() {
         <div>
             <Container>
                 <Title
-                    title={'Make Every Moment Count'}
                     size="3xl"
                     weight={500}
                     align="center"
-                />
+                >
+                    Rabotaet
+                </Title>
             </Container>
         </div>
     );
