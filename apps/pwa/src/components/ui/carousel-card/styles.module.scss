@@ -2,11 +2,12 @@
 @use '@/theme/mixins';
 
 .card {
-	position: relative;
-	width: 145px;
-	height: 145px;
-		& img {
-			border-radius: 16px;
-			object-fit: cover;
-	}
+    position: relative;
+    width: 145px;
+    height: 145px;
+    flex-shrink: 0;
+    & img {
+        border-radius: 16px;
+        object-fit: cover;
+    }
 }
