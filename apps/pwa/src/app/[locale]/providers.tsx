@@ -1,5 +1,6 @@
 import { type IntlConfig, NextIntlClientProvider } from "next-intl";
 import { PropsWithChildren } from "react";
+import { ServiceWorkerProvider } from "@/service-worker/provider";
 
 type ProvidersProps = {
   intlConfig: IntlConfig
@@ -7,8 +8,10 @@ type ProvidersProps = {
 
 export const Providers = ({ children, intlConfig }: PropsWithChildren<ProvidersProps>) => {
     return (
-        <NextIntlClientProvider {...intlConfig}>
-            {children}
-        </NextIntlClientProvider>
+        <ServiceWorkerProvider>
+            <NextIntlClientProvider {...intlConfig}>
+                {children}
+            </NextIntlClientProvider>
+        </ServiceWorkerProvider>
     );
 };
