@@ -1,9 +1,16 @@
 {
-  "extends": "@repo/typescript-config/base.config.json",
   "compilerOptions": {
+    "target": "ES2021",
+    "strictNullChecks": true,
+    "skipLibCheck": true,
+    "allowJs": true,
+    "strict": true,
     "outDir": "./public",
     "lib": ["ES2021", "webworker"],
+    "removeComments": true,
     "incremental": false
   },
-  "include": ["service-worker.ts"]
+  "include": [
+    "src/service-worker.ts"
+  ]
 }

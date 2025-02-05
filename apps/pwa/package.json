@@ -3,12 +3,13 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "build": "next build && pnpm sw:build",
+    "build": "next build && pnpm sw:precache",
     "dev": "next dev --turbopack",
     "start": "next start",
     "lint": "pnpm dlx eslint",
-    "sw": "npx tsc --project ./tsconfig.sw.json --watch",
-    "sw:build": "npx tsc --project ./tsconfig.sw.json"
+    "sw:dev": "npx tsc --project ./tsconfig.sw.json --watch",
+    "sw:build": "npx tsc --project ./tsconfig.sw.json",
+    "sw:precache": "sh static.sh"
   },
   "dependencies": {
     "classnames": "^2.5.1",
