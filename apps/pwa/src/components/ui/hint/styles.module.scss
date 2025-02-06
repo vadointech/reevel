@@ -1,0 +1,10 @@
+@use "@/theme/colors";
+@use "@/theme/fonts";
+
+
+.hint {
+  @include fonts.font-creata("sm", 400, 20px);
+  color: colors.$secondary;
+  max-width: 358px;
+  text-align: center;
+}
