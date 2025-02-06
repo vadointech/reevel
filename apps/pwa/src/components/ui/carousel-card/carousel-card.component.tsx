@@ -6,11 +6,10 @@ import Image from "next/image";
 namespace CarouselCard {
     export type Props = React.ComponentProps<"div"> & {
         img: string | StaticImport;
-        empty?: boolean;
     };
 }
 
-const CarouselCard = ({ img, empty, className, ...props }: CarouselCard.Props) => {
+const CarouselCard = ({ img, className, ...props }: CarouselCard.Props) => {
     return (
         <div
             className={cx(
@@ -19,9 +18,7 @@ const CarouselCard = ({ img, empty, className, ...props }: CarouselCard.Props) =
             )}
             {...props}
         >
-            {!empty && (
-                <Image fill src={img} alt="Franchise logo" />
-            )}
+            <Image fill src={img} alt="Franchise logo" />
         </div>
     );
 };
