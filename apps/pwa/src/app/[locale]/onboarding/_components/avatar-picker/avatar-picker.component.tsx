@@ -1,7 +1,9 @@
 "use client";
 
-import { CircularCarousel } from "@/components/shared/circular-carousel/circular-carousel.component";
 import { Avatar } from "@/components/ui";
+import { CircularCarousel } from "@/components/shared/circular-carousel";
+import { ActiveScale } from "@/components/shared/circular-carousel/plugins";
+import { useCircularCarousel } from "@/components/shared/circular-carousel/hooks";
 
 import styles from "./styles.module.scss";
 
@@ -29,15 +31,19 @@ export namespace OnboardingAvatarPicker {
 }
 
 export const OnboardingAvatarPicker = ({}: OnboardingAvatarPicker.Props) => {
+
+    const carousel = useCircularCarousel({
+        items: slides,
+        itemWidth: 146,
+        itemHeight: 100,
+        plugins: [ActiveScale]
+    });
+
     return (
         <div className={styles.picker}>
             <div className={styles.picker__circle} />
             <div className={styles.picker__options}>
-                <CircularCarousel
-                    items={slides}
-                    itemWidth={146}
-                    itemHeight={100}
-                />
+                <CircularCarousel carousel={carousel} />
             </div>
         </div>
     );

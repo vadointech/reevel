@@ -1,39 +1,40 @@
 "use client";
 
 import { forwardRef, useImperativeHandle, useRef } from "react";
-import { useCarousel, WheelRef } from "./useCarousel";
-import { Wheel, WheelSettings } from "./wheel";
+import { CircularCarousel as TCircularCarousel } from "./carousel/types";
+import { useWheel } from "./hooks/useWheel";
+import { Wheel, WheelRef } from "./wheel";
 
 import styles from "./styles.module.scss";
 
 export namespace CircularCarousel {
-  export type Props = WheelSettings
+  export type Props = {
+    carousel: TCircularCarousel
+  }
 }
 
-export const CircularCarousel = (props: CircularCarousel.Props) => {
+export const CircularCarousel = ({ carousel }: CircularCarousel.Props) => {
 
-    const wheel = new Wheel(props);
-
-    const [wheelRef, sliderRef] = useCarousel(wheel);
+    const [wheelRef, sliderRef] = useWheel(carousel);
 
     return (
         <div
             className={styles.wrapper}
             style={{
-                height: wheel.radius * 2,
-                marginTop: wheel.itemHeight / 2,
-                marginBottom: wheel.itemHeight / 2
+                height: carousel.wheel.radius * 2,
+                marginTop: carousel.wheel.itemHeight / 2,
+                marginBottom: carousel.wheel.itemHeight / 2
             }}
         >
             <div
                 className={styles.scene}
                 style={{
-                    width: wheel.radius * 2,
-                    height: wheel.radius * 2,
+                    width: carousel.wheel.radius * 2,
+                    height: carousel.wheel.radius * 2,
                 }}
             >
-                <CarouselComponent ref={sliderRef} {...wheel} />
-                <WheelComponent ref={wheelRef} {...wheel} />
+                <CarouselComponent ref={sliderRef} {...carousel.wheel} />
+                <WheelComponent ref={wheelRef} {...carousel.wheel} />
             </div>
         </div>
     );
