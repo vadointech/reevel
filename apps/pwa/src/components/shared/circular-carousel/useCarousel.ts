@@ -1,17 +1,17 @@
 import { Wheel } from "./wheel";
-import { useCallback, useEffect, useRef } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import useEmblaCarousel from "embla-carousel-react";
 import type { EmblaCarouselType } from "embla-carousel";
 
 export type WheelRef = {
   wheel: HTMLDivElement | null;
-  wheelItem: HTMLDivElement | null;
+  wheelItem: Array<HTMLDivElement | null>;
 }
 
 export function useCarousel(wheel: Wheel) {
     const wheelRef = useRef<WheelRef>({
         wheel: null,
-        wheelItem: null
+        wheelItem: []
     });
 
     const [sliderRef, emblaApi] = useEmblaCarousel({
@@ -23,6 +23,7 @@ export function useCarousel(wheel: Wheel) {
         watchSlides: false,
     });
 
+
     const onPointerUp = useCallback((api: EmblaCarouselType) => {
         const { scrollTo, target, location } = api.internalEngine();
         const diffToTarget = target.get() - location.get();
@@ -33,9 +34,22 @@ export function useCarousel(wheel: Wheel) {
 
     const onScroll = useCallback((api: EmblaCarouselType) => {
         const progress = api.scrollProgress();
-
+        const progressDegree = progress * wheel.itemCount * wheel.itemRadius;
         if(wheelRef.current.wheel) {
-            wheelRef.current.wheel.style.rotate =`-${(progress * wheel.itemCount * wheel.itemRadius) + 90}deg`;
+            wheelRef.current.wheel.style.rotate =`-${progressDegree + 90}deg`;
+        }
+
+
+        const activeIndex = api.selectedScrollSnap();
+
+        if(wheelRef.current.wheelItem) {
+            wheelRef.current.wheelItem.forEach((item, index) => {
+                if(item) {
+                    const scale = index === activeIndex ? 1.2 : 1; // Активний — більший
+                    item.style.transition = "transform 0.3s ease-in-out"; // Плавність зміни масштабу
+                    item.style.transform = `scale(${scale})`;
+                }
+            });
         }
     }, []);
 
@@ -44,8 +58,9 @@ export function useCarousel(wheel: Wheel) {
 
         emblaApi.on("pointerUp", onPointerUp);
         emblaApi.on("scroll", onScroll);
+        emblaApi.on("reInit", onScroll);
 
-
+        onScroll(emblaApi);
     }, [emblaApi]);
 
     return [wheelRef, sliderRef] as const;

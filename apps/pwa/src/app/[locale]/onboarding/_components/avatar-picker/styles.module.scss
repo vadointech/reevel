@@ -1,0 +1,27 @@
+@use "@/theme/mixins";
+@use "@/theme/colors";
+
+.picker {
+    position: relative;
+
+    margin-top: 32px;
+
+    &__circle {
+        position: absolute;
+        top: 0;
+        left: 50%;
+        transform: translateX(-50%);
+        width: mixins.rem(144);
+        aspect-ratio: 1;
+        background: transparent;
+        border-radius: 50%;
+        border: mixins.rem(1.5) solid colors.$secondary;
+    }
+
+    &__options {
+        position: absolute;
+        top: mixins.rem(22);
+        left: 50%;
+        transform: translateX(-50%);
+    }
+}

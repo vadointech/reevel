@@ -42,14 +42,14 @@ export const CircularCarousel = (props: CircularCarousel.Props) => {
 const WheelComponent = forwardRef<WheelRef, Wheel>((wheel, ref) => {
 
     const wheelRef = useRef<HTMLDivElement>(null);
-    const wheelItemRef = useRef<HTMLDivElement>(null);
+    const wheelItemRefs = useRef<Array<HTMLDivElement | null>>([]);
 
     useImperativeHandle(ref, () => ({
         get wheel() {
             return wheelRef.current;
         },
         get wheelItem() {
-            return wheelItemRef.current;
+            return wheelItemRefs.current;
         }
     }));
 
@@ -73,7 +73,9 @@ const WheelComponent = forwardRef<WheelRef, Wheel>((wheel, ref) => {
 
                     return (
                         <div
-                            ref={wheelItemRef}
+                            ref={(el) => {
+                                wheelItemRefs.current[index] = el;
+                            }}
                             key={index}
                             className={styles.wheel__item}
                             style={{
