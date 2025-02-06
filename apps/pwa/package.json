@@ -10,6 +10,8 @@
   },
   "dependencies": {
     "classnames": "^2.5.1",
+    "embla-carousel": "^8.5.2",
+    "embla-carousel-react": "^8.5.2",
     "next": "15.1.6",
     "next-intl": "^3.26.3",
     "react": "^19.0.0",
