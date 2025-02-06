@@ -9,7 +9,6 @@ export namespace Title {
         weight?: 400 | 500 | 600 | 700;
         align?: "left" | "center" | "right";
         className?: string;
-        children: React.ReactNode;
     }
 }
 
