@@ -10,7 +10,7 @@ export default async function Home() {
         <div>
             <Button variant='primary'>
                 <GoogleIcon />
-                Sign in with Google
+                <p>Sign with Google</p>
             </Button>
         </div>
     );
