@@ -1,0 +1,44 @@
+@use "@/theme/mixins";
+@use "@/theme/fonts";
+@use "@/theme/colors";
+
+.progress {
+    height: mixins.rem(22);
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.indicator {
+    display: flex;
+    align-items: center;
+    column-gap: mixins.rem(12);
+
+    &__item {
+        height: mixins.rem(4);
+        background: colors.$foreground;
+        width: mixins.rem(38);
+        border-radius: mixins.rem(4);
+
+        &_active {
+            background: colors.$primary;;
+        }
+    }
+}
+
+.controls {
+    width: mixins.rem(36);
+
+    @include fonts.font-creata();
+    color: colors.$secondary;
+
+    svg {
+        width: 1rem;
+        height: 1rem;
+        path {
+            stroke-width: mixins.rem(2);
+            stroke: colors.$secondary
+        }
+    }
+}
