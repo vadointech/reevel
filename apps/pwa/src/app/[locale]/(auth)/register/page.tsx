@@ -1,3 +1,4 @@
+import { Button } from "@/components/ui/button";
 import { getTranslations } from "next-intl/server";
 
 export default async function Home() {
@@ -6,7 +7,9 @@ export default async function Home() {
 
     return (
         <div>
-            test
+            <Button variant='default'>
+                tests
+            </Button>
         </div>
     );
 }

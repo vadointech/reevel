@@ -1,0 +1,27 @@
+@use "@/theme/fonts";
+@use "@/theme/colors";
+@use "@/theme/breakpoints";
+
+.button {
+	&__box {
+		width: 361px;
+		height: 52px;
+		box-sizing: border-box;
+		border-radius: 28px;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		gap: 8px;
+		color: #fff;
+		&_default {
+		}
+		&_primary {
+			background-color: colors.$primary;
+			color: colors.$background;
+		}
+		&_text {
+
+		}
+	}
+
+}
