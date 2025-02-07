@@ -1,5 +1,4 @@
-import { Container } from "@/components/ui/container";
-import { Title } from "@/components/ui/title";
+import { Hint } from "@/components/ui/hint/hint.component";
 import { getTranslations } from "next-intl/server";
 
 export default async function Home() {
@@ -8,15 +7,9 @@ export default async function Home() {
 
     return (
         <div>
-            <Container>
-                <Title
-                    size="3xl"
-                    weight={500}
-                    align="center"
-                >
-                    Rabotaet
-                </Title>
-            </Container>
+            <Hint>
+                <p>You can select photo from the list below or add you own photo as profile picture </p>
+            </Hint>
         </div>
     );
 }
