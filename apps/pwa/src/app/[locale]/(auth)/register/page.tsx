@@ -1,17 +1,18 @@
-import { Button } from "@/components/ui/button";
-import { GoogleIcon } from "@/components/ui/icons";
 import { getTranslations } from "next-intl/server";
+import { CarouselLayout } from "./_components/carousel";
+import styles from "./styles.module.scss";
+
+
+
 
 export default async function Home() {
 
     const t = await getTranslations();
 
     return (
-        <div>
-            <Button variant='primary'>
-                <GoogleIcon />
-                <p>Sign with Google</p>
-            </Button>
+        <div className={styles.test}>
+            <CarouselLayout>
+            </CarouselLayout>
         </div>
     );
 }

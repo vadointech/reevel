@@ -1,0 +1,27 @@
+.grid {
+  position: relative;
+  height: 100%;
+  display: grid;
+  grid-template-columns: repeat(3, 110px); 
+  gap: 20px;
+  transform: rotate(-21deg) translateY(-50px);
+  
+}
+
+.first {
+    grid-row: 1;
+    left: -25px;
+}
+
+.second {
+  grid-column: 1;
+  grid-row: 2;
+  left: -135px;
+}
+
+.third {
+    grid-column: 2;
+    grid-row: 3;
+    left: -200px;
+}
+
