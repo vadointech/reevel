@@ -1,4 +1,5 @@
-import { Hint } from "@/components/ui/hint/hint.component";
+import { Button } from "@/components/ui/button";
+import { GoogleIcon } from "@/components/ui/icons";
 import { getTranslations } from "next-intl/server";
 
 export default async function Home() {
@@ -7,9 +8,10 @@ export default async function Home() {
 
     return (
         <div>
-            <Hint>
-                <p>You can select photo from the list below or add you own photo as profile picture </p>
-            </Hint>
+            <Button variant='primary'>
+                <GoogleIcon />
+                <p>Sign with Google</p>
+            </Button>
         </div>
     );
 }
