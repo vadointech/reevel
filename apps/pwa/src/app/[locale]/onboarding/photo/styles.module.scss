@@ -1,0 +1,23 @@
+@use "@/theme/mixins";
+@use "@/theme/colors";
+
+.page {
+    height: 100%;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+
+    &__text {
+        margin-bottom: mixins.rem(32);
+    }
+
+    &__buttons {
+        z-index: 1;
+
+        background: colors.$background;
+        display: flex;
+        flex-direction: column;
+        row-gap: 1rem;
+    }
+}

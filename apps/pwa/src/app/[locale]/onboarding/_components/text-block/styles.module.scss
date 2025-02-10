@@ -1,0 +1,22 @@
+@use "@/theme/fonts";
+@use "@/theme/colors";
+@use "@/theme/spacing";
+
+.block {
+    text-align: center;
+    &__title {
+        margin-bottom: spacing.spacing("md");
+
+        @include fonts.font-creata("2xl");
+        font-weight: bold;
+        line-height: 36px;
+        color: colors.$primary;
+    }
+
+    &__subtitle {
+        @include fonts.font-creata("sm");
+        font-weight: 400;
+        line-height: 20px;
+        color: colors.$secondary;
+    }
+}

@@ -1,40 +1,39 @@
-// Title.tsx
-import { type ComponentProps } from "react";
+import { type ComponentProps, ReactNode } from "react";
+
 import styles from "./styles.module.scss";
 import cx from "classnames";
 
 export namespace Button {
   export type Props = ComponentProps<"button"> & {
-    variant: 'default' | 'primary' | 'text';
-    size?: 'small';
+    variant?: "default" | "primary" | "text";
+    size?: "large" | "small";
+    iconBefore?: ReactNode;
+    iconAfter?: ReactNode;
   }
 }
 
-const Button = ({
-  variant = 'default',
-  size,
-  className,
-  children,
-  ref,
-  disabled,
-  ...props
+export const Button = ({
+    variant = "default",
+    size = "large",
+    className,
+    children,
+    iconBefore,
+    iconAfter,
+    ...props
 }: Button.Props) => {
-  return (
-    <button
-      className={cx(
-        styles.button,
-        styles.button__box,
-        styles[`button__box_${variant}`],
-        styles[`button__box_${size}`],
-        className
-      )}
-      ref={ref}
-      disabled={disabled}
-      {...props}
-    >
-      {children}
-    </button>
-  );
+    return (
+        <button
+            className={cx(
+                styles.button,
+                styles[`button__size_${size}`],
+                styles[`button__variant_${variant}`],
+                className
+            )}
+            {...props}
+        >
+            { iconBefore }
+            { children }
+            { iconAfter }
+        </button>
+    );
 };
-
-export { Button }
