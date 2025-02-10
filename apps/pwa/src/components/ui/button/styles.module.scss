@@ -1,47 +1,94 @@
 @use "@/theme/fonts";
 @use "@/theme/colors";
-@use "@/theme/breakpoints";
+@use "@/theme/mixins";
+@use "@/theme/motions";
 
 .button {
-	&__box {
-		all: unset;
-		cursor: pointer; 
+	all: unset;
+	user-select: none;
+	cursor: pointer;
 
-		width: 362px;
-		height: 52px;
-		@include fonts.font-creata("base", 400, 24px);
+	padding-inline: 1rem;
+	box-sizing: border-box;
+	border-radius: mixins.rem(28);
 
-		display: flex;
-		justify-content: center;
-		align-items: center;
-		gap: 8px;
-		box-sizing: border-box;
-		border-radius: 28px;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	column-gap: .5rem;
 
+	transition: background-color motions.$motion-duration-mid motions.$motion-ease-in-out;
+	-webkit-tap-highlight-color: rgba(0,0,0,0);
 
+	&__size {
+		&_large {
+			height: mixins.rem(52);
+			@include fonts.font-creata("base", 400);
 
+			svg {
+				height: mixins.rem(14);
+			}
+		}
+		&_small {
+			height: mixins.rem(32);
+			@include fonts.font-creata("xs", 400);
+		}
+	}
+
+	&__variant {
 		&_default {
 			background-color: colors.$background-muted;
-			border: 1px solid colors.$secondary  ;
+			border: 1px solid colors.$secondary;
 			color: colors.$secondary;
+
+			svg path {
+				fill: colors.$secondary
+			}
+
+			&:active {
+				background-color: colors.$secondary-highlight;
+			}
+
+			&:disabled {
+				opacity: .3;
+				box-shadow: none;
+				pointer-events: none;
+			}
 		}
 
 		&_primary {
 			background-color: colors.$primary;
 			color: colors.$background;
+
+			&:active {
+				background-color: colors.$primary-highlight;
+			}
+
+			&:disabled {
+				opacity: .6;
+				box-shadow: none;
+				pointer-events: none;
+			}
+
+			svg path {
+				fill: colors.$background
+			}
 		}
 
 		&_text {
-			height: 100%;
 			color: colors.$secondary;
-			text-decoration: underline;
 			line-height: 22px;
-		}
+			text-decoration: underline;
+			text-underline-offset: 20%;
+			svg path {
+				fill: colors.$secondary
+			}
 
-		&_small {
-			height: 32px;
-			@include fonts.font-creata("xs", 400, 16px);
-
+			&:disabled {
+				opacity: .3;
+				box-shadow: none;
+				pointer-events: none;
+			}
 		}
 	}
 }
