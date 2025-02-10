@@ -1,12 +1,7 @@
 import { CarouselLayout } from "./_components/carousel";
+import { Button, Container, Dots, Hint, Title } from "@/components/ui";
+import { IconApple, IconGoogle } from "@/components/icons";
 import styles from "./styles.module.scss";
-import { Title } from "@/components/ui/title";
-import { Hint } from "@/components/ui/hint/hint.component";
-import { Container } from "@/components/ui/container";
-import { Dots } from "@/components/ui/dots";
-import { Button } from "@/components/ui/button";
-import { GoogleIcon } from "@/components/ui/icons";
-import AppleIcon from "@/components/ui/icons/apple-icon";
 
 export default async function Home() {
 
@@ -31,12 +26,18 @@ export default async function Home() {
                 </div>
 
                 <div className={styles.auth__buttons}>
-                    <Button variant="default" iconColor={"initial"}>
-                        <GoogleIcon />
+                    <Button
+                        variant="default"
+                        iconColor={"initial"}
+                        iconBefore={<IconGoogle />}
+                    >
                         Sign in with Google
                     </Button>
-                    <Button variant="primary" iconColor={"initial"}>
-                        <AppleIcon />
+                    <Button
+                        variant="primary"
+                        iconColor={"initial"}
+                        iconBefore={<IconApple />}
+                    >
                         Sign in with Apple
                     </Button>
                 </div>

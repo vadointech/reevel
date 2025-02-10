@@ -1,7 +1,7 @@
 import cx from "classnames";
 import styles from "./styles.module.scss";
 import { CarouselSet } from "../carousel-set";
-import { CarouselCard } from "@/components/ui/carousel-card";
+import { CarouselCard } from "@/components/ui";
 import image_1 from "@/../public/assets/temp/carousel1.jpg";
 import image_2 from "@/../public/assets/temp/carousel2.jpg";
 import image_3 from "@/../public/assets/temp/carousel3.jpg";

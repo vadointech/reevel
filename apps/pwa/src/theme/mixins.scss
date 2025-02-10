@@ -18,3 +18,10 @@ Usage example:
         @warn 'Use untiless numbers to use the rem() function';
     }
 }
+
+@mixin textEllipsis($lines: 1) {
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: $lines;
+}

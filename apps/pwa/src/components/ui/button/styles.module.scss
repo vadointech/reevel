@@ -20,13 +20,17 @@
 	transition: background-color motions.$motion-duration-mid motions.$motion-ease-in-out;
 	-webkit-tap-highlight-color: rgba(0,0,0,0);
 
+	span {
+		height: mixins.rem(14);
+	}
+
 	&__size {
 		&_large {
 			height: mixins.rem(52);
 			@include fonts.font-creata("base", 400);
 
 			svg {
-				height: mixins.rem(14);
+				height: 1rem;
 			}
 		}
 		&_small {
