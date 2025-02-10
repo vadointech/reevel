@@ -1,4 +1,4 @@
-import { Dots } from "@/components/ui/dots";
+import { Dots } from "(auth)/login/_components/carousel/pagination";
 import { getTranslations } from "next-intl/server";
 
 export default async function Home() {

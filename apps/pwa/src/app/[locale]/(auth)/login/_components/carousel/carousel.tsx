@@ -1,6 +1,7 @@
 import { ComponentProps } from "react";
-import { CarouselSet } from "../carousel-set";
-import { CarouselCard } from "@/components/ui";
+import { LoginCarouselSet } from "./set";
+import { LoginCarouselCard } from "./card";
+
 import image_1 from "@/../public/assets/temp/carousel1.jpg";
 import image_2 from "@/../public/assets/temp/carousel2.jpg";
 import image_3 from "@/../public/assets/temp/carousel3.jpg";
@@ -12,15 +13,14 @@ import image_7 from "@/../public/assets/temp/carousel7.jpg";
 import cx from "classnames";
 import styles from "./styles.module.scss";
 
-namespace CarouselLayout {
-    export type Props = ComponentProps<"div"> & {
-    };
+export namespace LoginCarousel {
+    export type Props = ComponentProps<"div">
 }
 
-const CarouselLayout = ({
+export const LoginCarousel = ({
     className,
     ...props
-}: CarouselLayout.Props) => {
+}: LoginCarousel.Props) => {
     return (
         <div
             className={cx(
@@ -29,23 +29,22 @@ const CarouselLayout = ({
             )}
             {...props}
         >
-            <CarouselSet className={styles.first}>
-                <CarouselCard img={image_1} />
-                <CarouselCard img={image_2} />
-                <CarouselCard img={image_3} />
-            </CarouselSet>
-            <CarouselSet className={styles.second}>
-                <CarouselCard img={image_4} />
-                <CarouselCard img={image_5} />
-                <CarouselCard img={image_6} />
-                <CarouselCard img={image_7} />
-            </CarouselSet>
-            <CarouselSet className={styles.third}>
-                <CarouselCard img={image_4} />
-                <CarouselCard img={image_1} />
-                <CarouselCard img={image_5} />
-            </CarouselSet>    </div>
+            <LoginCarouselSet className={styles.first}>
+                <LoginCarouselCard img={image_1} />
+                <LoginCarouselCard img={image_2} />
+                <LoginCarouselCard img={image_3} />
+            </LoginCarouselSet>
+            <LoginCarouselSet className={styles.second}>
+                <LoginCarouselCard img={image_4} />
+                <LoginCarouselCard img={image_5} />
+                <LoginCarouselCard img={image_6} />
+                <LoginCarouselCard img={image_7} />
+            </LoginCarouselSet>
+            <LoginCarouselSet className={styles.third}>
+                <LoginCarouselCard img={image_4} />
+                <LoginCarouselCard img={image_1} />
+                <LoginCarouselCard img={image_5} />
+            </LoginCarouselSet>
+        </div>
     );
 };
-
-export { CarouselLayout };
