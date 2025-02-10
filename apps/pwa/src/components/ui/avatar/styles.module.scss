@@ -1,0 +1,34 @@
+.avatar {
+    position: relative;
+    aspect-ratio: 1;
+    border-radius: 50%;
+    overflow: hidden;
+
+    img {
+        object-fit: cover;
+    }
+
+    &__variant {
+        &_default {
+
+        }
+
+        &_outline {
+
+        }
+
+        &_profile {
+
+        }
+    }
+
+    &__size {
+        &_default {
+
+        }
+
+        &_large {
+
+        }
+    }
+}
