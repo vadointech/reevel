@@ -1,13 +1,13 @@
+import { ComponentProps } from "react";
 
-import cx from "classnames";
 import styles from "./styles.module.scss";
+import cx from "classnames";
 
-namespace Dots {
-    export type Props = React.ComponentProps<"div"> & {
-    };
+namespace LoginCarouselPagination {
+    export type Props = ComponentProps<"div">
 }
 
-const Dots = ({ className, ...props }: Dots.Props) => {
+const LoginCarouselPagination = ({ className, ...props }: LoginCarouselPagination.Props) => {
     return (
         <div
             className={cx(
@@ -24,4 +24,4 @@ const Dots = ({ className, ...props }: Dots.Props) => {
     );
 };
 
-export { Dots };
+export { LoginCarouselPagination };

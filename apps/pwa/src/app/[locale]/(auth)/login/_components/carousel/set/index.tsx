@@ -4,16 +4,15 @@ import cx from "classnames";
 import styles from "./styles.module.scss";
 
 
-namespace CarouselSet {
-  export type Props = ComponentProps<"div"> & {
-  };
+namespace LoginCarouselSet {
+  export type Props = ComponentProps<"div">
 }
 
-const CarouselSet = ({
+const LoginCarouselSet = ({
     className,
     children,
     ...props
-}: CarouselSet.Props) => {
+}: LoginCarouselSet.Props) => {
     return (
         <div
             className={cx(
@@ -27,4 +26,4 @@ const CarouselSet = ({
     );
 };
 
-export { CarouselSet };
+export { LoginCarouselSet };
