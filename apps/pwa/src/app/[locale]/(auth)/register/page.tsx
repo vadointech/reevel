@@ -1,4 +1,3 @@
-import { getTranslations } from "next-intl/server";
 import { CarouselLayout } from "./_components/carousel";
 import styles from "./styles.module.scss";
 import { Title } from "@/components/ui/title";
@@ -32,11 +31,11 @@ export default async function Home() {
                 </div>
 
                 <div className={styles.auth__buttons}>
-                    <Button variant="default">
+                    <Button variant="default" iconColor={"initial"}>
                         <GoogleIcon />
                         Sign in with Google
                     </Button>
-                    <Button variant="primary">
+                    <Button variant="primary" iconColor={"initial"}>
                         <AppleIcon />
                         Sign in with Apple
                     </Button>

@@ -41,10 +41,6 @@
 			border: 1px solid colors.$secondary;
 			color: colors.$secondary;
 
-			svg path {
-				fill: colors.$secondary
-			}
-
 			&:active {
 				background-color: colors.$secondary-highlight;
 			}
@@ -69,10 +65,6 @@
 				box-shadow: none;
 				pointer-events: none;
 			}
-
-			svg path {
-				fill: colors.$background
-			}
 		}
 
 		&_text {
@@ -89,6 +81,25 @@
 				box-shadow: none;
 				pointer-events: none;
 			}
+		}
+	}
+
+
+	&__icon {
+		&_default {
+			svg path {
+				fill: colors.$secondary
+			}
+		}
+
+		&_primary {
+			svg path {
+				fill: colors.$background
+			}
+		}
+
+		&_initial {
+
 		}
 	}
 }
