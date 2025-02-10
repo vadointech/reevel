@@ -22,6 +22,7 @@ export const CircularCarousel = ({ carousel }: CircularCarousel.Props) => {
             className={styles.wrapper}
             style={{
                 height: carousel.wheel.radius * 2,
+                width: carousel.wheel.radius * 2,
                 marginTop: carousel.wheel.itemHeight / 2,
                 marginBottom: carousel.wheel.itemHeight / 2
             }}

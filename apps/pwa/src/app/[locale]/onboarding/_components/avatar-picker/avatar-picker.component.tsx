@@ -40,7 +40,12 @@ export const OnboardingAvatarPicker = ({}: OnboardingAvatarPicker.Props) => {
     });
 
     return (
-        <div className={styles.picker}>
+        <div
+            className={styles.picker}
+            style={{
+                height: 160
+            }}
+        >
             <div className={styles.picker__circle} />
             <div className={styles.picker__options}>
                 <CircularCarousel carousel={carousel} />

@@ -1,8 +1,10 @@
+import { ComponentProps } from "react";
 
 import styles from "./styles.module.scss";
+import cx from "classnames";
 
 export namespace OnboardingTextBlock {
-  export type Props = {
+  export type Props = ComponentProps<"div"> & {
     title?: string;
     subtitle?: string;
   }
@@ -11,9 +13,17 @@ export namespace OnboardingTextBlock {
 export const OnboardingTextBlock = ({
     title,
     subtitle,
+    className,
+    ...props
 }: OnboardingTextBlock.Props) => {
     return (
-        <div className={styles.block}>
+        <div
+            className={cx(
+                styles.block,
+                className
+            )}
+            {...props}
+        >
             <h1 className={styles.block__title}>
                 { title }
             </h1>
