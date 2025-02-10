@@ -1,0 +1,47 @@
+@use "@/theme/fonts";
+@use "@/theme/colors";
+@use "@/theme/breakpoints";
+
+.button {
+	&__box {
+		all: unset;
+		cursor: pointer; 
+
+		width: 362px;
+		height: 52px;
+		@include fonts.font-creata("base", 400, 24px);
+
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		gap: 8px;
+		box-sizing: border-box;
+		border-radius: 28px;
+
+
+
+		&_default {
+			background-color: colors.$background-muted;
+			border: 1px solid colors.$secondary  ;
+			color: colors.$secondary;
+		}
+
+		&_primary {
+			background-color: colors.$primary;
+			color: colors.$background;
+		}
+
+		&_text {
+			height: 100%;
+			color: colors.$secondary;
+			text-decoration: underline;
+			line-height: 22px;
+		}
+
+		&_small {
+			height: 32px;
+			@include fonts.font-creata("xs", 400, 16px);
+
+		}
+	}
+}
