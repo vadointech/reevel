@@ -3,12 +3,12 @@ import { getTranslations } from "next-intl/server";
 
 export default async function Home() {
 
-  const t = await getTranslations();
+    const t = await getTranslations();
 
-  return (
-    <div>
+    return (
+        <div>
       Next.js | {t("Index.title")}
-      <Dots />
-    </div>
-  );
+            <Dots />
+        </div>
+    );
 }

@@ -17,7 +17,6 @@ export namespace Avatar {
 }
 
 export const Avatar = ({
-    variant = "default",
     size = "default",
 }: Avatar.Props) => {
 

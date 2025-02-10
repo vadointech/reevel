@@ -1,5 +1,4 @@
-import cx from "classnames";
-import styles from "./styles.module.scss";
+import { ComponentProps } from "react";
 import { CarouselSet } from "../carousel-set";
 import { CarouselCard } from "@/components/ui";
 import image_1 from "@/../public/assets/temp/carousel1.jpg";
@@ -10,19 +9,16 @@ import image_5 from "@/../public/assets/temp/carousel5.jpg";
 import image_6 from "@/../public/assets/temp/carousel6.jpg";
 import image_7 from "@/../public/assets/temp/carousel7.jpg";
 
-
-
-
-
+import cx from "classnames";
+import styles from "./styles.module.scss";
 
 namespace CarouselLayout {
-    export type Props = React.ComponentProps<"div"> & {
+    export type Props = ComponentProps<"div"> & {
     };
 }
 
 const CarouselLayout = ({
     className,
-    children,
     ...props
 }: CarouselLayout.Props) => {
     return (
