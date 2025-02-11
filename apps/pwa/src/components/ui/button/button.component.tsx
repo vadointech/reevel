@@ -9,6 +9,7 @@ export namespace Button {
     size?: "large" | "small";
     iconBefore?: ReactNode;
     iconAfter?: ReactNode;
+    iconColor?: "default" | "initial"
   }
 }
 
@@ -19,6 +20,7 @@ export const Button = ({
     children,
     iconBefore,
     iconAfter,
+    iconColor = "default",
     ...props
 }: Button.Props) => {
     return (
@@ -27,12 +29,13 @@ export const Button = ({
                 styles.button,
                 styles[`button__size_${size}`],
                 styles[`button__variant_${variant}`],
+                iconColor === "default" && styles[`button__icon_${variant}`],
                 className
             )}
             {...props}
         >
             { iconBefore }
-            { children }
+            <span>{ children }</span>
             { iconAfter }
         </button>
     );
