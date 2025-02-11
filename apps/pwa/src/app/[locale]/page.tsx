@@ -6,7 +6,7 @@ export default async function Home() {
 
     return (
         <div>
-            Next.js | {t("Index.title")}
+      Next.js | {t("Index.title")}
         </div>
     );
 }

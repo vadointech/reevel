@@ -24,11 +24,12 @@ export default [
             "semi": ["error", "always"],
             "no-console": "warn",
             "no-unused-vars": "off",
+            "no-empty-pattern": "warn",
             "quotes": ["error", "double"],
             "@typescript-eslint/no-explicit-any": "warn",
             "@typescript-eslint/no-namespace": "off",
             "@typescript-eslint/no-unused-vars": ["error", { "varsIgnorePattern": "^_" }],
-            "@typescript-eslint/ no-empty-object-type": "warn",
+            "@typescript-eslint/no-empty-object-type": "warn",
         }
     },
 ]
