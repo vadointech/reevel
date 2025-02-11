@@ -1,4 +1,3 @@
-import { Dots } from "(auth)/login/_components/carousel/pagination";
 import { getTranslations } from "next-intl/server";
 
 export default async function Home() {
@@ -7,8 +6,7 @@ export default async function Home() {
 
     return (
         <div>
-      Next.js | {t("Index.title")}
-            <Dots />
+            Next.js | {t("Index.title")}
         </div>
     );
 }
