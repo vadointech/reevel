@@ -1,0 +1,64 @@
+@use "@/theme/fonts";
+@use "@/theme/colors";
+@use "@/theme/mixins";
+@use "@/theme/motions";
+
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: mixins.rem(8);
+
+  &__label {
+    @include fonts.font-creata("sm", 500);
+    color: colors.$secondary;
+  }
+
+  &__input {
+    background: colors.$background;
+    padding: 12px 16px;
+
+    @include fonts.font-creata("base", 400);
+    color: colors.$secondary-muted;
+    border: 1px solid colors.$border ;
+
+    &:focus {
+      border-color: colors.$background-muted;
+      outline: none;
+    }
+
+    &:disabled {
+      opacity: 0.3;
+      cursor: not-allowed;
+    }
+    &::placeholder {
+      @include fonts.font-creata("base", 400);
+      color: colors.$secondary-muted;
+    }
+
+    &__variant {
+      &_default {
+        border-radius: mixins.rem(8);
+      }
+      
+      &_rounded {
+        border-radius: mixins.rem(100);
+      }
+    }
+
+    
+    &__size {
+      &_default {
+
+      }
+      
+      &_large {
+        height: 100px;
+      }
+    }
+  }
+
+  &__hint {
+    @include fonts.font-creata("sm", 400);
+    color: colors.$secondary-muted;
+  }
+}

@@ -17,7 +17,7 @@ export const ProgressBar = ({
     className,
     stepCount = 4,
     currentStep = 0,
-    controlLeft = <IconClose />,
+    controlLeft = <IconClose strokeWidth={2} />,
     controlRight = "Skip",
 }: ProgressBar.Props) => {
     return (
