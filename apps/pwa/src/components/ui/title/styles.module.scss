@@ -1,0 +1,79 @@
+@use "@/theme/fonts";
+@use "@/theme/colors";
+@use "@/theme/breakpoints";
+
+.title {
+  &__head {
+    color: colors.$primary;
+  }
+
+  &--xs {
+    .title__head {
+      @include fonts.font-creata("xs", 400, 20px);
+    }
+  }
+
+  &--sm {
+    .title__head {
+      @include fonts.font-creata("sm", 400, 24px);
+    }
+  }
+
+  &--base {
+    .title__head {
+      @include fonts.font-creata("base", 400, 28px);
+    }
+  }
+
+  &--lg {
+    .title__head {
+      @include fonts.font-creata("lg", 400, 32px);
+    }
+  }
+
+  &--xl {
+    .title__head {
+      @include fonts.font-creata("xl", 400, 34px);
+    }
+  }
+
+  &--2xl {
+    .title__head {
+      @include fonts.font-creata("2xl", 400, 36px);
+    }
+  }
+
+  &--3xl {
+    .title__head {
+      @include fonts.font-creata("3xl", 400, 38px);
+    }
+  }
+
+  &--weight-400 .title__head {
+    font-weight: 400;
+  }
+
+  &--weight-500 .title__head {
+    font-weight: 500;
+  }
+
+  &--weight-600 .title__head {
+    font-weight: 600;
+  }
+
+  &--weight-700 .title__head {
+    font-weight: 700;
+  }
+
+  &--align-left .title__head {
+    text-align: left;
+  }
+
+  &--align-center .title__head {
+    text-align: center;
+  }
+
+  &--align-right .title__head {
+    text-align: right;
+  }
+}

@@ -3,8 +3,8 @@ import { PropsWithChildren } from "react";
 import { ServiceWorkerProvider } from "@/service-worker/provider";
 
 type ProvidersProps = {
-  intlConfig: IntlConfig
-}
+    intlConfig: IntlConfig
+};
 
 export const Providers = ({ children, intlConfig }: PropsWithChildren<ProvidersProps>) => {
     return (

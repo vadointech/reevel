@@ -23,7 +23,7 @@ const creata = localFont({
             style: "normal",
         },
     ],
-    variable: "--font-creata"
+    variable: "--font-creata",
 });
 
 const fonts = creata.variable;

@@ -1,0 +1,109 @@
+@use "@/theme/fonts";
+@use "@/theme/colors";
+@use "@/theme/mixins";
+@use "@/theme/motions";
+
+.button {
+	all: unset;
+	user-select: none;
+	cursor: pointer;
+
+	padding-inline: 1rem;
+	box-sizing: border-box;
+	border-radius: mixins.rem(28);
+
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	column-gap: .5rem;
+
+	transition: background-color motions.$motion-duration-mid motions.$motion-ease-in-out;
+	-webkit-tap-highlight-color: rgba(0,0,0,0);
+
+	span {
+		height: mixins.rem(14);
+	}
+
+	&__size {
+		&_large {
+			height: mixins.rem(52);
+			@include fonts.font-creata("base", 400);
+
+			svg {
+				height: 1rem;
+			}
+		}
+		&_small {
+			height: mixins.rem(32);
+			@include fonts.font-creata("xs", 400);
+		}
+	}
+
+	&__variant {
+		&_default {
+			background-color: colors.$background-muted;
+			border: 1px solid colors.$secondary;
+			color: colors.$secondary;
+
+			&:active {
+				background-color: colors.$secondary-highlight;
+			}
+
+			&:disabled {
+				opacity: .3;
+				box-shadow: none;
+				pointer-events: none;
+			}
+		}
+
+		&_primary {
+			background-color: colors.$primary;
+			color: colors.$background;
+
+			&:active {
+				background-color: colors.$primary-highlight;
+			}
+
+			&:disabled {
+				opacity: .6;
+				box-shadow: none;
+				pointer-events: none;
+			}
+		}
+
+		&_text {
+			color: colors.$secondary;
+			line-height: 22px;
+			text-decoration: underline;
+			text-underline-offset: 20%;
+			svg path {
+				fill: colors.$secondary
+			}
+
+			&:disabled {
+				opacity: .3;
+				box-shadow: none;
+				pointer-events: none;
+			}
+		}
+	}
+
+
+	&__icon {
+		&_default {
+			svg path {
+				fill: colors.$secondary
+			}
+		}
+
+		&_primary {
+			svg path {
+				fill: colors.$background
+			}
+		}
+
+		&_initial {
+
+		}
+	}
+}

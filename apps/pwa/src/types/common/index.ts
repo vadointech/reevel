@@ -6,4 +6,4 @@ export type ParamsWithLocale<P = unknown> = {
     params: Promise<P & {
         locale: Locale
     }>
-}
+};

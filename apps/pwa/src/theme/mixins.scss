@@ -1,0 +1,27 @@
+@use 'sass:math';
+@use "fonts";
+
+/*
+Converts a pixel value to rem units based on a base font size.
+This function takes a pixel value (without a unit) as input.
+If a unit is provided, it warns the user to use a unitless number.
+
+Usage example:
+.example-class {
+    font-size: rem(32);  // Output: font-size: 2rem;
+}
+*/
+@function rem($pixel) {
+    @if math.is-unitless($pixel) {
+        @return math.div($pixel, math.div(fonts.$base-font-size, 1px)) + rem;
+    } @else {
+        @warn 'Use untiless numbers to use the rem() function';
+    }
+}
+
+@mixin textEllipsis($lines: 1) {
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: $lines;
+}

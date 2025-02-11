@@ -1,0 +1,45 @@
+.wrapper {
+    position: relative;
+}
+
+.scene {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.carousel {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+
+    &__root {
+        width: 100%;
+        height: 100%;
+        position: relative;
+        overflow: hidden;
+    }
+
+    &__container {
+        display: flex;
+        visibility: hidden;
+    }
+
+    &__slide {
+        text-align: center;
+        transform-origin: center;
+    }
+}
+
+.wheel {
+    position: absolute;
+    inset: 0;
+
+    &__item {
+        position: absolute;
+
+        display: flex;
+        justify-content: center;
+        transform-origin: center;
+    }
+}

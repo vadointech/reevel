@@ -1,0 +1,1 @@
+export { CircularCarousel } from "./circular-carousel.component";
