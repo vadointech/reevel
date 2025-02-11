@@ -1,27 +1,12 @@
+@use "@/theme/mixins";
+
 .grid {
-  position: relative;
-  height: 50vh;
-  display: grid;
-  grid-template-columns: repeat(3, 110px); 
-  gap: 20px;
-  transform: rotate(-21deg) translateY(-50px);
-  
-}
+    display: flex;
+    flex-direction: column;
+    gap: mixins.rem(18);
 
-.first {
-    grid-row: 1;
-    left: -25px;
-}
+    transform-origin: center center;
 
-.second {
-  grid-column: 1;
-  grid-row: 2;
-  left: -135px;
+    rotate: -18deg;
+    transform: translateY(-16%);
 }
-
-.third {
-    grid-column: 2;
-    grid-row: 3;
-    left: -200px;
-}
-

@@ -1,5 +1,31 @@
-.items {
-  display: flex;
-  gap: 25px;
-  position: relative;
+@use "@/theme/mixins";
+
+.carousel {
+    width: 100%;
+
+    &__root {
+        overflow: hidden;
+    }
+
+    &__container {
+        display: flex;
+        align-items: center;
+    }
+
+    &__slide {
+        flex-shrink: 0;
+
+        margin-right: mixins.rem(18);
+
+        position: relative;
+
+        width: 145px;
+        height: 145px;
+        border-radius: 1rem;
+        overflow: hidden;
+
+        & img {
+            object-fit: cover;
+        }
+    }
 }

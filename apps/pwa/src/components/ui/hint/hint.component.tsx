@@ -3,7 +3,7 @@ import cx from "classnames";
 import styles from "./styles.module.scss";
 
 export namespace Hint {
-  export type Props = ComponentProps<"div">
+    export type Props = ComponentProps<"div">;
 }
 
 const Hint = ({ className, children, ...props }: Hint.Props) => {
@@ -11,7 +11,7 @@ const Hint = ({ className, children, ...props }: Hint.Props) => {
         <div className={cx(
             styles.hint,
             className,
-            { ...props }
+            { ...props },
         )}
         >
             {children}

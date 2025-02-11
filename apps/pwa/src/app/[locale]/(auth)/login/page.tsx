@@ -6,16 +6,18 @@ import styles from "./styles.module.scss";
 
 export default async function Home() {
 
+    const _t = "";
+
     return (
         <div className={styles.page}>
             <LoginCarousel />
             <Container className={styles.content}>
                 <div className={styles.content__info}>
                     <Title
-                      align="center"
-                      size="3xl"
-                      weight={500}
-                      className={styles.content__title}
+                        align="center"
+                        size="3xl"
+                        weight={500}
+                        className={styles.content__title}
                     >
                         Make Every Moment Count
                     </Title>
@@ -31,16 +33,16 @@ export default async function Home() {
 
                 <div className={styles.content__buttons}>
                     <Button
-                      variant="default"
-                      iconColor={"initial"}
-                      iconBefore={<IconGoogle />}
+                        variant="default"
+                        iconColor={"initial"}
+                        iconBefore={<IconGoogle />}
                     >
                         Sign in with Google
                     </Button>
                     <Button
-                      variant="primary"
-                      iconColor={"initial"}
-                      iconBefore={<IconApple />}
+                        variant="primary"
+                        iconColor={"initial"}
+                        iconBefore={<IconApple />}
                     >
                         Sign in with Apple
                     </Button>

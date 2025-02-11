@@ -27,14 +27,14 @@ export default function Page() {
 
             <Container className={styles.page__buttons}>
                 <Button>
-                  Upload custom photo
+                    Upload custom photo
                 </Button>
 
                 <Button
                     variant={"primary"}
                     iconAfter={<ArrowBack />}
                 >
-                  Next step
+                    Next step
                 </Button>
             </Container>
         </div>

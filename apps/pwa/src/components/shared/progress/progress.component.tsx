@@ -5,12 +5,12 @@ import cx from "classnames";
 import styles from "./styles.module.scss";
 
 export namespace ProgressBar {
-  export type Props = ComponentProps<"div"> & {
-    stepCount: number;
-    currentStep: number;
-    controlLeft?: ReactNode
-    controlRight?: ReactNode,
-  }
+    export type Props = ComponentProps<"div"> & {
+        stepCount: number;
+        currentStep: number;
+        controlLeft?: ReactNode
+        controlRight?: ReactNode,
+    };
 }
 
 export const ProgressBar = ({
@@ -24,7 +24,7 @@ export const ProgressBar = ({
         <div
             className={cx(
                 styles.progress,
-                className
+                className,
             )}
         >
             <div className={styles.controls}>
@@ -37,7 +37,7 @@ export const ProgressBar = ({
                             key={i}
                             className={cx(
                                 styles.indicator__item,
-                                i === currentStep && styles.indicator__item_active
+                                i === currentStep && styles.indicator__item_active,
                             )}
                         />
                     ))

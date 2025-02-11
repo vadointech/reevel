@@ -6,14 +6,14 @@ import avatar from "@/../public/assets/temp/avatar.png";
 
 export namespace Avatar {
 
-  export type Variant = "default" | "outlined" | "profile"
+    export type Variant = "default" | "outlined" | "profile";
 
-  export type Size = "default" | "large"
+    export type Size = "default" | "large";
 
-  export type Props = {
-    variant?: Variant;
-    size?: Size | number;
-  }
+    export type Props = {
+        variant?: Variant;
+        size?: Size | number;
+    };
 }
 
 export const Avatar = ({
@@ -22,7 +22,7 @@ export const Avatar = ({
 
     const sizeMap: Record<Avatar.Size, number> = {
         default: 32,
-        large: 36
+        large: 36,
     };
 
     const itemSize = typeof size === "number" ? size : sizeMap[size];
@@ -31,7 +31,7 @@ export const Avatar = ({
         <div
             className={styles.avatar}
             style={{
-                width: itemSize
+                width: itemSize,
             }}
         >
             <Image
