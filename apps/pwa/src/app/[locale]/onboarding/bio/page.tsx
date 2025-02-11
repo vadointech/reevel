@@ -35,21 +35,19 @@ export default function Page() {
                         variant="default"
                         inputSize={"default"}
                         hint="It's a hint"
+
                     />
                     <Input
                         label="Bio"
                         placeholder={'Enter short bio'}
                         variant="default"
                         inputSize={"large"}
+                        error="error"
                     />
                 </div>
             </Container>
 
             <Container className={styles.page__buttons}>
-                <Button>
-                    Upload custom photo
-                </Button>
-
                 <Button
                     variant={"primary"}
                     iconAfter={<ArrowBack />}

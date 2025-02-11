@@ -61,4 +61,8 @@
     @include fonts.font-creata("sm", 400);
     color: colors.$secondary-muted;
   }
+  &__error {
+    @include fonts.font-creata("sm", 400);
+    color: red;
+  }
 }

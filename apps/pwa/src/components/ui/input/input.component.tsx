@@ -1,7 +1,6 @@
 import { ComponentProps, ReactElement, ReactNode, useId } from "react";
 import styles from "./styles.module.scss";
 import cx from "classnames";
-import { ArrowBack } from "@/components/icons";
 
 
 export namespace Input {
@@ -14,10 +13,11 @@ export namespace Input {
     placeholder: string;
     hint?: string;
     inputSize?: Size;
+    error?: string;
   }
 }
 
-export const Input = ({ variant = "default", label, placeholder, hint, inputSize = 'default', className, ...props }: Input.Props) => {
+export const Input = ({ variant = "default", error, label, placeholder, hint, inputSize = 'default', className, ...props }: Input.Props) => {
   const id = useId();
 
   return (
@@ -46,7 +46,13 @@ export const Input = ({ variant = "default", label, placeholder, hint, inputSize
           )} />
       }
 
-      {hint && <span className={styles.container__hint}> {hint} </span>}
+      {(error || hint) &&
+        <span className={cx(
+          styles.container__hint,
+          error && styles.container__error,
+        )}> {error || hint} </span>
+
+      }
     </div >
   );
 };
