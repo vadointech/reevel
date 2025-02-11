@@ -4,12 +4,12 @@ export type WheelParams = {
     items: Array<string | number | ReactNode>;
     itemWidth: number;
     itemHeight: number;
-}
+};
 
 export type WheelRef = {
     wheel: HTMLDivElement | null;
     wheelItem: Array<HTMLDivElement | null>;
-}
+};
 
 export class Wheel {
     items: WheelParams["items"];

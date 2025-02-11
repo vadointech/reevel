@@ -1,5 +1,6 @@
 
 import { ComponentProps } from "react";
+import { LoginCarouselSet } from "../carousel/set";
 
 import image_1 from "@/../public/assets/temp/carousel1.jpg";
 import image_2 from "@/../public/assets/temp/carousel2.jpg";
@@ -8,12 +9,11 @@ import image_4 from "@/../public/assets/temp/carousel4.jpg";
 import image_5 from "@/../public/assets/temp/carousel5.jpg";
 import image_6 from "@/../public/assets/temp/carousel6.jpg";
 import image_7 from "@/../public/assets/temp/carousel7.jpg";
-import { LoginCarouselSet } from "@/app/[locale]/(auth)/login/_components/carousel/set";
 
 import styles from "./styles.module.scss";
 
 export namespace LoginCarousel {
-    export type Props = ComponentProps<"div">
+    export type Props = ComponentProps<"div">;
 }
 
 const data: LoginCarouselSet.Data[] = [
@@ -35,7 +35,7 @@ export const LoginCarousel = ({}: LoginCarousel.Props) => {
                 className={styles.first}
                 data={data}
                 settings={{
-                    width: 120
+                    width: 120,
                 }}
             />
             <LoginCarouselSet
@@ -44,7 +44,7 @@ export const LoginCarousel = ({}: LoginCarousel.Props) => {
                 settings={{
                     delay: 500,
                     width: 155,
-                    translate: -10
+                    translate: -10,
                 }}
             />
 
@@ -54,7 +54,7 @@ export const LoginCarousel = ({}: LoginCarousel.Props) => {
                 settings={{
                     delay: 300,
                     width: 120,
-                    translate: -30
+                    translate: -30,
                 }}
             />
         </div>

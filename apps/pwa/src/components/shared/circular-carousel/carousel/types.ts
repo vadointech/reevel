@@ -6,8 +6,8 @@ export type Plugin = (carousel: Carousel) => void;
 
 export class CircularCarousel {
     constructor(
-      public wheel: Index,
-      public plugins?: Plugin[],
+        public wheel: Index,
+        public plugins?: Plugin[],
     ) {}
 }
 
@@ -21,7 +21,7 @@ export class Carousel {
         api,
         wheel,
         wheelRef,
-        plugins = []
+        plugins = [],
     }: {
         api: EmblaCarouselType;
         wheel: Index;

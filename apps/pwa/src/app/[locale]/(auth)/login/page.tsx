@@ -6,6 +6,8 @@ import styles from "./styles.module.scss";
 
 export default async function Home() {
 
+    const _t = "";
+
     return (
         <div className={styles.page}>
             <LoginCarousel />

@@ -4,13 +4,13 @@ import styles from "./styles.module.scss";
 import cx from "classnames";
 
 export namespace Button {
-  export type Props = ComponentProps<"button"> & {
-    variant?: "default" | "primary" | "text";
-    size?: "large" | "small";
-    iconBefore?: ReactNode;
-    iconAfter?: ReactNode;
-    iconColor?: "default" | "initial"
-  }
+    export type Props = ComponentProps<"button"> & {
+        variant?: "default" | "primary" | "text";
+        size?: "large" | "small";
+        iconBefore?: ReactNode;
+        iconAfter?: ReactNode;
+        iconColor?: "default" | "initial"
+    };
 }
 
 export const Button = ({
@@ -30,7 +30,7 @@ export const Button = ({
                 styles[`button__size_${size}`],
                 styles[`button__variant_${variant}`],
                 iconColor === "default" && styles[`button__icon_${variant}`],
-                className
+                className,
             )}
             {...props}
         >

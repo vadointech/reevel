@@ -1,6 +1,6 @@
 export const locales = [
     "en",
-    "uk"
+    "uk",
 ] as const;
 
 export const defaultLocale = "uk";

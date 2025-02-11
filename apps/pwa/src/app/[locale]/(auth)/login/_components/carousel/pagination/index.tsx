@@ -4,7 +4,7 @@ import styles from "./styles.module.scss";
 import cx from "classnames";
 
 namespace LoginCarouselPagination {
-    export type Props = ComponentProps<"div">
+    export type Props = ComponentProps<"div">;
 }
 
 const LoginCarouselPagination = ({ className, ...props }: LoginCarouselPagination.Props) => {

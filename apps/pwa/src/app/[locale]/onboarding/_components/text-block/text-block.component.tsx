@@ -4,10 +4,10 @@ import styles from "./styles.module.scss";
 import cx from "classnames";
 
 export namespace OnboardingTextBlock {
-  export type Props = ComponentProps<"div"> & {
-    title?: string;
-    subtitle?: string;
-  }
+    export type Props = ComponentProps<"div"> & {
+        title?: string;
+        subtitle?: string;
+    };
 }
 
 export const OnboardingTextBlock = ({
@@ -20,7 +20,7 @@ export const OnboardingTextBlock = ({
         <div
             className={cx(
                 styles.block,
-                className
+                className,
             )}
             {...props}
         >

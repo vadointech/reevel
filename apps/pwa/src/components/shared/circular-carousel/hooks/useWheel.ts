@@ -7,7 +7,7 @@ import { onPointerUp, onScroll } from "../carousel/handlers";
 export function useWheel({ wheel, plugins }: CircularCarousel) {
     const wheelRef = useRef<WheelRef>({
         wheel: null,
-        wheelItem: []
+        wheelItem: [],
     });
 
     const [sliderRef, emblaApi] = useEmblaCarousel({
@@ -26,7 +26,7 @@ export function useWheel({ wheel, plugins }: CircularCarousel) {
             wheel,
             wheelRef,
             api: emblaApi,
-            plugins: plugins
+            plugins: plugins,
         });
 
         emblaApi.on("pointerUp", () => onPointerUp(carousel));

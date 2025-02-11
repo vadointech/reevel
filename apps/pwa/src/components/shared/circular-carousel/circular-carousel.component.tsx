@@ -8,9 +8,9 @@ import { Wheel, WheelRef } from "./wheel";
 import styles from "./styles.module.scss";
 
 export namespace CircularCarousel {
-  export type Props = {
-    carousel: TCircularCarousel
-  }
+    export type Props = {
+        carousel: TCircularCarousel
+    };
 }
 
 export const CircularCarousel = ({ carousel }: CircularCarousel.Props) => {
@@ -24,7 +24,7 @@ export const CircularCarousel = ({ carousel }: CircularCarousel.Props) => {
                 height: carousel.wheel.radius * 2,
                 width: carousel.wheel.radius * 2,
                 marginTop: carousel.wheel.itemHeight / 2,
-                marginBottom: carousel.wheel.itemHeight / 2
+                marginBottom: carousel.wheel.itemHeight / 2,
             }}
         >
             <div
@@ -52,7 +52,7 @@ const WheelComponent = forwardRef<WheelRef, Wheel>((wheel, ref) => {
         },
         get wheelItem() {
             return wheelItemRefs.current;
-        }
+        },
     }));
 
     return (
@@ -62,7 +62,7 @@ const WheelComponent = forwardRef<WheelRef, Wheel>((wheel, ref) => {
             style={{
                 width: wheel.radius * 2,
                 height: wheel.radius * 2,
-                rotate: "-90deg"
+                rotate: "-90deg",
             }}
         >
             {
@@ -85,7 +85,7 @@ const WheelComponent = forwardRef<WheelRef, Wheel>((wheel, ref) => {
                                 left: `${x}px`,
                                 width: wheel.itemWidth,
                                 rotate: `${anglePX + 90}deg`,
-                                translate: "-50% -50%"
+                                translate: "-50% -50%",
                             }}
                         >
                             { item }

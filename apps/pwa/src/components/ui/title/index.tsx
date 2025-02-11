@@ -9,7 +9,7 @@ export namespace Title {
         weight?: 400 | 500 | 600 | 700;
         align?: "left" | "center" | "right";
         className?: string;
-    }
+    };
 }
 
 export const Title = ({
@@ -27,7 +27,7 @@ export const Title = ({
                 styles[`title--${size}`],
                 styles[`title--weight-${weight}`],
                 styles[`title--align-${align}`],
-                className
+                className,
             )}
             {...props}
         >

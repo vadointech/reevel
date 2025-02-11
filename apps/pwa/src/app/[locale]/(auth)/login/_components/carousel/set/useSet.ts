@@ -3,8 +3,8 @@ import { useCallback, useEffect } from "react";
 import { EmblaCarouselType } from "embla-carousel";
 
 export function useLoginCarouselSet({ delay, speed }: {
-  delay: number;
-  speed: number;
+    delay: number;
+    speed: number;
 }) {
     const [sliderRef, emblaApi] = useEmblaCarousel({
         axis: "x",

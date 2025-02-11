@@ -27,7 +27,7 @@ const slides = [
 ];
 
 export namespace OnboardingAvatarPicker {
-  export type Props = {}
+    export type Props = {};
 }
 
 export const OnboardingAvatarPicker = ({}: OnboardingAvatarPicker.Props) => {
@@ -36,14 +36,14 @@ export const OnboardingAvatarPicker = ({}: OnboardingAvatarPicker.Props) => {
         items: slides,
         itemWidth: 146,
         itemHeight: 100,
-        plugins: [ActiveScale]
+        plugins: [ActiveScale],
     });
 
     return (
         <div
             className={styles.picker}
             style={{
-                height: 160
+                height: 160,
             }}
         >
             <div className={styles.picker__circle} />

@@ -9,21 +9,21 @@ import styles from "./styles.module.scss";
 import cx from "classnames";
 
 export namespace LoginCarouselSet {
-  export type Settings = {
-    speed?: number;
-    delay?: number;
-    translate?: number;
-    width?: number;
-  }
+    export type Settings = {
+        speed?: number;
+        delay?: number;
+        translate?: number;
+        width?: number;
+    };
 
-  export type Data = {
-    src: string | StaticImport;
-  }
+    export type Data = {
+        src: string | StaticImport;
+    };
 
-  export type Props = ComponentProps<"div"> & {
-    data: Data[];
-    settings?: Settings;
-  }
+    export type Props = ComponentProps<"div"> & {
+        data: Data[];
+        settings?: Settings;
+    };
 }
 
 export const LoginCarouselSet = ({ data, settings, className, ...props }: LoginCarouselSet.Props) => {
@@ -39,7 +39,7 @@ export const LoginCarouselSet = ({ data, settings, className, ...props }: LoginC
         <div
             className={cx(
                 styles.carousel,
-                className
+                className,
             )}
             style={{
                 translate,
