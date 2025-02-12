@@ -8,6 +8,7 @@
   flex-direction: column;
   gap: mixins.rem(8);
 
+
   &__label {
     @include fonts.font-creata("sm", 500);
     color: colors.$secondary;
@@ -20,6 +21,9 @@
     @include fonts.font-creata("base", 400);
     color: colors.$secondary-muted;
     border: 1px solid colors.$border ;
+    transition: background-color motions.$motion-duration-mid motions.$motion-ease-in-out,
+    border-color motions.$motion-duration-mid motions.$motion-ease-in-out;
+
 
     &:focus {
       border-color: colors.$background-muted;
