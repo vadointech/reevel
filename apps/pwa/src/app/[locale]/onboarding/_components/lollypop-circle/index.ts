@@ -1,0 +1,1 @@
+export { Lollypop } from "./lollypop-circle.component";
