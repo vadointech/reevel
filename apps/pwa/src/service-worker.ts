@@ -1,9 +1,20 @@
 //=============== Configuration ===============//
 const VERSION = 1;
-const CACHE = false;
+const CACHE = true;
+
+// In milliseconds
+const
+    SECOND = 1000,
+    MINUTE = SECOND * 60,
+    HOUR = MINUTE * 60,
+    DAY = HOUR * 24;
+
+const CACHE_TIMESTAMP_KEY = "sw-cache-date";
 
 const RUNTIME = {
     NAME: "runtime",
+    TTL: DAY,
+    INVALIDATED_AT: Date.now(),
 };
 
 const PRECACHE = {
@@ -36,7 +47,6 @@ self.addEventListener("install", (event: ExtendableEvent) => {
 });
 
 self.addEventListener("activate", (event: ExtendableEvent) => {
-    console.log("activate");
     event.waitUntil(
         cacheManager.clearCache()
             .then(() => self.clients.claim()),
@@ -52,15 +62,19 @@ self.addEventListener("fetch", (event: FetchEvent) => {
 
     if(request.method === "GET") {
 
+        // event.waitUntil(cacheManager.invalidateCache());
+
         // Handle precached requests
         if(PRECACHE.URLS.includes(requestUrl.pathname)) {
-            return event.respondWith(strategies.cacheFirst(request));
+            return event.respondWith(
+                strategies.cacheFirst(request, PRECACHE.NAME),
+            );
         }
 
         // Handle Next Images
         if(requestUrl.pathname.startsWith("/_next/image")) {
             return event.respondWith(
-                strategies.networkFirst(request, (error) => {
+                strategies.cacheFirst(request, RUNTIME.NAME, (error) => {
                     const dynamicUrl = requestUrl.searchParams.get("url");
 
                     if(dynamicUrl) {
@@ -80,7 +94,6 @@ self.addEventListener("fetch", (event: FetchEvent) => {
 
         // Handle other GET requests
         return event.respondWith(strategies.cacheFirst(request, RUNTIME.NAME));
-
     }
 
     event.respondWith(fetch(request));
@@ -102,41 +115,43 @@ self.addEventListener("fetch", (event: FetchEvent) => {
 
 //=============== Implementation ===============//
 const strategies = {
-    async cacheFirst(request: Request, cacheName: string = PRECACHE.NAME) {
+    async cacheFirst(request: Request, cacheName: string, fallback?: (error: any) => Response) {
         return caches.match(request)
             .then(cache => {
-                if(cache) return cache;
-                return fetch(request)
-                    .then(response => {
-                        cacheManager.saveToCache({
-                            request,
-                            response,
-                            cacheName,
+                if(cache) {
+                    return cache;
+                } else {
+                    return fetch(request)
+                        .then(response => {
+                            return cacheManager.saveToCache({
+                                request,
+                                response,
+                                cacheName,
+                            });
                         });
-                        return response;
-                    });
-            });
+                }
+            })
+            .catch(fallback)
+            .finally(cacheManager.invalidateCache);
     },
-    async networkFirst(request: Request, fallback?: (e: any) => Response) {
+    async networkFirst(request: Request, cacheName: string, fallback?: (error: any) => Response){
         return fetch(request)
             .then(response => {
-                if(request.method === "GET") {
-                    cacheManager.saveToCache({
-                        request,
-                        response,
-                        cacheName: RUNTIME.NAME,
-                    });
-                }
-                return response;
+                return cacheManager.saveToCache({
+                    request,
+                    response,
+                    cacheName,
+                });
             })
             .catch(error => {
-                if(fallback) return fallback(error);
                 return caches.match(request)
                     .then(cache => {
                         if(cache) return cache;
-                        return error;
+                        throw new Error(error);
                     });
-            });
+            })
+            .catch(fallback)
+            .finally(cacheManager.invalidateCache);
     },
 };
 
@@ -154,18 +169,24 @@ const cacheManager = {
                 );
             });
     },
-    saveToCache({ request, response, cacheName }: {
+    async saveToCache({ request, response, cacheName }: {
         request: Request,
         response: Response,
         cacheName: string
     }) {
+
+        let responseClone = response.clone();
+
+        responseClone = this.attachTimestamp(responseClone);
+
         if(CACHE) {
-            const responseClone = response.clone();
             caches.open(cacheName)
                 .then(cache => {
                     cache.put(request, responseClone);
                 });
         }
+
+        return response;
     },
     async getPrecacheUrls() {
         return fetch("/next-static.json")
@@ -178,6 +199,42 @@ const cacheManager = {
                 ];
                 return PRECACHE.URLS;
             });
+    },
+
+    attachTimestamp(response: Response) {
+        return new Response(response.body, {
+            status: response.status,
+            statusText: response.statusText,
+            headers: new Headers({
+                ...response.headers,
+                [CACHE_TIMESTAMP_KEY]: new Date().toISOString(),
+            }),
+        });
+    },
+
+    async invalidateCache() {
+        const now = Date.now();
+
+        if(now - RUNTIME.INVALIDATED_AT > RUNTIME.TTL) {
+            const cache = await caches.open(RUNTIME.NAME);
+            const keys = await cache.keys();
+
+            for (const request of keys) {
+                const response = await cache.match(request);
+                if(!response) continue;
+
+                const cacheDate = response.headers.get("sw-cache-date");
+                if(!cacheDate) continue;
+
+                const cachedDate = new Date(cacheDate);
+
+                if (now - cachedDate.getTime() > RUNTIME.TTL) {
+                    await cache.delete(request);
+                }
+            }
+
+            RUNTIME.INVALIDATED_AT = now;
+        }
     },
 };
 //=============================================//
