@@ -36,9 +36,6 @@
     svg {
         width: 1rem;
         height: 1rem;
-        path {
-            stroke-width: mixins.rem(2);
-            stroke: colors.$secondary
-        }
+        stroke: colors.$secondary
     }
 }
