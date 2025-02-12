@@ -1,19 +1,19 @@
 import { RefObject } from "react";
-import { Index, WheelRef } from "../wheel";
+import { Wheel, WheelRef } from "../wheel";
 import { EmblaCarouselType } from "embla-carousel";
 
 export type Plugin = (carousel: Carousel) => void;
 
 export class CircularCarousel {
     constructor(
-        public wheel: Index,
+        public wheel: Wheel,
         public plugins?: Plugin[],
     ) {}
 }
 
 export class Carousel {
     public api: EmblaCarouselType;
-    public wheel: Index;
+    public wheel: Wheel;
     public wheelRef: RefObject<WheelRef>;
     public plugins: Plugin[];
 
@@ -24,7 +24,7 @@ export class Carousel {
         plugins = [],
     }: {
         api: EmblaCarouselType;
-        wheel: Index;
+        wheel: Wheel;
         wheelRef: RefObject<WheelRef>;
         plugins?: Plugin[]
     }) {

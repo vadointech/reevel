@@ -117,14 +117,13 @@ importers:
         version: 5.7.3
 
   packages/eslint-config:
-    dependencies:
-      '@stylistic/eslint-plugin':
-        specifier: ^3.1.0
-        version: 3.1.0(eslint@9.19.0)(typescript@5.7.3)
     devDependencies:
       '@eslint/js':
         specifier: ^9.19.0
         version: 9.19.0
+      '@stylistic/eslint-plugin':
+        specifier: ^3.1.0
+        version: 3.1.0(eslint@9.19.0)(typescript@5.7.3)
       eslint:
         specifier: ^9.19.0
         version: 9.19.0

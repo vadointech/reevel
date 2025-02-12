@@ -4,8 +4,8 @@ import { createContext, PropsWithChildren, useContext, useEffect, useState } fro
 import registerServiceWorker from "./registration";
 
 type ServiceWorkerContextValue = {
-  registration: ServiceWorkerRegistration | null;
-}
+    registration: ServiceWorkerRegistration | null;
+};
 
 const ServiceWorkerContext = createContext<ServiceWorkerContextValue | null>(null);
 
@@ -14,7 +14,7 @@ export const ServiceWorkerProvider = ({ children }: PropsWithChildren) => {
 
     useEffect(() => {
         if("serviceWorker" in navigator) {
-            (async () => {
+            (async() => {
                 const registration = await registerServiceWorker();
                 setRegistration(registration);
             })();
