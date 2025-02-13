@@ -31,7 +31,7 @@ export default function Page() {
                 <div className={styles.page__data}>
                     <Input
                         label="Full name"
-                        placeholder={'Enter your name'}
+                        placeholder={"Enter your name"}
                         variant="default"
                         inputSize={"default"}
                         hint="It's a hint"
@@ -39,7 +39,7 @@ export default function Page() {
                     />
                     <Input
                         label="Bio"
-                        placeholder={'Enter short bio'}
+                        placeholder={"Enter short bio"}
                         variant="default"
                         inputSize={"large"}
                         error="error"
