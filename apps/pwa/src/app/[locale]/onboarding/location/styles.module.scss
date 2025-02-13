@@ -1,4 +1,5 @@
 @use "@/theme/colors";
+@use "@/theme/mixins";
 
 .page {
   height: 100%;
@@ -8,12 +9,12 @@
   justify-content: space-between;
 
   &__buttons {
-    z-index: 1;
-
     background: colors.$background;
     display: flex;
     flex-direction: column;
-    row-gap: 1rem;
+  }
+  &__text {
+    margin-top: mixins.rem(32);
   } 
 }
 
