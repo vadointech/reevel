@@ -14,17 +14,20 @@
 
         height: 100%;
         max-height: 97%;
-
-        background-color: colors.$background;
-        border-radius: mixins.rem(20) mixins.rem(20) 0 0;
     }
 
     &__content {
+        height: 100%;
+        position: relative;
+
         display: flex;
         flex-direction: column;
 
         padding-top: mixins.rem(24);
         padding-inline: 1rem;
+
+        background-color: colors.$background;
+        border-radius: mixins.rem(20) mixins.rem(20) 0 0;
     }
 
     &__icon {

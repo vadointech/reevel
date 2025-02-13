@@ -1,5 +1,5 @@
 import { useTranslations } from "next-intl";
-import { Drawer, DrawerContent, DrawerTrigger } from "@/components/shared/drawer";
+import { Drawer, DrawerBody, DrawerContent, DrawerTrigger } from "@/components/shared/drawer";
 
 export default function Home() {
 
@@ -11,9 +11,14 @@ export default function Home() {
                 <DrawerTrigger>
                     Drawer here
                 </DrawerTrigger>
-                <DrawerContent>
-                    Next.js | {t("Index.title")}
-                </DrawerContent>
+                <DrawerBody>
+                    <div>
+                        tabs
+                    </div>
+                    <DrawerContent>
+                        Next.js | {t("Index.title")}
+                    </DrawerContent>
+                </DrawerBody>
             </Drawer>
         </div>
     );

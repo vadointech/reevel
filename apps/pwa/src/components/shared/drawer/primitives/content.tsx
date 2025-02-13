@@ -1,7 +1,6 @@
 "use client";
 
 import { ComponentProps } from "react";
-import { Drawer as Vaul } from "vaul";
 
 import styles from "../styles.module.scss";
 import cx from "classnames";
@@ -19,28 +18,20 @@ export const DrawerContent = ({
     ...props
 }: DrawerContent.Props) => {
     return (
-        <Vaul.Portal>
-            <Vaul.Content
-                data-testid="content"
-                className={styles.drawer__body}
-            >
-                <Vaul.Title />
-
-                {
-                    showIcon && <div className={styles.drawer__icon} />
-                }
-
-                <div
-                    className={cx(
-                        styles.drawer__content,
-                        className,
-                    )}
-                    {...props}
-                >
-                    { children }
-                </div>
-
-            </Vaul.Content>
-        </Vaul.Portal>
+        <div
+            className={cx(
+                styles.drawer__content,
+                className,
+            )}
+            {...props}
+        >
+            {
+                showIcon && (
+                    <div className={styles.drawer__icon} />
+                )
+            }
+            
+            { children }
+        </div>
     );
 };

@@ -1,20 +1,20 @@
 "use client";
 
-import { ReactNode, useState } from "react";
-import { Drawer as Vaul } from "vaul";
+import { useState } from "react";
+import { Drawer as Vaul, DialogProps } from "vaul";
 import styles from "./styles.module.scss";
 
 export namespace Drawer {
     export type SnapPoints = "low" | "middle" | "full";
 
-    export type Props = {
+    export type Props = DialogProps & {
         overlay?: boolean;
+        closeAllowed?: boolean;
         defaultPoint?: SnapPoints | false;
-        children: ReactNode;
     };
 }
 
-const snapPoints: Record<Drawer.SnapPoints, string | number> = {
+const snapPointsMap: Record<Drawer.SnapPoints, string | number> = {
     low: "168px",
     middle: "348px",
     full: 1,
@@ -23,10 +23,13 @@ const snapPoints: Record<Drawer.SnapPoints, string | number> = {
 export const Drawer = ({
     overlay = true,
     defaultPoint = false,
+    dismissible = false,
     children,
+    snapPoints = Object.values(snapPointsMap),
+    ...props
 }: Drawer.Props) => {
 
-    const defaultSnapPoint = defaultPoint ? snapPoints[defaultPoint] : snapPoints["low"];
+    const defaultSnapPoint = defaultPoint ? snapPointsMap[defaultPoint] : snapPointsMap["low"];
 
     const [open, setOpen] = useState(!!defaultPoint);
 
@@ -38,7 +41,9 @@ export const Drawer = ({
             onOpenChange={setOpen}
             activeSnapPoint={snap}
             setActiveSnapPoint={setSnap}
-            snapPoints={Object.values(snapPoints)}
+            snapPoints={snapPoints}
+            dismissible={dismissible}
+            {...props}
         >
             {
                 overlay && (
