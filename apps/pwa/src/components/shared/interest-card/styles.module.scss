@@ -1,0 +1,50 @@
+@use "@/theme/mixins";
+@use "@/theme/colors";
+@use "@/theme/motions";
+@use "@/theme/fonts";
+
+  .label {
+    width: fit-content;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: mixins.rem(8);
+    
+    &__input {
+      box-sizing: border-box;
+      width: mixins.rem(72);
+      height: mixins.rem(72);
+      border-radius: 50%;
+      background-color: colors.$background-muted;
+      appearance: none;
+      position: relative;
+      z-index: 0;
+      transition: background-color motions.$motion-duration-mid motions.$motion-ease-in-out;
+  
+      &:checked {
+        border: mixins.rem(1.5) solid colors.$primary;
+      }
+    }
+  
+    &__wrapper {
+      position: relative;
+    }
+  }
+
+
+
+  .icon {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: mixins.rem(24);
+    pointer-events: none;
+    font-size: 2rem;
+  }
+
+  .text {
+    font-size: mixins.rem(14);
+			@include fonts.font-creata("xs", 400, 18px);
+
+  }
