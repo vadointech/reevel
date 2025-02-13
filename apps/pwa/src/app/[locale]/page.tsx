@@ -1,12 +1,20 @@
-import { getTranslations } from "next-intl/server";
+import { useTranslations } from "next-intl";
+import { Drawer, DrawerContent, DrawerTrigger } from "@/components/shared/drawer";
 
-export default async function Home() {
+export default function Home() {
 
-    const t = await getTranslations();
+    const t = useTranslations();
 
     return (
         <div>
-            Next.js | {t("Index.title")}
+            <Drawer>
+                <DrawerTrigger>
+                    Drawer here
+                </DrawerTrigger>
+                <DrawerContent>
+                    Next.js | {t("Index.title")}
+                </DrawerContent>
+            </Drawer>
         </div>
     );
 }
