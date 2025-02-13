@@ -1,36 +1,35 @@
-import { Avatar, Button, Container } from "@/components/ui";
+import { Button, Container } from "@/components/ui";
 
 import styles from "./styles.module.scss";
 import { ProgressBar } from "@/components/shared";
 import { ArrowBack } from "@/components/icons";
 import { OnboardingTextBlock } from "../_components";
-import { Input } from "@/components/ui/input";
 import { InterestCard } from "@/components/shared/interest-card";
 
 export default function Page() {
 
     const interests = [
-        { name: "Спорт", img: "🥊" },
-        { name: "Музика", img: "🤿" },
-        { name: "Подорожі", img: "🥊" },
-        { name: "Спорт", img: "🥊" },
-        { name: "Спорт", img: "⛑️" },
-        { name: "Музика", img: "🥊" },
-        { name: "Подорожі", img: "🥊" },
-        { name: "Спорт", img: "🥊" },
-        { name: "Спорт", img: "🤿" },
-        { name: "Музика", img: "🥊" },
-        { name: "Подорожі", img: "⛑️" },
-        { name: "Спорт", img: "🥊" },
-        { name: "Спорт", img: "🤿" },
-        { name: "Музика", img: "🥊" },
-        { name: "Подорожі", img: "⛑️" },
-        { name: "Спорт", img: "🥊" },
-                { name: "Спорт", img: "🥊" },
-        { name: "Спорт", img: "🤿" },
-        { name: "Музика", img: "🥊" },
-        { name: "Подорожі", img: "⛑️" },
-        { name: "Спорт", img: "🥊" },
+        { name: "Спорт", icon: "🥊" },
+        { name: "Музика", icon: "🤿" },
+        { name: "Подорожі", icon: "🥊" },
+        { name: "Спорт", icon: "🥊" },
+        { name: "Спорт", icon: "⛑️" },
+        { name: "Музика", icon: "🥊" },
+        { name: "Подорожі", icon: "🥊" },
+        { name: "Спорт", icon: "🥊" },
+        { name: "Спорт", icon: "🤿" },
+        { name: "Музика", icon: "🥊" },
+        { name: "Подорожі", icon: "⛑️" },
+        { name: "Спорт", icon: "🥊" },
+        { name: "Спорт", icon: "🤿" },
+        { name: "Музика", icon: "🥊" },
+        { name: "Подорожі", icon: "⛑️" },
+        { name: "Спорт", icon: "🥊" },
+        { name: "Спорт", icon: "🥊" },
+        { name: "Спорт", icon: "🤿" },
+        { name: "Музика", icon: "🥊" },
+        { name: "Подорожі", icon: "⛑️" },
+        { name: "Спорт", icon: "🥊" },
     ];
 
     return (
@@ -52,7 +51,7 @@ export default function Page() {
 
             <Container className={styles.page__interests}>
                 {interests.map((item, i) => (
-                    <InterestCard icon={item.img} text={item.name} key={i} />
+                    <InterestCard icon={item.icon} text={item.name} key={i} />
                 ))}
             </Container>
             <Container className={styles.page__buttons}>
