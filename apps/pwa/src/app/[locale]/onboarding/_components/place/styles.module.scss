@@ -1,0 +1,24 @@
+@use '@/theme/mixins';
+@use '@/theme/colors';
+@use '@/theme/fonts';
+
+
+.container {
+  box-sizing: border-box;
+  border-bottom: 1px solid colors.$border;
+  padding: 14px 14px 14px 0px;
+
+
+  &__city {
+    display: flex;
+    align-items: center;
+    gap: mixins.rem(8);
+    @include fonts.font-creata('base',400,24px);
+  }
+
+  &__contry {
+    @include fonts.font-creata('sm',400);
+    color: colors.$secondary;
+    margin-top: mixins.rem(6);
+  }
+}

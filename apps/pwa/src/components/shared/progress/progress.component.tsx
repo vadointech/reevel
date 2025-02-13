@@ -10,6 +10,7 @@ export namespace ProgressBar {
         currentStep: number;
         controlLeft?: ReactNode
         controlRight?: ReactNode,
+        text?: string
     };
 }
 
@@ -17,6 +18,7 @@ export const ProgressBar = ({
     className,
     stepCount = 4,
     currentStep = 0,
+    text,
     controlLeft = <IconClose strokeWidth={2} />,
     controlRight = "Skip",
 }: ProgressBar.Props) => {
@@ -28,23 +30,27 @@ export const ProgressBar = ({
             )}
         >
             <div className={styles.controls}>
-                { controlLeft }
+                {controlLeft}
             </div>
-            <div className={styles.indicator}>
-                {
-                    new Array(stepCount).fill(null).map((_, i) => (
-                        <div
-                            key={i}
-                            className={cx(
-                                styles.indicator__item,
-                                i === currentStep && styles.indicator__item_active,
-                            )}
-                        />
-                    ))
-                }
-            </div>
+            {
+                !text ?
+                    <div className={styles.indicator}>
+                        {
+                            new Array(stepCount).fill(null).map((_, i) => (
+                                <div
+                                    key={i}
+                                    className={cx(
+                                        styles.indicator__item,
+                                        i === currentStep && styles.indicator__item_active,
+                                    )}
+                                />
+                            ))
+                        }
+                    </div>
+                    : <p className={styles.text}>{text}</p>
+            }
             <div className={styles.controls}>
-                { controlRight }
+                {controlRight}
             </div>
         </div>
     );

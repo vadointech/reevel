@@ -2,9 +2,10 @@ import { Avatar, Button, Container } from "@/components/ui";
 
 import styles from "./styles.module.scss";
 import { ProgressBar } from "@/components/shared";
-import { ArrowBack } from "@/components/icons";
+import { ArrowBack, Back } from "@/components/icons";
 import { OnboardingTextBlock } from "../_components";
 import { Input } from "@/components/ui/input";
+import { Place } from "../_components/place";
 
 export default function Page() {
     return (
@@ -13,9 +14,22 @@ export default function Page() {
                 <ProgressBar
                     stepCount={4}
                     currentStep={1}
-                    controlLeft={<ArrowBack className={styles.controlLeft} strokeWidth={0.3} />}
+                    text="Enter your location"
+                    controlLeft={<Back />}
+                    controlRight={false}
                 />
             </Container>
+            <Container>
+                <Place city="Vinnytsia" country="Vinnitsa, Ukraine" />
+                <Place city="Vinnytsia" country="Vinnitsa, Ukraine" />
+                <Place city="Vinnytsia" country="Vinnitsa, Ukraine" />
+                <Place city="Vinnytsia" country="Vinnitsa, Ukraine" />
+                <Place city="Vinnytsia" country="Vinnitsa, Ukraine" />
+                <Place city="Vinnytsia" country="Vinnitsa, Ukraine" />
+                <Place city="Vinnytsia" country="Vinnitsa, Ukraine" />
+
+            </Container>
+            {/* 
             <Container className={styles.page__info}>
                 <div className={styles.page__circle}>
                     <Avatar size={140} />
@@ -54,7 +68,7 @@ export default function Page() {
                 >
                     Next step
                 </Button>
-            </Container>
+            </Container> */}
         </div>
     );
 }

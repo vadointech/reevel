@@ -39,3 +39,7 @@
         stroke: colors.$secondary
     }
 }
+
+.text {
+    @include fonts.font-creata('lg',500);
+}
