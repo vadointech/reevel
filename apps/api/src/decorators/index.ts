@@ -1,0 +1,1 @@
+export * from "./injects/google-oauth.decorator";
