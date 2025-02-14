@@ -1,5 +1,6 @@
 import { Controller, Get } from "@nestjs/common";
 import { ConfigService } from "@/config/config.service";
+import { Public } from "@/decorators";
 
 @Controller()
 export class AppController {
@@ -10,6 +11,7 @@ export class AppController {
     }
 
     // Health Check
+    @Public()
     @Get("/")
     getHello(): string {
         return `Hello World ${this.configService.env("PORT")}!`;

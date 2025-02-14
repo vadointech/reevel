@@ -1,52 +1,41 @@
-import { Controller, Get, Query, Res } from "@nestjs/common";
-import { GoogleOAuthService } from "@/modules/google/services/oauth.service";
-import { InjectGoogleOAuthService } from "@/decorators";
+import { BadRequestException, Controller, Get, Query, Res } from "@nestjs/common";
 import { Response } from "express";
-import { CookieService } from "@/services/cookie.service";
+import { Public } from "@/decorators";
+import { JwtStrategy } from "./strategies/jwt.strategy";
+import { AuthService } from "./auth.service";
 
 @Controller("auth")
 export class AuthController {
     private readonly redirectUrl: string;
 
     constructor(
-        @InjectGoogleOAuthService("/auth/google/redirect")
-        private readonly googleOAuthService: GoogleOAuthService,
-        private readonly cookiesService: CookieService,
+        private readonly authService: AuthService,
+        private readonly jwtStrategy: JwtStrategy,
     ) {
         // TODO: Replace by valid redirect url (http://localhost:3000/auth/redirect)
         this.redirectUrl = "http://localhost:3001/api";
     }
 
+    @Public()
     @Get("/google")
     getGoogleOAuthUlr() {
-        return this.googleOAuthService.generateAuthUrl();
+        return this.authService.getGoogleOAuthLink();
     }
 
+    @Public()
     @Get("/google/redirect")
     async getOAuthUser(
         @Query("code") code: string,
         @Res({ passthrough: true }) response: Response,
     ) {
-        if(!code) {
-            return response.redirect(this.redirectUrl);
-        }
 
-        const credentials = await this.googleOAuthService.getOAuthTokens(code);
+        if(!code) throw new BadRequestException("Bad Request");
 
-        if(!credentials.access_token || !credentials.refresh_token) {
-            return response.redirect(this.redirectUrl);
-        }
+        const user = await this.authService.getGoogleOAuthUser(code);
 
-        const userInfo = await this.googleOAuthService.getUserInfo(credentials.access_token);
+        const session = await this.authService.authWithGoogle(user.email);
 
-        if(!userInfo?.email) {
-            return response.redirect(this.redirectUrl);
-        }
-
-        this.cookiesService.setCookie(response, "test", {
-            email: userInfo.email,
-            name: userInfo.name,
-        });
+        this.jwtStrategy.setClientSession(response, session);
 
         return response.redirect(this.redirectUrl);
     }

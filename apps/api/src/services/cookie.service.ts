@@ -23,8 +23,14 @@ export class CookieService {
     setHttpCookie(response: Response, key: string, value: unknown) {
         response.cookie(key, JSON.stringify(value), this.httpCookieParams);
     }
+    clearHttpCookie(response: Response, key: string) {
+        response.clearCookie(key, this.httpCookieParams);
+    }
 
     setCookie(response: Response, key: string, value: unknown) {
         response.cookie(key, JSON.stringify(value), this.cookieParams);
+    }
+    clearCookie(response: Response, key: string) {
+        response.clearCookie(key, this.cookieParams);
     }
 }
