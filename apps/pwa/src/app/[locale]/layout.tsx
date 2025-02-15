@@ -6,6 +6,8 @@ import { getMessages, setRequestLocale } from "next-intl/server";
 import { fonts } from "@/fonts.config";
 import "../globals.scss";
 import { locales } from "@/i18n/locales";
+import { getSession } from "@/modules/auth/session/get-session";
+import { SessionProvider } from "@/modules/auth/session/client";
 
 export const metadata: Metadata = {
     title: "Create Next App",
@@ -22,12 +24,16 @@ export default async function RootLayout({ children, params }: PropsWithChildren
     setRequestLocale(locale);
     const messages = await getMessages();
 
+    const session = await getSession();
+
     return (
         <html lang={locale}>
             <body className={fonts}>
-                <Providers intlConfig={{ messages, locale }}>
-                    { children }
-                </Providers>
+                <SessionProvider session={session}>
+                    <Providers intlConfig={{ messages, locale }}>
+                        { children }
+                    </Providers>
+                </SessionProvider>
             </body>
         </html>
     );
