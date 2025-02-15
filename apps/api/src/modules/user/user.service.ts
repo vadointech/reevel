@@ -30,4 +30,14 @@ export class UserService {
 
         return this.userRepository.save(user);
     }
+
+    async getUserSession(userId: string) {
+        return this.userRepository.findOne({
+            where: { id: userId },
+            select: {
+                id: true,
+                email: true,
+            },
+        });
+    }
 }

@@ -10,9 +10,4 @@ export default {
         expiresIn: 60 * 60 * 24 * 7, // 1 week
         cookieKey: "refresh_token",
     },
-
-    clientSession: {
-        expiresIn: 60 * 60 * 24 * 7, // 1 week
-        cookieKey: "session_user",
-    },
 };

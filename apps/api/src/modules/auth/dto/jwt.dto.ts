@@ -1,5 +1,4 @@
 import { IsNotEmpty, IsString } from "class-validator";
-import { ClientSession } from "@/modules/auth/dto/auth.dto";
 
 export class AccessJwtTokenPayload {
     sub: string;
@@ -23,5 +22,11 @@ export class AuthJwtTokens {
 export class JwtSession {
     tokens: AuthJwtTokens;
     payload: AccessJwtTokenPayload;
-    session: ClientSession;
+}
+
+export class ServerSession {
+    user: {
+        id: string;
+        email: string;
+    };
 }

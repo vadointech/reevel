@@ -32,7 +32,7 @@ export class AuthController {
 
         const session = await this.authService.authWithGoogle(user.email);
 
-        this.jwtStrategy.setClientSession(response, session);
+        this.jwtStrategy.setJwtSession(response, session);
 
         return response.redirect(this.configService.env("PWA_PUBLIC_URL"));
     }

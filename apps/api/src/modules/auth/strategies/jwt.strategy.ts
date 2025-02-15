@@ -36,12 +36,6 @@ export class JwtStrategy {
         return {
             tokens: { access_token, refresh_token },
             payload,
-            session: {
-                user: {
-                    id: payload.sub,
-                    email: payload.email,
-                },
-            },
         };
     }
 
@@ -54,16 +48,14 @@ export class JwtStrategy {
         };
     }
 
-    setClientSession(response: Response, { tokens, session }: JwtSession) {
+    setJwtSession(response: Response, { tokens }: JwtSession) {
         this.cookieService.setHttpCookie(response, authConfig.accessToken.cookieKey, tokens.access_token);
         this.cookieService.setHttpCookie(response, authConfig.refreshToken.cookieKey, tokens.refresh_token);
-        this.cookieService.setCookie(response, authConfig.clientSession.cookieKey, session);
     }
 
-    clearClientSession(response: Response) {
+    clearJwtSession(response: Response) {
         this.cookieService.clearHttpCookie(response, authConfig.accessToken.cookieKey);
         this.cookieService.clearHttpCookie(response, authConfig.refreshToken.cookieKey);
-        this.cookieService.clearCookie(response, authConfig.clientSession.cookieKey);
     }
 
     async refreshSession(request: Request, response: Response, payload: RefreshJwtTokenPayload) {
@@ -74,7 +66,7 @@ export class JwtStrategy {
         }
 
         const session=  await this.generateSession(dbUser);
-        this.setClientSession(response, session);
+        this.setJwtSession(response, session);
         this.setServerSession(request, session.payload);
     }
 

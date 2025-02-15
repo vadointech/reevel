@@ -93,6 +93,8 @@ export class AuthGuard implements CanActivate {
         const request = context.switchToHttp().getRequest();
         const response = context.switchToHttp().getResponse();
 
+        console.log(request.headers);
+
         try {
             const hasAccess = await this.checkUserAccess(request);
 
@@ -102,7 +104,6 @@ export class AuthGuard implements CanActivate {
 
             return true;
         } catch {
-            this.jwtStrategy.clearClientSession(response);
             return false;
         }
     }
