@@ -11,7 +11,6 @@ export class AppController {
     }
 
     // Health Check
-    @Public()
     @Get("/")
     getHello(): string {
         return `Hello World ${this.configService.env("PORT")}!`;

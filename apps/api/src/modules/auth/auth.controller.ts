@@ -3,18 +3,15 @@ import { Response } from "express";
 import { Public } from "@/decorators";
 import { JwtStrategy } from "./strategies/jwt.strategy";
 import { AuthService } from "./auth.service";
+import { ConfigService } from "@/config/config.service";
 
 @Controller("auth")
 export class AuthController {
-    private readonly redirectUrl: string;
-
     constructor(
         private readonly authService: AuthService,
         private readonly jwtStrategy: JwtStrategy,
-    ) {
-        // TODO: Replace by valid redirect url (http://localhost:3000/auth/redirect)
-        this.redirectUrl = "http://localhost:3001/api";
-    }
+        private readonly configService: ConfigService,
+    ) {}
 
     @Public()
     @Get("/google")
@@ -37,6 +34,6 @@ export class AuthController {
 
         this.jwtStrategy.setClientSession(response, session);
 
-        return response.redirect(this.redirectUrl);
+        return response.redirect(this.configService.env("PWA_PUBLIC_URL"));
     }
 }

@@ -22,9 +22,23 @@ export class AuthGuard implements CanActivate {
     async getAuthJwtToken(request: Request): Promise<AuthJwtTokens>;
     async getAuthJwtToken(request: Request, key?: keyof AuthJwtTokens): Promise<string>;
     async getAuthJwtToken(request: Request, key?: keyof AuthJwtTokens) {
-        const tokens = request.cookies as AuthJwtTokens;
+        const cookies = request.headers.cookie;
+
+        if(!cookies) {
+            throw new BadRequestException("Access or Refresh token not found");
+        }
+
+        const tokens = cookies.split("; ");
+
+        const tokensMap: Record<string, string> = {};
+
+        tokens.forEach((token) => {
+            const [key, value] = token.split("=");
+            tokensMap[key] = decodeURIComponent(value).replace(/^"|"$/g, "");
+        });
+
         try {
-            const validatedTokens = await transformAndValidate(AuthJwtTokens, tokens);
+            const validatedTokens = await transformAndValidate(AuthJwtTokens, tokensMap);
             if(key) return validatedTokens[key];
             return validatedTokens;
         } catch {
@@ -42,6 +56,7 @@ export class AuthGuard implements CanActivate {
     async checkUserAccess(request: Request): Promise<boolean> {
         const accessToken = await this.getAuthJwtToken(request, "access_token");
 
+
         const {
             valid,
             payload,
@@ -49,7 +64,7 @@ export class AuthGuard implements CanActivate {
 
         if(!valid || !payload) {
             return false;
-        };
+        }
 
         this.jwtStrategy.setServerSession(request, payload);
 

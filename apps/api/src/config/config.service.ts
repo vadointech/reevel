@@ -9,6 +9,7 @@ const environmentVariables = [
 
     // CORS
     "API_PUBLIC_URL",
+    "PWA_PUBLIC_URL",
 
     // Database
     "DB_HOST",

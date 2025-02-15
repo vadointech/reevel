@@ -11,7 +11,7 @@ export class CookieService {
     private readonly cookieParams = {
         httpOnly: false,
         secure: !this.configService.isDevelopment(),
-        sameSite: "none" as const,
+        sameSite: "lax" as const,
         domain: this.configService.env("DOMAIN"),
     };
 
