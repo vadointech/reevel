@@ -1,1 +1,1 @@
-export { Lollypop } from "./lollypop-circle.component";
+export { DotIcon } from "./lollypop-circle.component";

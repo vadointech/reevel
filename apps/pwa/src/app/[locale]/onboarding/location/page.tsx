@@ -4,7 +4,7 @@ import styles from "./styles.module.scss";
 import { ArrowBack } from "@/components/icons";
 import { ProgressBar } from "@/components/shared";
 import { OnboardingTextBlock } from "../_components";
-import { Lollypop } from "../_components/lollypop-circle";
+import { DotIcon } from "../_components/lollypop-circle";
 
 
 export default function Page() {
@@ -14,12 +14,13 @@ export default function Page() {
         <ProgressBar
           stepCount={4}
           currentStep={3}
-          controlLeft={<ArrowBack className={styles.controlLeft} strokeWidth={0.3} />}
+          type="back"
+          invertedLeftControl
         />
       </Container>
 
       <Container>
-        <Lollypop />
+        <DotIcon />
         <OnboardingTextBlock
           title={"What is Your Location?"}
           subtitle={"To find nearby events share your location with us"}

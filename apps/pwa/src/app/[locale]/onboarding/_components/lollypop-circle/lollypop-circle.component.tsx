@@ -3,16 +3,16 @@ import { ComponentProps } from "react";
 import styles from "./styles.module.scss";
 import cx from "classnames";
 
-export namespace Lollypop {
+export namespace DotIcon {
     export type Props = ComponentProps<"div"> & {
 
     };
 }
 
-export const Lollypop = ({
+export const DotIcon = ({
     className,
     ...props
-}: Lollypop.Props) => {
+}: DotIcon.Props) => {
     return (
         <div
             className={cx(
