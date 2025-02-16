@@ -31,8 +31,10 @@
   &__buttons {    
     display: flex;
     flex-direction: column;
-    
-    margin-top: mixins.rem(24);
+    position: sticky;
+    bottom: 0;
+    padding: 16px;
+    z-index: 10;
   }
 }
 
