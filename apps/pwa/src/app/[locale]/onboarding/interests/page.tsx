@@ -39,7 +39,7 @@ export default function Page() {
                     stepCount={4}
                     currentStep={2}
                     invertedLeftControl={true}
-                    controlLeft={<ArrowBack strokeWidth={0.3} />}
+                    type="close"
                 />
             </Container>
             <Container className={styles.page__info}>

@@ -1,5 +1,5 @@
 import { ComponentProps, ReactNode } from "react";
-import { IconClose } from "@/components/icons";
+import { ArrowBack, IconClose } from "@/components/icons";
 
 import cx from "classnames";
 import styles from "./styles.module.scss";
@@ -11,6 +11,7 @@ export namespace ProgressBar {
         controlLeft?: ReactNode
         controlRight?: ReactNode,
         invertedLeftControl?: boolean
+        type?: 'back' | 'close'
     };
 }
 
@@ -18,9 +19,10 @@ export const ProgressBar = ({
     className,
     stepCount = 4,
     currentStep = 0,
-    controlLeft = <IconClose strokeWidth={2} />,
+    controlLeft,
     controlRight = "Skip",
     invertedLeftControl = false,
+    type = 'back'
 }: ProgressBar.Props) => {
     return (
         <div
@@ -33,7 +35,11 @@ export const ProgressBar = ({
                 styles.controls,
                 invertedLeftControl && styles.controls__inverted,
             )}>
-                {controlLeft}
+                {controlLeft ?
+                    controlLeft
+                    : type == 'back' ? <ArrowBack strokeWidth={0.3} />
+                        : <IconClose strokeWidth={2} />
+                }
             </div>
             <div className={styles.indicator}>
                 {
