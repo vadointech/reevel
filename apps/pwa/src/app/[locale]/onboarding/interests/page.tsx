@@ -45,7 +45,6 @@ export default function Page() {
                 <OnboardingTextBlock
                     title={"Customize Your Interests"}
                     subtitle={"Pick the things you’re passionate about so we can show events that match your interests."}
-                    className={styles.page__text}
                 />
             </Container>
 
