@@ -10,6 +10,7 @@ export namespace ProgressBar {
         currentStep: number;
         controlLeft?: ReactNode
         controlRight?: ReactNode,
+        invertedLeftControl?: boolean
     };
 }
 
@@ -19,6 +20,7 @@ export const ProgressBar = ({
     currentStep = 0,
     controlLeft = <IconClose strokeWidth={2} />,
     controlRight = "Skip",
+    invertedLeftControl = false,
 }: ProgressBar.Props) => {
     return (
         <div
@@ -27,8 +29,11 @@ export const ProgressBar = ({
                 className,
             )}
         >
-            <div className={styles.controls}>
-                { controlLeft }
+            <div className={cx(
+                styles.controls,
+                invertedLeftControl && styles.controls__inverted,
+            )}>
+                {controlLeft}
             </div>
             <div className={styles.indicator}>
                 {
@@ -44,7 +49,7 @@ export const ProgressBar = ({
                 }
             </div>
             <div className={styles.controls}>
-                { controlRight }
+                {controlRight}
             </div>
         </div>
     );

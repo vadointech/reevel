@@ -37,5 +37,12 @@
         width: 1rem;
         height: 1rem;
         stroke: colors.$secondary
+        
+    }
+
+    &__inverted {
+        svg {
+            transform: rotate(180deg);
+        }
     }
 }

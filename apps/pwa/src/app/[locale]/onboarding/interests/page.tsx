@@ -38,7 +38,9 @@ export default function Page() {
                 <ProgressBar
                     stepCount={4}
                     currentStep={2}
-                    controlLeft={<ArrowBack className={styles.controlLeft} strokeWidth={0.3} />}
+                    invertedLeftControl={true}
+                    controlLeft={<ArrowBack strokeWidth={0.3} />
+                    }
                 />
             </Container>
             <Container className={styles.page__info}>
