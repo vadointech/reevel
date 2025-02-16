@@ -19,7 +19,7 @@
       appearance: none;
       position: relative;
       z-index: 0;
-      transition: background-color motions.$motion-duration-mid motions.$motion-ease-in-out;
+      transition: border-color motions.$motion-duration-mid motions.$motion-ease-in-out;
   
       &:checked {
         border: mixins.rem(1.5) solid colors.$primary;
