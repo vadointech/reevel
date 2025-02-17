@@ -21,7 +21,8 @@
       z-index: 0;
       border: mixins.rem(1.5) solid transparent;
       transition: border-color motions.$motion-duration-mid motions.$motion-ease-in;
-  
+      -webkit-tap-highlight-color: transparent;
+
       &:checked {
         border: mixins.rem(1.5) solid colors.$primary;
       }
