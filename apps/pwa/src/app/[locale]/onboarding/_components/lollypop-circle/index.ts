@@ -1,1 +1,0 @@
-export { DotIcon } from "./lollypop-circle.component";

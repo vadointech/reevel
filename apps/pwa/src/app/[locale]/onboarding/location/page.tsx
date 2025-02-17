@@ -4,7 +4,7 @@ import styles from "./styles.module.scss";
 import { ArrowBack } from "@/components/icons";
 import { ProgressBar } from "@/components/shared";
 import { OnboardingTextBlock } from "../_components";
-import { DotIcon } from "../_components/lollypop-circle";
+import { DotIcon } from "../_components/dot-icon";
 
 
 export default function Page() {
@@ -27,6 +27,7 @@ export default function Page() {
           className={styles.page__text}
         />
       </Container>
+
       <Container className={styles.page__buttons}>
         <Button
           variant={"primary"}
