@@ -2,24 +2,26 @@
 @use "@/theme/mixins";
 
 .page {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+
   &__info {
     margin-top: mixins.rem(48);
   }
 
   &__interests {
-    max-height: mixins.rem(452);
+    flex: 1;
     padding-bottom: mixins.rem(80);
 
     display: grid;
     grid-template-columns: repeat(4, 1fr);
-
-    justify-content: center;
     row-gap: mixins.rem(24.5);
     column-gap: mixins.rem(20);
 
     margin-top: mixins.rem(32);
-
     overflow-y: auto;
+
     &::-webkit-scrollbar {
       width: 0;
       height: 0;
@@ -29,13 +31,14 @@
     -ms-overflow-style: none;
   }
 
-  &__buttons {    
+  &__buttons {
     display: flex;
+    justify-content: center;
     flex-direction: column;
+
     position: sticky;
     bottom: 0;
-    padding: 16px;
-    z-index: 10;
+
+    // padding: mixins.rem(16) mixins.rem(20);
   }
 }
-
