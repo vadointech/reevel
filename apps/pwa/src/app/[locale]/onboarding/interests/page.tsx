@@ -1,3 +1,5 @@
+'use client'
+
 import { Button, Container } from "@/components/ui";
 
 import styles from "./styles.module.scss";
@@ -5,32 +7,46 @@ import { ProgressBar } from "@/components/shared";
 import { ArrowBack } from "@/components/icons";
 import { OnboardingTextBlock } from "../_components";
 import { InterestCard } from "@/components/shared/interest-card";
+import { useState } from "react";
 
 export default function Page() {
 
     const interests = [
-        { name: "Спорт", icon: "🥊" },
-        { name: "Музика", icon: "🤿" },
-        { name: "Подорожі", icon: "🥊" },
-        { name: "Спорт", icon: "🥊" },
-        { name: "Спорт", icon: "⛑️" },
-        { name: "Музика", icon: "🥊" },
-        { name: "Подорожі", icon: "🥊" },
-        { name: "Спорт", icon: "🥊" },
-        { name: "Спорт", icon: "🤿" },
-        { name: "Музика", icon: "🥊" },
-        { name: "Подорожі", icon: "⛑️" },
-        { name: "Спорт", icon: "🥊" },
-        { name: "Спорт", icon: "🤿" },
-        { name: "Музика", icon: "🥊" },
-        { name: "Подорожі", icon: "⛑️" },
-        { name: "Спорт", icon: "🥊" },
-        { name: "Спорт", icon: "🥊" },
-        { name: "Спорт", icon: "🤿" },
-        { name: "Музика", icon: "🥊" },
-        { name: "Подорожі", icon: "⛑️" },
-        { name: "Спорт", icon: "🥊" },
+        { name: "Sport", icon: "🥊" },
+        { name: "Music", icon: "🤿" },
+        { name: "Travel", icon: "🥊" },
+        { name: "Sport", icon: "🥊" },
+        { name: "Sport", icon: "⛑️" },
+        { name: "Music", icon: "🥊" },
+        { name: "Travel", icon: "🥊" },
+        { name: "Sport", icon: "🥊" },
+        { name: "Sport", icon: "🤿" },
+        { name: "Music", icon: "🥊" },
+        { name: "Sport", icon: "🥊" },
+        { name: "Sport", icon: "🤿" },
+        { name: "Music", icon: "🥊" },
+        { name: "Travel", icon: "⛑️" },
+        { name: "Travel", icon: "⛑️" },
+        { name: "Sport", icon: "🥊" },
+        { name: "Sport", icon: "🥊" },
+        { name: "Sport", icon: "🤿" },
+        { name: "Music", icon: "🥊" },
+        { name: "Travel", icon: "⛑️" },
+        { name: "Sport", icon: "🥊" },
     ];
+
+    const [selectedInterests, setSelectedInterests] = useState<Record<string, boolean>>({
+        sport: false,
+        music: false,
+        travel: false,
+    });
+
+    const handleInterestChange = (interest: string, isSelected: boolean) => {
+        setSelectedInterests(prev => ({
+            ...prev,
+            [interest]: isSelected,
+        }));
+    };
 
     return (
         <div className={styles.page}>
@@ -51,7 +67,13 @@ export default function Page() {
 
             <Container className={styles.page__interests}>
                 {interests.map((item, i) => (
-                    <InterestCard icon={item.icon} text={item.name} key={i} />
+                    <InterestCard
+                        icon={item.icon}
+                        text={item.name}
+                        key={i}
+                        selected={selectedInterests[item.name.toLowerCase()] || false}
+                        onChange={(isSelected) => handleInterestChange(item.name.toLowerCase(), isSelected)}
+                    />
                 ))}
             </Container>
             <Container className={styles.page__buttons}>
