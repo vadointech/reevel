@@ -1,0 +1,67 @@
+@use "@/theme/fonts";
+@use "@/theme/colors";
+@use "@/theme/mixins";
+@use "@/theme/motions";
+
+.button {
+    height: mixins.rem(38);
+    width: fit-content;
+    padding:  0px 18px;
+    border-radius: 100;
+    font-size: 10px;
+    @include fonts.font-creata("sm", 400,20px);
+
+
+    box-sizing:border-box;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border:1px solid transparent;
+    gap: mixins.rem(4);
+
+    &__selected {
+        border:1px solid transparent !important;
+        background-color: colors.$primary !important;
+        color: colors.$background !important;
+    }
+
+    &__variant {
+        &_default {
+            border:1px solid colors.$border;
+            background-color: colors.$background-muted;
+            color: colors.$secondary;
+        }
+
+        &_primary {
+            border:1px solid transparent;
+            background-color: colors.$primary;
+            color: colors.$background;
+        }
+
+        &_outline {
+            border:1px solid colors.$background;
+            color: colors.$background;
+        }
+
+        &_icon {
+            background-color: colors.$background-muted;
+            svg {
+                color: colors.$secondary
+            }
+        }
+
+        &_dashed {
+            border: 1px dashed colors.$border;
+            background-color: colors.$background-muted;
+            color: colors.$secondary;
+        }
+    }
+
+    &__icon {
+        font-size: mixins.rem(14);
+        svg {
+            max-height: mixins.rem(10);
+        }
+    }
+
+}
