@@ -8,6 +8,7 @@
 
   &__interests {
     max-height: mixins.rem(452);
+    padding-bottom: mixins.rem(80);
 
     display: grid;
     grid-template-columns: repeat(4, 1fr);
