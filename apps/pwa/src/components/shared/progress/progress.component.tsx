@@ -60,23 +60,6 @@ export const ProgressBar = ({
                     ))
                 }
             </div>
-            {
-                !text ?
-                    <div className={styles.indicator}>
-                        {
-                            new Array(stepCount).fill(null).map((_, i) => (
-                                <div
-                                    key={i}
-                                    className={cx(
-                                        styles.indicator__item,
-                                        i === currentStep && styles.indicator__item_active,
-                                    )}
-                                />
-                            ))
-                        }
-                    </div>
-                    : <p className={styles.text}>{text}</p>
-            }
             <div className={styles.controls}>
                 {controlRight}
             </div>

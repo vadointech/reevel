@@ -4,3 +4,4 @@ export * from "./apple";
 export * from "./google";
 export * from "./back"
 export * from "./navigation"
+export * from "./check"
