@@ -5,13 +5,15 @@ import cx from "classnames";
 import styles from "./styles.module.scss";
 
 export namespace ProgressBar {
+
+    export type Type = "back" | "close";
+
     export type Props = ComponentProps<"div"> & {
         stepCount: number;
         currentStep: number;
-        controlLeft?: ReactNode
-        controlRight?: ReactNode,
-        invertedLeftControl?: boolean
-        type?: 'back' | 'close'
+        controlLeft?: ReactNode;
+        controlRight?: ReactNode;
+        type?: Type;
     };
 }
 
@@ -21,9 +23,14 @@ export const ProgressBar = ({
     currentStep = 0,
     controlLeft,
     controlRight = "Skip",
-    invertedLeftControl = false,
-    type = 'back'
+    type = "back",
 }: ProgressBar.Props) => {
+
+    const ControlLeftView: Record<ProgressBar.Type, ReactNode> = {
+        back:  <ArrowBack width={20} height={16} style={{ rotate: "180deg" }} strokeWidth={0.3} />,
+        close: <IconClose width={16} height={16} strokeWidth={2} />,
+    };
+
     return (
         <div
             className={cx(
@@ -31,14 +38,13 @@ export const ProgressBar = ({
                 className,
             )}
         >
-            <div className={cx(
-                styles.controls,
-                invertedLeftControl && styles.controls__inverted,
-            )}>
-                {controlLeft ?
-                    controlLeft
-                    : type == 'back' ? <ArrowBack strokeWidth={0.3} />
-                        : <IconClose strokeWidth={2} />
+            <div
+                className={cx(
+                    styles.controls,
+                )}
+            >
+                {
+                    controlLeft ? controlLeft : ControlLeftView[type]
                 }
             </div>
             <div className={styles.indicator}>
