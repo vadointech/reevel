@@ -1,74 +1,74 @@
 "use client";
 
-import { useCallback, useRef, useState } from "react";
-import useSupercluster from "use-supercluster";
-import MapboxGLMap, {
-    MapRef,
-    MapProps,
-    Marker,
-    ViewState,
-    MapEvent,
-    ViewStateChangeEvent,
-} from "react-map-gl/mapbox";
-import { mockGeoJsonData } from "@/components/map/data.mock";
+import { useCallback } from "react";
+import MapboxGLMap, { Marker, ViewState } from "react-map-gl/mapbox";
+import Supercluster from "supercluster";
+import { useMapContext } from "./context";
+import { useMapApi } from "@/components/map/api";
+import { useMapbox, useMapCluster } from "./hooks";
 
 import "mapbox-gl/dist/mapbox-gl.css";
 
+import { mockGeoJsonData } from "./data.mock";
+
 export namespace Map {
-    export type Props = MapProps & {
-        accessToken: string | undefined;
-        mapStyle: string | undefined;
+    export type Props = {
+        points?: Supercluster.PointFeature<any>[]
+        initialViewState?: Partial<ViewState>
     };
-    export type Bounds = [number, number, number, number];
 }
 
-const initialViewState = {
-    latitude: 49.23188823685999,
-    longitude: 28.468377628194958,
-    zoom: 12,
-    pitch: 45,
-    width: "100%",
-    height: "100%",
-};
-
 export const Map = ({
-    accessToken,
-    mapStyle,
-    ...props
+    points = mockGeoJsonData,
+    initialViewState,
 }: Map.Props) => {
-    const [viewState, setViewState] = useState<Partial<ViewState>>(initialViewState);
-    const [bounds, setBounds] = useState<Map.Bounds>([0, 0, 0, 0]);
-    const mapRef = useRef<MapRef>(null);
+    const api = useMapApi();
+    const { ref, mapStyle, accessToken } = useMapContext();
 
-    const onLoad = useCallback((e: MapEvent) => {
-        const bnds = e.target.getBounds();
-        if(bnds) {
-            setBounds(bnds.toArray().flat() as Map.Bounds);
-        }
-    }, []);
+    const {
+        viewState,
+        bounds,
+        updateBounds,
+        updateViewState,
+    } = useMapbox(points, initialViewState);
 
-    const onMove = useCallback((e: ViewStateChangeEvent) => {
-        setViewState(e.viewState);
-    }, []);
-
-    const points = mockGeoJsonData;
-
-    const { clusters } = useSupercluster({
+    const {
+        clusters,
+        supercluster,
+    } = useMapCluster(
         points,
         bounds,
-        zoom: viewState.zoom || 0,
-        options: { radius: 40, maxZoom: 20 },
-    });
+        viewState.zoom || 0,
+    );
+
+    const handleZoomToCluster = useCallback((cluster: Supercluster.PointFeature<any>) => {
+        if(!supercluster) return;
+
+        const [longitude, latitude] = cluster.geometry.coordinates;
+        const expansionZoom = supercluster.getClusterExpansionZoom(cluster.id as number);
+
+        api.flyTo([longitude, latitude], {
+            speed: 2,
+            zoom: Math.min(expansionZoom, 20),
+        });
+    }, [api]);
 
     return (
         <MapboxGLMap
             {...viewState}
-            ref={mapRef}
+            maxZoom={20}
+            ref={ref}
             mapStyle={mapStyle}
             mapboxAccessToken={accessToken}
-            onMove={onMove}
-            onLoad={onLoad}
-            {...props}
+            onMove={(e) => {
+                updateViewState(e);
+                updateBounds(e);
+            }}
+            onLoad={updateBounds}
+            style={{
+                width: "100%",
+                height: "100%",
+            }}
         >
             {
                 clusters.map(cluster => {
@@ -83,6 +83,7 @@ export const Map = ({
                                 key={`cluster-${cluster.id}`}
                                 latitude={latitude}
                                 longitude={longitude}
+                                onClick={() => handleZoomToCluster(cluster)}
                             >
                                 <div
                                     style={{
@@ -95,7 +96,7 @@ export const Map = ({
                                         borderRadius: "50%",
                                     }}
                                 >
-                                    {pointCount}
+                                    { pointCount }
                                 </div>
                             </Marker>
                         );
@@ -104,8 +105,8 @@ export const Map = ({
                     return (
                         <Marker
                             key={`marker-${cluster.properties?.id}`}
-                            latitude={latitude}
                             longitude={longitude}
+                            latitude={latitude}
                         />
                     );
                 })
