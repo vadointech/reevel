@@ -19,6 +19,23 @@ Usage example:
     }
 }
 
+/*
+Mixin to hide scrollbars across various browsers (Chrome, Firefox, IE, Edge).
+
+Usage Example:
+.example-class {
+    @include mixins.no-scrollbar;
+}
+ */
+@mixin no-scrollbar {
+    &::-webkit-scrollbar {
+        display: none;
+    }
+
+    -ms-overflow-style: none; // IE and Edge
+    scrollbar-width: none; // Firefox
+}
+
 @mixin textEllipsis($lines: 1) {
     overflow: hidden;
     display: -webkit-box;

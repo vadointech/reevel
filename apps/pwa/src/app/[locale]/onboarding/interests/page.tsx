@@ -1,10 +1,11 @@
 import { Button, Container } from "@/components/ui";
 
-import styles from "./styles.module.scss";
 import { ProgressBar } from "@/components/shared";
 import { ArrowBack } from "@/components/icons";
 import { OnboardingTextBlock } from "../_components";
 import { InterestsSection } from "../_components/interests-section";
+
+import styles from "./styles.module.scss";
 
 export default function Page() {
 
