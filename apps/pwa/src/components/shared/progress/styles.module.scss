@@ -37,6 +37,13 @@
         stroke: colors.$secondary;
         fill: colors.$secondary;
     }
+
+    &__white {
+        svg path {
+            stroke: colors.$primary;
+            fill: colors.$primary;
+        }
+    }
 }
 
 .text {

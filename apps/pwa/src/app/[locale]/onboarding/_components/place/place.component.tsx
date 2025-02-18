@@ -7,11 +7,12 @@ import { Check, Navigation } from "@/components/icons";
 export namespace Place {
     export type Props = ComponentProps<"div"> & {
         city: string,
-        country: string
+        country: string,
+        selected?: boolean
     };
 }
 
-export const Place = ({ country, city, ...props }: Place.Props) => {
+export const Place = ({ country, city, selected, ...props }: Place.Props) => {
 
     return (
         <div className={styles.container}>
@@ -22,9 +23,12 @@ export const Place = ({ country, city, ...props }: Place.Props) => {
                 </div>
                 <p className={styles.container__contry}>{country}</p>
             </div>
-            <div className={styles.container__check}>
-                <Check width={12} height={8} />
-            </div>
+            {
+                selected &&
+                <div className={styles.container__check}>
+                    <Check width={12} height={8} />
+                </div>
+            }
         </div>
     );
 };
