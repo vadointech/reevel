@@ -39,8 +39,7 @@ export default function Page() {
                 <ProgressBar
                     stepCount={4}
                     currentStep={2}
-                    invertedLeftControl={true}
-                    type="close"
+                    type={"close"}
                 />
             </Container>
             <Container className={styles.page__info}>
