@@ -61,7 +61,7 @@ export const ProgressBar = ({
                 }
             </div>
             <div className={styles.controls}>
-                { controlRight }
+                {controlRight}
             </div>
         </div>
     );
