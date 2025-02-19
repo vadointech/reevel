@@ -1,12 +1,13 @@
 "use client";
 
-import { useCallback } from "react";
-import MapboxGLMap, { Marker, ViewState } from "react-map-gl/mapbox";
+import { useCallback, useEffect, useRef } from "react";
+import MapboxGLMap, { MapRef, Marker, ViewState } from "react-map-gl/mapbox";
 import Supercluster from "supercluster";
 import { useMapContext } from "./context";
-import { useMapApi } from "@/components/map/api";
 import { useMapbox, useMapCluster } from "./hooks";
 import { ClusterMarker, EventMarker } from "./marker";
+import { mapStore } from "./api";
+import { observer } from "mobx-react-lite";
 
 import "mapbox-gl/dist/mapbox-gl.css";
 
@@ -19,12 +20,16 @@ export namespace Map {
     };
 }
 
-export const Map = ({
+export const Map = observer(({
     points = mockGeoJsonData,
     initialViewState,
 }: Map.Props) => {
-    const api = useMapApi();
-    const { ref, mapStyle, accessToken } = useMapContext();
+    const ref = useRef<MapRef>(null);
+    const { mapStyle, accessToken } = useMapContext();
+
+    useEffect(() => {
+        mapStore.initialize(ref);
+    }, []);
 
     const {
         viewState,
@@ -48,11 +53,11 @@ export const Map = ({
         const [longitude, latitude] = cluster.geometry.coordinates;
         const expansionZoom = supercluster.getClusterExpansionZoom(cluster.id as number);
 
-        api.flyTo([longitude, latitude], {
+        mapStore.flyTo([longitude, latitude], {
             speed: 2,
             zoom: Math.min(expansionZoom, 20),
         });
-    }, [api]);
+    }, [mapStore.mapRef]);
 
     const getClusterSize = useCallback((count: number, zoom: number = 12) => {
         return Math.min(30 + 5 * Math.cbrt(count) * (1 + (20 - zoom) / 10), 80);
@@ -106,11 +111,11 @@ export const Map = ({
                             longitude={longitude}
                             latitude={latitude}
                         >
-                            <EventMarker />
+                            <EventMarker point={[longitude, latitude]} />
                         </Marker>
                     );
                 })
             }
         </MapboxGLMap>
     );
-};
+});

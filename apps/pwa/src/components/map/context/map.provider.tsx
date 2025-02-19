@@ -1,8 +1,7 @@
 "use client";
 
 import { MapContext } from "./map.context";
-import { ReactNode, useRef } from "react";
-import { MapRef } from "react-map-gl/mapbox";
+import { ReactNode } from "react";
 
 export namespace MapProvider {
     export type Props = {
@@ -17,12 +16,9 @@ export const MapProvider = ({
     mapStyle,
     accessToken,
 }: MapProvider.Props) => {
-    const ref = useRef<MapRef>(null);
-
     return (
         <MapContext.Provider
             value={{
-                ref,
                 mapStyle,
                 accessToken,
             }}
