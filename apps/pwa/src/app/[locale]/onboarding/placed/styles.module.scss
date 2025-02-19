@@ -1,0 +1,8 @@
+@use "@/theme/mixins";
+
+.page {
+    height: 100%;
+    &__input {
+        margin-top: mixins.rem(32);
+    }
+}

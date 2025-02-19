@@ -1,0 +1,5 @@
+@use "@/theme/mixins";
+
+.container {
+    margin-top: mixins.rem(18);
+}
