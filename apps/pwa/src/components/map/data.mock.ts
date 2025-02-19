@@ -1,6 +1,6 @@
 import Supercluster from "supercluster";
 
-export const mockGeoJsonData: Supercluster.PointFeature<any>[] = [
+export const mockGeoJsonData: Supercluster.PointFeature<unknown>[] = [
     {
         type: "Feature",
         properties: {

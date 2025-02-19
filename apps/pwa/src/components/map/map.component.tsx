@@ -6,6 +6,7 @@ import Supercluster from "supercluster";
 import { useMapContext } from "./context";
 import { useMapApi } from "@/components/map/api";
 import { useMapbox, useMapCluster } from "./hooks";
+import { ClusterMarker, EventMarker } from "./marker";
 
 import "mapbox-gl/dist/mapbox-gl.css";
 
@@ -13,7 +14,7 @@ import { mockGeoJsonData } from "./data.mock";
 
 export namespace Map {
     export type Props = {
-        points?: Supercluster.PointFeature<any>[]
+        points?: Supercluster.PointFeature<unknown>[]
         initialViewState?: Partial<ViewState>
     };
 }
@@ -41,7 +42,7 @@ export const Map = ({
         viewState.zoom || 0,
     );
 
-    const handleZoomToCluster = useCallback((cluster: Supercluster.PointFeature<any>) => {
+    const handleZoomToCluster = useCallback((cluster: Supercluster.PointFeature<unknown>) => {
         if(!supercluster) return;
 
         const [longitude, latitude] = cluster.geometry.coordinates;
@@ -52,6 +53,10 @@ export const Map = ({
             zoom: Math.min(expansionZoom, 20),
         });
     }, [api]);
+
+    const getClusterSize = useCallback((count: number, zoom: number = 12) => {
+        return Math.min(30 + 5 * Math.cbrt(count) * (1 + (20 - zoom) / 10), 80);
+    }, []);
 
     return (
         <MapboxGLMap
@@ -76,6 +81,7 @@ export const Map = ({
 
                     const isCluster = cluster.properties?.cluster;
                     const pointCount = cluster.properties?.point_count || 0;
+                    const clusterSize = getClusterSize(pointCount, viewState.zoom);
 
                     if(isCluster) {
                         return (
@@ -85,19 +91,11 @@ export const Map = ({
                                 longitude={longitude}
                                 onClick={() => handleZoomToCluster(cluster)}
                             >
-                                <div
-                                    style={{
-                                        width: `${10 + (pointCount / points.length) * 35}px`,
-                                        height: `${10 + (pointCount / points.length) * 35}px`,
-                                        display: "flex",
-                                        alignItems: "center",
-                                        justifyContent: "center",
-                                        backgroundColor: "red",
-                                        borderRadius: "50%",
-                                    }}
+                                <ClusterMarker
+                                    size={clusterSize}
                                 >
                                     { pointCount }
-                                </div>
+                                </ClusterMarker>
                             </Marker>
                         );
                     }
@@ -107,7 +105,9 @@ export const Map = ({
                             key={`marker-${cluster.properties?.id}`}
                             longitude={longitude}
                             latitude={latitude}
-                        />
+                        >
+                            <EventMarker />
+                        </Marker>
                     );
                 })
             }
