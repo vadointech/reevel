@@ -1,3 +1,4 @@
+import { ReactScan } from "@/lib/react-scan";
 import { type Metadata } from "next";
 import { PropsWithChildren } from "react";
 import { Providers } from "@/app/[locale]/providers";
@@ -28,6 +29,9 @@ export default async function RootLayout({ children, params }: PropsWithChildren
 
     return (
         <html lang={locale}>
+            <head>
+                <ReactScan />
+            </head>
             <body className={fonts}>
                 <SessionProvider session={session}>
                     <Providers intlConfig={{ messages, locale }}>

@@ -12,17 +12,25 @@
     "classnames": "^2.5.1",
     "embla-carousel": "^8.5.2",
     "embla-carousel-react": "^8.5.2",
+    "mapbox-gl": "^3.10.0",
+    "mobx": "^6.13.6",
+    "mobx-react-lite": "^4.1.0",
     "next": "15.1.6",
     "next-intl": "^3.26.3",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
+    "react-map-gl": "^8.0.1",
+    "supercluster": "^8.0.1",
+    "use-supercluster": "^1.2.0",
     "vaul": "^1.1.2"
   },
   "devDependencies": {
     "@repo/eslint-config": "workspace:*",
+    "@types/mapbox-gl": "^3.4.1",
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",
+    "@types/supercluster": "^7.1.3",
     "sass": "^1.83.4",
     "typescript": "^5"
   }

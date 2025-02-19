@@ -1,0 +1,41 @@
+import { ComponentProps } from "react";
+import styles from "./styles.module.scss";
+import cx from "classnames";
+export namespace ClusterMarker {
+    export type Props = ComponentProps<"div"> & {
+        size: number;
+    };
+}
+
+export const ClusterMarker = ({
+    className,
+    style,
+    size,
+    children,
+    ...props
+}: ClusterMarker.Props) => {
+    return (
+        <div
+            className={cx(
+                styles.cluster,
+                className,
+            )}
+            style={{
+                ...style,
+                width: size,
+                height: size,
+            }}
+            {...props}
+        >
+            <span
+                className={styles.cluster__text}
+                style={{
+                    height: Math.max(size / 3.2, 12),
+                    fontSize: Math.max(size / 2.4, 14),
+                }}
+            >
+                { children }
+            </span>
+        </div>
+    );
+};
