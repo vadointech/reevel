@@ -17,7 +17,7 @@ export default function Page() {
         <Container>
             <PillButton
                 name={'Art'}
-                variant="default"
+                variant="primary"
                 icon={'🎧'}
                 selected={isSelected}
                 onChange={handleChange}
