@@ -15,7 +15,6 @@ export default function Page() {
           stepCount={4}
           currentStep={3}
           type="back"
-          invertedLeftControl
         />
       </Container>
 

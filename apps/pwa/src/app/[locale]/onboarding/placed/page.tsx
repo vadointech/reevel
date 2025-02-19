@@ -33,6 +33,7 @@ export default function Page() {
                 <Input variant="rounded" placeholder="Search events" background="muted" icon={<Search />} />
             </Container>
             <Container>
+                {/* Назва так собі,якщо придумаєш норм. То напишеш як назвати */}
                 <PlacesList locations={locations} />
             </Container>
         </div>

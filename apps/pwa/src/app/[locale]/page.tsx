@@ -3,7 +3,6 @@ import { Drawer, DrawerBody, DrawerContent, DrawerTrigger } from "@/components/s
 
 export default function Home() {
 
-    const t = useTranslations();
 
     return (
         <div>
@@ -16,7 +15,7 @@ export default function Home() {
                         tabs
                     </div>
                     <DrawerContent>
-                        Next.js | {t("Index.title")}
+                        tests
                     </DrawerContent>
                 </DrawerBody>
             </Drawer>
