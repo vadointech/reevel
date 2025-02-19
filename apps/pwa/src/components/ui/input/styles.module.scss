@@ -58,7 +58,7 @@
       transform: translateY(-50%);
       font-size: 18px;
       svg path {
-        fill: colors.$secondary-muted;
+        stroke:colors.$secondary-muted;
       }
     }
 

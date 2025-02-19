@@ -6,6 +6,7 @@ import styles from "./styles.module.scss";
 import { ProgressBar } from "@/components/shared";
 import { Back } from "@/components/icons";
 import { PlacesList } from "../_components/places-list";
+import { Search } from "@/components/icons/search";
 
 export default function Page() {
 
@@ -29,7 +30,7 @@ export default function Page() {
                 />
             </Container>
             <Container className={styles.page__input}>
-                <Input variant="rounded" placeholder="Search events" background="muted" icon={<Back />} />
+                <Input variant="rounded" placeholder="Search events" background="muted" icon={<Search />} />
             </Container>
             <Container>
                 <PlacesList locations={locations} />
