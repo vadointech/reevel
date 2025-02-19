@@ -1,5 +1,6 @@
 @use "@/theme/mixins";
 
-.container {
-    margin-top: mixins.rem(18);
+.container > :first-child {
+    // padding-bottom: mixins.rem(14);
+    // padding-top: mixins.rem(18);
 }

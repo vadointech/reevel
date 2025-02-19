@@ -1,8 +1,17 @@
 @use "@/theme/mixins";
 
 .page {
+    display: flex;
+    flex-direction: column;
     height: 100%;
+
     &__input {
-        margin-top: mixins.rem(32);
+        padding-top: mixins.rem(32);
+        padding-bottom: mixins.rem(18);
+    }
+
+    &__places {
+        overflow-y: scroll;       
+        @include mixins.no-scrollbar; 
     }
 }

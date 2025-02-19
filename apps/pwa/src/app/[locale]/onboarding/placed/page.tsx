@@ -14,6 +14,19 @@ export default function Page() {
         { city: "Vinn", country: "Vinnitsa, Ukraine" },
         { city: "Palo Alto", country: "8502 Preston Rd. Ingl..." },
         { city: "Bershad’", country: "Vinnitsa, Ukraine" },
+        { city: "Vinn", country: "Vinnitsa, Ukraine" },
+        { city: "Palo Alto", country: "8502 Preston Rd. Ingl..." },
+        { city: "Bershad’", country: "Vinnitsa, Ukraine" },
+        { city: "Vinn", country: "Vinnitsa, Ukraine" },
+        { city: "Palo Alto", country: "8502 Preston Rd. Ingl..." },
+        { city: "Bershad’", country: "Vinnitsa, Ukraine" },
+        { city: "Vinn", country: "Vinnitsa, Ukraine" },
+        { city: "Palo Alto", country: "8502 Preston Rd. Ingl..." },
+        { city: "Bershad’", country: "Vinnitsa, Ukraine" },
+        { city: "Bershad’", country: "Vinnitsa, Ukraine" },
+        { city: "Vinn", country: "Vinnitsa, Ukraine" },
+        { city: "Palo Alto", country: "8502 Preston Rd. Ingl..." },
+        { city: "Bershad’", country: "Vinnitsa, Ukraine" },
     ];
 
 
@@ -29,10 +42,12 @@ export default function Page() {
                     type="shortBack"
                 />
             </Container>
+
             <Container className={styles.page__input}>
                 <Input variant="rounded" placeholder="Search events" background="muted" icon={<Search />} />
             </Container>
-            <Container>
+
+            <Container className={styles.page__places}>
                 {/* Назва так собі,якщо придумаєш норм. То напишеш як назвати */}
                 <PlacesList locations={locations} />
             </Container>
