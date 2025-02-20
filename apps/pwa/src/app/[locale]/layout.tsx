@@ -5,10 +5,11 @@ import { Providers } from "@/app/[locale]/providers";
 import { type ParamsWithLocale } from "@/types/common";
 import { getMessages, setRequestLocale } from "next-intl/server";
 import { fonts } from "@/fonts.config";
-import "../globals.scss";
 import { locales } from "@/i18n/locales";
-import { SessionProvider } from "@/modules/session/client";
 import { GetSession } from "@/api/auth/get-session";
+import { SessionProvider } from "@/providers/session";
+
+import "../globals.scss";
 
 export const metadata: Metadata = {
     title: "Create Next App",
