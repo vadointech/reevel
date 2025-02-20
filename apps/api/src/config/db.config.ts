@@ -15,7 +15,7 @@ const masterConnectionProvider: Provider = {
         database: configService.env("DB_NAME"),
         entities: [__dirname + "../../**/*.entity.{js,ts}"],
         synchronize: true,
-        logging: true,
+        logging: false,
         ssl: {
             rejectUnauthorized: false,
         },

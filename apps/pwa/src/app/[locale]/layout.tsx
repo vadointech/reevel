@@ -5,8 +5,11 @@ import { Providers } from "@/app/[locale]/providers";
 import { type ParamsWithLocale } from "@/types/common";
 import { getMessages, setRequestLocale } from "next-intl/server";
 import { fonts } from "@/fonts.config";
-import "../globals.scss";
 import { locales } from "@/i18n/locales";
+import { GetSession } from "@/api/auth/get-session";
+import { SessionProvider } from "@/providers/session";
+
+import "../globals.scss";
 
 export const metadata: Metadata = {
     title: "Create Next App",
@@ -23,15 +26,19 @@ export default async function RootLayout({ children, params }: PropsWithChildren
     setRequestLocale(locale);
     const messages = await getMessages();
 
+    const { data: session } = await GetSession.query(null);
+
     return (
         <html lang={locale}>
             <head>
                 <ReactScan />
             </head>
             <body className={fonts}>
-                <Providers intlConfig={{ messages, locale }}>
-                    { children }
-                </Providers>
+                <SessionProvider session={session}>
+                    <Providers intlConfig={{ messages, locale }}>
+                        { children }
+                    </Providers>
+                </SessionProvider>
             </body>
         </html>
     );

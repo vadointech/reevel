@@ -1,5 +1,8 @@
+"use client";
+
 import { useTranslations } from "next-intl";
 import { Drawer, DrawerBody, DrawerContent, DrawerTrigger } from "@/components/shared/drawer";
+import { sessionStore } from "@/stores/session.store";
 
 export default function Home() {
 
@@ -9,7 +12,8 @@ export default function Home() {
         <div>
             <Drawer>
                 <DrawerTrigger>
-                    Drawer here
+                    Drawer here  <br />
+                    Session: { sessionStore.user?.id } { sessionStore.user?.email }
                 </DrawerTrigger>
                 <DrawerBody>
                     <div>

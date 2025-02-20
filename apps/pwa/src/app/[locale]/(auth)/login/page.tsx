@@ -3,10 +3,11 @@ import { Button, Container, Hint, Title } from "@/components/ui";
 import { IconApple, IconGoogle } from "@/components/icons";
 
 import styles from "./styles.module.scss";
+import { GetGoogleOAuthLink } from "@/api/auth/get-google-oauth-link";
 
 export default async function Home() {
 
-    const _t = "";
+    const { data } = await GetGoogleOAuthLink.action(null);
 
     return (
         <div className={styles.page}>
@@ -36,6 +37,7 @@ export default async function Home() {
                         variant="default"
                         iconColor={"initial"}
                         iconBefore={<IconGoogle />}
+                        href={data?.link}
                     >
                         Sign in with Google
                     </Button>

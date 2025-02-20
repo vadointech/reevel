@@ -5,6 +5,11 @@ const environmentVariables = [
     // Application
     "PORT",
     "MODE",
+    "DOMAIN",
+
+    // CORS
+    "API_PUBLIC_URL",
+    "PWA_PUBLIC_URL",
 
     // Database
     "DB_HOST",
@@ -13,6 +18,9 @@ const environmentVariables = [
     "DB_PASSWORD",
     "DB_NAME",
 
+    // Providers
+    "GOOGLE_CLIENT_ID",
+    "GOOGLE_CLIENT_SECRET",
 ] as const;
 
 @Injectable()
@@ -34,7 +42,6 @@ export class ConfigService {
     private ensureValues() {
         environmentVariables.forEach(item => {
             const value = process.env[item];
-            console.log(value);
             if(!value) throw new Error(`Config error: missing env.${item}`);
         });
     }
