@@ -15,8 +15,9 @@ export class AuthController {
 
     @Public()
     @Get("/google")
-    getGoogleOAuthUlr() {
-        return this.authService.getGoogleOAuthLink();
+    async getGoogleOAuthUlr() {
+        const link = await this.authService.getGoogleOAuthLink();
+        return { link };
     }
 
     @Public()
