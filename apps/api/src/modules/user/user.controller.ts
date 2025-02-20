@@ -3,7 +3,7 @@ import { UserService } from "./user.service";
 import { Session } from "@/decorators";
 import { ServerSession } from "@/modules/auth/dto/jwt.dto";
 
-@Controller("user")
+@Controller("users")
 export class UserController {
     constructor(
         private readonly userService: UserService,
