@@ -12,8 +12,9 @@ export class SessionStore {
         });
     }
 
-    init(user: Maybe<UserEntity>): void {
+    init(user: Maybe<UserEntity>): Maybe<UserEntity> {
         this.user = user;
+        return this.user;
     }
 
     updateSession(user: Partial<UserEntity>): UserEntity | null {
