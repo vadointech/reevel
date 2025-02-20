@@ -7,8 +7,8 @@ import { getMessages, setRequestLocale } from "next-intl/server";
 import { fonts } from "@/fonts.config";
 import "../globals.scss";
 import { locales } from "@/i18n/locales";
-import { getSession } from "@/modules/auth/session/get-session";
-import { SessionProvider } from "@/modules/auth/session/client";
+import { SessionProvider } from "@/modules/session/client";
+import { GetSession } from "@/api/auth/get-session";
 
 export const metadata: Metadata = {
     title: "Create Next App",
@@ -25,7 +25,7 @@ export default async function RootLayout({ children, params }: PropsWithChildren
     setRequestLocale(locale);
     const messages = await getMessages();
 
-    const session = await getSession();
+    const { data: session } = await GetSession.query(null);
 
     return (
         <html lang={locale}>

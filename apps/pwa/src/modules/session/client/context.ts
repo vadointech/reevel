@@ -1,9 +1,9 @@
 "use client";
 
 import { createContext, Dispatch, SetStateAction } from "react";
-import { ClientSession } from "@/types/session";
+import { GetSession } from "@/api/auth/get-session";
 
-export type SessionContextValue<Session = ClientSession | null> = {
+export type SessionContextValue<Session = Maybe<GetSession.TOutput>> = {
     session: Session;
     setSession: Dispatch<SetStateAction<Session>>;
 };
