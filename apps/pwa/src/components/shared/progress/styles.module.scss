@@ -37,15 +37,4 @@
         stroke: colors.$secondary;
         fill: colors.$secondary;
     }
-
-    &__white {
-        svg path {
-            stroke: colors.$primary;
-            fill: colors.$primary;
-        }
-    }
-}
-
-.text {
-    @include fonts.font-creata('lg',500);
 }

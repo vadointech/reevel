@@ -6,7 +6,6 @@ import styles from "./styles.module.scss";
 
 export namespace ProgressBar {
     export type Type = "back" | "close" | 'shortBack';
-    export type Mode = "default" | "text";
 
     export type Props = ComponentProps<"div"> & {
         stepCount: number;
@@ -14,7 +13,6 @@ export namespace ProgressBar {
         controlLeft?: ReactNode;
         controlRight?: ReactNode;
         type?: Type;
-        mode?: Mode;
         text?: string;
     };
 }
@@ -26,8 +24,6 @@ export const ProgressBar = ({
     controlLeft,
     controlRight = "Skip",
     type = "back",
-    mode = "default",
-    text,
 }: ProgressBar.Props) => {
 
     const ControlLeftView: Record<ProgressBar.Type, ReactNode> = {
@@ -36,8 +32,14 @@ export const ProgressBar = ({
         shortBack: <Back width={10} height={19} strokeWidth={0.3} />,
     };
 
-    const ModeView: Record<ProgressBar.Mode, ReactNode> = {
-        default: (
+    return (
+        <div className={cx(styles.progress, className)}>
+            <div className={cx(styles.controls)}>
+
+                {controlLeft ?? ControlLeftView[type]}
+
+            </div>
+
             <div className={styles.indicator}>
                 {new Array(stepCount).fill(null).map((_, i) => (
                     <div
@@ -49,26 +51,9 @@ export const ProgressBar = ({
                     />
                 ))}
             </div>
-        ),
-
-        text: <div className={styles.text}>{text}</div>,
-    };
-
-    return (
-        <div className={cx(styles.progress, className)}>
-            <div className={cx(
-                styles.controls,
-                mode == 'text' && styles.controls__white
-            )}>
-
-                {controlLeft ?? ControlLeftView[type]}
-
-            </div>
-
-            {ModeView[mode]}
 
             <div className={styles.controls}>
-                {mode === "default" && controlRight}
+                {controlRight}
             </div>
         </div>
     );

@@ -4,9 +4,10 @@ import { Container, Input } from "@/components/ui";
 import { Place } from "../_components/place";
 import styles from "./styles.module.scss";
 import { ProgressBar } from "@/components/shared";
-import { Back } from "@/components/icons";
+import { Back, IconClose } from "@/components/icons";
 import { Search } from "@/components/icons/search";
 import { LocationList } from "../_components/location-list";
+import { Header } from "@/components/shared/header";
 
 export default function Page() {
 
@@ -34,13 +35,10 @@ export default function Page() {
     return (
         <div className={styles.page}>
             <Container>
-                <ProgressBar
-                    stepCount={4}
-                    currentStep={0}
-                    text={'Enter your location'}
-                    mode="text"
-                    type="shortBack"
-                />
+                <Header
+                    title="Enter your location" size="large"
+                    controlRight={<IconClose width={8} height={8} />}
+                    controlRightType="button" />
             </Container>
 
             <Container className={styles.page__input}>
@@ -48,7 +46,6 @@ export default function Page() {
             </Container>
 
             <Container className={styles.page__places}>
-                {/* Назва так собі,якщо придумаєш норм. То напишеш як назвати */}
                 <LocationList locations={locations} />
             </Container>
         </div>
