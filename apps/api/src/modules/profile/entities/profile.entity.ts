@@ -7,17 +7,17 @@ export class ProfileEntity {
     @PrimaryGeneratedColumn("uuid")
     id: string;
 
-    @Column()
-    fullName: string;
+    @Column({ nullable: true })
+    fullName?: string;
 
-    @Column()
-    bio: string;
+    @Column({ nullable: true })
+    bio?: string;
 
-    @Column()
+    @Column({ nullable: true })
     picture?: string;
 
-    @Column("geometry", { spatialFeatureType: "Point", srid: 4326 })
-    location: string;
+    @Column("geometry", { nullable: true, spatialFeatureType: "Point", srid: 4326 })
+    location?: string;
 
     @Column()
     userId: string;

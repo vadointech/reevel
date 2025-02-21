@@ -1,6 +1,7 @@
 import { BadRequestException, Injectable, NotFoundException } from "@nestjs/common";
 import { InjectGoogleOAuthService } from "@/decorators";
 import { UserService } from "@/modules/user/user.service";
+import { ProfileService } from "@/modules/profile/profile.service";
 import { GoogleOAuthService } from "@/modules/google/services/oauth.service";
 import { JwtStrategy } from "./strategies/jwt.strategy";
 import { JwtSession } from "./dto/jwt.dto";
@@ -10,6 +11,7 @@ import { GoogleOAuthUserInfo } from "./dto/auth.dto";
 export class AuthService {
     constructor(
         private readonly userService: UserService,
+        private readonly profileService: ProfileService,
         private readonly jwtStrategy: JwtStrategy,
         @InjectGoogleOAuthService("/auth/google/redirect")
         private readonly googleOAuthService: GoogleOAuthService,
@@ -34,18 +36,27 @@ export class AuthService {
 
         return {
             email: user.email,
-        };
+            name: user.name,
+            picture: user.picture,
+        } as GoogleOAuthUserInfo;
     }
 
-    async authWithGoogle(email: string): Promise<JwtSession> {
-        const dbUser = await this.userService.getByEmail(email);
+    async authWithGoogle(oauthUser: GoogleOAuthUserInfo): Promise<JwtSession> {
+        const dbUser = await this.userService.getByEmail(oauthUser.email);
 
-        if(dbUser) return this.loginUser(email);
-        return this.registerUser(email);
+        if(dbUser) return this.loginUser(oauthUser.email);
+        return this.registerUser(oauthUser);
     }
 
-    async registerUser(email: string): Promise<JwtSession> {
-        const user = await this.userService.createUser({ email });
+    async registerUser(oauthUser: GoogleOAuthUserInfo): Promise<JwtSession> {
+        const user = await this.userService.createUser({ email: oauthUser.email });
+
+        await this.profileService.createProfile({
+            userId: user.id,
+            picture: oauthUser.picture,
+            fullName: oauthUser.name,
+        });
+
         return this.jwtStrategy.generateSession(user);
     }
 

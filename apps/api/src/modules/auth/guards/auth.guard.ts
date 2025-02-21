@@ -93,8 +93,6 @@ export class AuthGuard implements CanActivate {
         const request = context.switchToHttp().getRequest();
         const response = context.switchToHttp().getResponse();
 
-        console.log(request.headers);
-
         try {
             const hasAccess = await this.checkUserAccess(request);
 
