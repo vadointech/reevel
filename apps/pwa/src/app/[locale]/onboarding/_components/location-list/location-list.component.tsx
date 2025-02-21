@@ -4,13 +4,13 @@ import styles from "./styles.module.scss";
 import { Place } from "../place/place.component";
 
 
-export namespace PlacesList {
+export namespace LocationList {
     export type Props = ComponentProps<"div"> & {
         locations: { city: string, country: string }[];
     };
 }
 
-export const PlacesList = ({ locations, ...props }: PlacesList.Props) => {
+export const LocationList = ({ locations, ...props }: LocationList.Props) => {
 
     return (
         <div className={styles.container}>

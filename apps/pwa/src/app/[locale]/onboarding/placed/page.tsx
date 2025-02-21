@@ -5,8 +5,8 @@ import { Place } from "../_components/place";
 import styles from "./styles.module.scss";
 import { ProgressBar } from "@/components/shared";
 import { Back } from "@/components/icons";
-import { PlacesList } from "../_components/places-list";
 import { Search } from "@/components/icons/search";
+import { LocationList } from "../_components/location-list";
 
 export default function Page() {
 
@@ -49,7 +49,7 @@ export default function Page() {
 
             <Container className={styles.page__places}>
                 {/* Назва так собі,якщо придумаєш норм. То напишеш як назвати */}
-                <PlacesList locations={locations} />
+                <LocationList locations={locations} />
             </Container>
         </div>
     );
