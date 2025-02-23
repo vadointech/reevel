@@ -788,6 +788,15 @@
         "secondaryColor": "#7A6F8D"
       },
       {
+        "name_en": "Music Listening",
+        "name_ua": "Прослуховування музики",
+        "category": "Music & Performing Arts",
+        "related_to": ["Music Production", "Singing", "Karaoke", "Virtual Concerts"],
+        "icon": "🎧",
+        "primaryColor": "#3F4A6F",
+        "secondaryColor": "#6F7A9F"
+      },
+      {
         "name_en": "Esports",
         "name_ua": "Кіберспорт",
         "related_to": ["Video Gaming", "Streaming"],
@@ -3190,6 +3199,15 @@
         "icon": "🌜",
         "primaryColor": "#3F4A6F",
         "secondaryColor": "#6F7A9F"
+      },
+      {
+        "name_en": "Shopping",
+        "name_ua": "Шопінг",
+        "category": "Everyday Activities",
+        "related_to": ["Thrifting", "Fashion Design", "Budgeting", "Online Shopping"],
+        "icon": "🛍️",
+        "primaryColor": "#5F3F4A",
+        "secondaryColor": "#8F6F7A"
       }
     ]
   }

@@ -57,7 +57,7 @@ export class InterestsSeedService {
                             sourceInterestSlug: sourceSlug,
                             relatedInterestSlug: relationSlug,
                         });
-                        await this.interestRelationsRepository.save(newRelation); // Додаємо await
+                        await this.interestRelationsRepository.save(newRelation);
                     } catch (error) {
                         console.log(`Пропущено зв’язок: ${sourceSlug} -> ${relationSlug}. Помилка: ${error.message}`);
                         continue;
@@ -65,17 +65,6 @@ export class InterestsSeedService {
                 }
             }
         }
-    }
-
-    async getRelated(slug: string) {
-        return this.interestRelationsRepository.find({
-            where: {
-                relatedInterestSlug: slug,
-            },
-            select: {
-                sourceInterestSlug: true,
-            },
-        });
     }
 
     private createSlug(text: string) {
