@@ -1,5 +1,7 @@
-import { Column, Entity, OneToMany, PrimaryColumn } from "typeorm";
+import { Column, Entity, JoinColumn, ManyToOne, OneToMany, OneToOne, PrimaryColumn } from "typeorm";
 import { ProfileInterestsEntity } from "@/modules/profile/entities/profile-interests.entity";
+import { InterestCategoriesEntity } from "./interest-category.entity";
+import { InterestRelationsEntity } from "./interest-relations.entity";
 
 @Entity("interests")
 export class InterestsEntity {
@@ -7,14 +9,32 @@ export class InterestsEntity {
     slug: string;
 
     @Column()
-    title: string;
+    title_en: string;
+
+    @Column()
+    title_uk: string;
 
     @Column()
     icon: string;
 
     @Column()
-    color: string;
+    primaryColor: string;
+
+    @Column()
+    secondaryColor: string;
+
+    @Column()
+    categoryId: string;
+    @JoinColumn({ name: "categoryId" })
+    @ManyToOne(() => InterestCategoriesEntity, (category) => category.interests, { onDelete: "CASCADE" })
+    category: InterestCategoriesEntity;
+
+    @OneToMany(() => InterestRelationsEntity, relation => relation.sourceInterestSlug)
+    sourceRelations: InterestRelationsEntity[];
+
+    @OneToMany(() => InterestRelationsEntity, relation => relation.relatedInterestSlug)
+    relatedRelations: InterestRelationsEntity[];
 
     @OneToMany(() => ProfileInterestsEntity, interests => interests.interest)
-    profiles: ProfileInterestsEntity[];
+    profiles?: ProfileInterestsEntity[];
 }

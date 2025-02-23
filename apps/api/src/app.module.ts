@@ -4,6 +4,7 @@ import { ConfigModule } from "@/config/config.module";
 import { TypeOrmModule } from "@nestjs/typeorm";
 import { APP_GUARD } from "@nestjs/core";
 import { AuthGuard } from "@/modules/auth/guards/auth.guard";
+import { SeedModule } from './modules/seed/seed.module';
 
 import modules from "@/modules";
 import dbConfig from "@/config/db.config";
@@ -13,6 +14,7 @@ import dbConfig from "@/config/db.config";
         ...modules,
         ConfigModule,
         TypeOrmModule.forRootAsync(dbConfig.masterConnection.provider),
+        SeedModule,
     ],
     providers: [
         {
