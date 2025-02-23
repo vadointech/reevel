@@ -4,7 +4,7 @@ import { InterestRelationsEntity } from "@/modules/interests/entities/interest-r
 import { Repository } from "typeorm";
 import { InterestCategoriesEntity } from "@/modules/interests/entities/interest-category.entity";
 import { InterestsEntity } from "@/modules/interests/entities/interests.entity";
-import data from "@/modules/seed/data/interests.json";
+import data from "../data/interests.json";
 import slugify from "slugify";
 
 @Injectable()

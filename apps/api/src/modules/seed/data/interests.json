@@ -82,6 +82,46 @@
         "icon": "📷",
         "primaryColor": "#3F4A5A",
         "secondaryColor": "#6F7A8D"
+      },
+      {
+        "name_en": "Digital Painting",
+        "name_ua": "Цифровий живопис",
+        "related_to": ["Painting", "Graphic Design"],
+        "icon": "🖥️",
+        "primaryColor": "#3F5A6F",
+        "secondaryColor": "#6F8DBF"
+      },
+      {
+        "name_en": "Mixed Media Art",
+        "name_ua": "Мистецтво змішаних технік",
+        "related_to": ["Painting", "Sculpting"],
+        "icon": "🖌️",
+        "primaryColor": "#5A4A3F",
+        "secondaryColor": "#8D7A6F"
+      },
+      {
+        "name_en": "Printmaking",
+        "name_ua": "Гравюра",
+        "related_to": ["Drawing", "Illustration"],
+        "icon": "🖼️",
+        "primaryColor": "#4A3F5A",
+        "secondaryColor": "#7A6F8D"
+      },
+      {
+        "name_en": "Glass Blowing",
+        "name_ua": "Склодувство",
+        "related_to": ["Sculpting", "Ceramics"],
+        "icon": "🔮",
+        "primaryColor": "#6F4A3F",
+        "secondaryColor": "#9F7A6F"
+      },
+      {
+        "name_en": "Collage Making",
+        "name_ua": "Створення колажів",
+        "related_to": ["Mixed Media Art", "Photography"],
+        "icon": "✂️",
+        "primaryColor": "#3F5A4F",
+        "secondaryColor": "#6F8D7F"
       }
     ]
   },
@@ -168,6 +208,46 @@
         "icon": "💪",
         "primaryColor": "#4F3A5A",
         "secondaryColor": "#7F6A8D"
+      },
+      {
+        "name_en": "Pilates",
+        "name_ua": "Пілатес",
+        "related_to": ["Yoga", "Fitness Training"],
+        "icon": "🧘‍♀️",
+        "primaryColor": "#4A3F5F",
+        "secondaryColor": "#7A6F9F"
+      },
+      {
+        "name_en": "Rowing",
+        "name_ua": "Веслування",
+        "related_to": ["Swimming", "Boating"],
+        "icon": "🚣",
+        "primaryColor": "#3A5F7F",
+        "secondaryColor": "#7A9FCF"
+      },
+      {
+        "name_en": "Triathlon",
+        "name_ua": "Тріатлон",
+        "related_to": ["Running", "Cycling", "Swimming"],
+        "icon": "🏊‍♂️",
+        "primaryColor": "#5A4F3F",
+        "secondaryColor": "#8D7F6F"
+      },
+      {
+        "name_en": "Kickboxing",
+        "name_ua": "Кікбоксинг",
+        "related_to": ["Boxing", "Martial Arts"],
+        "icon": "🥋",
+        "primaryColor": "#6F3F4A",
+        "secondaryColor": "#9F6F7A"
+      },
+      {
+        "name_en": "Weightlifting",
+        "name_ua": "Важка атлетика",
+        "related_to": ["Fitness Training", "Bodybuilding"],
+        "icon": "🏋️‍♂️",
+        "primaryColor": "#4F5A3F",
+        "secondaryColor": "#7F8D6F"
       }
     ]
   },
@@ -254,6 +334,46 @@
         "icon": "🦜",
         "primaryColor": "#4A5F3A",
         "secondaryColor": "#7A9F6F"
+      },
+      {
+        "name_en": "Caving",
+        "name_ua": "Спелеологія",
+        "related_to": ["Rock Climbing", "Adventure Travel"],
+        "icon": "🕳️",
+        "primaryColor": "#5A4F3F",
+        "secondaryColor": "#8D7F6F"
+      },
+      {
+        "name_en": "Kayaking",
+        "name_ua": "Катання на каяках",
+        "related_to": ["Boating", "Fishing"],
+        "icon": "🛶",
+        "primaryColor": "#3A5F7F",
+        "secondaryColor": "#7A9FCF"
+      },
+      {
+        "name_en": "Geocaching",
+        "name_ua": "Геокешинг",
+        "related_to": ["Hiking", "Adventure Travel"],
+        "icon": "🗺️",
+        "primaryColor": "#4A5F3A",
+        "secondaryColor": "#7A9F6F"
+      },
+      {
+        "name_en": "Stargazing",
+        "name_ua": "Спостереження за зірками",
+        "related_to": ["Astronomy", "Camping"],
+        "icon": "🌠",
+        "primaryColor": "#0A192F",
+        "secondaryColor": "#23395D"
+      },
+      {
+        "name_en": "Orienteering",
+        "name_ua": "Орієнтування",
+        "related_to": ["Hiking", "Geocaching"],
+        "icon": "🧭",
+        "primaryColor": "#3F5A4F",
+        "secondaryColor": "#6F8D7F"
       }
     ]
   },
@@ -934,8 +1054,8 @@
         "secondaryColor": "#7F6A9F"
       },
       {
-        "name_en": "Makeup Artistry",
-        "name_ua": "Мистецтво макіяжу",
+        "name_en": "Makeup",
+        "name_ua": "Макіяж",
         "related_to": ["Beauty Blogging", "Cosmetology"],
         "icon": "💄",
         "primaryColor": "#5F3F4A",
@@ -944,7 +1064,7 @@
       {
         "name_en": "Beauty Blogging",
         "name_ua": "Блогінг про красу",
-        "related_to": ["Makeup Artistry", "Vlogging"],
+        "related_to": ["Makeup", "Vlogging"],
         "icon": "💅",
         "primaryColor": "#4A3F5F",
         "secondaryColor": "#7A6F9F"
@@ -952,7 +1072,7 @@
       {
         "name_en": "Cosmetology",
         "name_ua": "Косметологія",
-        "related_to": ["Makeup Artistry", "Hair Styling"],
+        "related_to": ["Makeup", "Hair Styling"],
         "icon": "🧴",
         "primaryColor": "#3F5A4F",
         "secondaryColor": "#6F8D7F"
@@ -968,7 +1088,7 @@
       {
         "name_en": "Nail Art",
         "name_ua": "Мистецтво манікюру",
-        "related_to": ["Cosmetology", "Makeup Artistry"],
+        "related_to": ["Cosmetology", "Makeup"],
         "icon": "💅",
         "primaryColor": "#4F5A3F",
         "secondaryColor": "#7F8D6F"
@@ -2028,6 +2148,46 @@
         "icon": "🖨️",
         "primaryColor": "#6F4A3F",
         "secondaryColor": "#9F7A6F"
+      },
+      {
+        "name_en": "Wearable Tech",
+        "name_ua": "Носима технологія",
+        "related_to": ["Gadget Collecting", "Fitness Training"],
+        "icon": "⌚",
+        "primaryColor": "#3F4A5F",
+        "secondaryColor": "#6F7A8D"
+      },
+      {
+        "name_en": "Blockchain",
+        "name_ua": "Блокчейн",
+        "related_to": ["Programming", "Cryptocurrency"],
+        "icon": "🔗",
+        "primaryColor": "#4A5F3A",
+        "secondaryColor": "#7A9F6F"
+      },
+      {
+        "name_en": "Cryptocurrency",
+        "name_ua": "Криптовалюта",
+        "related_to": ["Blockchain", "Investing"],
+        "icon": "₿",
+        "primaryColor": "#5A4F3F",
+        "secondaryColor": "#8D7F6F"
+      },
+      {
+        "name_en": "IoT Development",
+        "name_ua": "Розробка Інтернету речей",
+        "related_to": ["Home Automation", "Programming"],
+        "icon": "🌐",
+        "primaryColor": "#3F5A4F",
+        "secondaryColor": "#6F8D7F"
+      },
+      {
+        "name_en": "Smartphone Photography",
+        "name_ua": "Фотографія на смартфон",
+        "related_to": ["Photography", "Gadget Collecting"],
+        "icon": "📸",
+        "primaryColor": "#4F3A5F",
+        "secondaryColor": "#7F6A9F"
       }
     ]
   },
@@ -2113,6 +2273,172 @@
         "related_to": ["Team Sports", "Outdoor Activities"],
         "icon": "⛳",
         "primaryColor": "#4A5F3A",
+        "secondaryColor": "#7A9F6F"
+      },
+      {
+        "name_en": "Volleyball",
+        "name_ua": "Волейбол",
+        "related_to": ["Team Sports", "Beach Volleyball"],
+        "icon": "🏐",
+        "primaryColor": "#3F5A4F",
+        "secondaryColor": "#6F8D7F"
+      },
+      {
+        "name_en": "Beach Volleyball",
+        "name_ua": "Пляжний волейбол",
+        "related_to": ["Volleyball", "Outdoor Activities"],
+        "icon": "🏝️",
+        "primaryColor": "#4A5F7F",
+        "secondaryColor": "#7A9FBF"
+      },
+      {
+        "name_en": "Table Tennis",
+        "name_ua": "Настільний теніс",
+        "related_to": ["Tennis", "Competitive Sports"],
+        "icon": "🏓",
+        "primaryColor": "#5A3F4F",
+        "secondaryColor": "#8D6F7F"
+      },
+      {
+        "name_en": "Rugby",
+        "name_ua": "Регбі",
+        "related_to": ["Team Sports", "Wrestling"],
+        "icon": "🏉",
+        "primaryColor": "#6F4A3F",
+        "secondaryColor": "#9F7A6F"
+      },
+      {
+        "name_en": "Handball",
+        "name_ua": "Гандбол",
+        "related_to": ["Team Sports", "Basketball"],
+        "icon": "🤾",
+        "primaryColor": "#4A5F3F",
+        "secondaryColor": "#7A9F6F"
+      },
+      {
+        "name_en": "Field Hockey",
+        "name_ua": "Хокей на траві",
+        "related_to": ["Team Sports", "Ice Hockey"],
+        "icon": "🏑",
+        "primaryColor": "#3F5A3A",
+        "secondaryColor": "#6F8D6F"
+      },
+      {
+        "name_en": "Ice Hockey",
+        "name_ua": "Хокей на льоду",
+        "related_to": ["Field Hockey", "Skating"],
+        "icon": "🏒",
+        "primaryColor": "#3A4B5F",
+        "secondaryColor": "#7A8D9C"
+      },
+      {
+        "name_en": "Lacrosse",
+        "name_ua": "Лакрос",
+        "related_to": ["Team Sports", "Field Hockey"],
+        "icon": "🥍",
+        "primaryColor": "#5A4F3F",
+        "secondaryColor": "#8D7F6F"
+      },
+      {
+        "name_en": "Water Polo",
+        "name_ua": "Водне поло",
+        "related_to": ["Swimming", "Team Sports"],
+        "icon": "🏊‍♂️",
+        "primaryColor": "#3A5F7F",
+        "secondaryColor": "#7A9FCF"
+      },
+      {
+        "name_en": "Cricket",
+        "name_ua": "Крикет",
+        "related_to": ["Team Sports", "Golf"],
+        "icon": "🏏",
+        "primaryColor": "#4F5A3F",
+        "secondaryColor": "#7F8D6F"
+      }
+    ]
+  },
+  {
+    "name_en": "Additional Sports",
+    "name_ua": "Додаткові види спорту",
+    "interests": [
+      {
+        "name_en": "Skating",
+        "name_ua": "Катання на ковзанах",
+        "related_to": ["Ice Hockey", "Fitness Training"],
+        "icon": "⛸️",
+        "primaryColor": "#3A4B5F",
+        "secondaryColor": "#7A8D9C"
+      },
+      {
+        "name_en": "Rollerblading",
+        "name_ua": "Катання на роликах",
+        "related_to": ["Skating", "Fitness Training"],
+        "icon": "🛼",
+        "primaryColor": "#4A5F3F",
+        "secondaryColor": "#7A9F6F"
+      },
+      {
+        "name_en": "Synchronized Swimming",
+        "name_ua": "Синхронне плавання",
+        "related_to": ["Swimming", "Dancing"],
+        "icon": "🏊‍♀️",
+        "primaryColor": "#3A5F7F",
+        "secondaryColor": "#7A9FCF"
+      },
+      {
+        "name_en": "Pole Vaulting",
+        "name_ua": "Стрибки з жердиною",
+        "related_to": ["Fitness Training", "Gymnastics"],
+        "icon": "🏃‍♂️",
+        "primaryColor": "#5A4F3F",
+        "secondaryColor": "#8D7F6F"
+      },
+      {
+        "name_en": "Disc Golf",
+        "name_ua": "Диск-гольф",
+        "related_to": ["Golf", "Outdoor Activities"],
+        "icon": "🥏",
+        "primaryColor": "#4F5A3F",
+        "secondaryColor": "#7F8D6F"
+      },
+      {
+        "name_en": "Ultimate Frisbee",
+        "name_ua": "Алтимат фризбі",
+        "related_to": ["Team Sports", "Disc Golf"],
+        "icon": "🥏",
+        "primaryColor": "#3F5A4F",
+        "secondaryColor": "#6F8D7F"
+      },
+      {
+        "name_en": "Judo",
+        "name_ua": "Дзюдо",
+        "related_to": ["Martial Arts", "Self-Defense"],
+        "icon": "🥋",
+        "primaryColor": "#6F4A3F",
+        "secondaryColor": "#9F7A6F"
+      },
+      {
+        "name_en": "Taekwondo",
+        "name_ua": "Тхеквондо",
+        "related_to": ["Martial Arts", "Kickboxing"],
+        "icon": "🥋",
+        "primaryColor": "#5A3F4F",
+        "secondaryColor": "#8D6F7F"
+      },
+      {
+        "name_en": "Bobsleigh",
+        "name_ua": "Бобслей",
+        "related_to": ["Skiing", "Team Sports"],
+        "icon": "🛷",
+        "primaryColor": "#3A4B5F",
+        "secondaryColor": "#7A8D9C"
+      },
+      {
+        "name_en": "Curling",
+        "name_ua": "Керлінг",
+        "related_to": ["Team Sports", "Ice Hockey"],
+        "icon": "🥌",
+        "primaryColor": "#4A5F3F",
         "secondaryColor": "#7A9F6F"
       }
     ]
@@ -2458,6 +2784,412 @@
         "icon": "🕯️",
         "primaryColor": "#4A5F3F",
         "secondaryColor": "#7A9F6F"
+      }
+    ]
+  },
+  {
+    "name_en": "Puzzles & Creative Challenges",
+    "name_ua": "Головоломки та творчі виклики",
+    "interests": [
+      {
+        "name_en": "Rubik’s Cube",
+        "name_ua": "Кубик Рубіка",
+        "related_to": ["Puzzle Solving", "Logic Puzzles"],
+        "icon": "🧊",
+        "primaryColor": "#5A4F3F",
+        "secondaryColor": "#8D7F6F"
+      },
+      {
+        "name_en": "Brain Teasers",
+        "name_ua": "Інтелектуальні задачки",
+        "related_to": ["Riddles", "Critical Thinking"],
+        "icon": "💡",
+        "primaryColor": "#3F4A5F",
+        "secondaryColor": "#6F7A8D"
+      },
+      {
+        "name_en": "Jigsaw Puzzles",
+        "name_ua": "Пазли",
+        "related_to": ["Puzzle Solving", "Collage Making"],
+        "icon": "🧩",
+        "primaryColor": "#4F5A3F",
+        "secondaryColor": "#7F8D6F"
+      },
+      {
+        "name_en": "Mechanical Puzzles",
+        "name_ua": "Механічні головоломки",
+        "related_to": ["Puzzle Solving", "Model Building"],
+        "icon": "🔧",
+        "primaryColor": "#6F4A3F",
+        "secondaryColor": "#9F7A6F"
+      },
+      {
+        "name_en": "Codebreaking",
+        "name_ua": "Розшифрування кодів",
+        "related_to": ["Hacking", "Escape Rooms"],
+        "icon": "🔍",
+        "primaryColor": "#3F5A4F",
+        "secondaryColor": "#6F8D7F"
+      },
+      {
+        "name_en": "Mazes",
+        "name_ua": "Лабіринти",
+        "related_to": ["Puzzle Solving", "Orienteering"],
+        "icon": "🌀",
+        "primaryColor": "#4A3F5F",
+        "secondaryColor": "#7A6F9F"
+      },
+      {
+        "name_en": "Tangrams",
+        "name_ua": "Танграми",
+        "related_to": ["Puzzle Solving", "Origami"],
+        "icon": "🔺",
+        "primaryColor": "#5F3F4A",
+        "secondaryColor": "#8F6F7A"
+      },
+      {
+        "name_en": "Creative Coding",
+        "name_ua": "Творче програмування",
+        "related_to": ["Programming", "Digital Painting"],
+        "icon": "💻",
+        "primaryColor": "#3F4A6F",
+        "secondaryColor": "#6F7A9F"
+      },
+      {
+        "name_en": "Word Games",
+        "name_ua": "Словесні ігри",
+        "related_to": ["Crosswords", "Trivia"],
+        "icon": "📝",
+        "primaryColor": "#4A5F3F",
+        "secondaryColor": "#7A9F6F"
+      },
+      {
+        "name_en": "Optical Illusions",
+        "name_ua": "Оптичні ілюзії",
+        "related_to": ["Brain Teasers", "Graphic Design"],
+        "icon": "👁️",
+        "primaryColor": "#5A4F3F",
+        "secondaryColor": "#8D7F6F"
+      }
+    ]
+  },
+  {
+    "name_en": "Music Instruments",
+    "name_ua": "Музичні інструменти",
+    "interests": [
+      {
+        "name_en": "Piano Playing",
+        "name_ua": "Гра на фортепіано",
+        "related_to": ["Music Production", "Singing"],
+        "icon": "🎹",
+        "primaryColor": "#3F4A5F",
+        "secondaryColor": "#6F7A8D"
+      },
+      {
+        "name_en": "Violin Playing",
+        "name_ua": "Гра на скрипці",
+        "related_to": ["Orchestra", "Music Production"],
+        "icon": "🎻",
+        "primaryColor": "#5A4F3F",
+        "secondaryColor": "#8D7F6F"
+      },
+      {
+        "name_en": "Drumming",
+        "name_ua": "Гра на барабанах",
+        "related_to": ["Music Production", "Beatboxing"],
+        "icon": "🥁",
+        "primaryColor": "#6F4A3F",
+        "secondaryColor": "#9F7A6F"
+      },
+      {
+        "name_en": "Flute Playing",
+        "name_ua": "Гра на флейті",
+        "related_to": ["Orchestra", "Singing"],
+        "icon": "🎶",
+        "primaryColor": "#4A5F3F",
+        "secondaryColor": "#7A9F6F"
+      },
+      {
+        "name_en": "Trumpet Playing",
+        "name_ua": "Гра на трубі",
+        "related_to": ["Orchestra", "Jazz"],
+        "icon": "🎺",
+        "primaryColor": "#5F3F4A",
+        "secondaryColor": "#8F6F7A"
+      },
+      {
+        "name_en": "Ukulele Playing",
+        "name_ua": "Гра на укулеле",
+        "related_to": ["Playing Guitar", "Singing"],
+        "icon": "🎸",
+        "primaryColor": "#3F5A4F",
+        "secondaryColor": "#6F8D7F"
+      },
+      {
+        "name_en": "Harmonica Playing",
+        "name_ua": "Гра на гармоніці",
+        "related_to": ["Blues Music", "Singing"],
+        "icon": "🎷",
+        "primaryColor": "#4F3A5F",
+        "secondaryColor": "#7F6A9F"
+      },
+      {
+        "name_en": "Saxophone Playing",
+        "name_ua": "Гра на саксофоні",
+        "related_to": ["Jazz", "Orchestra"],
+        "icon": "🎷",
+        "primaryColor": "#3F4A6F",
+        "secondaryColor": "#6F7A9F"
+      },
+      {
+        "name_en": "Orchestra",
+        "name_ua": "Оркестр",
+        "related_to": ["Violin Playing", "Trumpet Playing"],
+        "icon": "🎼",
+        "primaryColor": "#5A4F3F",
+        "secondaryColor": "#8D7F6F"
+      },
+      {
+        "name_en": "Blues Music",
+        "name_ua": "Блюзова музика",
+        "related_to": ["Harmonica Playing", "Playing Guitar"],
+        "icon": "🎵",
+        "primaryColor": "#3A5F7F",
+        "secondaryColor": "#7A9FCF"
+      }
+    ]
+  },
+  {
+    "name_en": "Virtual Worlds",
+    "name_ua": "Віртуальні світи",
+    "interests": [
+      {
+        "name_en": "World Building",
+        "name_ua": "Створення світів",
+        "related_to": ["Game Development", "Storytelling"],
+        "icon": "🌍",
+        "primaryColor": "#3F5A4F",
+        "secondaryColor": "#6F8D7F"
+      },
+      {
+        "name_en": "VR Gaming",
+        "name_ua": "Ігри у віртуальній реальності",
+        "related_to": ["Virtual Reality", "Video Gaming"],
+        "icon": "🥽",
+        "primaryColor": "#4F3A5F",
+        "secondaryColor": "#7F6A9F"
+      },
+      {
+        "name_en": "Metaverse Exploration",
+        "name_ua": "Дослідження метавсесвіту",
+        "related_to": ["Virtual Reality", "Socializing"],
+        "icon": "🌐",
+        "primaryColor": "#3F4A6F",
+        "secondaryColor": "#6F7A9F"
+      },
+      {
+        "name_en": "Avatar Creation",
+        "name_ua": "Створення аватарів",
+        "related_to": ["3D Modeling", "Graphic Design"],
+        "icon": "👤",
+        "primaryColor": "#5A4F3F",
+        "secondaryColor": "#8D7F6F"
+      },
+      {
+        "name_en": "Virtual Concerts",
+        "name_ua": "Віртуальні концерти",
+        "related_to": ["Music Production", "Streaming"],
+        "icon": "🎤",
+        "primaryColor": "#4A5F3F",
+        "secondaryColor": "#7A9F6F"
+      },
+      {
+        "name_en": "Digital Real Estate",
+        "name_ua": "Цифрова нерухомість",
+        "related_to": ["Metaverse Exploration", "Investing"],
+        "icon": "🏡",
+        "primaryColor": "#3F5A3A",
+        "secondaryColor": "#6F8D6F"
+      },
+      {
+        "name_en": "VR Fitness",
+        "name_ua": "Фітнес у віртуальній реальності",
+        "related_to": ["VR Gaming", "Fitness Training"],
+        "icon": "💪",
+        "primaryColor": "#5F3F4A",
+        "secondaryColor": "#8F6F7A"
+      },
+      {
+        "name_en": "Virtual Tourism",
+        "name_ua": "Віртуальний туризм",
+        "related_to": ["Traveling", "Metaverse Exploration"],
+        "icon": "✈️",
+        "primaryColor": "#3A5F7F",
+        "secondaryColor": "#7A9FCF"
+      },
+      {
+        "name_en": "Online Role-Playing",
+        "name_ua": "Онлайн рольові ігри",
+        "related_to": ["Role-playing Games", "VR Gaming"],
+        "icon": "🧙",
+        "primaryColor": "#4A3F5A",
+        "secondaryColor": "#7A6F8D"
+      },
+      {
+        "name_en": "Virtual Art Galleries",
+        "name_ua": "Віртуальні художні галереї",
+        "related_to": ["Digital Painting", "Metaverse Exploration"],
+        "icon": "🖼️",
+        "primaryColor": "#5A4A3F",
+        "secondaryColor": "#8D7A6F"
+      }
+    ]
+  },
+  {
+    "name_en": "Adventure & Survival",
+    "name_ua": "Пригоди та виживання",
+    "interests": [
+      {
+        "name_en": "Bushcraft",
+        "name_ua": "Бушкрафт",
+        "related_to": ["Camping", "Foraging"],
+        "icon": "🔪",
+        "primaryColor": "#5A4F3F",
+        "secondaryColor": "#8D7F6F"
+      },
+      {
+        "name_en": "Survival Training",
+        "name_ua": "Тренування з виживання",
+        "related_to": ["Bushcraft", "Adventure Travel"],
+        "icon": "⛺",
+        "primaryColor": "#4A5F3A",
+        "secondaryColor": "#7A9F6F"
+      },
+      {
+        "name_en": "Firecraft",
+        "name_ua": "Розведення вогню",
+        "related_to": ["Bushcraft", "Camping"],
+        "icon": "🔥",
+        "primaryColor": "#6F4A3F",
+        "secondaryColor": "#9F7A6F"
+      },
+      {
+        "name_en": "Navigation",
+        "name_ua": "Навігація",
+        "related_to": ["Orienteering", "Survival Training"],
+        "icon": "🧭",
+        "primaryColor": "#3F5A4F",
+        "secondaryColor": "#6F8D7F"
+      },
+      {
+        "name_en": "Wilderness First Aid",
+        "name_ua": "Перша допомога в дикій природі",
+        "related_to": ["Survival Training", "Hiking"],
+        "icon": "🩺",
+        "primaryColor": "#5F3F4A",
+        "secondaryColor": "#8F6F7A"
+      },
+      {
+        "name_en": "Knot Tying",
+        "name_ua": "В’язання вузлів",
+        "related_to": ["Bushcraft", "Sailing"],
+        "icon": "🪢",
+        "primaryColor": "#4F5A3F",
+        "secondaryColor": "#7F8D6F"
+      },
+      {
+        "name_en": "Shelter Building",
+        "name_ua": "Будівництво укриттів",
+        "related_to": ["Bushcraft", "Camping"],
+        "icon": "🏕️",
+        "primaryColor": "#3F4A5F",
+        "secondaryColor": "#6F7A8D"
+      },
+      {
+        "name_en": "Tracking",
+        "name_ua": "Стеження",
+        "related_to": ["Hunting", "Wildlife Conservation"],
+        "icon": "👣",
+        "primaryColor": "#6F4A3F",
+        "secondaryColor": "#9F7A6F"
+      },
+      {
+        "name_en": "Water Purification",
+        "name_ua": "Очищення води",
+        "related_to": ["Survival Training", "Camping"],
+        "icon": "💧",
+        "primaryColor": "#3A5F7F",
+        "secondaryColor": "#7A9FCF"
+      },
+      {
+        "name_en": "Solo Survival",
+        "name_ua": "Одиночне виживання",
+        "related_to": ["Survival Training", "Solo Travel"],
+        "icon": "🌲",
+        "primaryColor": "#4A5F3F",
+        "secondaryColor": "#7A9F6F"
+      }
+    ]
+  },
+  {
+    "name_en": "Everyday Activities",
+    "name_ua": "Повсякденні заняття",
+    "interests": [
+      {
+        "name_en": "Coffee",
+        "name_ua": "Кава",
+        "related_to": ["Cooking", "Socializing"],
+        "icon": "☕",
+        "primaryColor": "#5A4F3F",
+        "secondaryColor": "#8D7F6F"
+      },
+      {
+        "name_en": "Houseplant Care",
+        "name_ua": "Догляд за кімнатними рослинами",
+        "related_to": ["Gardening", "Interior Design"],
+        "icon": "🪴",
+        "primaryColor": "#4A5F3A",
+        "secondaryColor": "#7A9F6F"
+      },
+      {
+        "name_en": "Morning Runs",
+        "name_ua": "Ранкові пробіжки",
+        "related_to": ["Running", "Fitness Training"],
+        "icon": "🏃‍♂️",
+        "primaryColor": "#3F5A4F",
+        "secondaryColor": "#6F8D7F"
+      },
+      {
+        "name_en": "Podcasting",
+        "name_ua": "Створення подкастів",
+        "related_to": ["Public Speaking", "Music Production"],
+        "icon": "🎙️",
+        "primaryColor": "#4F3A5F",
+        "secondaryColor": "#7F6A9F"
+      },
+      {
+        "name_en": "Home Organizing",
+        "name_ua": "Організація дому",
+        "related_to": ["Minimalism", "Interior Design"],
+        "icon": "🧹",
+        "primaryColor": "#5F3F4A",
+        "secondaryColor": "#8F6F7A"
+      },
+      {
+        "name_en": "Casual Reading",
+        "name_ua": "Легке читання",
+        "related_to": ["Reading", "Book Clubs"],
+        "icon": "📖",
+        "primaryColor": "#4A3F5A",
+        "secondaryColor": "#7A6F8D"
+      },
+      {
+        "name_en": "Evening Walks",
+        "name_ua": "Вечірні прогулянки",
+        "related_to": ["Walking", "Mindfulness"],
+        "icon": "🌜",
+        "primaryColor": "#3F4A6F",
+        "secondaryColor": "#6F7A9F"
       }
     ]
   }
