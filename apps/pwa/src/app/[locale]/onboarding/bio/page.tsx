@@ -17,8 +17,8 @@ export default function Page() {
                 />
             </Container>
             <Container className={styles.page__info}>
-                <div className={styles.page__circle}>
-                    <Avatar size={140} />
+                <div className={styles.page__avatar}>
+                    <Avatar size={140} variant="profile" />
                 </div>
                 <OnboardingTextBlock
                     title={"Tell us About Yourself"}

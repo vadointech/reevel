@@ -7,7 +7,7 @@
   display: flex;
   flex-direction: column;
   gap: mixins.rem(8);
-
+  min-width: mixins.rem(302);
 
   &__label {
     @include fonts.font-creata("sm", 500);
@@ -52,11 +52,11 @@
     
     &__size {
       &_default {
-
+        // height: mixins.rem(48);
       }
       
       &_large {
-        height: 100px;
+        height: mixins.rem(100);
       }
     }
   }

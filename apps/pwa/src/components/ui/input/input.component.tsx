@@ -9,7 +9,7 @@ export namespace Input {
 
     export type Props = ComponentProps<"input"> & {
         variant?: Variant;
-        label: string;
+        label?: string;
         placeholder: string;
         hint?: string;
         inputSize?: Size;
@@ -22,7 +22,7 @@ export const Input = ({ variant = "default", error, label, placeholder, hint, in
 
     return (
         <div className={styles.container}>
-            <label htmlFor={id} className={styles.container__label}>{label}</label>
+            {label && <label htmlFor={id} className={styles.container__label}>{label}</label>}
 
             {inputSize == "default" ?
                 <input
@@ -47,10 +47,10 @@ export const Input = ({ variant = "default", error, label, placeholder, hint, in
             }
 
             {(error || hint) &&
-        <span className={cx(
-            styles.container__hint,
-            error && styles.container__error,
-        )}> {error || hint} </span>
+                <span className={cx(
+                    styles.container__hint,
+                    error && styles.container__error,
+                )}> {error || hint} </span>
 
             }
         </div >

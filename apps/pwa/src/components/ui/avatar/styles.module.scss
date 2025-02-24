@@ -1,3 +1,7 @@
+@use "@/theme/mixins";
+@use "@/theme/colors";
+
+
 .avatar {
     position: relative;
     aspect-ratio: 1;
@@ -18,7 +22,19 @@
         }
 
         &_profile {
+            position: relative; 
 
+            &::before {
+              content: "";
+              position: absolute;
+              width: 120%; 
+              height: 120%;
+              border-radius: 50%;
+              border: 1.5px solid colors.$secondary;
+              top: 50%;
+              left: 50%;
+              transform: translate(-50%, -50%);
+            }
         }
     }
 
