@@ -17,7 +17,15 @@ export namespace Input {
     };
 }
 
-export const Input = ({ variant = "default", error, label, placeholder, hint, inputSize = "default", ...props }: Input.Props) => {
+export const Input = ({
+    variant = "default",
+    error,
+    label,
+    placeholder,
+    hint,
+    inputSize = "default",
+    ...props
+}: Input.Props) => {
     const id = useId();
 
     return (

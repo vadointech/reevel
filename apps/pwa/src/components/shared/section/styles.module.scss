@@ -1,0 +1,24 @@
+@use "@/theme/mixins";
+@use "@/theme/fonts";
+
+.section {
+    &__header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        @include fonts.font-creata('lg');
+
+        &__title {
+            &__size {
+
+                &_default {
+                    @include fonts.font-creata('lg', 500)
+                }
+
+                &_small {
+                    font-size: mixins.rem(18);                
+                }
+            }
+        }
+    }
+}
