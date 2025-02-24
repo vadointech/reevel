@@ -21,6 +21,11 @@ const environmentVariables = [
     // Providers
     "GOOGLE_CLIENT_ID",
     "GOOGLE_CLIENT_SECRET",
+
+    // File uploading
+    "CLOUDINARY_NAME",
+    "CLOUDINARY_API_KEY",
+    "CLOUDINARY_API_SECRET",
 ] as const;
 
 @Injectable()
