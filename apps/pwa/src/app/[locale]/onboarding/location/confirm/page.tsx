@@ -1,19 +1,24 @@
-import { Drawer, DrawerBody, DrawerContent, DrawerTrigger } from "@/components/shared/drawer";
+import { Drawer, DrawerBody, DrawerContent } from "@/components/shared/drawer";
 import { ProgressBar } from "@/components/shared";
-import { OnboardingTextBlock } from "../_components";
-
-import styles from "./styles.module.scss";
+import { OnboardingTextBlock } from "../../_components";
 import { Button } from "@/components/ui";
 import { ArrowBack } from "@/components/icons";
+import { MapProvider } from "@/components/map/context";
+import { Map } from "@/components/map";
+
+import styles from "./styles.module.scss";
 
 export default function Page() {
 
     return (
-        <div>
-            <Drawer defaultPoint={"middle"}>
-                <DrawerTrigger>
-                    Drawer here
-                </DrawerTrigger>
+        <>
+            <MapProvider
+                accessToken={process.env.MAPBOX_ACESS_TOKEN}
+                mapStyle={process.env.MAPBOX_MAP_STYLE_DARK}
+            >
+                <Map />
+            </MapProvider>
+            <Drawer staticPoint={"middle"} modal={false}>
                 <DrawerBody>
                     <DrawerContent>
                         <ProgressBar
@@ -33,6 +38,6 @@ export default function Page() {
                     </DrawerContent>
                 </DrawerBody>
             </Drawer>
-        </div>
+        </>
     );
 }

@@ -1,4 +1,5 @@
-import { OnboardingAvatarPicker, OnboardingTextBlock } from "../_components";
+import { OnboardingTextBlock } from "../_components";
+import { OnboardingAvatarPicker } from "./_components";
 import { ArrowBack } from "@/components/icons";
 import { Button, Container } from "@/components/ui";
 

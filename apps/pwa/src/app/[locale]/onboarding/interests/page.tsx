@@ -1,38 +1,11 @@
 import { Button, Container } from "@/components/ui";
-
-import { ProgressBar } from "@/components/shared";
 import { ArrowBack } from "@/components/icons";
 import { OnboardingTextBlock } from "../_components";
-import { InterestsSection } from "../_components/interests-section";
+import { OnboardingInterestsPicker } from "./_components";
 
 import styles from "./styles.module.scss";
 
 export default function Page() {
-
-    const interests = [
-        { name: "Sport", icon: "🥊" },
-        { name: "Music", icon: "🤿" },
-        { name: "Travel", icon: "🥊" },
-        { name: "Sport", icon: "🥊" },
-        { name: "Sport", icon: "⛑️" },
-        { name: "Music", icon: "🥊" },
-        { name: "Travel", icon: "🥊" },
-        { name: "Sport", icon: "🥊" },
-        { name: "Sport", icon: "🤿" },
-        { name: "Music", icon: "🥊" },
-        { name: "Sport", icon: "🥊" },
-        { name: "Sport", icon: "🤿" },
-        { name: "Music", icon: "🥊" },
-        { name: "Travel", icon: "⛑️" },
-        { name: "Travel", icon: "⛑️" },
-        { name: "Sport", icon: "🥊" },
-        { name: "Sport", icon: "🥊" },
-        { name: "Sport", icon: "🤿" },
-        { name: "Music", icon: "🥊" },
-        { name: "Travel", icon: "⛑️" },
-        { name: "Sport", icon: "🥊" },
-    ];
-
     return (
         <>
             <Container>
@@ -44,7 +17,7 @@ export default function Page() {
                 </div>
 
                 <div className={styles.page__interests}>
-                    <InterestsSection interests={interests} />
+                    <OnboardingInterestsPicker />
                 </div>
             </Container>
 
