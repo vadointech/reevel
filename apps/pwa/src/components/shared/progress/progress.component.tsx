@@ -5,7 +5,7 @@ import cx from "classnames";
 import styles from "./styles.module.scss";
 
 export namespace ProgressBar {
-    export type Type = "back" | "close" | 'shortBack';
+    export type Type = "back" | "close" | "shortBack";
 
     export type Props = ComponentProps<"div"> & {
         stepCount: number;
@@ -46,7 +46,7 @@ export const ProgressBar = ({
                         key={i}
                         className={cx(
                             styles.indicator__item,
-                            i === currentStep && styles.indicator__item_active
+                            i === currentStep && styles.indicator__item_active,
                         )}
                     />
                 ))}

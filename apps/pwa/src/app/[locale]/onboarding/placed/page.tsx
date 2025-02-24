@@ -1,13 +1,10 @@
-
-
 import { Container, Input } from "@/components/ui";
-import { Place } from "../_components/place";
-import styles from "./styles.module.scss";
-import { ProgressBar } from "@/components/shared";
-import { Back, IconClose } from "@/components/icons";
+import { IconClose } from "@/components/icons";
 import { Search } from "@/components/icons/search";
 import { LocationList } from "../_components/location-list";
 import { Header } from "@/components/shared/header";
+
+import styles from "./styles.module.scss";
 
 export default function Page() {
 

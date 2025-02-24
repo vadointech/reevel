@@ -1,4 +1,3 @@
-import { useTranslations } from "next-intl";
 import { Drawer, DrawerBody, DrawerContent, DrawerTrigger } from "@/components/shared/drawer";
 
 export default function Home() {

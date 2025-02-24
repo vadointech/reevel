@@ -17,7 +17,7 @@ export const InterestCard = ({ icon, text, selected, onChange, className, ...pro
     return (
         <label className={cx(
             styles.label,
-            className
+            className,
         )}>
 
             <div className={styles.label__wrapper}>

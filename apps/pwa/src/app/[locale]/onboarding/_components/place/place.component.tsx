@@ -1,6 +1,5 @@
 import { ComponentProps } from "react";
 import styles from "./styles.module.scss";
-import cx from "classnames";
 import { Check, Navigation } from "@/components/icons";
 
 
@@ -12,7 +11,7 @@ export namespace Place {
     };
 }
 
-export const Place = ({ country, city, selected, ...props }: Place.Props) => {
+export const Place = ({ country, city, selected }: Place.Props) => {
 
     return (
         <div className={styles.container}>

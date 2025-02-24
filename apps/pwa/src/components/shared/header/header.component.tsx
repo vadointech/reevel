@@ -1,5 +1,5 @@
 import { ComponentProps, ReactNode } from "react";
-import { ArrowBack, Back, IconClose } from "@/components/icons";
+import { Back } from "@/components/icons";
 
 import cx from "classnames";
 import styles from "./styles.module.scss";
@@ -7,7 +7,7 @@ import styles from "./styles.module.scss";
 export namespace Header {
 
     export type Size = "default" | "large";
-    export type Type = "textButton" | 'button'
+    export type Type = "textButton" | "button";
 
     export type Props = ComponentProps<"div"> & {
         controlLeft?: ReactNode;
@@ -44,25 +44,25 @@ export const Header = ({
         <div className={cx(
             styles.header,
             styles[`header__${size}`],
-            className
+            className,
         )}>
             <div className={cx(
                 styles.controls,
-                styles[`controls_${size}`]
+                styles[`controls_${size}`],
             )}>
                 {controlLeft}
             </div>
 
             <div className={cx(
                 styles.title,
-                styles[`title_${size}`]
+                styles[`title_${size}`],
             )}>
                 {title}
             </div>
 
             <div className={cx(
                 styles.controls,
-                styles[`controls__${controlRightType}`]
+                styles[`controls__${controlRightType}`],
             )}>
                 {controlRight ?? ControlRightView[controlRightType]}
             </div>

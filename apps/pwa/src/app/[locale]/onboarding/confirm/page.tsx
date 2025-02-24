@@ -2,7 +2,7 @@ import { Drawer, DrawerBody, DrawerContent, DrawerTrigger } from "@/components/s
 import { ProgressBar } from "@/components/shared";
 import { OnboardingTextBlock } from "../_components";
 
-import styles from './styles.module.scss'
+import styles from "./styles.module.scss";
 import { Button } from "@/components/ui";
 import { ArrowBack } from "@/components/icons";
 

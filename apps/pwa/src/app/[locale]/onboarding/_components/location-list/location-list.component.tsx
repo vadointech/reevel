@@ -10,7 +10,7 @@ export namespace LocationList {
     };
 }
 
-export const LocationList = ({ locations, ...props }: LocationList.Props) => {
+export const LocationList = ({ locations }: LocationList.Props) => {
 
     return (
         <div className={styles.container}>

@@ -34,7 +34,7 @@ export const Input = ({ variant = "default", error, label, placeholder, hint, in
                     styles[`container__input__variant_${variant}`],
                     styles[`container__input__size_${inputSize}`],
                     styles[`container__input__background_${background}`],
-                    icon ? styles.container__input__withIcon : false
+                    icon ? styles.container__input__withIcon : false,
                 )}
                 {...props}
             />
@@ -51,7 +51,7 @@ export const Input = ({ variant = "default", error, label, placeholder, hint, in
 
                 )}
             />
-        )
+        ),
     };
 
     return (
