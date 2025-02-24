@@ -2,22 +2,31 @@
 @use "@/theme/mixins";
 
 .page {
-  height: 100%;
-
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-
-  &__buttons {
-    background: colors.$background;
-    display: flex;
-    flex-direction: column;
-  }
-  &__text {
-    margin-top: mixins.rem(32);
-  } 
+    &__buttons {
+        background: colors.$background;
+        display: flex;
+        flex-direction: column;
+        row-gap: 1rem;
+    }
+    &__text {
+        margin-top: mixins.rem(32);
+    }
 }
 
-.controlLeft {
-  transform: rotate(180deg);
+.icon {
+    width: mixins.rem(140);
+    height: mixins.rem(140);
+
+    background-color: colors.$background-muted;
+    border-radius: 100%;
+
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 72px;
+
+    span {
+        margin-top: mixins.rem(20);
+    }
 }

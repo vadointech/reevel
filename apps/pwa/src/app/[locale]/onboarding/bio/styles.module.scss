@@ -2,49 +2,43 @@
 @use "@/theme/colors";
 
 .page {
-  &__info {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    text-align: center;
-    gap: mixins.rem(40);
-  }
-
-  &__circle {
-    margin-top: mixins.rem(52);
-
-    position: relative; 
-
-    &::before {
-      content: "";
-      position: absolute;
-      width: mixins.rem(164); 
-      height: mixins.rem(164);
-      border-radius: 50%;
-      border: 1.5px solid colors.$secondary;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
+    &__info {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+        gap: mixins.rem(40);
     }
-  }
 
-  &__data {
-    margin-top: mixins.rem(32);
-    display: flex;
-    flex-direction: column;
-    row-gap: mixins.rem(24);
-  }
+    &__circle {
+        margin-top: mixins.rem(52);
 
-  &__buttons {
-    margin-top: mixins.rem(14);
-    display: flex;
-    flex-direction: column;
-    row-gap: 1rem;
-}
-}
+        position: relative;
 
+        &::before {
+            content: "";
+            position: absolute;
+            width: mixins.rem(164);
+            height: mixins.rem(164);
+            border-radius: 50%;
+            border: 1.5px solid colors.$secondary;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+    }
 
+    &__data {
+        margin-top: mixins.rem(32);
+        display: flex;
+        flex-direction: column;
+        row-gap: mixins.rem(24);
+    }
 
-.controlLeft {
-  transform: rotate(180deg);
+    &__buttons {
+        margin-top: mixins.rem(14);
+        display: flex;
+        flex-direction: column;
+        row-gap: 1rem;
+    }
 }

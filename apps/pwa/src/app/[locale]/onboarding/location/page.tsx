@@ -1,25 +1,19 @@
 import { Button, Container } from "@/components/ui";
+import { OnboardingTextBlock } from "../_components";
 
 import styles from "./styles.module.scss";
-import { ArrowBack } from "@/components/icons";
-import { ProgressBar } from "@/components/shared";
-import { OnboardingTextBlock } from "../_components";
-import { DotIcon } from "../_components/dot-icon";
-
 
 export default function Page() {
     return (
-        <div className={styles.page}>
+        <>
             <Container>
-                <ProgressBar
-                    stepCount={4}
-                    currentStep={3}
-                    type="back"
-                />
-            </Container>
-
-            <Container>
-                <DotIcon />
+                <div
+                    className={styles.icon}
+                >
+                    <span>
+                        📍
+                    </span>
+                </div>
                 <OnboardingTextBlock
                     title={"What is Your Location?"}
                     subtitle={"To find nearby events share your location with us"}
@@ -28,13 +22,15 @@ export default function Page() {
             </Container>
 
             <Container className={styles.page__buttons}>
+                <Button>
+                    Enter Location Manually
+                </Button>
                 <Button
                     variant={"primary"}
-                    iconAfter={<ArrowBack />}
                 >
-                    Next step
+                    Allow Location Access
                 </Button>
             </Container>
-        </div>
+        </>
     );
 }

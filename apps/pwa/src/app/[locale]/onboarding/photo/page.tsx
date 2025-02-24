@@ -1,5 +1,4 @@
 import { OnboardingAvatarPicker, OnboardingTextBlock } from "../_components";
-import { ProgressBar } from "@/components/shared";
 import { ArrowBack } from "@/components/icons";
 import { Button, Container } from "@/components/ui";
 
@@ -7,14 +6,7 @@ import styles from "./styles.module.scss";
 
 export default function Page() {
     return (
-        <div className={styles.page}>
-            <Container>
-                <ProgressBar
-                    stepCount={4}
-                    currentStep={0}
-                />
-            </Container>
-
+        <>
             <Container>
                 <OnboardingTextBlock
                     title={"Show Off Yourself!"}
@@ -37,6 +29,6 @@ export default function Page() {
                     Next step
                 </Button>
             </Container>
-        </div>
+        </>
     );
 }

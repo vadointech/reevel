@@ -2,12 +2,6 @@
 @use "@/theme/colors";
 
 .page {
-    height: 100%;
-
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-
     &__text {
         margin-bottom: mixins.rem(32);
     }

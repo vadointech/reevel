@@ -34,23 +34,18 @@ export default function Page() {
     ];
 
     return (
-        <div className={styles.page}>
+        <>
             <Container>
-                <ProgressBar
-                    stepCount={4}
-                    currentStep={2}
-                    type={"close"}
-                />
-            </Container>
-            <Container className={styles.page__info}>
-                <OnboardingTextBlock
-                    title={"Customize Your Interests"}
-                    subtitle={"Pick the things you’re passionate about so we can show events that match your interests."}
-                />
-            </Container>
+                <div className={styles.page__info}>
+                    <OnboardingTextBlock
+                        title={"Customize Your Interests"}
+                        subtitle={"Pick the things you’re passionate about so we can show events that match your interests."}
+                    />
+                </div>
 
-            <Container className={styles.page__interests}>
-                <InterestsSection interests={interests} />
+                <div className={styles.page__interests}>
+                    <InterestsSection interests={interests} />
+                </div>
             </Container>
 
             <Container className={styles.page__buttons}>
@@ -61,6 +56,6 @@ export default function Page() {
                     Next step
                 </Button>
             </Container>
-        </div>
+        </>
     );
 }
