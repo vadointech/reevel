@@ -5,22 +5,22 @@ import { useState } from "react";
 
 
 export default function Page() {
-    const [isSelected, setIsSelected] = useState(false);
-
-    const handleChange = (selected: boolean) => {
-        setIsSelected(selected);
-        // You can add additional logic here if needed
-        console.log('Button selected:', selected);
+    const [selectedButtons, setSelectedButtons] = useState<Record<string, boolean>>({});
+    const handleChange = (name: string) => (selected: boolean) => {
+        setSelectedButtons(prev => ({
+            ...prev,
+            [name]: selected
+        }));
     };
 
     return (
-        <Container>
+        <Container style={{ marginTop: '100px' }}>
             <PillButton
                 name={'Art'}
-                variant="primary"
-                icon={'🎧'}
-                selected={isSelected}
-                onChange={handleChange}
+                variant="default"
+                icon={'🛍️'}
+                selected={selectedButtons["Art"]}
+                onChange={handleChange("Art")}
             />
         </Container>
     );

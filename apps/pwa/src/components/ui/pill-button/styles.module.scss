@@ -7,6 +7,7 @@
 	all: unset;
 	user-select: none;
 	cursor: pointer;
+    box-sizing:border-box;
 
     height: mixins.rem(38);
     width: fit-content;
@@ -14,17 +15,22 @@
     border-radius: 100;
     @include fonts.font-creata("sm", 400,20px);
 
-    -webkit-tap-highlight-color: rgba(0,0,0,0);
-	transition: background-color motions.$motion-duration-mid motions.$motion-ease-in-out;
 
-
-
-    box-sizing:border-box;
     display: flex;
     align-items: center;
     justify-content: center;
-    border:1px solid transparent;
     gap: mixins.rem(4);
+
+
+    -webkit-tap-highlight-color: rgba(0,0,0,0);
+	transition: background-color motions.$motion-duration-mid motions.$motion-ease-in-out,
+    color motions.$motion-duration-mid motions.$motion-ease-in-out;
+    border:1px solid transparent;
+
+    p {
+        margin: 0;
+        line-height: 1;
+    }
 
     &__selected {
         border:1px solid transparent !important;
@@ -65,7 +71,11 @@
     }
 
     &__icon {
+        display: flex;
+        align-items: center;
+        justify-content: center;
         font-size: mixins.rem(14);
+        height: mixins.rem(14);
         svg {
             max-height: mixins.rem(10);
         }
