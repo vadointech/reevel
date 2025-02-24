@@ -1,0 +1,16 @@
+@use "@/theme/colors";
+@use "@/theme/fonts";
+
+.cluster {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 50%;
+    background-color: colors.$primary;
+
+    &__text {
+        color: colors.$foreground;
+        @include fonts.font-creata("sm");
+    }
+}

@@ -5,7 +5,7 @@ export default function Layout({ children }: PropsWithChildren) {
     return (
         <MapProvider
             accessToken={process.env.MAPBOX_ACESS_TOKEN}
-            mapStyle={process.env.MAPBOX_MAP_STYLE}
+            mapStyle={process.env.MAPBOX_MAP_STYLE_DARK}
         >
             { children }
         </MapProvider>
