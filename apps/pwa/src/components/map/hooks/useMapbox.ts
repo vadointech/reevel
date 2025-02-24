@@ -20,8 +20,6 @@ export function useMapbox(
         setViewState(e.viewState);
     }, []);
 
-    const [points, setPoints] = useState<Supercluster.PointFeature<any>[]>(initialPoints);
-
     const [bounds, setBounds] = useState<Bounds>([0, 0, 0, 0]);
 
     const updateBounds = useCallback((e: MapEvent) => {
