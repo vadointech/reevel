@@ -47,7 +47,14 @@ export const RecommendationDrawer = ({ }: RecommendationDrawer.Props) => {
                         </Section>
 
                         <Section title="Discover" size="small" type="All" className={styles.drawer__content__sections}>
-                            <CollectionCard />
+                            <CollectionCard
+                                title="Games"
+                                city="Vinn"
+                                emoji="🚜"
+                                backgroundText="Games"
+                                colorFrom="#7D9A5D"
+                                colorTo="#4F6F3A"
+                            />
                         </Section>
                     </div>
                 </DrawerContent>
