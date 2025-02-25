@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect } from "react";
-import { Container } from "@/components/ui";
 import { ProgressBar } from "@/components/shared";
 import { usePathname } from "next/navigation";
 import { onboardingProgressStore } from "./onboarding-progress.store";

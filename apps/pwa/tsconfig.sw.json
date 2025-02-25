@@ -6,7 +6,7 @@
     "allowJs": true,
     "strict": true,
     "outDir": "./public",
-    "lib": ["ES2021", "webworker"],
+    "lib": ["ES2021", "webworker", "dom"],
     "removeComments": true,
     "incremental": false
   },

@@ -2,9 +2,11 @@
 
 import { useTranslations } from "next-intl";
 import { Drawer, DrawerBody, DrawerContent, DrawerTrigger } from "@/components/shared/drawer";
-import { sessionStore } from "@/stores/session.store";
+import { sessionStore } from "@/modules/auth/session";
+import { observer } from "mobx-react-lite";
+import { Link } from "@/i18n/routing";
 
-export default function Home() {
+export default observer(function Home() {
 
     const t = useTranslations();
 
@@ -13,7 +15,9 @@ export default function Home() {
             <Drawer>
                 <DrawerTrigger>
                     Drawer here  <br />
-                    Session: { sessionStore.user?.id } { sessionStore.user?.email }
+                    <Link href={"/onboarding/photo"}>
+                        Session: { sessionStore.user?.id } { sessionStore.user?.email }
+                    </Link>
                 </DrawerTrigger>
                 <DrawerBody>
                     <div>
@@ -26,4 +30,4 @@ export default function Home() {
             </Drawer>
         </div>
     );
-}
+});

@@ -23,10 +23,7 @@ const PRECACHE = {
         "/vercel.svg",
     ],
     ROUTES: [
-        "/",
-        "/en",
         "/login",
-        "/onboarding/photo",
     ],
 };
 //=============================================//
@@ -99,6 +96,23 @@ self.addEventListener("fetch", (event: FetchEvent) => {
     event.respondWith(fetch(request));
 });
 
+
+self.addEventListener("message", (event: MessageEvent) => {
+    if(typeof event.data === "string") {
+        switch(event.data) {
+            case "INVALIDATE_CACHE":
+                caches.open(PRECACHE.NAME)
+                    .then(cache => {
+                        if(CACHE) {
+                            cache.addAll(
+                                PRECACHE.URLS.map(item => encodeURI(item)),
+                            );
+                        }
+                    });
+                break;
+        }
+    }
+});
 
 
 

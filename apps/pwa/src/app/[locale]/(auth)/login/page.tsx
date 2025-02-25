@@ -1,9 +1,9 @@
 import { LoginCarousel, LoginCarouselPagination } from "./_components";
 import { Button, Container, Hint, Title } from "@/components/ui";
 import { IconApple, IconGoogle } from "@/components/icons";
+import { GetGoogleOAuthLink } from "@/api/auth/get-google-oauth-link";
 
 import styles from "./styles.module.scss";
-import { GetGoogleOAuthLink } from "@/api/auth/get-google-oauth-link";
 
 export default async function Home() {
 

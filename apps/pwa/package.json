@@ -12,6 +12,7 @@
     "sw:precache": "sh static.sh"
   },
   "dependencies": {
+    "@tanstack/react-query": "^5.66.9",
     "classnames": "^2.5.1",
     "embla-carousel": "^8.5.2",
     "embla-carousel-react": "^8.5.2",

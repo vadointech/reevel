@@ -1,15 +1,14 @@
-import { UserEntity } from "@/entities/user";
 import { action } from "@/lib/action/action";
 import { clientFetcher } from "@/api/client";
 
-export namespace GetSession {
-    const url = "/users/me";
+export namespace Logout {
+    const url = "/auth/logout";
 
     export type TInput = null;
-    export type TOutput = UserEntity;
+    export type TOutput = null;
 
     export const query = action<TInput, TOutput>({
-        fetchFn: async({ config }) => {
+        fetchFn: ({ config }) => {
             return clientFetcher.get(url, config);
         },
     });

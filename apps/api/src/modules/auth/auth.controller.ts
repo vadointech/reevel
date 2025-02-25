@@ -31,10 +31,22 @@ export class AuthController {
 
         const user = await this.authService.getGoogleOAuthUser(code);
 
-        const session = await this.authService.authWithGoogle(user);
+        const { newUser, session } = await this.authService.authWithGoogle(user);
 
         this.jwtStrategy.setJwtSession(response, session);
 
-        return response.redirect(this.configService.env("PWA_PUBLIC_URL"));
+        if(newUser) {
+            return response.redirect(this.configService.env("PWA_PUBLIC_URL") + "/onboarding/photo");
+        } else {
+            return response.redirect(this.configService.env("PWA_PUBLIC_URL"));
+        }
+    }
+
+    @Get("/logout")
+    async logout(
+        @Res({ passthrough: true }) response: Response,
+    ) {
+        this.jwtStrategy.clearJwtSession(response);
+        return response.redirect(this.configService.env("PWA_PUBLIC_URL") + "/login");
     }
 }

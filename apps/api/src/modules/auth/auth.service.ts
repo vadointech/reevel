@@ -41,11 +41,22 @@ export class AuthService {
         } as GoogleOAuthUserInfo;
     }
 
-    async authWithGoogle(oauthUser: GoogleOAuthUserInfo): Promise<JwtSession> {
+    async authWithGoogle(oauthUser: GoogleOAuthUserInfo) {
         const dbUser = await this.userService.getByEmail(oauthUser.email);
 
-        if(dbUser) return this.loginUser(oauthUser.email);
-        return this.registerUser(oauthUser);
+        if(dbUser) {
+            const session = await this.loginUser(oauthUser.email);
+            return {
+                session,
+                newUser: false,
+            };
+        } else {
+            const session = await this.registerUser(oauthUser);
+            return {
+                session,
+                newUser: true,
+            };
+        }
     }
 
     async registerUser(oauthUser: GoogleOAuthUserInfo): Promise<JwtSession> {

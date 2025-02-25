@@ -3,6 +3,7 @@
 import { useCallback } from "react";
 import { usePathname, useRouter } from "next/navigation";
 import { onboardingProgressStore, OnboardingStepPath, onboardingSteps } from "./onboarding-progress.store";
+import { sessionStore } from "@/modules/auth/session";
 
 export function useOnboardingProgress() {
     const router = useRouter();
@@ -27,7 +28,7 @@ export function useOnboardingProgress() {
     }, []);
 
     const handleQuit = useCallback(() => {
-        console.log("quit");
+        sessionStore.logout();
     }, []);
 
     return {
