@@ -22,6 +22,8 @@
 
     &__buttons {
         margin-top: 1rem;
+        position: sticky;
+        bottom: 0;
 
         display: flex;
         justify-content: center;

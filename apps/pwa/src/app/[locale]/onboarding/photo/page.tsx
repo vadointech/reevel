@@ -1,10 +1,9 @@
-import { OnboardingTextBlock } from "../_components";
-import { OnboardingAvatarPicker } from "./_components";
+import { NextStepButton, OnboardingTextBlock } from "../_components";
+import { OnboardingAvatarPicker, OnboardingPhotoUploader } from "./_components";
 import { ArrowBack } from "@/components/icons";
-import { Button, Container } from "@/components/ui";
+import { Container } from "@/components/ui";
 
 import styles from "./styles.module.scss";
-
 export default function Page() {
     return (
         <>
@@ -19,16 +18,13 @@ export default function Page() {
             </Container>
 
             <Container className={styles.page__buttons}>
-                <Button>
-                    Upload custom photo
-                </Button>
-
-                <Button
+                <OnboardingPhotoUploader />
+                <NextStepButton
                     variant={"primary"}
                     iconAfter={<ArrowBack />}
                 >
                     Next step
-                </Button>
+                </NextStepButton>
             </Container>
         </>
     );

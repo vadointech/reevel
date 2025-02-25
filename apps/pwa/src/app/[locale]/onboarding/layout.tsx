@@ -1,12 +1,15 @@
 import { PropsWithChildren } from "react";
-import { OnboardingProgress } from "@/app/[locale]/onboarding/_components";
+import { Container } from "@/components/ui";
+import { OnboardingProgress } from "./_components";
 
 import styles from "./styles.module.scss";
 
 export default function OnboardingLayout({ children }: PropsWithChildren) {
     return (
         <div className={styles.layout}>
-            <OnboardingProgress />
+            <Container>
+                <OnboardingProgress />
+            </Container>
             { children }
         </div>
     );

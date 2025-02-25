@@ -1,4 +1,5 @@
-import { Button, Container } from "@/components/ui";
+import { Container } from "@/components/ui";
+import { OnboardingEnterLocationManually, OnboardingLocationRequest } from "./_components";
 import { OnboardingTextBlock } from "../_components";
 
 import styles from "./styles.module.scss";
@@ -21,15 +22,10 @@ export default function Page() {
                 />
             </Container>
 
+
             <Container className={styles.page__buttons}>
-                <Button>
-                    Enter Location Manually
-                </Button>
-                <Button
-                    variant={"primary"}
-                >
-                    Allow Location Access
-                </Button>
+                <OnboardingEnterLocationManually />
+                <OnboardingLocationRequest />
             </Container>
         </>
     );

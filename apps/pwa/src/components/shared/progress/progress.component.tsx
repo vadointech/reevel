@@ -14,6 +14,8 @@ export namespace ProgressBar {
         controlRight?: ReactNode;
         type?: Type;
         text?: string;
+        onControlLeftClick?: () => void;
+        onControlRightClick?: () => void;
     };
 }
 
@@ -24,6 +26,8 @@ export const ProgressBar = ({
     controlLeft,
     controlRight = "Skip",
     type = "back",
+    onControlLeftClick,
+    onControlRightClick,
 }: ProgressBar.Props) => {
 
     const ControlLeftView: Record<ProgressBar.Type, ReactNode> = {
@@ -34,9 +38,12 @@ export const ProgressBar = ({
 
     return (
         <div className={cx(styles.progress, className)}>
-            <div className={cx(styles.controls)}>
+            <div
+                className={styles.controls}
+                onClick={onControlLeftClick}
+            >
 
-                {controlLeft ?? ControlLeftView[type]}
+                { controlLeft ?? ControlLeftView[type] }
 
             </div>
 
@@ -46,14 +53,17 @@ export const ProgressBar = ({
                         key={i}
                         className={cx(
                             styles.indicator__item,
-                            i === currentStep && styles.indicator__item_active,
+                            i <= currentStep && styles.indicator__item_active,
                         )}
                     />
                 ))}
             </div>
 
-            <div className={styles.controls}>
-                {controlRight}
+            <div
+                className={styles.controls}
+                onClick={onControlRightClick}
+            >
+                { controlRight }
             </div>
         </div>
     );

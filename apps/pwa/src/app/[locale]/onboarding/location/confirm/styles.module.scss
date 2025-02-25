@@ -3,9 +3,6 @@
 .page {
     &__textBlock {
         margin-top: mixins.rem(48);
-    }
-
-    &__button {
-        margin-top: mixins.rem(48);
+        margin-bottom: mixins.rem(48);
     }
 }

@@ -1,11 +1,12 @@
-import { Button, Container } from "@/components/ui";
+import { Container } from "@/components/ui";
 import { ArrowBack } from "@/components/icons";
-import { OnboardingTextBlock } from "../_components";
+import { NextStepButton, OnboardingTextBlock } from "../_components";
 import { OnboardingInterestsPicker } from "./_components";
 
 import styles from "./styles.module.scss";
 
 export default function Page() {
+
     return (
         <>
             <Container>
@@ -22,12 +23,12 @@ export default function Page() {
             </Container>
 
             <Container className={styles.page__buttons}>
-                <Button
+                <NextStepButton
                     variant={"primary"}
                     iconAfter={<ArrowBack />}
                 >
                     Next step
-                </Button>
+                </NextStepButton>
             </Container>
         </>
     );

@@ -22,12 +22,7 @@ const interests = [
     { name: "Music", icon: "🥊" },
     { name: "Travel", icon: "⛑️" },
     { name: "Travel", icon: "⛑️" },
-    { name: "Sport", icon: "🥊" },
-    { name: "Sport", icon: "🥊" },
-    { name: "Sport", icon: "🤿" },
-    { name: "Music", icon: "🥊" },
     { name: "Travel", icon: "⛑️" },
-    { name: "Sport", icon: "🥊" },
 ];
 
 export const OnboardingInterestsPicker = ({}: OnboardingInterestsPicker.Props) => {
