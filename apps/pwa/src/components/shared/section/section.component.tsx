@@ -41,7 +41,9 @@ export const Section = ({
                 </h2>
                 <Badge type="Public" variant="default" icon={false} />
             </div>
+
             {children}
+
         </div>
     );
 }
