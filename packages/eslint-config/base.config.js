@@ -16,7 +16,7 @@ export default [
         }
     },
     {
-      ignores: ["node_modules", "dist", ".next"],
+      ignores: ["node_modules", "dist", ".next", "public"],
     },
     {
         files: ["**/*.{js,mjs,cjs,ts,jsx,tsx}"],

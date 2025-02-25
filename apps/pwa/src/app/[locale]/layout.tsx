@@ -1,13 +1,14 @@
 import { ReactScan } from "@/lib/react-scan";
 import { type Metadata } from "next";
 import { PropsWithChildren } from "react";
-import { Providers } from "@/app/[locale]/providers";
 import { type ParamsWithLocale } from "@/types/common";
 import { getMessages, setRequestLocale } from "next-intl/server";
 import { fonts } from "@/fonts.config";
 import { locales } from "@/i18n/locales";
 import { GetSession } from "@/api/auth/get-session";
+import { NextIntlClientProvider } from "next-intl";
 import { SessionProvider } from "@/providers/session";
+import { ServiceWorkerProvider } from "@/service-worker/provider";
 
 import "../globals.scss";
 
@@ -34,11 +35,16 @@ export default async function RootLayout({ children, params }: PropsWithChildren
                 <ReactScan />
             </head>
             <body className={fonts}>
-                <SessionProvider session={session}>
-                    <Providers intlConfig={{ messages, locale }}>
-                        { children }
-                    </Providers>
-                </SessionProvider>
+                <ServiceWorkerProvider register={process.env.MODE === "PROD"}>
+                    <SessionProvider session={session}>
+                        <NextIntlClientProvider
+                            locale={locale}
+                            messages={messages}
+                        >
+                            { children }
+                        </NextIntlClientProvider>
+                    </SessionProvider>
+                </ServiceWorkerProvider>
             </body>
         </html>
     );
