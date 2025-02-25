@@ -6,7 +6,7 @@ import { Avatar, Input } from "@/components/ui";
 import { Section } from "@/components/shared/section";
 import { Search } from "@/components/icons/search";
 import { EventDate } from "@/components/ui/date";
-import { RecentCard } from "@/components/shared/small-card/recent-card.component";
+import { RecentCard } from "@/components/shared/recent-card/recent-card.component";
 
 export namespace RecommendationDrawer {
     export type Props = ComponentProps<"div"> & {
