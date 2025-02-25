@@ -1,21 +1,29 @@
-import { getTranslations } from "next-intl/server";
-import { Client } from "@/app/[locale]/client";
+"use client";
 
-export default async function Home() {
+import { useTranslations } from "next-intl";
+import { Drawer, DrawerBody, DrawerContent, DrawerTrigger } from "@/components/shared/drawer";
+import { sessionStore } from "@/stores/session.store";
 
-    const t = await getTranslations();
+export default function Home() {
 
-    const joke = await fetch("https://official-joke-api.appspot.com/random_joke", {
-        method: "GET",
-    });
-    const json = await joke.json();
-
+    const t = useTranslations();
 
     return (
         <div>
-            Next.js | {t("Index.title")}
-
-            <Client text={json.setup} />
+            <Drawer>
+                <DrawerTrigger>
+                    Drawer here  <br />
+                    Session: { sessionStore.user?.id } { sessionStore.user?.email }
+                </DrawerTrigger>
+                <DrawerBody>
+                    <div>
+                        tabs
+                    </div>
+                    <DrawerContent>
+                        Next.js | {t("Index.title")}
+                    </DrawerContent>
+                </DrawerBody>
+            </Drawer>
         </div>
     );
 }
