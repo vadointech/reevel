@@ -1,0 +1,29 @@
+@use "@/theme/mixins";
+@use "@/theme/fonts";
+@use "@/theme/colors";
+
+
+
+.card {
+    position: relative;
+
+    height: mixins.rem(148);
+    width: mixins.rem(254);
+
+    background: linear-gradient(94deg,#7D9A5D 50%, #4F6F3A 100%);
+    border-radius:0.5rem;
+
+    &__background {
+        width: mixins.rem(625);
+        height: mixins.rem(190);
+        opacity: 0.05;
+        position: absolute;
+        top: -35%;
+        left: -24%;
+        transform: rotateZ(-26deg);
+
+        @include fonts.font-creata('base',500);
+        font-size:130px;
+        color: colors.$white;
+    }
+}   
