@@ -11,7 +11,10 @@ export default function Page() {
         <>
             <MapProvider
                 accessToken={process.env.MAPBOX_ACESS_TOKEN}
-                mapStyle={process.env.MAPBOX_MAP_STYLE_DARK}
+                mapStyle={{
+                    light: process.env.MAPBOX_MAP_STYLE_LIGHT,
+                    dark: process.env.MAPBOX_MAP_STYLE_DARK,
+                }}
             >
                 <Map />
             </MapProvider>

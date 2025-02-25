@@ -8,6 +8,7 @@ import { useMapbox, useMapCluster } from "./hooks";
 import { ClusterMarker, EventMarker } from "./marker";
 import { mapStore } from "./api";
 import { observer } from "mobx-react-lite";
+import { useMediaQuery } from "@uidotdev/usehooks";
 
 import "mapbox-gl/dist/mapbox-gl.css";
 
@@ -26,6 +27,8 @@ export const Map = observer(({
 }: Map.Props) => {
     const ref = useRef<MapRef>(null);
     const { mapStyle, accessToken } = useMapContext();
+
+    const isDarkMode = useMediaQuery("(prefers-color-scheme: dark)");
 
     useEffect(() => {
         mapStore.initialize(ref);
@@ -68,7 +71,7 @@ export const Map = observer(({
             {...viewState}
             maxZoom={20}
             ref={ref}
-            mapStyle={mapStyle}
+            mapStyle={isDarkMode ? mapStyle?.dark : mapStyle?.light}
             mapboxAccessToken={accessToken}
             onMove={(e) => {
                 updateViewState(e);

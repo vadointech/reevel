@@ -3,7 +3,10 @@
 import { createContext } from "react";
 
 export type MapContextValue = {
-    mapStyle: string | undefined;
+    mapStyle: {
+        light: string | undefined;
+        dark: string | undefined;
+    } | undefined;
     accessToken: string | undefined;
 };
 

@@ -6,7 +6,10 @@ import { ReactNode } from "react";
 export namespace MapProvider {
     export type Props = {
         children: ReactNode;
-        mapStyle: string | undefined;
+        mapStyle: {
+            light: string | undefined;
+            dark: string | undefined;
+        } | undefined;
         accessToken: string | undefined;
     };
 }
