@@ -31,7 +31,7 @@ export class AuthController {
 
         const user = await this.authService.getGoogleOAuthUser(code);
 
-        const session = await this.authService.authWithGoogle(user.email);
+        const session = await this.authService.authWithGoogle(user);
 
         this.jwtStrategy.setJwtSession(response, session);
 

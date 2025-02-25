@@ -1,1 +1,1 @@
-export * from "./interests-section.component"
+export * from "./interests-section.component";

@@ -1,4 +1,5 @@
-import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, OneToOne, PrimaryGeneratedColumn } from "typeorm";
+import { ProfileEntity } from "@/modules/profile/entities/profile.entity";
 
 @Entity("users")
 export class UserEntity {
@@ -7,4 +8,7 @@ export class UserEntity {
 
     @Column({ unique: true })
     email: string;
+
+    @OneToOne(() => ProfileEntity, (profile) => profile.user)
+    profile: ProfileEntity;
 }
