@@ -1,4 +1,4 @@
-'use client'
+"use client";
 import { Container } from "@/components/ui";
 import { TabButton } from "@/components/ui/pill-button";
 import { useState } from "react";
@@ -9,16 +9,16 @@ export default function Page() {
     const handleChange = (name: string) => (selected: boolean) => {
         setSelectedButtons(prev => ({
             ...prev,
-            [name]: selected
+            [name]: selected,
         }));
     };
 
     return (
-        <Container style={{ marginTop: '100px' }}>
+        <Container style={{ marginTop: "100px" }}>
             <TabButton
-                name={'Art'}
+                name={"Art"}
                 variant="default"
-                icon={'🛍️'}
+                icon={"🛍️"}
                 selected={selectedButtons["Art"]}
                 onChange={handleChange("Art")}
             />

@@ -1,23 +1,23 @@
-'use client'
+"use client";
 
-import { ComponentProps, ReactNode } from 'react';
-import styles from './styles.module.scss'
+import { ComponentProps, ReactNode } from "react";
+import styles from "./styles.module.scss";
 import cx from "classnames";
 
-export type TabButtonVariant = 'default' | 'primary' | 'outline' | 'icon' | 'dashed';
+export type TabButtonVariant = "default" | "primary" | "outline" | "icon" | "dashed";
 
 export namespace TabButton {
-    export type Props = Omit<ComponentProps<'button'>, 'onChange'> & {
+    export type Props = Omit<ComponentProps<"button">, "onChange"> & {
         variant?: TabButtonVariant
         name: string
         icon?: ReactNode | string
         selected?: boolean
         onChange: (selected: boolean) => void
-    }
+    };
 }
 
 export const TabButton = ({
-    variant = 'default',
+    variant = "default",
     name,
     icon,
     selected = false,
@@ -41,7 +41,7 @@ export const TabButton = ({
                 styles.button,
                 styles[`button__variant_${variant}`],
                 selected && styles.button__selected,
-                className
+                className,
             )}
             onClick={handleClick}
             {...props}
