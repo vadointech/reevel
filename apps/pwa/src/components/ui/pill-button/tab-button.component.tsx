@@ -4,11 +4,11 @@ import { ComponentProps, ReactNode } from 'react';
 import styles from './styles.module.scss'
 import cx from "classnames";
 
-export type PillButtonVariant = 'default' | 'primary' | 'outline' | 'icon' | 'dashed';
+export type TabButtonVariant = 'default' | 'primary' | 'outline' | 'icon' | 'dashed';
 
-export namespace PillButton {
+export namespace TabButton {
     export type Props = Omit<ComponentProps<'button'>, 'onChange'> & {
-        variant?: PillButtonVariant
+        variant?: TabButtonVariant
         name: string
         icon?: ReactNode | string
         selected?: boolean
@@ -16,7 +16,7 @@ export namespace PillButton {
     }
 }
 
-export const PillButton = ({
+export const TabButton = ({
     variant = 'default',
     name,
     icon,
@@ -24,7 +24,7 @@ export const PillButton = ({
     onChange,
     className,
     ...props
-}: PillButton.Props) => {
+}: TabButton.Props) => {
 
     const handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
         e.preventDefault();

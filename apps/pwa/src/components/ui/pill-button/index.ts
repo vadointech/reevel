@@ -1,1 +1,1 @@
-export * from "./pill-button.component"
+export * from "./tab-button.component"

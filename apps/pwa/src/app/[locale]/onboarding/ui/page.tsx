@@ -1,6 +1,6 @@
 'use client'
 import { Container } from "@/components/ui";
-import { PillButton } from "@/components/ui/pill-button/pill-button.component";
+import { TabButton } from "@/components/ui/pill-button";
 import { useState } from "react";
 
 
@@ -15,7 +15,7 @@ export default function Page() {
 
     return (
         <Container style={{ marginTop: '100px' }}>
-            <PillButton
+            <TabButton
                 name={'Art'}
                 variant="default"
                 icon={'🛍️'}
