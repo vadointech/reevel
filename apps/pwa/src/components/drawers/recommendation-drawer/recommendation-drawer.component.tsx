@@ -6,6 +6,7 @@ import { Avatar, Input } from "@/components/ui";
 import { Section } from "@/components/shared/section";
 import { Search } from "@/components/icons/search";
 import { EventDate } from "@/components/ui/date";
+import { RecentCard } from "@/components/shared/small-card/recent-card.component";
 
 export namespace RecommendationDrawer {
     export type Props = ComponentProps<"div"> & {
@@ -30,7 +31,22 @@ export const RecommendationDrawer = ({ }: RecommendationDrawer.Props) => {
                             <Avatar size={40} variant="profile" />
                         </div>
 
-                        <Section title="Events" size="small" type="All" className={styles.drawer__content__sections}>
+                        <Section title="Recent" size="small" type="All" className={styles.drawer__content__sections}>
+                            <RecentCard title="Outdoor Movie Night" img={''} />
+                            <RecentCard title="Outdoor Movie Night" img={''} />
+                            <RecentCard title="Outdoor Movie Night" img={''} />
+                            <RecentCard title="Outdoor Movie Night" img={''} />
+                            <RecentCard title="Outdoor Movie Night" img={''} />
+                            <RecentCard title="Outdoor Movie Night" img={''} />
+                            <RecentCard title="Outdoor Movie Night" img={''} />
+                            <RecentCard title="Outdoor Movie Night" img={''} />
+                            <RecentCard title="Outdoor Movie Night" img={''} />
+                            <RecentCard title="Outdoor Movie Night" img={''} />
+                            <RecentCard title="Outdoor Movie Night" img={''} />
+                        </Section>
+
+                        <Section title="Discover" size="small" type="All" className={styles.drawer__content__sections}>
+
                         </Section>
                     </div>
                 </DrawerContent>
