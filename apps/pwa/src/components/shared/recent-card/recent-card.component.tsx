@@ -5,7 +5,7 @@ import Image from "next/image";
 
 import image_1 from "@/../public/assets/temp/carousel1.jpg";
 import { EventDate } from "@/components/ui/date";
-import { More } from "@/components/icons";
+import { IconMore } from "@/components/icons";
 import { StaticImport } from "next/dist/shared/lib/get-img-props";
 
 export namespace RecentCard {
@@ -37,7 +37,7 @@ export const RecentCard = ({
                 <h3 className={styles.card__info__title}>{title}</h3>
                 <EventDate />
             </div>
-            <div className={styles.card__more}><More /></div>
+            <div className={styles.card__more}><IconMore /></div>
         </div>
     );
 }
