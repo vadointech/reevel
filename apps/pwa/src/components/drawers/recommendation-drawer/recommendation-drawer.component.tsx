@@ -32,7 +32,7 @@ export const RecommendationDrawer = ({ }: RecommendationDrawer.Props) => {
                             <Avatar size={40} variant="profile" />
                         </div>
 
-                        <Section title="Recent" size="small" type="All" className={styles.drawer__content__sections}>
+                        <Section title="Recent" size="small" type="All" cols className={styles.drawer__content__sections}>
                             <RecentCard title="Outdoor Movie Night" img={''} />
                             <RecentCard title="Outdoor Movie Night" img={''} />
                             <RecentCard title="Outdoor Movie Night" img={''} />
@@ -48,6 +48,21 @@ export const RecommendationDrawer = ({ }: RecommendationDrawer.Props) => {
 
                         <Section title="Discover" size="small" type="All" className={styles.drawer__content__sections}>
                             <CollectionCard
+                                title="Games"
+                                city="Vinn"
+                                emoji="🚜"
+                                backgroundText="Games"
+                                colorFrom="#7D9A5D"
+                                colorTo="#4F6F3A"
+                            />
+                            <CollectionCard
+                                title="Games"
+                                city="Vinn"
+                                emoji="🚜"
+                                backgroundText="Games"
+                                colorFrom="#7D9A5D"
+                                colorTo="#4F6F3A"
+                            />                            <CollectionCard
                                 title="Games"
                                 city="Vinn"
                                 emoji="🚜"
