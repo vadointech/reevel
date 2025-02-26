@@ -11,6 +11,7 @@ import { SessionProvider } from "@/modules/auth/session";
 import { StandaloneProvider } from "./standalone.provider";
 
 import "../globals.scss";
+import { HomePageContext } from "@/app/[locale]/provd";
 
 export const metadata: Metadata = {
     title: "Create Next App",

@@ -14,7 +14,7 @@ export default observer(function Home() {
         <div>
             <Drawer>
                 <DrawerTrigger>
-                    Drawer here  <br />
+                    <br />
                     <Link href={"/onboarding/photo"}>
                         Session: { sessionStore.user?.id } { sessionStore.user?.email }
                     </Link>
