@@ -8,10 +8,8 @@ import { locales } from "@/i18n/locales";
 import { NextIntlClientProvider } from "next-intl";
 import { ServiceWorkerProvider } from "@/service-worker/provider";
 import { SessionProvider } from "@/modules/auth/session";
-import { StandaloneProvider } from "./standalone.provider";
 
 import "../globals.scss";
-import { HomePageContext } from "@/app/[locale]/provd";
 
 export const metadata: Metadata = {
     title: "Create Next App",
@@ -47,9 +45,7 @@ export default async function RootLayout({ children, params }: PropsWithChildren
                             locale={locale}
                             messages={messages}
                         >
-                            <StandaloneProvider>
-                                { children }
-                            </StandaloneProvider>
+                            { children }
                         </NextIntlClientProvider>
                     </SessionProvider>
                 </ServiceWorkerProvider>
