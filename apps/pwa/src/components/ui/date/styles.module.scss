@@ -1,0 +1,16 @@
+@use "@/theme/mixins";
+@use "@/theme/fonts";
+@use "@/theme/colors";
+
+
+
+.date {
+    width: fit-content;
+
+    display: flex;
+    align-items: center;
+    gap: mixins.rem(4);
+
+    @include fonts.font-creata('xs', 300);
+    color: colors.$secondary
+}

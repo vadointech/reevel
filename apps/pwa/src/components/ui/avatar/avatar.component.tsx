@@ -3,6 +3,7 @@ import Image from "next/image";
 import styles from "./styles.module.scss";
 
 import avatar from "@/../public/assets/temp/avatar.png";
+import { ReactNode } from "react";
 
 export namespace Avatar {
 
@@ -18,6 +19,7 @@ export namespace Avatar {
 
 export const Avatar = ({
     size = "default",
+    variant = "profile",
 }: Avatar.Props) => {
 
     const sizeMap: Record<Avatar.Size, number> = {
@@ -27,18 +29,47 @@ export const Avatar = ({
 
     const itemSize = typeof size === "number" ? size : sizeMap[size];
 
+    // Не знаю чи доречно тут так робити, можна зробити просто в рендер винести і ставити просто стиль в залежності від варіанту
+    // Але тоді завжди буде лишній div, той що для circle
+    const AvatarView: Record<Avatar.Variant, ReactNode> = {
+        default: (
+            <div
+                className={styles.avatar}
+                style={{
+                    width: itemSize,
+                }}
+            >
+                <Image
+                    fill
+                    src={avatar}
+                    alt={"avatar"}
+                />
+            </div>
+        ),
+        outlined: (
+            <></>
+        ),
+        profile: (
+            <div className={styles.avatar__variant_profile}>
+                <div
+                    className={styles.avatar}
+                    style={{
+                        width: itemSize,
+                    }}
+                >
+                    <Image
+                        fill
+                        src={avatar}
+                        alt={"avatar"}
+                    />
+                </div>
+            </div>
+        ),
+    };
+
     return (
-        <div
-            className={styles.avatar}
-            style={{
-                width: itemSize,
-            }}
-        >
-            <Image
-                fill
-                src={avatar}
-                alt={"avatar"}
-            />
-        </div>
+        <>
+            {AvatarView[variant]}
+        </>
     );
 };

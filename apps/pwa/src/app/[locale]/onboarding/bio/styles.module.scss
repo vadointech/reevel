@@ -10,22 +10,8 @@
     gap: mixins.rem(40);
   }
 
-  &__circle {
+  &__avatar {
     margin-top: mixins.rem(52);
-
-    position: relative; 
-
-    &::before {
-      content: "";
-      position: absolute;
-      width: mixins.rem(164); 
-      height: mixins.rem(164);
-      border-radius: 50%;
-      border: 1.5px solid colors.$secondary;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-    }
   }
 
   &__data {

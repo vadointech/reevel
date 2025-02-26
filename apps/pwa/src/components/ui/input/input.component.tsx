@@ -21,7 +21,17 @@ export namespace Input {
     };
 }
 
-export const Input = ({ variant = "default", error, label, placeholder, hint, inputSize = "default", background = "default", icon, ...props }: Input.Props) => {
+export const Input = ({
+    variant = "default",
+    error,
+    label,
+    placeholder,
+    hint,
+    inputSize = "default",
+    background = "default",
+    icon,
+    ...props
+}: Input.Props) => {
     const id = useId();
 
     const InputMode: Record<Input.Type, ReactNode> = {

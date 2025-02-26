@@ -8,6 +8,7 @@
     --foreground: #E8E9EA;
     --background-muted: #F5F6F7;
     --background: #FFFFFF;
+    --white: #FFFFFF;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -21,5 +22,6 @@
         --foreground: #3B3C3E;
         --background-muted: #212121;
         --background: #000000;
+        --white: #FFFFFF;
     }
 }
