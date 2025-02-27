@@ -1,19 +1,20 @@
-import { IStrategy, Strategy, StrategyOptions } from "./strategy";
-import { Context } from "@/service-worker/context";
+import { Context } from "../context";
+import { CacheParams, CacheService } from "../cache.service";
 
-export class StaleWhileRevalidate extends Strategy implements IStrategy {
+export class StaleWhileRevalidate {
 
-    constructor(ctx: Context, options: StrategyOptions) {
-        super(ctx, options);
-    }
+    constructor(
+        private ctx: Context,
+        private readonly cacheService: CacheService,
+    ) {}
 
-    async handle(event: FetchEvent): Promise<Response> {
-        return caches.open(this.cacheName).then(async cache => {
+    async apply(event: FetchEvent, params: CacheParams): Promise<Response> {
+        return caches.open(params.cacheName).then(async cache => {
             return cache.match(event.request).then(async cachedResponse => {
                 const fetchPromise = fetch(event.request.clone())
                     .then(networkResponse => {
                         if (networkResponse && networkResponse.status === 200 && networkResponse.type === "basic") {
-                            this.cacheService.addOne(cache, event.request, networkResponse.clone());
+                            this.cacheService.addOne(cache, event.request, networkResponse.clone(), params);
                         }
                         return networkResponse;
                     })
@@ -27,7 +28,7 @@ export class StaleWhileRevalidate extends Strategy implements IStrategy {
                     });
 
                 if (cachedResponse) {
-                    await this.cacheService.invalidateCache(cache);
+                    await this.cacheService.invalidateCache(cache, params);
                     return cachedResponse;
                 }
 

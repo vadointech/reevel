@@ -1,19 +1,20 @@
-import { IStrategy, Strategy, StrategyOptions } from "./strategy";
-import { Context } from "@/service-worker/context";
+import { Context } from "@/service-worker/cache/context";
+import { CacheService, CacheParams } from "../cache.service";
 
-export class CacheFirst extends Strategy implements IStrategy {
+export class CacheFirst {
 
-    constructor(ctx: Context, options: StrategyOptions) {
-        super(ctx, options);
-    }
+    constructor(
+        private ctx: Context,
+        private readonly cacheService: CacheService,
+    ) {}
 
-    async handle(event: FetchEvent): Promise<Response> {
-        return caches.open(this.cacheName).then(async cache => {
+    async apply(event: FetchEvent, params: CacheParams): Promise<Response> {
+        return caches.open(params.cacheName).then(async cache => {
             const cachedResponse = await cache.match(event.request);
 
             // If the resource is in the cache, return it directly
             if (cachedResponse) {
-                await this.cacheService.invalidateCache(cache);
+                await this.cacheService.invalidateCache(cache, params);
                 return cachedResponse;
             }
 
@@ -25,9 +26,9 @@ export class CacheFirst extends Strategy implements IStrategy {
                     }
 
                     // Cache the network response for future requests
-                    return caches.open(this.cacheName)
+                    return caches.open(params.cacheName)
                         .then(cache => {
-                            this.cacheService.addOne(cache, event.request, networkResponse.clone());
+                            this.cacheService.addOne(cache, event.request, networkResponse.clone(), params);
                             return networkResponse;
                         });
                 })

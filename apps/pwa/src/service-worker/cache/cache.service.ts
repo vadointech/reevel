@@ -1,29 +1,20 @@
-import { matcher, matches } from "./caches.config";
-import { Context } from "@/service-worker/context";
+import { Context } from "./context";
+import { matcher, matches } from "./matcher";
 
-type Options = {
+export type CacheParams = {
+    cacheName: string;
     ttl?: number;
 };
 
-export interface ICacheService {
-    addOne(cache: Cache, req: Request, res: Response): Promise<void>;
-    addAll(assets: string[]): Promise<unknown[]>;
-}
-
-export class CacheService implements ICacheService {
-    private readonly ttl?: number;
-
+export class CacheService {
     constructor(
         public ctx: Context,
-        options?: Options,
-    ) {
-        this.ttl = options?.ttl;
-    }
+    ) {}
 
-    async addOne(cache: Cache, req: Request, res: Response) {
+    async addOne(cache: Cache, req: Request, res: Response, params: CacheParams) {
         let response: Response = res;
 
-        if(this.ttl) {
+        if(params.ttl) {
             response =  new Response(res.body, {
                 status: res.status,
                 statusText: res.statusText,
@@ -37,7 +28,8 @@ export class CacheService implements ICacheService {
         return cache.put(req, response);
     }
 
-    async addAll(assets: string[]): Promise<unknown[]> {
+
+    async precacheStatic(assets: string[]): Promise<unknown[]> {
         // eslint-disable-next-line @typescript-eslint/no-unused-vars
         const t: Promise<any>[] = matches.map(([_, cache]) => {
             const currentCache = assets.filter(url => matcher(url, cache));
@@ -50,18 +42,12 @@ export class CacheService implements ICacheService {
         return Promise.all(t);
     }
 
-    async precacheStatic(assets: string[]): Promise<unknown[]> {
-        return this.addAll(
-            assets.map(item => encodeURI(item)),
-        );
-    }
-
-    async invalidateCache(cache: Cache) {
-        if(!this.ttl) return;
+    async invalidateCache(cache: Cache, params: CacheParams) {
+        if(!params.ttl) return;
 
         const now = Date.now();
 
-        if(now - this.ctx.lastInvalidationTime > this.ttl) {
+        if(now - this.ctx.lastInvalidationTime > params.ttl) {
             const keys = await cache.keys();
 
             for (const request of keys) {
@@ -73,7 +59,7 @@ export class CacheService implements ICacheService {
 
                 const cachedDate = new Date(cacheDate);
 
-                if (now - cachedDate.getTime() > this.ttl) {
+                if (now - cachedDate.getTime() > params.ttl) {
                     await cache.delete(request);
                 }
             }

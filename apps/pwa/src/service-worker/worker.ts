@@ -1,19 +1,15 @@
-import { precacheStaticAssets } from "@/service-worker/handlers";
-import { Caches, matcher } from "@/service-worker/cache";
-import { StaleWhileRevalidate, CacheFirst, applyStrategy } from "./strategies";
-import { createContext } from "@/service-worker/context";
+import {
+    Caches,
+    matcher,
+    cacheService,
+    cacheStrategies,
+} from "./cache";
 
-declare const VERSION: string;
-declare const PRECACHE_ENTRIES: string[];
-
-const ctx = createContext({
-    swVersion: VERSION,
-    cacheEnabled: true,
-});
+export declare const PRECACHE_ENTRIES: string[];
 
 self.addEventListener("install", (event: ExtendableEvent) => {
     event.waitUntil(
-        precacheStaticAssets(ctx, PRECACHE_ENTRIES)
+        cacheService.precacheStatic(PRECACHE_ENTRIES)
             .then(() => self.skipWaiting()),
     );
 });
@@ -24,49 +20,43 @@ self.addEventListener("fetch", async(event: FetchEvent) => {
     if (request.method !== "GET") return;
 
     if(matcher(request.url, Caches.NextImage)) {
-        return event.respondWith(applyStrategy(
-            event,
-            new StaleWhileRevalidate(ctx, {
+        return event.respondWith(
+            cacheStrategies.staleWhileRevalidate.apply(event, {
                 cacheName: Caches.NextImage,
-                ttl: 4000,
             }),
-        ));
+        );
     }
 
     if(matcher(request.url, Caches.StaticImage)) {
-        return event.respondWith(applyStrategy(
-            event,
-            new CacheFirst(ctx, {
+        return event.respondWith(
+            cacheStrategies.cacheFirst.apply(event, {
                 cacheName: Caches.StaticImage,
             }),
-        ));
+        );
     }
 
     if(matcher(request.url, Caches.StaticFonts)) {
-        return event.respondWith(applyStrategy(
-            event,
-            new CacheFirst(ctx, {
+        return event.respondWith(
+            cacheStrategies.cacheFirst.apply(event, {
                 cacheName: Caches.StaticFonts,
             }),
-        ));
+        );
     }
 
     if(matcher(request.url, Caches.StaticJS)) {
-        return event.respondWith(applyStrategy(
-            event,
-            new StaleWhileRevalidate(ctx, {
+        return event.respondWith(
+            cacheStrategies.staleWhileRevalidate.apply(event, {
                 cacheName: Caches.StaticJS,
             }),
-        ));
+        );
     }
 
     if(matcher(request.url, Caches.StaticCSS)) {
-        return event.respondWith(applyStrategy(
-            event,
-            new StaleWhileRevalidate(ctx, {
+        return event.respondWith(
+            cacheStrategies.staleWhileRevalidate.apply(event, {
                 cacheName: Caches.StaticCSS,
             }),
-        ));
+        );
     }
 
     event.respondWith(fetch(event.request));
