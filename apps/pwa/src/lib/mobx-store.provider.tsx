@@ -1,8 +1,18 @@
-"use client";
-
 import { createContext, PropsWithChildren, useContext } from "react";
 
-export function createMobxStore<Store extends object, Args extends unknown[]>(
+export function createMobxStore<Store extends object>(
+    StoreClass: new () => Store,
+) {
+    const StoreContext = createContext<Store>(new StoreClass());
+
+    const useStoreContext = () => {
+        return useContext(StoreContext);
+    };
+
+    return [useStoreContext] as const;
+}
+
+export function createMobxStoreProvider<Store extends object, Args extends unknown[]>(
     StoreClass: new (...args: Args) => Store,
 ) {
     const StoreContext = createContext<Store | null>(null);

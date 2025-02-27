@@ -1,13 +1,12 @@
 "use client";
 
-import { useCallback, useEffect, useRef } from "react";
-import MapboxGLMap, { MapRef, Marker, ViewState } from "react-map-gl/mapbox";
+import { useCallback, useRef } from "react";
+import MapboxGLMap, { MapEvent, MapRef, Marker, ViewState } from "react-map-gl/mapbox";
 import Supercluster from "supercluster";
-import { useMapContext } from "./context";
 import { useMapbox, useMapCluster } from "./hooks";
 import { ClusterMarker, EventMarker } from "./marker";
-import { mapStore } from "./api";
-import { observer } from "mobx-react-lite";
+import { useMapStore } from "./api/stores/map-store.provider";
+import { useMediaQuery } from "@uidotdev/usehooks";
 
 import "mapbox-gl/dist/mapbox-gl.css";
 
@@ -20,18 +19,15 @@ export namespace Map {
     };
 }
 
-export const Map = observer(({
+export const Map = ({
     points = mockGeoJsonData,
     initialViewState,
 }: Map.Props) => {
     const ref = useRef<MapRef>(null);
-    const { mapStyle, accessToken } = useMapContext();
 
-    const isDarkMode = true;
+    const mapStore = useMapStore();
 
-    useEffect(() => {
-        mapStore.initialize(ref);
-    }, []);
+    const isDarkMode = useMediaQuery("(prefers-color-scheme: dark)");
 
     const {
         viewState,
@@ -48,6 +44,11 @@ export const Map = observer(({
         bounds,
         viewState.zoom || 0,
     );
+
+    const handleLoad = useCallback((e: MapEvent) => {
+        mapStore.initialize(ref);
+        updateBounds(e);
+    }, []);
 
     const handleZoomToCluster = useCallback((cluster: Supercluster.PointFeature<unknown>) => {
         if(!supercluster) return;
@@ -70,13 +71,13 @@ export const Map = observer(({
             {...viewState}
             maxZoom={20}
             ref={ref}
-            mapStyle={isDarkMode ? mapStyle?.dark : mapStyle?.light}
-            mapboxAccessToken={accessToken}
+            mapStyle={isDarkMode ? mapStore.mapStyleDark : mapStore.mapStyleLight}
+            mapboxAccessToken={mapStore.accessToken}
             onMove={(e) => {
                 updateViewState(e);
                 updateBounds(e);
             }}
-            onLoad={updateBounds}
+            onLoad={handleLoad}
             style={{
                 width: "100%",
                 height: "100%",
@@ -120,4 +121,4 @@ export const Map = observer(({
             }
         </MapboxGLMap>
     );
-});
+};

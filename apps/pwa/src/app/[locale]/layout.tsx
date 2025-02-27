@@ -4,10 +4,10 @@ import { PropsWithChildren } from "react";
 import { type ParamsWithLocale } from "@/types/common";
 import { getMessages, setRequestLocale } from "next-intl/server";
 import { fonts } from "@/fonts.config";
-import { locales } from "@/i18n/locales";
 import { NextIntlClientProvider } from "next-intl";
 import { ServiceWorkerProvider } from "@/service-worker/provider";
-import { SessionProvider } from "@/modules/auth/session";
+import { GetSession } from "@/api/auth/get-session";
+import { SessionStoreProvider } from "@/modules/auth/session";
 
 import "../globals.scss";
 
@@ -23,15 +23,13 @@ export const viewport: Viewport = {
     ],
 };
 
-export function generateStaticParams() {
-    return locales.map((locale) => ({locale}));
-}
-
 export default async function RootLayout({ children, params }: PropsWithChildren<ParamsWithLocale>) {
     const { locale } = await params;
 
     setRequestLocale(locale);
     const messages = await getMessages();
+
+    const { data } = await GetSession.action(null);
 
     return (
         <html lang={locale}>
@@ -40,14 +38,14 @@ export default async function RootLayout({ children, params }: PropsWithChildren
             </head>
             <body className={fonts}>
                 <ServiceWorkerProvider register={process.env.MODE === "PROD"}>
-                    <SessionProvider>
-                        <NextIntlClientProvider
-                            locale={locale}
-                            messages={messages}
-                        >
+                    <NextIntlClientProvider
+                        locale={locale}
+                        messages={messages}
+                    >
+                        <SessionStoreProvider init={[data]}>
                             { children }
-                        </NextIntlClientProvider>
-                    </SessionProvider>
+                        </SessionStoreProvider>
+                    </NextIntlClientProvider>
                 </ServiceWorkerProvider>
             </body>
         </html>

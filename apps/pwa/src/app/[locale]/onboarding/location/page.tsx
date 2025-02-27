@@ -1,12 +1,15 @@
 import { Container } from "@/components/ui";
 import { OnboardingEnterLocationManually, OnboardingLocationRequest } from "./_components";
-import { OnboardingTextBlock } from "../_components";
+import { OnboardingProgress, OnboardingTextBlock } from "../_components";
 
 import styles from "./styles.module.scss";
 
 export default function Page() {
     return (
         <>
+            <Container>
+                <OnboardingProgress />
+            </Container>
             <Container>
                 <div
                     className={styles.icon}

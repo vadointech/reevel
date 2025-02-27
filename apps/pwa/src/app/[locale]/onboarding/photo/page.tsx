@@ -1,12 +1,16 @@
-import { NextStepButton, OnboardingTextBlock } from "../_components";
+import { NextStepButton, OnboardingProgress, OnboardingTextBlock } from "../_components";
 import { OnboardingAvatarPicker, OnboardingPhotoUploader } from "./_components";
 import { ArrowBack } from "@/components/icons";
 import { Container } from "@/components/ui";
 
 import styles from "./styles.module.scss";
+
 export default function Page() {
     return (
         <>
+            <Container>
+                <OnboardingProgress />
+            </Container>
             <Container>
                 <OnboardingTextBlock
                     title={"Show Off Yourself!"}

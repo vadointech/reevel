@@ -2,7 +2,7 @@
 
 import { useTranslations } from "next-intl";
 import { Drawer, DrawerBody, DrawerContent, DrawerTrigger } from "@/components/shared/drawer";
-import { sessionStore } from "@/modules/auth/session";
+import { useSessionStore } from "@/modules/auth/session";
 import { observer } from "mobx-react-lite";
 import { Link } from "@/i18n/routing";
 
@@ -10,8 +10,10 @@ export default observer(function Home() {
 
     const t = useTranslations();
 
+    const sessionStore = useSessionStore();
+
     return (
-        <div>
+        <div onClick={() => sessionStore.updateSession({ id: "ha-ha" })}>
             <Drawer>
                 <DrawerTrigger>
                     <br />

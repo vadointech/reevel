@@ -1,7 +1,7 @@
 import { Avatar, Container } from "@/components/ui";
 
 import { ArrowBack } from "@/components/icons";
-import { NextStepButton, OnboardingTextBlock } from "../_components";
+import { NextStepButton, OnboardingProgress, OnboardingTextBlock } from "../_components";
 import { Input } from "@/components/ui/input";
 
 import styles from "./styles.module.scss";
@@ -9,6 +9,9 @@ import styles from "./styles.module.scss";
 export default function Page() {
     return (
         <>
+            <Container>
+                <OnboardingProgress />
+            </Container>
             <Container>
                 <div className={styles.page__info}>
                     <div className={styles.page__circle}>

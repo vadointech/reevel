@@ -4,14 +4,25 @@ import { EasingOptions } from "mapbox-gl";
 import { MapRef } from "react-map-gl/mapbox";
 import { action, makeObservable } from "mobx";
 
-class MapStore implements IMapStore {
+export class MapStore implements IMapStore {
+    mapStyleDark?: string;
+    mapStyleLight?: string;
+    accessToken?: string;
     mapRef: RefObject<MapRef | null> = { current: null };
 
-    constructor() {
+    constructor(params: {
+        mapStyleDark?: string;
+        mapStyleLight?: string;
+        accessToken?: string;
+    }) {
         makeObservable(this, {
             initialize: action,
             flyTo: action,
         });
+
+        this.mapStyleDark = params.mapStyleDark;
+        this.mapStyleLight = params.mapStyleLight;
+        this.accessToken = params.accessToken;
     }
 
     initialize(ref: RefObject<MapRef | null>) {
@@ -27,5 +38,3 @@ class MapStore implements IMapStore {
         }
     }
 }
-
-export const mapStore = new MapStore();
