@@ -37,11 +37,20 @@ export class SessionStore {
     }
 
     private initSession(session: Maybe<UserEntity>) {
+        const localSession = localStoreService.getItem<UserEntity>("session");
+
+        // Just authenticated
+        if(session && !localSession) {
+            if("serviceWorker" in navigator && navigator.serviceWorker.controller) {
+                navigator.serviceWorker.controller.postMessage("PRECACHE_ROUTES");
+            }
+        }
+
         if(session) {
             this.user = session;
             localStoreService.setItem("session", session);
         } else {
-            this.user = localStoreService.getItem<UserEntity>("session");
+            this.user = localSession;
         }
     }
 }

@@ -5,6 +5,7 @@ import { Drawer, DrawerBody, DrawerContent, DrawerTrigger } from "@/components/s
 import { useSessionStore } from "@/modules/auth/session";
 import { observer } from "mobx-react-lite";
 import { Link } from "@/i18n/routing";
+import Image from "next/image";
 
 export default observer(function Home() {
 
@@ -14,6 +15,14 @@ export default observer(function Home() {
 
     return (
         <div onClick={() => sessionStore.updateSession({ id: "ha-ha" })}>
+            
+            <Image
+                width={100}
+                height={100}
+                src={"/assets/temp/avatar.png"}
+                alt={""}
+            />
+            
             <Drawer>
                 <DrawerTrigger>
                     <br />

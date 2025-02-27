@@ -1,10 +1,10 @@
 "use client";
 
-import { createContext, ReactNode, useContext, useEffect, useState } from "react";
+import { createContext, ReactNode, RefObject, useContext, useEffect, useRef } from "react";
 import registerServiceWorker from "./registration";
 
 type ServiceWorkerContextValue = {
-    registration: ServiceWorkerRegistration | null;
+    registration: RefObject<ServiceWorkerRegistration | null>;
 };
 
 const ServiceWorkerContext = createContext<ServiceWorkerContextValue | null>(null);
@@ -20,14 +20,12 @@ export const ServiceWorkerProvider = ({
     register = false,
     children,
 }: ServiceWorkerProvider.Props) => {
-    const [registration, setRegistration] = useState<ServiceWorkerRegistration | null>(null);
-
+    const registration = useRef<ServiceWorkerRegistration | null>(null);
     useEffect(() => {
         if(!register) return;
         if("serviceWorker" in navigator) {
             (async() => {
-                const registration = await registerServiceWorker();
-                setRegistration(registration);
+                registration.current = await registerServiceWorker();
             })();
         }
     }, []);

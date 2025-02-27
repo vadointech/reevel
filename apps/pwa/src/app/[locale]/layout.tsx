@@ -5,7 +5,7 @@ import { type ParamsWithLocale } from "@/types/common";
 import { getMessages, setRequestLocale } from "next-intl/server";
 import { fonts } from "@/fonts.config";
 import { NextIntlClientProvider } from "next-intl";
-import { ServiceWorkerProvider } from "@/service-worker/provider";
+import { ServiceWorkerProvider } from "@/service-worker/client/provider";
 import { GetSession } from "@/api/auth/get-session";
 import { SessionStoreProvider } from "@/modules/auth/session";
 
