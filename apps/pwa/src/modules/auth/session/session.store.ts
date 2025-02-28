@@ -2,6 +2,7 @@ import { UserEntity } from "@/entities/user";
 import { Logout } from "@/api/auth/logout";
 import { action, computed, makeObservable, observable } from "mobx";
 import { localStoreService } from "@/lib/local-store.service";
+// import { serviceWorkerService } from "@/lib/service-worker.service";
 
 export class SessionStore {
     user: Maybe<UserEntity> = null;
@@ -38,13 +39,6 @@ export class SessionStore {
 
     private initSession(session: Maybe<UserEntity>) {
         const localSession = localStoreService.getItem<UserEntity>("session");
-
-        // Just authenticated
-        if(session && !localSession) {
-            if("serviceWorker" in navigator && navigator.serviceWorker.controller) {
-                navigator.serviceWorker.controller.postMessage("PRECACHE_ROUTES");
-            }
-        }
 
         if(session) {
             this.user = session;

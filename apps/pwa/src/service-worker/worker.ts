@@ -1,11 +1,8 @@
-import {
-    Caches,
-    matcher,
-    cacheService,
-    cacheStrategies,
-} from "./cache";
+import cacheConfig, { Caches } from "./cache/cache.config";
+import cacheStrategies from "./cache/cache.strategies";
+import cacheService from "./cache/cache.service";
 
-export declare const PRECACHE_ENTRIES: string[];
+declare const PRECACHE_ENTRIES: string[];
 
 self.addEventListener("install", (event: ExtendableEvent) => {
     event.waitUntil(
@@ -14,56 +11,58 @@ self.addEventListener("install", (event: ExtendableEvent) => {
     );
 });
 
+self.addEventListener("activate", (event: ExtendableEvent) => {
+    event.waitUntil(
+        self.clients.claim(),
+    );
+});
+
 self.addEventListener("fetch", async(event: FetchEvent) => {
     const request = event.request;
+    const requestUrl = new URL(request.url);
 
     if (request.method !== "GET") return;
 
-    if(matcher(request.url, Caches.NextImage)) {
+    for(const {cache, validator, strategy, params} of cacheConfig) {
+        if(request.url.match(validator)) {
+            return event.respondWith(
+                cacheStrategies[strategy].apply(event, { cacheName: cache, ...params }),
+            );
+        }
+    }
+
+    if(requestUrl.origin === self.origin) {
+        if(request.headers.get("RSC") === "1") {
+            return event.respondWith(
+                cacheStrategies.networkFirst.apply(event, {
+                    cacheName: Caches.RoutesRSC,
+                }),
+            );
+        }
+        
         return event.respondWith(
-            cacheStrategies.staleWhileRevalidate.apply(event, {
-                cacheName: Caches.NextImage,
+            cacheStrategies.networkFirst.apply(event, {
+                cacheName: Caches.Routes,
             }),
         );
     }
-
-    if(matcher(request.url, Caches.StaticImage)) {
-        return event.respondWith(
-            cacheStrategies.cacheFirst.apply(event, {
-                cacheName: Caches.StaticImage,
-            }),
-        );
-    }
-
-    if(matcher(request.url, Caches.StaticFonts)) {
-        return event.respondWith(
-            cacheStrategies.cacheFirst.apply(event, {
-                cacheName: Caches.StaticFonts,
-            }),
-        );
-    }
-
-    if(matcher(request.url, Caches.StaticJS)) {
-        return event.respondWith(
-            cacheStrategies.staleWhileRevalidate.apply(event, {
-                cacheName: Caches.StaticJS,
-            }),
-        );
-    }
-
-    if(matcher(request.url, Caches.StaticCSS)) {
-        return event.respondWith(
-            cacheStrategies.staleWhileRevalidate.apply(event, {
-                cacheName: Caches.StaticCSS,
-            }),
-        );
-    }
-
-    event.respondWith(fetch(event.request));
 });
 
-self.addEventListener("message", (event: MessageEvent) => {
-    if(event.data === "PRECACHE_ROUTES") {
-        console.log("PRECACHE_ROUTES", event.data);
+self.addEventListener("message", async(event: MessageEvent) => {
+    if(event.data && event.data.type === "CACHE_ROUTE") {
+        const cache = await caches.open(Caches.Routes);
+        const url = event.data.payload as string;
+
+        if(!url) return;
+
+        const request = new Request(url);
+
+        const exist = await cache.match(url);
+        if (exist) return;
+
+        const response = await fetch(request);
+        if (!response.ok) return;
+
+        return cacheService.addOne(cache, request, response);
     }
 });

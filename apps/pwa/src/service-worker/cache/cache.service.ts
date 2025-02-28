@@ -1,17 +1,14 @@
-import { Context } from "./context";
-import { matcher, matches } from "./matcher";
+import { ctx } from "./context";
+import cacheConfig from "./cache.config";
 
 export type CacheParams = {
     cacheName: string;
     ttl?: number;
+    networkTimeout?: number,
 };
 
 export class CacheService {
-    constructor(
-        public ctx: Context,
-    ) {}
-
-    async addOne(cache: Cache, req: Request, res: Response, params: CacheParams) {
+    async addOne(cache: Cache, req: Request, res: Response, params: Partial<CacheParams> = {}) {
         let response: Response = res;
 
         if(params.ttl) {
@@ -20,7 +17,7 @@ export class CacheService {
                 statusText: res.statusText,
                 headers: new Headers({
                     ...res.headers,
-                    ["X-Cached-At"]: new Date().toISOString(),
+                    [ctx.cacheTimestampKey]: new Date().toISOString(),
                 }),
             });
         }
@@ -28,16 +25,17 @@ export class CacheService {
         return cache.put(req, response);
     }
 
-
     async precacheStatic(assets: string[]): Promise<unknown[]> {
-        // eslint-disable-next-line @typescript-eslint/no-unused-vars
-        const t: Promise<any>[] = matches.map(([_, cache]) => {
-            const currentCache = assets.filter(url => matcher(url, cache));
-            return caches.open(cache)
-                .then(c => c.addAll(
-                    currentCache.map(item => encodeURI(item)),
-                ));
-        });
+         
+        const t = cacheConfig.map(
+            async({ cache, validator }) => {
+                const currentCache = assets.filter(url => url.match(validator));
+                return caches.open(cache)
+                    .then(c => c.addAll(
+                        currentCache.map(item => encodeURI(item)),
+                    ));
+            },
+        );
 
         return Promise.all(t);
     }
@@ -47,14 +45,14 @@ export class CacheService {
 
         const now = Date.now();
 
-        if(now - this.ctx.lastInvalidationTime > params.ttl) {
+        if(now - ctx.lastInvalidationTime > params.ttl) {
             const keys = await cache.keys();
 
             for (const request of keys) {
                 const response = await cache.match(request);
                 if(!response) continue;
 
-                const cacheDate = response.headers.get("X-Cached-At");
+                const cacheDate = response.headers.get(ctx.cacheTimestampKey);
                 if(!cacheDate) continue;
 
                 const cachedDate = new Date(cacheDate);
@@ -64,7 +62,9 @@ export class CacheService {
                 }
             }
 
-            this.ctx.lastInvalidationTime = now;
+            ctx.lastInvalidationTime = now;
         }
     }
 }
+
+export default new CacheService();

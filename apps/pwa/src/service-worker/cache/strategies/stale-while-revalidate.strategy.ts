@@ -1,10 +1,9 @@
-import { Context } from "../context";
+import { IStrategy } from "../types";
 import { CacheParams, CacheService } from "../cache.service";
 
-export class StaleWhileRevalidate {
+export class StaleWhileRevalidate implements IStrategy {
 
     constructor(
-        private ctx: Context,
         private readonly cacheService: CacheService,
     ) {}
 

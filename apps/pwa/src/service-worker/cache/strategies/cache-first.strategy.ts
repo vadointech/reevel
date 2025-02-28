@@ -1,10 +1,9 @@
-import { Context } from "@/service-worker/cache/context";
+import { IStrategy } from "../types";
 import { CacheService, CacheParams } from "../cache.service";
 
-export class CacheFirst {
+export class CacheFirst implements IStrategy {
 
     constructor(
-        private ctx: Context,
         private readonly cacheService: CacheService,
     ) {}
 
