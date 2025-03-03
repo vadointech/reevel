@@ -62,7 +62,8 @@ export const RecommendationDrawer = ({ }: RecommendationDrawer.Props) => {
                                 backgroundText="Games"
                                 colorFrom="#7D9A5D"
                                 colorTo="#4F6F3A"
-                            />                            <CollectionCard
+                            />
+                            <CollectionCard
                                 title="Games"
                                 city="Vinn"
                                 emoji="🚜"

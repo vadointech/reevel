@@ -4,7 +4,7 @@ import styles from "./styles.module.scss";
 import { ArrowBack } from "@/components/icons";
 
 export namespace CollectionCard {
-    export type Props = ComponentProps<"input"> & {
+    export type Props = ComponentProps<"div"> & {
         title: string,
         city: string,
         emoji: string,
