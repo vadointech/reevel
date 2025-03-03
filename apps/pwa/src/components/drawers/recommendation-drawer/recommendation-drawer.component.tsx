@@ -7,6 +7,7 @@ import { Avatar, Input } from "@/components/ui";
 import { Section } from "@/components/shared/section";
 import { Search } from "@/components/icons/search";
 import { RecentCard } from "@/components/shared/recent-card/recent-card.component";
+import { CollectionCard } from "@/components/shared/collection-card";
 import { EventCard } from "@/components/shared/event-card";
 
 import image_1 from "@/../public/assets/temp/carousel2.jpg";
@@ -51,7 +52,30 @@ export const RecommendationDrawer = ({ }: RecommendationDrawer.Props) => {
                                 </Section>
 
                                 <Section title="Discover" size="small" type="All" className={styles.drawer__content__sections}>
-
+                            <CollectionCard
+                                title="Games"
+                                city="Vinn"
+                                emoji="🚜"
+                                backgroundText="Games"
+                                colorFrom="#7D9A5D"
+                                colorTo="#4F6F3A"
+                            />
+                            <CollectionCard
+                                title="Games"
+                                city="Vinn"
+                                emoji="🚜"
+                                backgroundText="Games"
+                                colorFrom="#7D9A5D"
+                                colorTo="#4F6F3A"
+                            />
+                            <CollectionCard
+                                title="Games"
+                                city="Vinn"
+                                emoji="🚜"
+                                backgroundText="Games"
+                                colorFrom="#7D9A5D"
+                                colorTo="#4F6F3A"
+                            />
                                 </Section>
 
                                 <Section title="Popular in Vinnytsia" size="small" type="All" className={styles.drawer__content__sections}>

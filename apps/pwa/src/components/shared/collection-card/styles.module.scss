@@ -1,0 +1,93 @@
+@use "@/theme/mixins";
+@use "@/theme/fonts";
+@use "@/theme/colors";
+
+
+
+.card {
+    position: relative;
+    overflow: hidden;
+
+    height: mixins.rem(148);
+    width: mixins.rem(254);
+
+    border-radius:0.5rem;
+
+    &__info {
+        
+        padding: mixins.rem(6) mixins.rem(12) mixins.rem(0);
+        &__title {
+            height: mixins.rem(52);
+
+            @include fonts.font-creata();
+            font-size: mixins.rem(42);
+            color: colors.$white;
+            font-weight:500;
+        }
+
+        &__city {
+            height: mixins.rem(18);
+            @include fonts.font-creata('base');
+            color: colors.$white;
+            opacity: 0.6;
+        }
+    }
+
+
+    &__foreground {
+        position: absolute;
+        bottom: -15%;
+        right: -5%;
+        font-size: 134px;
+    }
+
+    &__detailed {
+        width: fit-content;
+
+        display: flex;
+        align-items: center;
+        gap: mixins.rem(4);
+
+        padding: mixins.rem(42) mixins.rem(12);
+
+        &__icon {
+            width: 1rem;
+            height: 1rem;
+            background-color: colors.$white;
+            border-radius: mixins.rem(24);
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            svg {
+                transform: rotate(-45deg);
+            }
+            svg path {
+                fill: #212629
+            }
+        }
+        p {
+            @include fonts.font-creata();
+            text-transform: uppercase;
+            font-size: mixins.rem(9);
+            color: colors.$white
+        }
+    }
+
+
+    &__background {
+        width: mixins.rem(625);
+        height: mixins.rem(190);
+        opacity: 0.05;
+
+        position: absolute;
+        top: -35%;
+        left: -24%;
+        transform: rotateZ(-26deg);
+
+        @include fonts.font-creata();
+        font-size:mixins.rem(130);
+        font-weight: 500;
+        color: colors.$white;
+    }
+}   

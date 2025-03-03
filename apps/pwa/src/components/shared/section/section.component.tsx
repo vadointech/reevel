@@ -9,7 +9,8 @@ export namespace Section {
     export type Props = ComponentProps<"div"> & {
         title: string;
         type: string;
-        size?: Size
+        size?: Size;
+        cols?: boolean
     };
 }
 
@@ -18,6 +19,7 @@ export const Section = ({
     type,
     size = 'default',
     children,
+    cols,
     className,
     ...props
 }: Section.Props) => {
@@ -42,7 +44,10 @@ export const Section = ({
                 <Badge title="Public" variant="default" icon={false} />
             </div>
 
-            <div className={styles.section__items}>
+            <div className={cx(
+                styles.section__items,
+                cols && styles.section__items__cols,
+            )}>
                 {children}
             </div>
         </div>
