@@ -7,6 +7,7 @@ import { Section } from "@/components/shared/section";
 import { Search } from "@/components/icons/search";
 import { EventDate } from "@/components/ui/date";
 import { RecentCard } from "@/components/shared/recent-card/recent-card.component";
+import { EventCard } from "@/components/shared/event-card";
 
 export namespace RecommendationDrawer {
     export type Props = ComponentProps<"div"> & {
@@ -47,6 +48,10 @@ export const RecommendationDrawer = ({ }: RecommendationDrawer.Props) => {
 
                         <Section title="Discover" size="small" type="All" className={styles.drawer__content__sections}>
 
+                        </Section>
+
+                        <Section title="Popular in Vinnytsia" size="small" type="All" className={styles.drawer__content__sections}>
+                            <EventCard />
                         </Section>
                     </div>
                 </DrawerContent>

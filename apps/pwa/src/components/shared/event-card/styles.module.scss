@@ -1,0 +1,46 @@
+@use "@/theme/mixins";
+@use "@/theme/fonts";
+@use "@/theme/colors";
+
+.card {
+    position: relative;
+    width: mixins.rem(184);
+    height: mixins.rem(282);
+
+    img {
+        object-fit: cover;
+        border-radius: mixins.rem(12);
+        width: 100%;
+        height: 100%;
+    }
+
+    &::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: mixins.rem(50);
+        background: linear-gradient(180deg, 
+            rgba(33, 37, 41, 50%) 48%, 
+            rgba(0, 0, 0, 0) 100%
+        );
+        border-radius: mixins.rem(12);
+        z-index: 2;
+    }
+
+    &::after {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        height: mixins.rem(119);
+        background: linear-gradient(180deg, 
+            rgba(0, 0, 0, 0) 0%,
+            rgba(33, 37, 41, 100%) 65%
+        );
+        border-radius: mixins.rem(12);
+        z-index: 2;
+    }
+}
