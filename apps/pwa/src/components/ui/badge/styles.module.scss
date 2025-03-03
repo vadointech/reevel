@@ -20,6 +20,7 @@
 
     @include fonts.font-creata("xs", 400, 18px);
     &__variant {
+        // хз чи додавати новий варіант і змінювати стільки стилів норм
         &_date {
             height: mixins.rem(20);
             padding: mixins.rem(6);

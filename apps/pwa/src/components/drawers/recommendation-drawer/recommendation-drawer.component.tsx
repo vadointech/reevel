@@ -1,13 +1,15 @@
 import { ComponentProps } from "react";
-import cx from "classnames";
 import styles from "./styles.module.scss";
+
 import { Drawer, DrawerBody, DrawerContent, DrawerTrigger } from "@/components/shared/drawer";
+
 import { Avatar, Input } from "@/components/ui";
 import { Section } from "@/components/shared/section";
 import { Search } from "@/components/icons/search";
-import { EventDate } from "@/components/ui/date";
 import { RecentCard } from "@/components/shared/recent-card/recent-card.component";
 import { EventCard } from "@/components/shared/event-card";
+
+import image_1 from "@/../public/assets/temp/carousel2.jpg";
 
 export namespace RecommendationDrawer {
     export type Props = ComponentProps<"div"> & {
@@ -53,13 +55,27 @@ export const RecommendationDrawer = ({ }: RecommendationDrawer.Props) => {
                                 </Section>
 
                                 <Section title="Popular in Vinnytsia" size="small" type="All" className={styles.drawer__content__sections}>
-                                    <EventCard title="NYC Outdoor Movie Night" descr="Contrary to popular belief, Lorem Ipsum is not simply..." />
-                                </Section>
-                                <Section title="Popular in Vinnytsia" size="small" type="All" className={styles.drawer__content__sections}>
-                                    <EventCard title="NYC Outdoor Movie Night" descr="Contrary to popular belief, Lorem Ipsum is not simply..." />
-                                </Section>
-                                <Section title="Popular in Vinnytsia" size="small" type="All" className={styles.drawer__content__sections}>
-                                    <EventCard title="NYC Outdoor Movie Night" descr="Contrary to popular belief, Lorem Ipsum is not simply..." />
+                                    <EventCard
+                                        date={'17 Sep'}
+                                        title="NYC Outdoor Movie Night"
+                                        descr="Contrary to popular belief, Lorem Ipsum is not simply..."
+                                        author="Jimmy Smith"
+                                        src={image_1}
+                                    />
+                                    <EventCard
+                                        date={'17 Sep'}
+                                        title="NYC Outdoor Movie Night"
+                                        descr="Contrary to popular belief, Lorem Ipsum is not simply..."
+                                        author="Jimmy Smith"
+                                        src={image_1}
+                                    />
+                                    <EventCard
+                                        date={'17 Sep'}
+                                        title="NYC Outdoor Movie Night"
+                                        descr="Contrary to popular belief, Lorem Ipsum is not simply..."
+                                        author="Jimmy Smith"
+                                        src={image_1}
+                                    />
                                 </Section>
                             </div>
                         </div>

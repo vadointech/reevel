@@ -3,8 +3,6 @@ import styles from "./styles.module.scss";
 import cx from "classnames";
 import Image from "next/image";
 
-import image_1 from "@/../public/assets/temp/carousel2.jpg";
-import { EventDate } from "@/components/ui/date";
 import { IconCalendar, IconMore } from "@/components/icons";
 import { StaticImport } from "next/dist/shared/lib/get-img-props";
 import { HostedBy } from "../hosted-by";
@@ -15,10 +13,11 @@ export type Type = 'horizontal' | 'vertical'
 export namespace EventCard {
     export type Props = ComponentProps<"div"> & {
         type?: Type;
-        // author: string;
-        // data: string;
+        author: string;
+        date: string;
         title: string;
         descr: string;
+        src: string | StaticImport
     };
 }
 
@@ -26,6 +25,9 @@ export namespace EventCard {
 export const EventCard = ({
     title,
     descr,
+    src,
+    author,
+    date,
     type,
     className,
     ...props
@@ -34,15 +36,15 @@ export const EventCard = ({
         <div className={cx(styles.card, className)} {...props}>
             <Image
                 alt="image"
-                src={image_1}
+                src={src}
                 fill
             />
 
             <div className={styles.card__content}>
-                <HostedBy author='Jimmy Smith' />
+                <HostedBy author={author} />
 
                 <div className={styles.card__content__below}>
-                    <Badge title="17 Sep" variant="date" icon={<IconCalendar height={8} width={8} />} />
+                    <Badge title={date} variant="date" icon={<IconCalendar height={8} width={8} />} />
                     <h3>{title}</h3>
                     <p>{descr}</p>
                 </div>
