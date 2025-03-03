@@ -42,6 +42,7 @@ export const EventCard = ({
                 <HostedBy author='Jimmy Smith' />
 
                 <div className={styles.card__content__below}>
+                    <Badge title="17 Sep" variant="date" icon={<IconCalendar height={8} width={8} />} />
                     <h3>{title}</h3>
                     <p>{descr}</p>
                 </div>

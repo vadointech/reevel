@@ -3,7 +3,7 @@ import styles from "./styles.module.scss";
 import cx from "classnames";
 import { IconWorld } from "@/components/icons/world";
 
-export type Variant = 'default' | 'primary' | 'ghost';
+export type Variant = 'default' | 'primary' | 'ghost' | 'date';
 
 
 export namespace Badge {
@@ -32,7 +32,7 @@ export const Badge = ({
         >
             {icon ? icon : <IconWorld />}
 
-            <p>{title}</p>
+            <span>{title}</span>
         </div>
     )
 }
