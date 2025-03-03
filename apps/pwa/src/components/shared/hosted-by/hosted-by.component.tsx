@@ -1,12 +1,7 @@
 import { ComponentProps } from "react";
 import styles from "./styles.module.scss";
 import cx from "classnames";
-import Image from "next/image";
 
-import image_1 from "@/../public/assets/temp/carousel2.jpg";
-import { EventDate } from "@/components/ui/date";
-import { IconMore } from "@/components/icons";
-import { StaticImport } from "next/dist/shared/lib/get-img-props";
 import { Avatar } from "@/components/ui";
 
 

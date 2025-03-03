@@ -3,7 +3,7 @@ import styles from "./styles.module.scss";
 import cx from "classnames";
 import Image from "next/image";
 
-import { IconCalendar, IconMore } from "@/components/icons";
+import { IconCalendar } from "@/components/icons";
 import { StaticImport } from "next/dist/shared/lib/get-img-props";
 import { HostedBy } from "../hosted-by";
 import { Badge } from "@/components/ui/badge/badge.component";
