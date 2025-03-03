@@ -26,33 +26,43 @@ export const RecommendationDrawer = ({ }: RecommendationDrawer.Props) => {
 
                 </div>
                 <DrawerContent>
-                    <div className={styles.drawer__content}>
-                        <div className={styles.drawer__content__input}>
-                            <Input inputSize="default" variant="rounded" placeholder="Search events" icon={<Search />} />
-                            <Avatar size={40} variant="profile" type="custom" />
+                    <div className={styles.drawer}>
+                        <div className={styles.drawer__content}>
+                            <div className={styles.drawer__content__input}>
+                                <Input inputSize="default" variant="rounded" placeholder="Search events" icon={<Search />} />
+                                <Avatar size={40} variant="profile" type="custom" />
+                            </div>
+
+                            <div className={styles.drawer__content__scroll}>
+                                <Section title="Recent" size="small" type="All" className={styles.drawer__content__sections}>
+                                    <RecentCard title="Outdoor Movie Night" img={''} />
+                                    <RecentCard title="Outdoor Movie Night" img={''} />
+                                    <RecentCard title="Outdoor Movie Night" img={''} />
+                                    <RecentCard title="Outdoor Movie Night" img={''} />
+                                    <RecentCard title="Outdoor Movie Night" img={''} />
+                                    <RecentCard title="Outdoor Movie Night" img={''} />
+                                    <RecentCard title="Outdoor Movie Night" img={''} />
+                                    <RecentCard title="Outdoor Movie Night" img={''} />
+                                    <RecentCard title="Outdoor Movie Night" img={''} />
+                                    <RecentCard title="Outdoor Movie Night" img={''} />
+                                    <RecentCard title="Outdoor Movie Night" img={''} />
+                                </Section>
+
+                                <Section title="Discover" size="small" type="All" className={styles.drawer__content__sections}>
+
+                                </Section>
+
+                                <Section title="Popular in Vinnytsia" size="small" type="All" className={styles.drawer__content__sections}>
+                                    <EventCard title="NYC Outdoor Movie Night" descr="Contrary to popular belief, Lorem Ipsum is not simply..." />
+                                </Section>
+                                <Section title="Popular in Vinnytsia" size="small" type="All" className={styles.drawer__content__sections}>
+                                    <EventCard title="NYC Outdoor Movie Night" descr="Contrary to popular belief, Lorem Ipsum is not simply..." />
+                                </Section>
+                                <Section title="Popular in Vinnytsia" size="small" type="All" className={styles.drawer__content__sections}>
+                                    <EventCard title="NYC Outdoor Movie Night" descr="Contrary to popular belief, Lorem Ipsum is not simply..." />
+                                </Section>
+                            </div>
                         </div>
-
-                        <Section title="Recent" size="small" type="All" className={styles.drawer__content__sections}>
-                            <RecentCard title="Outdoor Movie Night" img={''} />
-                            <RecentCard title="Outdoor Movie Night" img={''} />
-                            <RecentCard title="Outdoor Movie Night" img={''} />
-                            <RecentCard title="Outdoor Movie Night" img={''} />
-                            <RecentCard title="Outdoor Movie Night" img={''} />
-                            <RecentCard title="Outdoor Movie Night" img={''} />
-                            <RecentCard title="Outdoor Movie Night" img={''} />
-                            <RecentCard title="Outdoor Movie Night" img={''} />
-                            <RecentCard title="Outdoor Movie Night" img={''} />
-                            <RecentCard title="Outdoor Movie Night" img={''} />
-                            <RecentCard title="Outdoor Movie Night" img={''} />
-                        </Section>
-
-                        <Section title="Discover" size="small" type="All" className={styles.drawer__content__sections}>
-
-                        </Section>
-
-                        <Section title="Popular in Vinnytsia" size="small" type="All" className={styles.drawer__content__sections}>
-                            <EventCard  />
-                        </Section>
                     </div>
                 </DrawerContent>
             </DrawerBody>

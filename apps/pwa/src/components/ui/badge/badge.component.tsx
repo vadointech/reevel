@@ -30,7 +30,7 @@ export const Badge = ({
         )}
             {...props}
         >
-            {icon && <IconWorld />}
+            {icon ? icon : <IconWorld />}
 
             <p>{title}</p>
         </div>
