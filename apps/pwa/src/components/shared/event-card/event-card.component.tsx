@@ -7,12 +7,18 @@ import image_1 from "@/../public/assets/temp/carousel2.jpg";
 import { EventDate } from "@/components/ui/date";
 import { IconMore } from "@/components/icons";
 import { StaticImport } from "next/dist/shared/lib/get-img-props";
+import { HostedBy } from "../hosted-by";
+import { Badge } from "@/components/ui/badge/badge.component";
 
 export type Type = 'horizontal' | 'vertical'
 
 export namespace EventCard {
     export type Props = ComponentProps<"div"> & {
         type?: Type;
+        // author: string;
+        // data: string;
+        // title: string;
+        // descr: string;
     };
 }
 
@@ -29,6 +35,15 @@ export const EventCard = ({
                 src={image_1}
                 fill
             />
+
+            <div className={styles.card__content}>
+                <HostedBy author='Jimmy Smith' />
+
+                <div className={styles.card__content__below}>
+                    <Badge title="17 Sep" variant="ghost" />
+
+                </div>
+            </div>
         </div>
     );
 }

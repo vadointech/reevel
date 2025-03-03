@@ -8,7 +8,7 @@ import { useCircularCarousel } from "@/components/shared/circular-carousel/hooks
 import styles from "./styles.module.scss";
 
 const SliderItem = () => {
-    return <Avatar size={100} />;
+    return <Avatar size={100} type="custom" variant="profile" />;
 };
 
 const slides = [
@@ -30,7 +30,7 @@ export namespace OnboardingAvatarPicker {
     export type Props = {};
 }
 
-export const OnboardingAvatarPicker = ({}: OnboardingAvatarPicker.Props) => {
+export const OnboardingAvatarPicker = ({ }: OnboardingAvatarPicker.Props) => {
 
     const carousel = useCircularCarousel({
         items: slides,

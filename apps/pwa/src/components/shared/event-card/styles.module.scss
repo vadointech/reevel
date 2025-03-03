@@ -26,7 +26,7 @@
             rgba(0, 0, 0, 0) 100%
         );
         border-radius: mixins.rem(12);
-        z-index: 2;
+        z-index: 1;
     }
 
     &::after {
@@ -41,6 +41,19 @@
             rgba(33, 37, 41, 100%) 65%
         );
         border-radius: mixins.rem(12);
-        z-index: 2;
+        z-index: 1;
+    }
+
+    &__content {
+        height: 100%;
+        position: relative;
+        z-index: 3;
+        padding: 12px;
+
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+
     }
 }
+

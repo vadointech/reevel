@@ -29,7 +29,7 @@ export const RecommendationDrawer = ({ }: RecommendationDrawer.Props) => {
                     <div className={styles.drawer__content}>
                         <div className={styles.drawer__content__input}>
                             <Input inputSize="default" variant="rounded" placeholder="Search events" icon={<Search />} />
-                            <Avatar size={40} variant="profile" />
+                            <Avatar size={40} variant="profile" type="custom" />
                         </div>
 
                         <Section title="Recent" size="small" type="All" className={styles.drawer__content__sections}>
@@ -51,7 +51,7 @@ export const RecommendationDrawer = ({ }: RecommendationDrawer.Props) => {
                         </Section>
 
                         <Section title="Popular in Vinnytsia" size="small" type="All" className={styles.drawer__content__sections}>
-                            <EventCard />
+                            <EventCard  />
                         </Section>
                     </div>
                 </DrawerContent>

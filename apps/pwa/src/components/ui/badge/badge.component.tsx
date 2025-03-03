@@ -4,20 +4,19 @@ import cx from "classnames";
 import { IconWorld } from "@/components/icons/world";
 
 export type Variant = 'default' | 'primary' | 'ghost';
-export type Type = 'Private' | 'Public'
 
 
 export namespace Badge {
     export type Props = ComponentProps<"div"> & {
         variant?: Variant;
-        type: Type;
+        title: string;
         icon?: ReactNode;
     };
 }
 
 export const Badge = ({
     variant = 'default',
-    type,
+    title,
     icon = <IconWorld />,
     children,
     className,
@@ -33,7 +32,7 @@ export const Badge = ({
         >
             {icon && <IconWorld />}
 
-            <p>{type}</p>
+            <p>{title}</p>
         </div>
     )
 }
