@@ -1,7 +1,7 @@
 import { ComponentProps } from 'react';
 
 import styles from "./styles.module.scss"
-import { Calendar } from '@/components/icons';
+import { IconCalendar } from '@/components/icons';
 
 export namespace EventDate {
     export type Props = ComponentProps<"div"> & {
@@ -16,7 +16,7 @@ export namespace EventDate {
 export const EventDate = ({ ...props }: EventDate.Props) => {
     return (
         <div className={styles.date} {...props}>
-            <Calendar />
+            <IconCalendar />
             Thuesdat, Aug 4 • 18:00
         </div>
     );

@@ -1,7 +1,7 @@
 import { ComponentProps } from "react";
 
 
-export const Calendar = (props: ComponentProps<'svg'>) => (
+export const IconCalendar = (props: ComponentProps<'svg'>) => (
   <svg
     width={12}
     height={13}

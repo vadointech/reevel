@@ -1,0 +1,16 @@
+{
+  "compilerOptions": {
+    "target": "ES2021",
+    "strictNullChecks": true,
+    "skipLibCheck": true,
+    "allowJs": true,
+    "strict": true,
+    "outDir": "./public",
+    "lib": ["ES2021", "webworker"],
+    "removeComments": true,
+    "incremental": false
+  },
+  "include": [
+    "src/service-worker.ts"
+  ]
+}

@@ -1,7 +1,7 @@
 import { ComponentProps, ReactNode } from "react";
 import styles from "./styles.module.scss";
 import cx from "classnames";
-import { World } from "@/components/icons/world";
+import { IconWorld } from "@/components/icons/world";
 
 export type Variant = 'default' | 'primary' | 'ghost';
 export type Type = 'Private' | 'Public'
@@ -18,7 +18,7 @@ export namespace Badge {
 export const Badge = ({
     variant = 'default',
     type,
-    icon = <World />,
+    icon = <IconWorld />,
     children,
     className,
     ...props
@@ -31,7 +31,7 @@ export const Badge = ({
         )}
             {...props}
         >
-            {icon && <World />}
+            {icon && <IconWorld />}
 
             <p>{type}</p>
         </div>
