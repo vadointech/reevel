@@ -8,6 +8,8 @@ import { NextIntlClientProvider } from "next-intl";
 import { ServiceWorkerProvider } from "@/service-worker/client/provider";
 import { GetSession } from "@/api/auth/get-session";
 import { SessionStoreProvider } from "@/modules/auth/session";
+import { ReactQueryClientProvider } from "@/providers/react-query-provider";
+import { PersistentMapProvider } from "@/components/persistent-map/map.provider";
 
 import "../globals.scss";
 
@@ -42,9 +44,11 @@ export default async function RootLayout({ children, params }: PropsWithChildren
                         locale={locale}
                         messages={messages}
                     >
-                        <SessionStoreProvider init={[data]}>
-                            { children }
-                        </SessionStoreProvider>
+                        <ReactQueryClientProvider>
+                            <SessionStoreProvider init={[data]}>
+                                { children }
+                            </SessionStoreProvider>
+                        </ReactQueryClientProvider>
                     </NextIntlClientProvider>
                 </ServiceWorkerProvider>
             </body>

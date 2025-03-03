@@ -1,7 +1,7 @@
 import { IMapStore } from "../types";
 import { RefObject } from "react";
-import { EasingOptions } from "mapbox-gl";
-import { MapRef } from "react-map-gl/mapbox";
+import { EasingOptions, LngLatBoundsLike } from "mapbox-gl";
+import { MapRef, ViewState } from "react-map-gl/mapbox";
 import { action, makeObservable } from "mobx";
 
 export class MapStore implements IMapStore {
@@ -9,6 +9,11 @@ export class MapStore implements IMapStore {
     mapStyleLight?: string;
     accessToken?: string;
     mapRef: RefObject<MapRef | null> = { current: null };
+
+    viewsStateConfig: Partial<ViewState> = {
+        zoom: 12,
+        pitch: 45,
+    };
 
     constructor(params: {
         mapStyleDark?: string;
@@ -32,7 +37,17 @@ export class MapStore implements IMapStore {
     flyTo(coordinates: [number, number], options: EasingOptions): void {
         if(this.mapRef.current) {
             this.mapRef.current.flyTo({
+                ...this.viewsStateConfig,
                 center: coordinates,
+                ...options,
+            });
+        }
+    }
+
+    fitBounds(bounds: LngLatBoundsLike, options?: EasingOptions): void{
+        if(this.mapRef.current) {
+            this.mapRef.current.fitBounds(bounds, {
+                pitch: 45,
                 ...options,
             });
         }

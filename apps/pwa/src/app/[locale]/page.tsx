@@ -15,14 +15,14 @@ export default observer(function Home() {
 
     return (
         <div onClick={() => sessionStore.updateSession({ id: "ha-ha" })}>
-            
+
             <Image
                 width={100}
                 height={100}
                 src={"/assets/temp/avatar.png"}
                 alt={""}
             />
-            
+
             <Drawer>
                 <DrawerTrigger>
                     <br />

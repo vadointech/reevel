@@ -1,6 +1,7 @@
 import { useCallback, useState } from "react";
 import Supercluster from "supercluster";
 import { MapEvent, ViewState, ViewStateChangeEvent } from "react-map-gl/mapbox";
+import { useMapStore } from "@/components/map/api/stores/map-store.provider";
 
 type Bounds = [number, number, number, number];
 
@@ -9,13 +10,9 @@ export function useMapbox(
     initialViewState: Partial<ViewState> = {},
 ) {
     const [viewState, setViewState] = useState<Partial<ViewState>>({
-        latitude: 49.23188823685999,
-        longitude: 28.468377628194958,
-        zoom: 12,
-        pitch: 45,
         ...initialViewState,
     });
-    
+
     const updateViewState = useCallback((e: ViewStateChangeEvent) => {
         setViewState(e.viewState);
     }, []);

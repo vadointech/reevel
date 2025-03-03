@@ -1,7 +1,7 @@
 "use client";
 
 import { useCallback, useRef } from "react";
-import MapboxGLMap, { MapEvent, MapRef, Marker, ViewState } from "react-map-gl/mapbox";
+import MapboxGLMap, { MapEvent, MapRef, Marker, MapProps } from "react-map-gl/mapbox";
 import Supercluster from "supercluster";
 import { useMapbox, useMapCluster } from "./hooks";
 import { ClusterMarker, EventMarker } from "./marker";
@@ -13,15 +13,16 @@ import "mapbox-gl/dist/mapbox-gl.css";
 import { mockGeoJsonData } from "./data.mock";
 
 export namespace Map {
-    export type Props = {
+    export type Props = MapProps & {
         points?: Supercluster.PointFeature<unknown>[]
-        initialViewState?: Partial<ViewState>
     };
 }
 
 export const Map = ({
     points = mockGeoJsonData,
     initialViewState,
+    onLoad,
+    ...props
 }: Map.Props) => {
     const ref = useRef<MapRef>(null);
 
@@ -77,11 +78,15 @@ export const Map = ({
                 updateViewState(e);
                 updateBounds(e);
             }}
-            onLoad={handleLoad}
+            onLoad={(e) => {
+                handleLoad(e);
+                onLoad?.(e);
+            }}
             style={{
                 width: "100%",
                 height: "100%",
             }}
+            {...props}
         >
             {
                 clusters.map(cluster => {
