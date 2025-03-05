@@ -27,18 +27,23 @@ export class AuthController {
         @Res({ passthrough: true }) response: Response,
     ) {
 
-        if(!code) throw new BadRequestException("Bad Request");
+        if(!code) {
+            return response.redirect(this.configService.env("PWA_PUBLIC_URL") + "/login");
+        }
 
-        const user = await this.authService.getGoogleOAuthUser(code);
+        try {
+            const user = await this.authService.getGoogleOAuthUser(code);
+            const { newUser, session } = await this.authService.authWithGoogle(user);
 
-        const { newUser, session } = await this.authService.authWithGoogle(user);
+            this.jwtStrategy.setJwtSession(response, session);
 
-        this.jwtStrategy.setJwtSession(response, session);
-
-        if(newUser) {
-            return response.redirect(this.configService.env("PWA_PUBLIC_URL") + "/onboarding/photo");
-        } else {
-            return response.redirect(this.configService.env("PWA_PUBLIC_URL"));
+            if(newUser) {
+                return response.redirect(this.configService.env("PWA_PUBLIC_URL") + "/onboarding/photo");
+            } else {
+                return response.redirect(this.configService.env("PWA_PUBLIC_URL"));
+            }
+        } catch {
+            return response.redirect(this.configService.env("PWA_PUBLIC_URL") + "/login");
         }
     }
 
@@ -47,6 +52,6 @@ export class AuthController {
         @Res({ passthrough: true }) response: Response,
     ) {
         this.jwtStrategy.clearJwtSession(response);
-        return response.redirect(this.configService.env("PWA_PUBLIC_URL") + "/login");
+        return true;
     }
 }

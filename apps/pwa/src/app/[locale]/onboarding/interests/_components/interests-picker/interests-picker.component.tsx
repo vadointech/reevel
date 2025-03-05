@@ -1,44 +1,62 @@
 "use client";
 
-import { InterestCard } from "@/components/shared/interest-card";
+import { unstable_ViewTransition as ViewTransition } from "react";
+import { InterestCard } from "@/components/shared";
+import { GetInitialInterests } from "@/api/interests";
+import { useInterestPicker, useOnboardingStore } from "@/features/onboarding";
+import { observer } from "mobx-react-lite";
+
+import styles from "./styles.module.scss";
 
 export namespace OnboardingInterestsPicker {
-    export type Props = {};
+    export type Props = {
+        interests: GetInitialInterests.TOutput
+    };
 }
 
-const interests = [
-    { name: "Sport", icon: "🥊" },
-    { name: "Music", icon: "🤿" },
-    { name: "Travel", icon: "🥊" },
-    { name: "Sport", icon: "🥊" },
-    { name: "Sport", icon: "⛑️" },
-    { name: "Music", icon: "🥊" },
-    { name: "Travel", icon: "🥊" },
-    { name: "Sport", icon: "🥊" },
-    { name: "Sport", icon: "🤿" },
-    { name: "Music", icon: "🥊" },
-    { name: "Sport", icon: "🥊" },
-    { name: "Sport", icon: "🤿" },
-    { name: "Music", icon: "🥊" },
-    { name: "Travel", icon: "⛑️" },
-    { name: "Travel", icon: "⛑️" },
-    { name: "Travel", icon: "⛑️" },
-];
+export const OnboardingInterestsPicker = observer(({
+    interests: interestsInit,
+}: OnboardingInterestsPicker.Props) => {
+    const {
+        interests,
+        handlePickInterest,
+    } = useInterestPicker(interestsInit);
 
-export const OnboardingInterestsPicker = ({}: OnboardingInterestsPicker.Props) => {
+    const onboardingStore = useOnboardingStore();
+
     return (
-        <>
+        <div className={styles.picker}>
             {
-                interests.map((item, i) => (
-                    <InterestCard
-                        icon={item.icon}
-                        text={item.name}
-                        key={i}
-                        selected={false}
-                        onChange={() => {}}
-                    />
+                interests.map((interest) => (
+                    <ViewTransition
+                        key={interest.slug}
+                        name={interest.slug}
+                    >
+                        <InterestItem
+                            {...interest}
+                            key={interest.slug}
+                            selected={onboardingStore.interests.includes(interest.slug)}
+                            handlePickInterest={handlePickInterest}
+                        />
+                    </ViewTransition>
                 ))
             }
-        </>
+        </div>
     );
-};
+});
+
+const InterestItem = observer((
+    { selected, handlePickInterest, ...interest }: GetInitialInterests.TOutput[number] & {
+        selected: boolean;
+        handlePickInterest: (slug: string) => void
+    },
+) => {
+    return (
+        <InterestCard
+            selected={selected}
+            icon={interest.icon}
+            text={interest.title_en}
+            onChange={() => handlePickInterest(interest.slug)}
+        />
+    );
+});

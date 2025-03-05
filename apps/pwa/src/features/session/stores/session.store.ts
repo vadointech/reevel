@@ -1,10 +1,13 @@
+"use client";
+
 import { UserEntity } from "@/entities/user";
-import { Logout } from "@/api/auth/logout";
 import { action, computed, makeObservable, observable } from "mobx";
 import { localStoreService } from "@/lib/local-store.service";
-// import { serviceWorkerService } from "@/lib/service-worker.service";
+import { UserProfileEntity } from "@/entities/profile";
+import { createMobxStoreProvider } from "@/lib/mobx-store.provider";
+import { logout } from "@/api/auth/logout";
 
-export class SessionStore {
+class SessionStore {
     user: Maybe<UserEntity> = null;
 
     constructor(session: Maybe<UserEntity>) {
@@ -22,11 +25,12 @@ export class SessionStore {
         return !!this.user;
     }
 
-    updateSession(user: Partial<UserEntity>) {
+    updateSession(user: Partial<{ user: Partial<UserEntity>; profile: Partial<UserProfileEntity>}>) {
         if(!this.user) return;
         this.user = {
             ...this.user,
-            ...user,
+            ...user.user,
+            ...user.profile,
         };
         localStoreService.setItem("session", this.user);
     }
@@ -34,7 +38,7 @@ export class SessionStore {
     async logout() {
         this.user = null;
         localStoreService.removeItem("session");
-        await Logout.query(null);
+        await logout();
     }
 
     private initSession(session: Maybe<UserEntity>) {
@@ -48,3 +52,5 @@ export class SessionStore {
         }
     }
 }
+
+export const [SessionStoreProvider, useSessionStore] = createMobxStoreProvider(SessionStore);

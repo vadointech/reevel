@@ -3,10 +3,10 @@
 import { PropsWithChildren } from "react";
 
 export const StandaloneProvider = ({ children }: PropsWithChildren) => {
-    const isStandalone = ("standalone" in window.navigator) && (window.navigator["standalone"]);
+    const isStandalone = typeof window !== "undefined" && ("standalone" in window.navigator) && (window.navigator["standalone"]);
 
     if(isStandalone) return (
-        <div className="standalone">
+        <div className={"standalone"}>
             { children }
         </div>
     );

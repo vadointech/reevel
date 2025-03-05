@@ -8,7 +8,7 @@ export default function Page() {
     return (
         <>
             <Container>
-                <OnboardingProgress />
+                <OnboardingProgress step={3} />
             </Container>
             <Container>
                 <div

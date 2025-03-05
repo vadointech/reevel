@@ -1,42 +1,48 @@
 "use client";
 
 import { Avatar } from "@/components/ui";
-import { CircularCarousel } from "@/components/shared/circular-carousel";
+import { useAvatarPicker } from "@/features/onboarding";
+import { CircularCarousel } from "@/components/shared";
 import { ActiveScale } from "@/components/shared/circular-carousel/plugins";
 import { useCircularCarousel } from "@/components/shared/circular-carousel/hooks";
 
 import styles from "./styles.module.scss";
 
-const SliderItem = () => {
-    return <Avatar size={100} />;
+const SliderItem = ({ src }: { src?: string }) => {
+    return <Avatar src={src} size={100} />;
 };
 
-const slides = [
-    <SliderItem />,
-    <SliderItem />,
-    <SliderItem />,
-    <SliderItem />,
-    <SliderItem />,
-    <SliderItem />,
-    <SliderItem />,
-    <SliderItem />,
-    <SliderItem />,
-    <SliderItem />,
-    <SliderItem />,
-    <SliderItem />,
-];
-
 export namespace OnboardingAvatarPicker {
-    export type Props = {};
+    export type Props = {
+        defaultAvatars: string[]
+    };
 }
 
-export const OnboardingAvatarPicker = ({}: OnboardingAvatarPicker.Props) => {
+export const OnboardingAvatarPicker = ({
+    defaultAvatars,
+}: OnboardingAvatarPicker.Props) => {
+
+    const {
+        avatars,
+        handleSetAvatar,
+    } = useAvatarPicker(defaultAvatars);
+
+    const slides = avatars.map((item) => (
+        <SliderItem key={item} src={item} />
+    ));
 
     const carousel = useCircularCarousel({
         items: slides,
         itemWidth: 146,
         itemHeight: 100,
         plugins: [ActiveScale],
+        handlers: {
+            onChange(carousel) {
+                handleSetAvatar(
+                    carousel.api.selectedScrollSnap(),
+                );
+            },
+        },
     });
 
     return (

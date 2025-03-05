@@ -24,6 +24,5 @@ export class UpdateProfileDto {
 
     @IsArray()
     @IsOptional()
-    @IsString({ each: true })
     interests?: string[];
 }

@@ -34,9 +34,17 @@ export class UserService {
     async getUserSession(userId: string) {
         return this.userRepository.findOne({
             where: { id: userId },
+            relations: {
+                profile: true,
+            },
             select: {
                 id: true,
                 email: true,
+                profile: {
+                    picture: true,
+                    fullName: true,
+                    bio: true,
+                },
             },
         });
     }

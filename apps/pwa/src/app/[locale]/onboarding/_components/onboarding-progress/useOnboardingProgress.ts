@@ -1,6 +1,6 @@
 "use client";
 
-import { useSessionStore } from "@/modules/auth/session";
+import { useSessionStore } from "../../../../../features/session";
 import { usePathname, useRouter } from "@/i18n/routing";
 import { AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
 

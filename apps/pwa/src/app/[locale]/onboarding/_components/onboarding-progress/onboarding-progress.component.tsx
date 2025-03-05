@@ -1,18 +1,20 @@
 "use client";
 
 import { ProgressBar } from "@/components/shared";
-import { useOnboardingProgress } from "./useOnboardingProgress";
+import { useOnboardingProgress } from "@/features/onboarding";
 
 export namespace OnboardingProgress {
-
+    export type Props = {
+        step: number;
+    };
 }
 
-export const OnboardingProgress = () => {
+export const OnboardingProgress = ({ step }: OnboardingProgress.Props) => {
+
     const {
-        step,
-        handleSkip,
-        handlePrev,
-        handleQuit,
+        handleSkipStep,
+        handlePrevStep,
+        handleQuitOnboarding,
     } = useOnboardingProgress();
 
     const isFirstStep = step === 0;
@@ -22,8 +24,8 @@ export const OnboardingProgress = () => {
             stepCount={4}
             currentStep={step}
             type={isFirstStep ? "close" : "back"}
-            onControlRightClick={handleSkip}
-            onControlLeftClick={isFirstStep ? handleQuit: handlePrev}
+            onControlRightClick={handleSkipStep}
+            onControlLeftClick={isFirstStep ? handleQuitOnboarding: handlePrevStep}
         />
     );
 };

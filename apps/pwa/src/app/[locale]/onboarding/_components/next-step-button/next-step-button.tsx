@@ -1,9 +1,19 @@
 "use client";
 
 import { Button } from "@/components/ui";
-import { useOnboardingProgress } from "../onboarding-progress";
+import { observer } from "mobx-react-lite";
+import { useOnboardingUpdate } from "@/features/onboarding";
 
-export const NextStepButton = (props: Button.Props) => {
-    const { handleNext } = useOnboardingProgress();
-    return <Button {...props} onClick={handleNext} />;
-};
+export const NextStepButton = observer((props: Button.Props) => {
+
+    const {
+        handleUpdateProfile,
+    } = useOnboardingUpdate();
+
+    return (
+        <Button
+            {...props}
+            onClick={handleUpdateProfile}
+        />
+    );
+});

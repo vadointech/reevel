@@ -1,21 +1,23 @@
-import { Avatar, Container } from "@/components/ui";
+"use client";
 
 import { ArrowBack } from "@/components/icons";
-import { NextStepButton, OnboardingProgress, OnboardingTextBlock } from "../_components";
-import { Input } from "@/components/ui/input";
+import { Avatar, Container } from "@/components/ui";
+import { NextStepButton, OnboardingBioForm, OnboardingProgress, OnboardingTextBlock } from "../_components";
+import { useOnboardingStore } from "@/features/onboarding/stores/onboarding.store";
 
 import styles from "./styles.module.scss";
 
 export default function Page() {
+    const onboardingStore = useOnboardingStore();
     return (
         <>
             <Container>
-                <OnboardingProgress />
+                <OnboardingProgress step={1} />
             </Container>
             <Container>
                 <div className={styles.page__info}>
                     <div className={styles.page__circle}>
-                        <Avatar size={140} />
+                        <Avatar src={onboardingStore.picture} size={140} />
                     </div>
                     <OnboardingTextBlock
                         title={"Tell us About Yourself"}
@@ -23,23 +25,7 @@ export default function Page() {
                         className={styles.page__text}
                     />
                 </div>
-                <div className={styles.page__data}>
-                    <Input
-                        label="Full name"
-                        placeholder={"Enter your name"}
-                        variant="default"
-                        inputSize={"default"}
-                        hint="It's a hint"
-
-                    />
-                    <Input
-                        label="Bio"
-                        placeholder={"Enter short bio"}
-                        variant="default"
-                        inputSize={"large"}
-                        error="error"
-                    />
-                </div>
+                <OnboardingBioForm />
             </Container>
 
             <Container className={styles.page__buttons}>
@@ -52,4 +38,4 @@ export default function Page() {
             </Container>
         </>
     );
-}
+};

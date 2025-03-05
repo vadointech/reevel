@@ -1,11 +1,14 @@
+"use server";
+
 import { UserEntity } from "@/entities/user";
-import { getSessionRequest } from "./action";
+import { serverFetcher } from "@/api/server";
+import { headers } from "next/headers";
 
 export namespace GetSession {
-    export const url = "/users/me";
-
     export type TInput = null;
     export type TOutput = UserEntity;
+}
 
-    export const action = getSessionRequest;
+export async function getSession() {
+    return serverFetcher(await headers()).get<GetSession.TInput, GetSession.TOutput>("/users/me");
 }

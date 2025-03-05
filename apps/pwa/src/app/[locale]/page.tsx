@@ -2,7 +2,7 @@
 
 import { useTranslations } from "next-intl";
 import { Drawer, DrawerBody, DrawerContent, DrawerTrigger } from "@/components/shared/drawer";
-import { useSessionStore } from "@/modules/auth/session";
+import { useSessionStore } from "../../features/session";
 import { observer } from "mobx-react-lite";
 import { Link } from "@/i18n/routing";
 import Image from "next/image";
@@ -14,7 +14,7 @@ export default observer(function Home() {
     const sessionStore = useSessionStore();
 
     return (
-        <div onClick={() => sessionStore.updateSession({ id: "ha-ha" })}>
+        <div>
 
             <Image
                 width={100}

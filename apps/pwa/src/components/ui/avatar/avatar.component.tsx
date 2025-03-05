@@ -1,4 +1,5 @@
 import Image from "next/image";
+import { StaticImport } from "next/dist/shared/lib/get-img-props";
 
 import styles from "./styles.module.scss";
 
@@ -13,11 +14,13 @@ export namespace Avatar {
     export type Props = {
         variant?: Variant;
         size?: Size | number;
+        src?: string | StaticImport;
     };
 }
 
 export const Avatar = ({
     size = "default",
+    src = avatar,
 }: Avatar.Props) => {
 
     const sizeMap: Record<Avatar.Size, number> = {
@@ -36,7 +39,7 @@ export const Avatar = ({
         >
             <Image
                 fill
-                src={avatar}
+                src={src}
                 alt={"avatar"}
             />
         </div>

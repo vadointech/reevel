@@ -1,12 +1,15 @@
-import { getGoogleOAuthLink } from "./action";
+"use server";
+
+import { serverFetcher } from "@/api/server";
+import { headers } from "next/headers";
 
 export namespace GetGoogleOAuthLink {
-    export const url = "/auth/google";
-
     export type TInput = null;
     export type TOutput = {
         link: string;
     };
-
-    export const action = getGoogleOAuthLink;
 }
+
+export async function getGoogleOAuthLink() {
+    return serverFetcher(await headers()).get<GetGoogleOAuthLink.TInput, GetGoogleOAuthLink.TOutput>("/auth/google");
+};

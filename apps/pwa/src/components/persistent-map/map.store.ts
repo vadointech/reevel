@@ -1,5 +1,5 @@
 import { Point } from "./types";
-import { action, makeObservable, observable } from "mobx";
+import { makeAutoObservable } from "mobx";
 import { IMapboxProvider } from "./providers/mapbox";
 
 type MapStoreOptions = {
@@ -13,15 +13,7 @@ export class MapStore{
         private readonly provider: IMapboxProvider,
         options?: MapStoreOptions,
     ) {
-        makeObservable(this, {
-            points: observable,
-            setPoints: action,
-        });
-
+        makeAutoObservable(this);
         this.points = options?.points || [];
-    }
-
-    setPoints(points: Point[]) {
-
     }
 }

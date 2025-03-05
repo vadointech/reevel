@@ -1,5 +1,7 @@
 import { Controller, Get, Param } from "@nestjs/common";
 import { InterestsService } from "./interests.service";
+import { Session } from "@/decorators";
+import { ServerSession } from "@/modules/auth/dto/jwt.dto";
 
 @Controller("interests")
 export class InterestsController {
@@ -8,8 +10,10 @@ export class InterestsController {
     ) {}
 
     @Get("initials")
-    async getInitials() {
-        return this.interestsService.getInitialInterests();
+    async getInitials(
+        @Session() session: ServerSession,
+    ) {
+        return this.interestsService.getInitialInterests(session.user.id);
     }
 
     @Get("related/:slug")

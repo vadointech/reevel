@@ -1,79 +1,134 @@
-import { ComponentProps, ReactNode, useId } from "react";
+import { ComponentProps, memo, ReactNode, useId } from "react";
 import styles from "./styles.module.scss";
 import cx from "classnames";
 
-
 export namespace Input {
     export type Variant = "default" | "rounded";
-    export type Type = "default" | "large";
     export type Background = "default" | "muted";
 
-
-    export type Props = ComponentProps<"input"> & {
+    export type BaseProps = {
         variant?: Variant;
         label?: string;
-        placeholder: string;
+        placeholder?: string;
         hint?: string;
-        inputSize?: Type;
         error?: string;
         background?: Background;
         icon?: ReactNode
+        children?: ReactNode
     };
+
+    export type InputProps = ComponentProps<"input"> & BaseProps;
+    export type TextAreaProps = ComponentProps<"textarea"> & BaseProps;
 }
 
-export const Input = ({ variant = "default", error, label, placeholder, hint, inputSize = "default", background = "default", icon, ...props }: Input.Props) => {
+const InputBase = memo(({
+    label,
+    hint,
+    error,
+    icon,
+    children,
+}: Input.BaseProps) => {
     const id = useId();
-
-    const InputMode: Record<Input.Type, ReactNode> = {
-        default: (
-            <input
-                id={id}
-                placeholder={placeholder}
-                className={cx(
-                    styles.container__input,
-                    styles[`container__input__variant_${variant}`],
-                    styles[`container__input__size_${inputSize}`],
-                    styles[`container__input__background_${background}`],
-                    icon ? styles.container__input__withIcon : false,
-                )}
-                {...props}
-            />
-        ),
-        large: (
-            <textarea
-                id={id}
-                placeholder={placeholder}
-                className={cx(
-                    styles.container__input,
-                    styles[`container__input__variant_${variant}`],
-                    styles[`container__input__size_${inputSize}`],
-                    styles[`container__input__background_${background}`],
-
-                )}
-            />
-        ),
-    };
-
     return (
         <div className={styles.container}>
-            {label && (
-                <label htmlFor={id} className={styles.container__label}>{label}</label>
-            )}
+            {
+                label ? (
+                    <label htmlFor={id} className={styles.container__label}>
+                        { label }
+                    </label>
+                ) : null
+            }
 
 
             <div className={styles.container__input__wrapper}>
-                {icon && <div className={styles.container__input__icon}>{icon}</div>}
+                {
+                    icon ? (
+                        <div className={styles.container__input__icon}>
+                            { icon }
+                        </div>
+                    ) : null
+                }
 
-                {InputMode[inputSize]}
+                { children }
             </div>
 
-            {(error || hint) &&
-                <span className={cx(
-                    styles.container__hint,
-                    error && styles.container__error,
-                )}> {error || hint} </span>
-
+            {
+                (error || hint) ? (
+                    <span
+                        className={cx(
+                            styles.container__hint,
+                            error && styles.container__error,
+                        )}
+                    >
+                        { error || hint }
+                    </span>
+                ) : null
             }
-        </div >
+        </div>
     );
-};
+});
+
+export const Input = memo(({
+    label,
+    hint,
+    error,
+    icon,
+    variant,
+    background,
+    className,
+    ...props
+}: Input.InputProps) => {
+    return (
+        <InputBase
+            label={label}
+            hint={hint}
+            error={error}
+            icon={icon}
+        >
+            <input
+                className={cx(
+                    styles.container__input,
+                    styles.container__input__size_default,
+                    styles[`container__input__variant_${variant}`],
+                    styles[`container__input__background_${background}`],
+                    icon ? styles.container__input__withIcon : false,
+                    className,
+                )}
+                {...props}
+            />
+        </InputBase>
+    );
+});
+
+
+export const TextArea = memo(({
+    label,
+    hint,
+    error,
+    icon,
+    variant,
+    background,
+    className,
+    ...props
+}: Input.TextAreaProps) => {
+    return (
+        <InputBase
+            label={label}
+            hint={hint}
+            error={error}
+            icon={icon}
+        >
+            <textarea
+                className={cx(
+                    styles.container__input,
+                    styles.container__input__size_large,
+                    styles[`container__input__variant_${variant}`],
+                    styles[`container__input__background_${background}`],
+                    icon ? styles.container__input__withIcon : false,
+                    className,
+                )}
+                {...props}
+            />
+        </InputBase>
+    );
+});

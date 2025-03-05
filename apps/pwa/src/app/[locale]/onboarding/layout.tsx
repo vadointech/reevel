@@ -1,9 +1,14 @@
 import { PropsWithChildren } from "react";
+import { PersistentMapProvider } from "@/components/persistent-map/map.provider";
+import { OnboardingStoreProvider } from "@/features/onboarding/stores/onboarding.store";
 
 import styles from "./styles.module.scss";
-import { PersistentMapProvider } from "@/components/persistent-map/map.provider";
+import { getUserProfile } from "@/api/profile/get-one";
 
 export default async function OnboardingLayout({ children }: PropsWithChildren) {
+
+    const { data } = await getUserProfile();
+
     return (
         <PersistentMapProvider
             mapAccessToken={process.env.MAPBOX_ACESS_TOKEN}
@@ -16,9 +21,13 @@ export default async function OnboardingLayout({ children }: PropsWithChildren) 
                 pitch: 45,
             }}
         >
-            <div className={styles.layout}>
-                { children }
-            </div>
+            <OnboardingStoreProvider
+                init={[data ? data : {}]}
+            >
+                <div className={styles.layout}>
+                    { children }
+                </div>
+            </OnboardingStoreProvider>
         </PersistentMapProvider>
     );
 }

@@ -4,7 +4,7 @@
 @use "@/theme/fonts";
 
   .label {
-    width: fit-content;
+    width: mixins.rem(72);
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -40,11 +40,10 @@
     transform: translate(-50%, -50%);
     font-size: mixins.rem(24);
     pointer-events: none;
-    font-size: 2rem;
   }
 
   .text {
+    text-align: center;
     font-size: mixins.rem(14);
-			@include fonts.font-creata("xs", 400, 18px);
-
+    @include fonts.font-creata("xs", 400, 18px);
   }

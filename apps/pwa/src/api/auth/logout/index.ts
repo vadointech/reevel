@@ -1,10 +1,10 @@
-import { logoutQuery } from "./query";
+import { clientFetcher } from "@/api/client";
 
 export namespace Logout {
-    export const url = "/auth/logout";
-
     export type TInput = null;
     export type TOutput = null;
+}
 
-    export const query = logoutQuery;
+export async function logout() {
+    return clientFetcher.get<Logout.TInput, Logout.TOutput>("auth//logout");
 }

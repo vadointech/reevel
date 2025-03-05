@@ -6,10 +6,10 @@ import { getMessages, setRequestLocale } from "next-intl/server";
 import { fonts } from "@/fonts.config";
 import { NextIntlClientProvider } from "next-intl";
 import { ServiceWorkerProvider } from "@/service-worker/client/provider";
-import { GetSession } from "@/api/auth/get-session";
-import { SessionStoreProvider } from "@/modules/auth/session";
+import { getSession } from "@/api/auth/get-session";
 import { ReactQueryClientProvider } from "@/providers/react-query-provider";
-import { PersistentMapProvider } from "@/components/persistent-map/map.provider";
+import { StandaloneProvider } from "@/providers/standalone.provider";
+import { SessionStoreProvider } from "@/features/session";
 
 import "../globals.scss";
 
@@ -31,7 +31,7 @@ export default async function RootLayout({ children, params }: PropsWithChildren
     setRequestLocale(locale);
     const messages = await getMessages();
 
-    const { data } = await GetSession.action(null);
+    const { data } = await getSession();
 
     return (
         <html lang={locale}>
@@ -39,14 +39,16 @@ export default async function RootLayout({ children, params }: PropsWithChildren
                 <ReactScan />
             </head>
             <body className={fonts}>
-                <ServiceWorkerProvider register={process.env.MODE === "PROD"}>
+                <ServiceWorkerProvider register={process.env.SETVICE_WORKER === "true"}>
                     <NextIntlClientProvider
                         locale={locale}
                         messages={messages}
                     >
                         <ReactQueryClientProvider>
                             <SessionStoreProvider init={[data]}>
-                                { children }
+                                <StandaloneProvider>
+                                    { children }
+                                </StandaloneProvider>
                             </SessionStoreProvider>
                         </ReactQueryClientProvider>
                     </NextIntlClientProvider>

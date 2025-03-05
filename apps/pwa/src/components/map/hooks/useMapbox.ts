@@ -1,7 +1,6 @@
 import { useCallback, useState } from "react";
 import Supercluster from "supercluster";
 import { MapEvent, ViewState, ViewStateChangeEvent } from "react-map-gl/mapbox";
-import { useMapStore } from "@/components/map/api/stores/map-store.provider";
 
 type Bounds = [number, number, number, number];
 
