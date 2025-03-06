@@ -3,44 +3,38 @@ import { PersistentMapProvider } from "@/components/persistent-map/map.provider"
 import { OnboardingStoreProvider } from "@/features/onboarding/stores/onboarding.store";
 import { getUserProfile } from "@/api/profile/get-one";
 
-import { getSession } from "@/api/auth/get-session";
-import { redirect } from "@/i18n/routing";
-import { OnboardingStepPath } from "@/features/onboarding";
 import { ParamsWithLocale } from "@/types/common";
 
 import styles from "./styles.module.scss";
 
-export default async function OnboardingLayout({ children, params }: PropsWithChildren<ParamsWithLocale>) {
-    const { locale } = await params;
+export default async function OnboardingLayout({ children }: PropsWithChildren<ParamsWithLocale>) {
+    // const { locale } = await params;
 
     const { data } = await getUserProfile();
 
-
-    const { data: session } = await getSession();
-
-    const onboardingStatus = session?.profile.completed;
-
-    if(onboardingStatus === "false") {
-        return redirect({
-            href: "/onboarding/photo",
-            locale,
-        });
-    }
-
-    if(onboardingStatus === "true") {
-        return redirect({
-            href: "/",
-            locale,
-        });
-    }
-
-    const onboardingStep = Number(onboardingStatus);
-    if(!isNaN(onboardingStep)) {
-        return redirect({
-            href: OnboardingStepPath[onboardingStep],
-            locale,
-        });
-    }
+    // const onboardingStatus = session?.profile.completed;
+    //
+    // if(onboardingStatus === "false") {
+    //     return redirect({
+    //         href: "/onboarding/photo",
+    //         locale,
+    //     });
+    // }
+    //
+    // if(onboardingStatus === "true") {
+    //     return redirect({
+    //         href: "/",
+    //         locale,
+    //     });
+    // }
+    //
+    // const onboardingStep = Number(onboardingStatus);
+    // if(!isNaN(onboardingStep)) {
+    //     return redirect({
+    //         href: OnboardingStepPath[onboardingStep],
+    //         locale,
+    //     });
+    // }
 
     return (
         <PersistentMapProvider

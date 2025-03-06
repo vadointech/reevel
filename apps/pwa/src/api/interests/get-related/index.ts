@@ -1,8 +1,5 @@
-"use server";
-
-import { serverFetcher } from "@/api/server";
-import { headers } from "next/headers";
 import { InterestEntity } from "@/entities/interests";
+import { fetcherClient } from "@/api/fetcher-client";
 
 export namespace GetRelatedInterests {
     export type TInput = {
@@ -11,6 +8,8 @@ export namespace GetRelatedInterests {
 
     export type TOutput = InterestEntity[];
 }
-export async function getRelatedInterests(input: GetRelatedInterests.TInput) {
-    return serverFetcher(await headers()).get<null, GetRelatedInterests.TOutput>(`/interests/related/${input.slug}`);
-}
+export const getRelatedInterests = fetcherClient<GetRelatedInterests.TInput, GetRelatedInterests.TOutput>({
+    fetcherFunc: (fetcher, input) => {
+        return fetcher.get(`/interests/related/${input.body?.slug}`);
+    },
+});

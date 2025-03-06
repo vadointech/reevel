@@ -28,6 +28,14 @@ export class UserService {
     async getUserById(id: string): Promise<UserEntity | null> {
         return this.userRepository.findOne({
             where: { id },
+            relations: {
+                profile: true,
+            },
+            select: {
+                profile: {
+                    completed: true,
+                },
+            },
         });
     }
 

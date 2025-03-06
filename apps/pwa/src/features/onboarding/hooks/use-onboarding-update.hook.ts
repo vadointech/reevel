@@ -15,8 +15,10 @@ export function useOnboardingUpdate() {
     const { mutate } = useMutation({
         mutationFn: async(input: ObjectEntries<UpdateProfile.TInput>) => {
             await updateProfile({
-                ...Object.fromEntries(input),
-                completed: getOnboardingStatus(),
+                body: {
+                    ...Object.fromEntries(input),
+                    completed: getOnboardingStatus(),
+                },
             }).then(handleNextStep);
             return null;
         },
@@ -27,19 +29,14 @@ export function useOnboardingUpdate() {
             fullName: onboardingStore.fullName,
             bio: onboardingStore.bio,
             picture: onboardingStore.picture,
-            interests: onboardingStore.interests.join(","),
-            location: onboardingStore.location?.join(","),
+            interests: onboardingStore.interests,
+            location: onboardingStore.location,
         };
 
         const profileEntriesToUpdate = (Object.entries(onboardingProfile) as ObjectEntries<UpdateProfile.TInput>)
             .filter(([key, value]) => {
                 const prevValue = onboardingStore.initialState[key as keyof IOnboardingStore];
                 if(!prevValue) return true;
-
-                if(Array.isArray(prevValue)) {
-                    return value !== prevValue.join(",");
-                }
-
                 return value !== prevValue;
             });
 

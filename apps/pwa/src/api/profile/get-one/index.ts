@@ -1,14 +1,13 @@
-"use server";
-
 import { UserProfileEntity } from "@/entities/profile";
-import { serverFetcher } from "@/api/server";
-import { headers } from "next/headers";
+import { fetcherClient } from "@/api/fetcher-client";
 
 export namespace GetUserProfile {
     export type TInput = null;
     export type TOutput = UserProfileEntity;
 }
 
-export async function getUserProfile() {
-    return serverFetcher(await headers()).get<null, GetUserProfile.TOutput>("/profile");
-}
+export const getUserProfile = fetcherClient<GetUserProfile.TInput, GetUserProfile.TOutput>({
+    fetcherFunc: (fetcher, input) => {
+        return fetcher.get("/profile", input);
+    },
+});

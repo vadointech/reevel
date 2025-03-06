@@ -1,7 +1,4 @@
-"use server";
-
-import { serverFetcher } from "@/api/server";
-import { headers } from "next/headers";
+import { fetcherClient } from "@/api/fetcher-client";
 
 export namespace GetPlaceByCoordinates {
     export type TParams = Partial<{
@@ -41,13 +38,15 @@ export namespace GetPlaceByCoordinates {
     };
 }
 
-export async function getPlaceByCoordinates(input: GetPlaceByCoordinates.TInput, params?: GetPlaceByCoordinates.TParams) {
-    return serverFetcher(await headers()).get<null, GetPlaceByCoordinates.TOutput, GetPlaceByCoordinates.TParams>(`/${input.lng},${input.lat}.json`, {
-        baseURL: "https://api.mapbox.com/geocoding/v5/mapbox.places",
-        credentials: "omit",
-        params: {
-            access_token: process.env.MAPBOX_ACESS_TOKEN,
-            ...params,
-        },
-    });
-}
+export const getPlaceByCoordinates = fetcherClient<GetPlaceByCoordinates.TInput, GetPlaceByCoordinates.TOutput, GetPlaceByCoordinates.TParams>({
+    fetcherFunc: (fetcher, input) => {
+        return fetcher.get<null, GetPlaceByCoordinates.TOutput, GetPlaceByCoordinates.TParams>(`/${input.body?.lng},${input.body?.lat}.json`, {
+            baseURL: "https://api.mapbox.com/geocoding/v5/mapbox.places",
+            credentials: "omit",
+            params: {
+                access_token: process.env.MAPBOX_ACESS_TOKEN,
+                ...input.params,
+            },
+        });
+    },
+});

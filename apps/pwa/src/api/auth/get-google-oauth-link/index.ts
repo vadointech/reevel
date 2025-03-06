@@ -1,7 +1,4 @@
-"use server";
-
-import { serverFetcher } from "@/api/server";
-import { headers } from "next/headers";
+import { fetcherClient } from "@/api/fetcher-client";
 
 export namespace GetGoogleOAuthLink {
     export type TInput = null;
@@ -10,6 +7,8 @@ export namespace GetGoogleOAuthLink {
     };
 }
 
-export async function getGoogleOAuthLink() {
-    return serverFetcher(await headers()).get<GetGoogleOAuthLink.TInput, GetGoogleOAuthLink.TOutput>("/auth/google");
-};
+export const getGoogleOAuthLink = fetcherClient<GetGoogleOAuthLink.TInput, GetGoogleOAuthLink.TOutput>({
+    fetcherFunc: (fetcher, input) => {
+        return fetcher.get("/auth/google", input);
+    },
+});
