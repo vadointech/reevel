@@ -43,10 +43,7 @@ export const getPlaceByCoordinates = fetcherClient<GetPlaceByCoordinates.TInput,
         return fetcher.get<null, GetPlaceByCoordinates.TOutput, GetPlaceByCoordinates.TParams>(`/${input?.body?.lng},${input?.body?.lat}.json`, {
             baseURL: "https://api.mapbox.com/geocoding/v5/mapbox.places",
             credentials: "omit",
-            params: {
-                access_token: process.env.MAPBOX_ACESS_TOKEN,
-                ...input?.params,
-            },
+            params: input?.params,
         });
     },
 });

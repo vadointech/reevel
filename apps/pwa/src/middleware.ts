@@ -17,7 +17,7 @@ export default async function(request: NextRequest) {
 
     const cookieStore = await cookies();
     const accessToken = cookieStore.get("access_token");
-    const refreshToken = cookieStore.get("access_token");
+    const refreshToken = cookieStore.get("refresh_token");
 
     const isAuthenticated = accessToken && refreshToken;
 

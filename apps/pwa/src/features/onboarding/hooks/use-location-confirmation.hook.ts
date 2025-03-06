@@ -5,8 +5,10 @@ import { useOnboardingProgress, useOnboardingStore } from "@/features/onboarding
 import { useQuery } from "@tanstack/react-query";
 import { getPlaceByCoordinates } from "@/api/mapbox/get-place-by-coordinates";
 import { IMapboxProvider } from "@/components/persistent-map/providers";
+import { usePersistentMap } from "@/components/persistent-map/map.context";
 
 export function useLocationConfirmation() {
+    const { provider } = usePersistentMap();
     const { handleSetStep } = useOnboardingProgress();
     const onboardingStore = useOnboardingStore();
 
@@ -26,6 +28,7 @@ export function useLocationConfirmation() {
                     lat: onboardingStore.location[0],
                 },
                 params: {
+                    access_token: provider?.accessToken,
                     types: "place,region",
                 },
             })
