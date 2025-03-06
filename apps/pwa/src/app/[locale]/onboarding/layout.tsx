@@ -1,40 +1,27 @@
 import { PropsWithChildren } from "react";
 import { PersistentMapProvider } from "@/components/persistent-map/map.provider";
 import { OnboardingStoreProvider } from "@/features/onboarding/stores/onboarding.store";
-import { getUserProfile } from "@/api/profile/get-one";
-
 import { ParamsWithLocale } from "@/types/common";
+import { getUserProfile } from "@/api/profile/get-one";
+import { redirect } from "@/i18n/routing";
 
 import styles from "./styles.module.scss";
 
-export default async function OnboardingLayout({ children }: PropsWithChildren<ParamsWithLocale>) {
-    // const { locale } = await params;
+export const dynamic = "force-dynamic";
+
+export default async function OnboardingLayout({ children, params }: PropsWithChildren<ParamsWithLocale>) {
+    const { locale } = await params;
 
     const { data } = await getUserProfile();
 
-    // const onboardingStatus = session?.profile.completed;
-    //
-    // if(onboardingStatus === "false") {
-    //     return redirect({
-    //         href: "/onboarding/photo",
-    //         locale,
-    //     });
-    // }
-    //
-    // if(onboardingStatus === "true") {
-    //     return redirect({
-    //         href: "/",
-    //         locale,
-    //     });
-    // }
-    //
-    // const onboardingStep = Number(onboardingStatus);
-    // if(!isNaN(onboardingStep)) {
-    //     return redirect({
-    //         href: OnboardingStepPath[onboardingStep],
-    //         locale,
-    //     });
-    // }
+    const onboardingStatus = data?.completed;
+
+    if(onboardingStatus === "true") {
+        return redirect({
+            href: "/",
+            locale,
+        });
+    }
 
     return (
         <PersistentMapProvider

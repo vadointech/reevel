@@ -5,6 +5,9 @@ import { getGoogleOAuthLink } from "@/api/auth/get-google-oauth-link";
 
 import styles from "./styles.module.scss";
 
+export const dynamic = "force-static";
+export const revalidate = false;
+
 export default async function Home() {
 
     const { data } = await getGoogleOAuthLink();

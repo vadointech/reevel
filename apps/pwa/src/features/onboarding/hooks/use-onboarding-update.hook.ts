@@ -3,6 +3,8 @@
 import { IOnboardingStore, useOnboardingProgress, useOnboardingStore } from "@/features/onboarding";
 import { UpdateProfile, updateProfile } from "@/api/profile/update-profile";
 import { useMutation } from "@tanstack/react-query";
+import { revalidateCachedTag } from "@/features/cache";
+import { GetSession } from "@/api/auth/get-session";
 
 export function useOnboardingUpdate() {
     const onboardingStore = useOnboardingStore();
@@ -14,13 +16,14 @@ export function useOnboardingUpdate() {
 
     const { mutate } = useMutation({
         mutationFn: async(input: ObjectEntries<UpdateProfile.TInput>) => {
-            await updateProfile({
+            return updateProfile({
                 body: {
                     ...Object.fromEntries(input),
                     completed: getOnboardingStatus(),
-                },
-            }).then(handleNextStep);
-            return null;
+                }},
+            )
+                .then(() => revalidateCachedTag(GetSession.queryKey))
+                .finally(handleNextStep);
         },
     });
 
