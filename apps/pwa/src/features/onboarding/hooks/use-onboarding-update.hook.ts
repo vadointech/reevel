@@ -1,58 +1,49 @@
-import { useOnboardingProgress, useOnboardingStore } from "@/features/onboarding";
-import { useMutation } from "@tanstack/react-query";
+"use client";
+
+import { IOnboardingStore, useOnboardingProgress, useOnboardingStore } from "@/features/onboarding";
 import { UpdateProfile, updateProfile } from "@/api/profile/update-profile";
-import { useSessionStore } from "../../session";
-import { UserProfileEntity } from "@/entities/profile";
+import { useMutation } from "@tanstack/react-query";
 
 export function useOnboardingUpdate() {
-    const sessionStore = useSessionStore();
     const onboardingStore = useOnboardingStore();
 
     const {
         handleNextStep,
+        getOnboardingStatus,
     } = useOnboardingProgress();
 
     const { mutate } = useMutation({
-        mutationFn: updateProfile,
-        onSuccess(result) {
-            if(result.data) {
-                sessionStore.updateSession({
-                    profile: {
-                        fullName: result.data.fullName,
-                        bio: result.data.bio,
-                        picture: result.data.picture,
-                    },
-                });
-                handleNextStep();
-            }
+        mutationFn: async(input: ObjectEntries<UpdateProfile.TInput>) => {
+            await updateProfile({
+                ...Object.fromEntries(input),
+                completed: getOnboardingStatus(),
+            }).then(handleNextStep);
+            return null;
         },
     });
 
     const handleUpdateProfile = () => {
-        const sessionProfile = sessionStore.user?.profile;
-
         const onboardingProfile: UpdateProfile.TInput = {
-            picture: onboardingStore.picture,
             fullName: onboardingStore.fullName,
             bio: onboardingStore.bio,
+            picture: onboardingStore.picture,
             interests: onboardingStore.interests.join(","),
             location: onboardingStore.location?.join(","),
         };
 
-        if(sessionProfile) {
-            const profileEntriesToUpdate = Object.entries(onboardingProfile)
-                .filter(([key, value]) => {
-                    return sessionProfile[key as keyof UserProfileEntity] !== value;
-                });
+        const profileEntriesToUpdate = (Object.entries(onboardingProfile) as ObjectEntries<UpdateProfile.TInput>)
+            .filter(([key, value]) => {
+                const prevValue = onboardingStore.initialState[key as keyof IOnboardingStore];
+                if(!prevValue) return true;
 
-            if(profileEntriesToUpdate.length > 0) {
-                mutate(Object.fromEntries(profileEntriesToUpdate));
-            } else {
-                handleNextStep();
-            }
-        } else {
-            mutate(onboardingProfile);
-        }
+                if(Array.isArray(prevValue)) {
+                    return value !== prevValue.join(",");
+                }
+
+                return value !== prevValue;
+            });
+
+        mutate(profileEntriesToUpdate);
     };
 
     return {

@@ -45,7 +45,11 @@ export default async function RootLayout({ children, params }: PropsWithChildren
                         messages={messages}
                     >
                         <ReactQueryClientProvider>
-                            <SessionStoreProvider init={[data]}>
+                            <SessionStoreProvider
+                                init={[{
+                                    user: data,
+                                }]}
+                            >
                                 <StandaloneProvider>
                                     { children }
                                 </StandaloneProvider>

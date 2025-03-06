@@ -1,11 +1,5 @@
-import { ParamsWithLocale } from "@/types/common";
-import { redirect } from "@/i18n/routing";
+import { PropsWithChildren } from "react";
 
-export default async function Page({ params }: ParamsWithLocale) {
-    const { locale } = await params;
-
-    return redirect({
-        href: "/onboarding/photo",
-        locale,
-    });
+export default async function Page({ children }: PropsWithChildren) {
+    return children;
 }

@@ -9,6 +9,7 @@ export namespace UpdateProfile {
         bio: string;
         fullName: string;
         picture: string;
+        completed: string;
         location: string; // Format "lng,lat"
         interests: string; // Format: "interest,interest,..."
     }>;
@@ -27,10 +28,7 @@ export async function updateProfile({ interests, location, ...input }: UpdatePro
         location?: string[];
     };
 
-    const body: Body = {
-        ...input,
-        interests: [],
-    };
+    const body: Body = input;
 
     if(interests && interests.length > 0) {
         body.interests = interests.split(",");

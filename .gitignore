@@ -29,6 +29,7 @@ coverage
 out/
 build
 dist
+.db
 
 
 **/public/service-worker.js

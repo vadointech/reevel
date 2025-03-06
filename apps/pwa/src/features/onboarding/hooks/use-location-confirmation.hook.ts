@@ -1,6 +1,7 @@
-import { useOnboardingProgress } from "@/app/[locale]/onboarding/_components";
-import { useOnboardingStore } from "@/features/onboarding";
+"use client";
+
 import { useEffect } from "react";
+import { useOnboardingProgress, useOnboardingStore } from "@/features/onboarding";
 import { useQuery } from "@tanstack/react-query";
 import { getPlaceByCoordinates } from "@/api/mapbox/get-place-by-coordinates";
 import { IMapboxProvider } from "@/components/persistent-map/providers";

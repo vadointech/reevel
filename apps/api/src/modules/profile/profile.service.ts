@@ -19,6 +19,7 @@ export class ProfileService {
             fullName: input.fullName,
             picture: input.picture,
             userId: input.userId,
+            completed: "false",
         });
 
         return this.profileRepository.save(profile);
@@ -52,12 +53,14 @@ export class ProfileService {
             picture,
             location,
             interests,
+            completed,
         } = input;
 
         const newProfile = Object.assign(dbProfile, {
             fullName,
             bio,
             picture,
+            completed,
             location: location ? {
                 type: "Point",
                 coordinates: location,

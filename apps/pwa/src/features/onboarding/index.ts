@@ -1,5 +1,7 @@
 export * from "./stores/onboarding.store";
 
+export * from "./configs/onboarding-progress.config";
+
 export * from "./hooks/use-interest-picker.hook";
 export * from "./hooks/use-avatar-picker.hook";
 export * from "./hooks/use-onboarding-progress.hook";

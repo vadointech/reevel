@@ -1,36 +1,30 @@
+"use client";
+
 import { AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
+import { OnboardingStepPath } from "@/features/onboarding";
 import { usePathname, useRouter } from "@/i18n/routing";
-import { useSessionStore } from "../../session";
-
-const onboardingSteps = [
-    "/onboarding/photo",
-    "/onboarding/bio",
-    "/onboarding/interests",
-    "/onboarding/location",
-    "/onboarding/location/pick",
-    "/onboarding/location/confirm",
-    "/",
-] as const;
-
-type OnboardingStepPath = typeof onboardingSteps[number];
+import { useLogout } from "@/features/session";
 
 function setStep(step: OnboardingStepPath, router: AppRouterInstance): void;
 function setStep(step: number, router: AppRouterInstance): void;
 function setStep(step: OnboardingStepPath | number, router: AppRouterInstance) {
     if(typeof step === "number") {
-        router.push(onboardingSteps[step]);
+        router.push(OnboardingStepPath[step]);
     } else {
         router.push(step);
     }
 }
 
 export function useOnboardingProgress() {
-    const sessionStore = useSessionStore();
+
+    const {
+        handleLogout,
+    } = useLogout();
 
     const router = useRouter();
     const pathname = usePathname();
 
-    const step = onboardingSteps.indexOf(pathname as OnboardingStepPath);
+    const step = OnboardingStepPath.indexOf(pathname as OnboardingStepPath);
 
     const handleNextStep = () => {
         setStep(step + 1, router);
@@ -45,28 +39,35 @@ export function useOnboardingProgress() {
     };
 
     const handleSkipStep = () => {
-        const current = onboardingSteps[step];
-        const nextSteps = onboardingSteps.slice(step);
+        const current = OnboardingStepPath[step];
+        const nextSteps = OnboardingStepPath.slice(step);
 
         for(const step of nextSteps) {
             if(step.startsWith(current)) {
                 continue;
             }
-            setStep(onboardingSteps.indexOf(step), router);
+            setStep(OnboardingStepPath.indexOf(step), router);
             break;
         }
     };
 
     const handleQuitOnboarding = () => {
-        sessionStore.logout()
-            .then(() => router.replace("/login"));
+        handleLogout();
+    };
+
+    const getOnboardingStatus = () => {
+        const nexStep = step + 1;
+        if(nexStep === OnboardingStepPath.length - 1) return "true";
+        return String(nexStep);
     };
 
     return {
+        step,
         handleNextStep,
         handlePrevStep,
         handleSetStep,
         handleSkipStep,
         handleQuitOnboarding,
+        getOnboardingStatus,
     };
 }

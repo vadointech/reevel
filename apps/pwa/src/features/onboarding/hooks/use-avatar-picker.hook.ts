@@ -1,5 +1,7 @@
+"use client";
+
 import { useState } from "react";
-import { useSessionStore } from "../../session";
+import { useSessionStore } from "@/features/session";
 import { useOnboardingStore } from "@/features/onboarding";
 
 export function useAvatarPicker(defaultAvatars: string[]) {

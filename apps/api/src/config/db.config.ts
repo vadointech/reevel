@@ -16,9 +16,7 @@ const masterConnectionProvider: Provider = {
         entities: [__dirname + "../../**/*.entity.{js,ts}"],
         synchronize: true,
         logging: false,
-        ssl: {
-            rejectUnauthorized: false,
-        },
+        ssl: false,
     }),
 };
 

@@ -14,6 +14,14 @@ export class UserService {
     async getByEmail(email: string): Promise<UserEntity | null> {
         return this.userRepository.findOne({
             where: { email },
+            relations: {
+                profile: true,
+            },
+            select: {
+                profile: {
+                    completed: true,
+                },
+            },
         });
     }
 
@@ -44,6 +52,7 @@ export class UserService {
                     picture: true,
                     fullName: true,
                     bio: true,
+                    completed: true,
                 },
             },
         });

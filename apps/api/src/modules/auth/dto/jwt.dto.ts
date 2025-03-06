@@ -3,6 +3,7 @@ import { IsNotEmpty, IsString } from "class-validator";
 export class AccessJwtTokenPayload {
     sub: string;
     email: string;
+    completed: string;
 }
 
 export type RefreshJwtTokenPayload = {

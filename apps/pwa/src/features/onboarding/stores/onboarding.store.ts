@@ -1,30 +1,42 @@
 "use client";
 
-import { createMobxStoreProvider } from "@/lib/mobx-store.provider";
-import { UserProfileEntity } from "@/entities/profile";
-import { makeAutoObservable } from "mobx";
+import { createMobxStoreProvider, initStore } from "@/lib/mobx";
+import { action, makeObservable, observable } from "mobx";
 
-type InitialData = Partial<UserProfileEntity>;
-
-class OnboardingStore {
+export interface IOnboardingStore {
     fullName: string;
     bio: string;
-    picture: string | undefined;
-
+    picture: string;
     interests: string[];
+    location?: [number, number];
+}
 
-    location: [number, number] | undefined;
+class OnboardingStore implements IOnboardingStore {
+    fullName: string = "";
+    bio: string = "";
+    picture: string = "";
+    interests: string[] = [];
+    location?: [number, number] = undefined;
 
-    constructor(options?: InitialData) {
-        makeAutoObservable(this);
+    initialState: Partial<IOnboardingStore> = {};
 
-        this.fullName = options?.fullName || "";
-        this.bio = options?.bio || "";
-        this.picture = options?.picture;
-        this.location = options?.location?.coordinates;
+    constructor(init?: Partial<IOnboardingStore>) {
+        makeObservable(this, {
+            fullName: observable,
+            bio: observable,
+            picture: observable,
+            interests: observable.shallow,
+            location: observable.ref,
+            setName: action,
+            setPicture: action,
+            setBio: action,
+            addInterest: action,
+            removeInterest: action,
+            setLocation: action,
+        });
 
-        this.interests = options?.interests ?
-            options?.interests?.map(item => item.interestId) : [];
+        initStore(this, init);
+        this.initialState = init || {};
     }
 
 
@@ -32,7 +44,7 @@ class OnboardingStore {
         this.fullName = name;
     }
 
-    setPicture(picture: string | undefined) {
+    setPicture(picture: string) {
         this.picture = picture;
     }
 

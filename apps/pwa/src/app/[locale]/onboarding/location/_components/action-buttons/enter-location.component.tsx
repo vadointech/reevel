@@ -1,14 +1,14 @@
 "use client";
 
-import { useOnboardingProgress } from "@/app/[locale]/onboarding/_components";
 import { Button } from "@/components/ui";
+import { useOnboardingProgress } from "@/features/onboarding";
 
 export const OnboardingEnterLocationManually = () => {
-    const { handleNext } = useOnboardingProgress();
+    const { handleNextStep } = useOnboardingProgress();
 
     return (
         <Button
-            onClick={handleNext}
+            onClick={handleNextStep}
         >
             Enter Location Manually
         </Button>

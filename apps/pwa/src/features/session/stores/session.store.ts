@@ -4,13 +4,17 @@ import { UserEntity } from "@/entities/user";
 import { action, computed, makeObservable, observable } from "mobx";
 import { localStoreService } from "@/lib/local-store.service";
 import { UserProfileEntity } from "@/entities/profile";
-import { createMobxStoreProvider } from "@/lib/mobx-store.provider";
-import { logout } from "@/api/auth/logout";
+import { createMobxStoreProvider } from "@/lib/mobx/mobx-store.provider";
+import { initStore } from "@/lib/mobx";
 
-class SessionStore {
+interface State {
+    user: Maybe<UserEntity>
+}
+
+class SessionStore implements State {
     user: Maybe<UserEntity> = null;
 
-    constructor(session: Maybe<UserEntity>) {
+    constructor(init: Partial<State>) {
         makeObservable(this, {
             user: observable,
             isAuthenticated: computed,
@@ -18,7 +22,8 @@ class SessionStore {
             logout: action,
         });
 
-        this.initSession(session);
+        initStore(this, init);
+        this.initSession(init);
     }
 
     get isAuthenticated() {
@@ -35,20 +40,16 @@ class SessionStore {
         localStoreService.setItem("session", this.user);
     }
 
-    async logout() {
+    logout() {
         this.user = null;
         localStoreService.removeItem("session");
-        await logout();
     }
 
-    private initSession(session: Maybe<UserEntity>) {
-        const localSession = localStoreService.getItem<UserEntity>("session");
-
+    private initSession(session: Partial<State>) {
         if(session) {
-            this.user = session;
             localStoreService.setItem("session", session);
         } else {
-            this.user = localSession;
+            this.user = localStoreService.getItem<UserEntity>("session");
         }
     }
 }

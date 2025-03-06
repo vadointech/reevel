@@ -6,5 +6,5 @@ export namespace Logout {
 }
 
 export async function logout() {
-    return clientFetcher.get<Logout.TInput, Logout.TOutput>("auth//logout");
+    return clientFetcher.get<Logout.TInput, Logout.TOutput>("/auth/logout");
 }
