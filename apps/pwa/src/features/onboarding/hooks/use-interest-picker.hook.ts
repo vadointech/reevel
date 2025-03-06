@@ -26,7 +26,9 @@ export function useInterestPicker(interestsInit: GetRelatedInterests.TOutput) {
 
     const { mutate } = useMutation({
         mutationFn: async(input: GetRelatedInterests.TInput) => {
-            const response = await getRelatedInterests(input).then(res => res.data || []);
+            const response = await getRelatedInterests({
+                body: input,
+            }).then(res => res.data || []);
             return response.filter(item => !interests.some(interest => interest.slug === item.slug));
         },
         onSuccess: (response, { slug }) => {

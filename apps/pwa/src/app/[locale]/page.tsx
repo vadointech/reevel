@@ -6,21 +6,12 @@ import { useSessionStore } from "@/features/session";
 import { observer } from "mobx-react-lite";
 import { Link } from "@/i18n/routing";
 import Image from "next/image";
-import { useMutation } from "@tanstack/react-query";
-import { getSession } from "@/api/auth/get-session";
 
 export default observer(function Home() {
 
     const t = useTranslations();
 
     const sessionStore = useSessionStore();
-
-    const { mutate, data } = useMutation({
-        mutationFn: getSession,
-    });
-
-
-    console.log(data);
 
     return (
         <div>
@@ -30,8 +21,6 @@ export default observer(function Home() {
                 height={100}
                 src={sessionStore.user?.profile.picture || ""}
                 alt={""}
-
-                onClick={() => mutate({})}
             />
 
             <Drawer>

@@ -21,10 +21,13 @@ export function useLocationConfirmation() {
         queryFn: async() => {
             if(!onboardingStore.location) return null;
             return getPlaceByCoordinates({
-                lng: onboardingStore.location[0],
-                lat: onboardingStore.location[0],
-            }, {
-                types: "place,region",
+                body: {
+                    lng: onboardingStore.location[0],
+                    lat: onboardingStore.location[0],
+                },
+                params: {
+                    types: "place,region",
+                },
             })
                 .then(({ data }) => data?.features[0]);
         },

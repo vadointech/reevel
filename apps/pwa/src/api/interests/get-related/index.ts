@@ -10,6 +10,6 @@ export namespace GetRelatedInterests {
 }
 export const getRelatedInterests = fetcherClient<GetRelatedInterests.TInput, GetRelatedInterests.TOutput>({
     fetcherFunc: (fetcher, input) => {
-        return fetcher.get(`/interests/related/${input.body?.slug}`);
+        return fetcher.get(`/interests/related/${input?.body?.slug}`);
     },
 });

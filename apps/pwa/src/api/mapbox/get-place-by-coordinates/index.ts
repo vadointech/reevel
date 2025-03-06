@@ -40,12 +40,12 @@ export namespace GetPlaceByCoordinates {
 
 export const getPlaceByCoordinates = fetcherClient<GetPlaceByCoordinates.TInput, GetPlaceByCoordinates.TOutput, GetPlaceByCoordinates.TParams>({
     fetcherFunc: (fetcher, input) => {
-        return fetcher.get<null, GetPlaceByCoordinates.TOutput, GetPlaceByCoordinates.TParams>(`/${input.body?.lng},${input.body?.lat}.json`, {
+        return fetcher.get<null, GetPlaceByCoordinates.TOutput, GetPlaceByCoordinates.TParams>(`/${input?.body?.lng},${input?.body?.lat}.json`, {
             baseURL: "https://api.mapbox.com/geocoding/v5/mapbox.places",
             credentials: "omit",
             params: {
                 access_token: process.env.MAPBOX_ACESS_TOKEN,
-                ...input.params,
+                ...input?.params,
             },
         });
     },

@@ -16,7 +16,7 @@ export function useLogout() {
     });
 
     const handleLogout = () => {
-        mutate();
+        mutate({});
     };
 
     return {
