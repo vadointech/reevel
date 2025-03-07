@@ -4,8 +4,8 @@ import { useEffect } from "react";
 import { useOnboardingProgress, useOnboardingStore } from "@/features/onboarding";
 import { useQuery } from "@tanstack/react-query";
 import { getPlaceByCoordinates } from "@/api/mapbox/get-place-by-coordinates";
-import { usePersistentMap } from "@/components/map/map.context";
-import { MapStore, IMapProvider } from "@/components/map";
+import { usePersistentMap } from "@/components/shared/map/map.context";
+import { MapStore, IMapProvider } from "../../../components/shared/map";
 
 export function useLocationConfirmation() {
     const { provider } = usePersistentMap();

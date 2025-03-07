@@ -9,7 +9,7 @@ function calculateCompression(width: number, height: number, constant = 7973632)
 export async function getCroppedImage(
     imgRef: RefObject<HTMLImageElement | null>,
     previewCanvasRef: RefObject<HTMLCanvasElement | null>,
-    completedCrop: PixelCrop,
+    completedCrop?: PixelCrop,
 ): Promise<Blob> {
     const image = imgRef.current;
     const previewCanvas = previewCanvasRef.current;

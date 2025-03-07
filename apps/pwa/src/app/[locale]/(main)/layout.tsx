@@ -1,5 +1,5 @@
 import { PropsWithChildren } from "react";
-import { PersistentMapProvider } from "@/components/map";
+import { PersistentMapProvider } from "@/components/shared/map";
 
 export default function MainLayout({ children }: PropsWithChildren) {
     return (

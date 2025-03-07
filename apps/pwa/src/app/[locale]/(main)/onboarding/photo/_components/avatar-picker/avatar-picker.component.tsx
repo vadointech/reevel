@@ -7,6 +7,7 @@ import { ActiveScale } from "@/components/shared/circular-carousel/plugins";
 import { useCircularCarousel } from "@/components/shared/circular-carousel/hooks";
 
 import styles from "./styles.module.scss";
+import { observer } from "mobx-react-lite";
 
 const SliderItem = ({ src }: { src?: string }) => {
     return <Avatar src={src} size={100} />;
@@ -18,7 +19,7 @@ export namespace OnboardingAvatarPicker {
     };
 }
 
-export const OnboardingAvatarPicker = ({
+export const OnboardingAvatarPicker = observer(({
     defaultAvatars,
 }: OnboardingAvatarPicker.Props) => {
 
@@ -58,4 +59,4 @@ export const OnboardingAvatarPicker = ({
             </div>
         </div>
     );
-};
+});

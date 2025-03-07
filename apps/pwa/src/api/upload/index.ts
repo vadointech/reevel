@@ -42,7 +42,7 @@ export namespace UploadFile {
         file: Blob;
     };
 
-    export type TOutput = UploadApiResponse | UploadApiErrorResponse;
+    export type TOutput = Array<UploadApiResponse | UploadApiErrorResponse>;
 }
 
 export const uploadFile = fetcherClient<UploadFile.TInput, UploadFile.TOutput>({

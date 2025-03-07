@@ -16,7 +16,7 @@ class SessionStore implements State {
 
     constructor(init: Partial<State>) {
         makeObservable(this, {
-            user: observable,
+            user: observable.shallow,
             isAuthenticated: computed,
             updateSession: action,
             logout: action,
@@ -35,7 +35,10 @@ class SessionStore implements State {
         this.user = {
             ...this.user,
             ...user.user,
-            ...user.profile,
+            profile: {
+                ...this.user.profile,
+                ...user.profile,
+            },
         };
         localStoreService.setItem("session", this.user);
     }

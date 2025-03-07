@@ -1,3 +1,5 @@
+"use client";
+
 import { ChangeEvent, useState } from "react";
 
 type Params = {
@@ -21,8 +23,17 @@ export function useFileUploader({
         }
     };
 
+    const handleShowFilePicker = () => {
+        const input = document.createElement("input");
+        input.type = "file";
+        input.accept = "image/*";
+        input.onchange = handleFileUpload as unknown as (e: Event) => void;
+        input.click();
+    };
+
     return {
         imageSrc,
         handleFileUpload,
+        handleShowFilePicker,
     };
 }
