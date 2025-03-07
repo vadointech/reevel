@@ -4,8 +4,8 @@ import { useEffect } from "react";
 import { useOnboardingProgress, useOnboardingStore } from "@/features/onboarding";
 import { useQuery } from "@tanstack/react-query";
 import { getPlaceByCoordinates } from "@/api/mapbox/get-place-by-coordinates";
-import { IMapboxProvider } from "@/components/persistent-map/providers";
-import { usePersistentMap } from "@/components/persistent-map/map.context";
+import { usePersistentMap } from "@/components/map/map.context";
+import { MapStore, IMapProvider } from "@/components/map";
 
 export function useLocationConfirmation() {
     const { provider } = usePersistentMap();
@@ -36,7 +36,7 @@ export function useLocationConfirmation() {
         },
     });
 
-    const handleShowOnMap = (provider: IMapboxProvider) => {
+    const handleShowOnMap = (store: MapStore, provider: IMapProvider) => {
         if(data) {
             if(data.place_type.includes("place")) {
                 provider.fitBounds(data?.bbox, {

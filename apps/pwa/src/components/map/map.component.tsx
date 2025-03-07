@@ -1,129 +1,59 @@
 "use client";
 
-import { useCallback, useRef } from "react";
-import MapboxGLMap, { MapEvent, MapRef, Marker, MapProps } from "react-map-gl/mapbox";
-import Supercluster from "supercluster";
-import { useMapbox, useMapCluster } from "./hooks";
-import { ClusterMarker, EventMarker } from "./marker";
-import { useMapStore } from "./api/stores/map-store.provider";
-import { useMediaQuery } from "@uidotdev/usehooks";
+import { ComponentProps, useEffect, useRef } from "react";
+import { usePersistentMap } from "./map.context";
+import { IMapProvider } from "./providers/types";
+import { BasePoint, Point } from "./types";
+import { MapStore } from "./map.store";
 
-import "mapbox-gl/dist/mapbox-gl.css";
-
-import { mockGeoJsonData } from "./data.mock";
-
-export namespace Map {
-    export type Props = MapProps & {
-        points?: Supercluster.PointFeature<unknown>[]
+export namespace MapView {
+    export type Props<P extends BasePoint> = ComponentProps<"div"> & {
+        points?: Point<P>[]
+        onMapReady?: (store: MapStore, provider: IMapProvider) => void;
     };
 }
 
-export const Map = ({
-    points = mockGeoJsonData,
-    initialViewState,
-    onLoad,
+export function MapView<P extends BasePoint>({
+    onMapReady,
+    style,
+    points,
     ...props
-}: Map.Props) => {
-    const ref = useRef<MapRef>(null);
+}: MapView.Props<P>) {
+    const { attachMap, detachMap, store, isMapInitialized, provider } = usePersistentMap();
+    const containerRef = useRef<HTMLDivElement>(null);
 
-    const mapStore = useMapStore();
+    useEffect(() => {
+        if (!containerRef.current) return;
 
-    const isDarkMode = useMediaQuery("(prefers-color-scheme: dark)");
+        attachMap(containerRef.current);
 
-    const {
-        viewState,
-        bounds,
-        updateBounds,
-        updateViewState,
-    } = useMapbox(points, initialViewState);
+        if(onMapReady && store && provider) {
+            onMapReady(store, provider);
+        }
 
-    const {
-        clusters,
-        supercluster,
-    } = useMapCluster(
-        points,
-        bounds,
-        viewState.zoom || 0,
-    );
+        return () => {
+            detachMap();
+        };
+    }, [attachMap, detachMap, isMapInitialized, onMapReady]);
 
-    const handleLoad = useCallback((e: MapEvent) => {
-        mapStore.initialize(ref);
-        updateBounds(e);
-    }, []);
-
-    const handleZoomToCluster = useCallback((cluster: Supercluster.PointFeature<unknown>) => {
-        if(!supercluster) return;
-
-        const [longitude, latitude] = cluster.geometry.coordinates;
-        const expansionZoom = supercluster.getClusterExpansionZoom(cluster.id as number);
-
-        mapStore.flyTo([longitude, latitude], {
-            speed: 2,
-            zoom: Math.min(expansionZoom, 20),
-        });
-    }, [mapStore.mapRef]);
-
-    const getClusterSize = useCallback((count: number, zoom: number = 12) => {
-        return Math.min(30 + 5 * Math.cbrt(count) * (1 + (20 - zoom) / 10), 80);
-    }, []);
+    useEffect(() => {
+        if(isMapInitialized) {
+            if(points && points.length > 0) {
+                store?.setPoints(points);
+            }
+        }
+    }, [isMapInitialized]);
 
     return (
-        <MapboxGLMap
-            {...viewState}
-            maxZoom={20}
-            ref={ref}
-            mapStyle={isDarkMode ? mapStore.mapStyleDark : mapStore.mapStyleLight}
-            mapboxAccessToken={mapStore.accessToken}
-            onMove={(e) => {
-                updateViewState(e);
-                updateBounds(e);
-            }}
-            onLoad={(e) => {
-                handleLoad(e);
-                onLoad?.(e);
-            }}
+        <div
+            ref={containerRef}
             style={{
                 width: "100%",
                 height: "100%",
+                position: "relative",
+                ...style,
             }}
             {...props}
-        >
-            {
-                clusters.map(cluster => {
-                    const [longitude, latitude] = cluster.geometry.coordinates;
-
-                    const isCluster = cluster.properties?.cluster;
-                    const pointCount = cluster.properties?.point_count || 0;
-                    const clusterSize = getClusterSize(pointCount, viewState.zoom);
-
-                    if(isCluster) {
-                        return (
-                            <Marker
-                                key={`cluster-${cluster.id}`}
-                                latitude={latitude}
-                                longitude={longitude}
-                                onClick={() => handleZoomToCluster(cluster)}
-                            >
-                                <ClusterMarker
-                                    size={clusterSize}
-                                >
-                                    { pointCount }
-                                </ClusterMarker>
-                            </Marker>
-                        );
-                    }
-
-                    return (
-                        <Marker
-                            key={`marker-${cluster.properties?.id}`}
-                            longitude={longitude}
-                            latitude={latitude}
-                        >
-                            <EventMarker point={[longitude, latitude]} />
-                        </Marker>
-                    );
-                })
-            }
-        </MapboxGLMap>
+        />
     );
-};
+}
