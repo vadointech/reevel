@@ -50,7 +50,6 @@ export class Fetcher implements IFetcher {
 
         // Merge default headers with request-specific headers
         const mergedHeaders = {
-            "Content-Type": "application/json",
             ...this.defaults.headers,
             ...headers,
         };
@@ -72,7 +71,12 @@ export class Fetcher implements IFetcher {
         };
 
         if (method !== "GET" && body !== undefined) {
-            requestOptions.body = typeof body === "string" ? body : JSON.stringify(body);
+            if(typeof body === "string" || body instanceof FormData) {
+                requestOptions.body = body;
+            } else {
+                mergedHeaders["Content-Type"] = "application/json";
+                requestOptions.body = JSON.stringify(body);
+            }
         }
 
         const response = await fetch(fullURL.toString(), requestOptions);

@@ -10,20 +10,22 @@ export function useOnboardingUpdate() {
     const onboardingStore = useOnboardingStore();
 
     const {
+        step,
         handleNextStep,
-        getOnboardingStatus,
+        getOnboardingProgress,
     } = useOnboardingProgress();
 
     const { mutate } = useMutation({
         mutationFn: async(input: ObjectEntries<UpdateProfile.TInput>) => {
+            const { onboardingStatus } = getOnboardingProgress(step + 1);
             return updateProfile({
                 body: {
                     ...Object.fromEntries(input),
-                    completed: getOnboardingStatus(),
-                }},
-            )
+                    completed: onboardingStatus,
+                },
+            })
                 .then(() => revalidateCachedTag(GetSession.queryKey))
-                .finally(handleNextStep);
+                .then(handleNextStep);
         },
     });
 

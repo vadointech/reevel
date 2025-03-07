@@ -6,12 +6,25 @@ import { useSessionStore } from "@/features/session";
 import { observer } from "mobx-react-lite";
 import { Link } from "@/i18n/routing";
 import Image from "next/image";
+import { Cropper, CropperTrigger } from "@/components/uploader/cropper";
+import { useMutation } from "@tanstack/react-query";
+import { uploadFile } from "@/api/upload";
+import { useCallback } from "react";
+import { Button } from "@/components/ui";
 
 export default observer(function Home() {
 
     const t = useTranslations();
 
     const sessionStore = useSessionStore();
+
+    const { mutate } = useMutation({
+        mutationFn: uploadFile,
+    });
+
+    const handleUpload = useCallback((file: Blob) => {
+        mutate({ body: { file: file } });
+    }, []);
 
     return (
         <div>
@@ -22,6 +35,17 @@ export default observer(function Home() {
                 src={sessionStore.user?.profile.picture || ""}
                 alt={""}
             />
+
+
+            <Cropper
+                onCropCompleted={handleUpload}
+            >
+                <CropperTrigger>
+                    <Button>
+                        Crop me
+                    </Button>
+                </CropperTrigger>
+            </Cropper>
 
             <Drawer>
                 <DrawerTrigger>

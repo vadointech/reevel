@@ -1,19 +1,10 @@
 "use client";
 
-import { AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
 import { OnboardingStepPath } from "@/features/onboarding";
 import { usePathname, useRouter } from "@/i18n/routing";
 import { useLogout } from "@/features/session";
-
-function setStep(step: OnboardingStepPath, router: AppRouterInstance): void;
-function setStep(step: number, router: AppRouterInstance): void;
-function setStep(step: OnboardingStepPath | number, router: AppRouterInstance) {
-    if(typeof step === "number") {
-        router.push(OnboardingStepPath[step]);
-    } else {
-        router.push(step);
-    }
-}
+import { useMutation } from "@tanstack/react-query";
+import { updateProfile } from "@/api/profile/update-profile";
 
 export function useOnboardingProgress() {
 
@@ -26,16 +17,48 @@ export function useOnboardingProgress() {
 
     const step = OnboardingStepPath.indexOf(pathname as OnboardingStepPath);
 
+    const { mutateAsync } = useMutation({
+        mutationFn: updateProfile,
+    });
+
+    function getOnboardingProgress(step: OnboardingStepPath | number) {
+        const stepIndex = function(){
+            return typeof step === "number" ? step : OnboardingStepPath.indexOf(step);
+        }();
+
+        const onboardingStatus = function(){
+            return stepIndex === OnboardingStepPath.length - 1 ? "true" : String(stepIndex);
+        }();
+
+        return {
+            stepIndex,
+            onboardingStatus,
+        };
+    }
+
+    async function updateOnboardingProgressAsync(step: OnboardingStepPath | number) {
+        const { onboardingStatus, stepIndex } = getOnboardingProgress(step);
+        return mutateAsync({
+            body: { completed: onboardingStatus },
+        }).then(() => router.push(OnboardingStepPath[stepIndex]));
+    }
+
+    function updateOnboardingProgress(step: OnboardingStepPath | number) {
+        const { stepIndex } = getOnboardingProgress(step);
+        router.push(OnboardingStepPath[stepIndex]);
+    }
+
+
     const handleNextStep = () => {
-        setStep(step + 1, router);
+        return updateOnboardingProgress(step + 1);
     };
 
     const handlePrevStep = () => {
-        setStep(step - 1, router);
+        return updateOnboardingProgress(step - 1);
     };
 
     const handleSetStep = (step: OnboardingStepPath) => {
-        setStep(step, router);
+        return updateOnboardingProgress(step);
     };
 
     const handleSkipStep = () => {
@@ -46,19 +69,13 @@ export function useOnboardingProgress() {
             if(step.startsWith(current)) {
                 continue;
             }
-            setStep(OnboardingStepPath.indexOf(step), router);
+            updateOnboardingProgressAsync(step);
             break;
         }
     };
 
     const handleQuitOnboarding = () => {
         handleLogout();
-    };
-
-    const getOnboardingStatus = () => {
-        const nexStep = step + 1;
-        if(nexStep === OnboardingStepPath.length - 1) return "true";
-        return String(nexStep);
     };
 
     return {
@@ -68,6 +85,8 @@ export function useOnboardingProgress() {
         handleSetStep,
         handleSkipStep,
         handleQuitOnboarding,
-        getOnboardingStatus,
+        getOnboardingProgress,
+        updateOnboardingProgress,
+        updateOnboardingProgressAsync,
     };
 }
