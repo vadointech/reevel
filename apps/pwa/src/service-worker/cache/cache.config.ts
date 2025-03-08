@@ -44,7 +44,7 @@ export default [
     },
     {
         cache: Caches.StaticFonts,
-        validator: /\.ttf$/i,
+        validator: /\.woff2$/i,
         strategy: "cacheFirst",
         params: {},
     },

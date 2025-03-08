@@ -29,19 +29,19 @@ async function readDir(dir, fileList = []) {
 }
 
 const staticDir = ".next/static";
-const publicDir = "public";
+// const publicDir = "public";
 const BUILD_ID = await fs.promises.readFile(".next/BUILD_ID", "utf8");
 
-const publicStaticPrecacheEntries = (await readDir(publicDir)).map((url) => (
-    url.replace("public/", "/")
-));
+// const publicStaticPrecacheEntries = (await readDir(publicDir)).map((url) => (
+//     url.replace("public/", "/")
+// ));
 
 const nextStaticPrecacheEntries = (await readDir(staticDir)).map((url) => (
     url.replace(".next", "/_next")
 ));
 
 const precacheEntries = []
-    .concat(publicStaticPrecacheEntries)
+    // .concat(publicStaticPrecacheEntries)
     .concat(nextStaticPrecacheEntries);
 
 await esbuild.build({
