@@ -4,7 +4,8 @@ export type MapboxRequestParams = {
     language: string;
     limit: number;
     country: string;
-    q?: string;
+    q: string;
+    bbox: string;
 };
 
 export type MapboxFeatureResponse = {

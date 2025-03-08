@@ -9,6 +9,7 @@ export interface IOnboardingStore {
     picture: string;
     interests: string[];
     location?: [number, number];
+    locationQuery: string;
 }
 
 class OnboardingStore implements IOnboardingStore {
@@ -16,6 +17,8 @@ class OnboardingStore implements IOnboardingStore {
     bio: string = "";
     picture: string = "";
     interests: string[] = [];
+
+    locationQuery: string = "";
     location?: [number, number] = undefined;
 
     initialState: Partial<IOnboardingStore> = {};
@@ -26,12 +29,14 @@ class OnboardingStore implements IOnboardingStore {
             bio: observable,
             picture: observable,
             interests: observable.shallow,
+            locationQuery: observable,
             location: observable.ref,
             setName: action,
             setPicture: action,
             setBio: action,
             addInterest: action,
             removeInterest: action,
+            setLocationQuery: action,
             setLocation: action,
         });
 
@@ -58,6 +63,10 @@ class OnboardingStore implements IOnboardingStore {
 
     removeInterest(slug: string): void {
         this.interests = this.interests.filter(item => item !== slug);
+    }
+
+    setLocationQuery(query: string) {
+        this.locationQuery = query;
     }
 
     setLocation(lng: number, lat: number) {
