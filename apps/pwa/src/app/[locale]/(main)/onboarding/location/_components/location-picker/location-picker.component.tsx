@@ -1,37 +1,52 @@
+"use client";
+
 import { ComponentProps } from "react";
 import { OnboardingLocationItem } from "../location-item";
+import { Container, Input } from "@/components/ui";
+import { Search } from "@/components/icons/search";
+import { MapboxFeatureResponse } from "@/api/mapbox/types";
+import { useLocationPicker } from "@/features/onboarding";
+
+import styles from "./styles.module.scss";
 
 export namespace OnboardingLocationPicker {
-    export type Props = ComponentProps<"div">;
+    export type Data = MapboxFeatureResponse[];
+    export type Props = ComponentProps<"div"> & {
+        data: Data
+    };
 }
 
-const locations = [
-    { city: "Vinn", country: "Vinnitsa, Ukraine" },
-    { city: "Palo Alto", country: "8502 Preston Rd. Ingl..." },
-    { city: "Bershad’", country: "Vinnitsa, Ukraine" },
-    { city: "Vinn", country: "Vinnitsa, Ukraine" },
-    { city: "Palo Alto", country: "8502 Preston Rd. Ingl..." },
-    { city: "Bershad’", country: "Vinnitsa, Ukraine" },
-    { city: "Vinn", country: "Vinnitsa, Ukraine" },
-    { city: "Palo Alto", country: "8502 Preston Rd. Ingl..." },
-    { city: "Bershad’", country: "Vinnitsa, Ukraine" },
-    { city: "Vinn", country: "Vinnitsa, Ukraine" },
-    { city: "Palo Alto", country: "8502 Preston Rd. Ingl..." },
-    { city: "Bershad’", country: "Vinnitsa, Ukraine" },
-    { city: "Bershad’", country: "Vinnitsa, Ukraine" },
-    { city: "Vinn", country: "Vinnitsa, Ukraine" },
-    { city: "Palo Alto", country: "8502 Preston Rd. Ingl..." },
-    { city: "Bershad’", country: "Vinnitsa, Ukraine" },
-];
+export const OnboardingLocationPicker = ({ data }: OnboardingLocationPicker.Props) => {
+    const {
+        pickerRef,
+        handleSelectLocation,
+    } = useLocationPicker();
 
-export const OnboardingLocationPicker = ({}: OnboardingLocationPicker.Props) => {
     return (
         <>
-            {
-                locations.map((item, i) => (
-                    <OnboardingLocationItem key={i} data={item} />
-                ))
-            }
+            <Container className={styles.picker__input}>
+                <Input
+                    variant="rounded"
+                    placeholder="Search events"
+                    background={"muted"}
+                    icon={<Search />}
+                />
+            </Container>
+            <Container
+                ref={pickerRef}
+                className={styles.picker__places}
+            >
+                {
+                    data.map((item, i) => (
+                        <OnboardingLocationItem
+                            key={i}
+                            data-location={item.center.join(",")}
+                            onClick={() => handleSelectLocation(item)}
+                            data={{ city: item.text, country: item.place_name }}
+                        />
+                    ))
+                }
+            </Container>
         </>
     );
 };

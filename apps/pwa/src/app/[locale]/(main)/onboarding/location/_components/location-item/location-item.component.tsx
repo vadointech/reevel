@@ -1,20 +1,28 @@
-import styles from "./styles.module.scss";
 import { Check, Navigation } from "@/components/icons";
+import { ComponentProps } from "react";
+import styles from "./styles.module.scss";
+import cx from "classnames";
 
 export namespace OnboardingLocationItem {
     export type Data = {
         city: string,
         country: string,
     };
-    export type Props = {
+    export type Props = ComponentProps<"div"> & {
         data: Data;
         selected?: boolean
     };
 }
 
-export const OnboardingLocationItem = ({ data, selected }: OnboardingLocationItem.Props) => {
+export const OnboardingLocationItem = ({ data, selected, className, ...props }: OnboardingLocationItem.Props) => {
     return (
-        <div className={styles.container}>
+        <div
+            className={cx(
+                styles.container,
+                className,
+            )}
+            {...props}
+        >
             <div>
                 <div className={styles.container__city}>
                     <Navigation />

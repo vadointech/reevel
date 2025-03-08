@@ -9,3 +9,4 @@ export * from "./hooks/use-onboarding-update.hook";
 export * from "./hooks/use-location-access.hook";
 export * from "./hooks/use-location-confirmation.hook";
 export * from "./hooks/use-avatar-upload.hook";
+export * from "./hooks/use-location-picker.hook";

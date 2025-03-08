@@ -4,13 +4,4 @@
     display: flex;
     flex-direction: column;
     height: 100%;
-
-    &__input {
-        padding-top: mixins.rem(32);
-    }
-
-    &__places {
-        overflow-y: scroll;       
-        @include mixins.no-scrollbar; 
-    }
 }

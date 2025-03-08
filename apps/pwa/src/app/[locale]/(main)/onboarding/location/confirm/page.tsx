@@ -6,8 +6,13 @@ import { OnboardingProgress, OnboardingTextBlock } from "../../_components";
 import { MapView } from "@/components/shared/map/map.component";
 import { observer } from "mobx-react-lite";
 import { useLocationConfirmation } from "@/features/onboarding";
+import { MapboxFeatureResponse } from "@/api/mapbox/types";
 
 import styles from "./styles.module.scss";
+
+export namespace ConfirmLocationDrawer {
+    export type Data = MapboxFeatureResponse;
+}
 
 export default observer(function Page() {
     const {
@@ -26,7 +31,7 @@ export default observer(function Page() {
                         <OnboardingProgress step={3} />
                         <OnboardingTextBlock
                             title={`Are You In ${place?.place_name}?`}
-                            subtitle={"You’ve selected Palo Alto. You can always change it later in your profile settings."}
+                            subtitle={`You’ve selected ${place?.place_name}. You can always change it later in your profile settings.`}
                             className={styles.page__textBlock}
                         />
                         <OnboardingConfirmLocation />
