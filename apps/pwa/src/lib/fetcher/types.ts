@@ -15,6 +15,7 @@ export type FetcherRequestConfig<Input = any, Params extends Record<string, any>
     method?: Method | string;
     baseURL?: string;
     headers?: Record<string, string>;
+    nextHeaders?: Headers;
     body?: Input;
     params?: Params;
     credentials?: RequestCredentials

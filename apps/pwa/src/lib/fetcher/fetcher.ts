@@ -40,6 +40,7 @@ export class Fetcher implements IFetcher {
         const {
             method = "GET",
             headers = {},
+            nextHeaders,
             params = {},
             body,
             baseURL = this.defaults.baseURL || "",
@@ -52,6 +53,7 @@ export class Fetcher implements IFetcher {
         const mergedHeaders = {
             ...this.defaults.headers,
             ...headers,
+            ...Object.fromEntries(nextHeaders?.entries() || []),
         };
 
         const fullURL = new URL(baseURL + url);

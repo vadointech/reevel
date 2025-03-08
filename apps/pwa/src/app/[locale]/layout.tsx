@@ -11,6 +11,7 @@ import { ReactQueryClientProvider } from "@/providers/react-query-provider";
 import { StandaloneProvider } from "@/providers/standalone.provider";
 import { SessionStoreProvider } from "@/features/session";
 import { locales } from "@/i18n/locales";
+import { headers } from "next/headers";
 
 import "../globals.scss";
 
@@ -36,7 +37,9 @@ export default async function RootLayout({ children, params }: PropsWithChildren
     setRequestLocale(locale);
     const messages = await getMessages();
 
-    const { data } = await getSession();
+    const { data } = await getSession({
+        nextHeaders: await headers(),
+    });
 
     return (
         <html lang={locale}>

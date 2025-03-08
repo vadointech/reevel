@@ -3,12 +3,15 @@ import { ArrowBack } from "@/components/icons";
 import { OnboardingInterestsPicker } from "./_components";
 import { NextStepButton, OnboardingProgress, OnboardingTextBlock } from "../_components";
 import { getInitialInterests } from "@/api/interests";
+import { headers } from "next/headers";
 
 import styles from "./styles.module.scss";
 
 export default async function Page() {
 
-    const { data } = await getInitialInterests();
+    const { data } = await getInitialInterests({
+        nextHeaders: await headers(),
+    });
 
     return (
         <>

@@ -3,6 +3,7 @@ import { OnboardingStoreProvider } from "@/features/onboarding/stores/onboarding
 import { ParamsWithLocale } from "@/types/common";
 import { getUserProfile } from "@/api/profile/get-one";
 import { redirect } from "@/i18n/routing";
+import { headers } from "next/headers";
 
 import styles from "./styles.module.scss";
 
@@ -11,7 +12,9 @@ export const dynamic = "force-dynamic";
 export default async function OnboardingLayout({ children, params }: PropsWithChildren<ParamsWithLocale>) {
     const { locale } = await params;
 
-    const { data } = await getUserProfile();
+    const { data } = await getUserProfile({
+        nextHeaders: await headers(),
+    });
 
     const onboardingStatus = data?.completed;
 
