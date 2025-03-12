@@ -1,0 +1,51 @@
+@use "@/theme/mixins";
+@use "@/theme/colors";
+@use "@/theme/fonts";
+
+
+
+.badge {
+    width: fit-content;
+    height: mixins.rem(24);
+    padding: mixins.rem(0) mixins.rem(10);
+
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: mixins.rem(4);
+
+    border: 1px solid transparent;
+    border-radius:100;
+
+    @include fonts.font-creata("xs", 400, 18px);
+    &__variant {
+        &_default {
+            background-color: colors.$background;
+            color:colors.$secondary;
+            border-color: colors.$border;
+            svg path {
+                fill:colors.$secondary;
+            }
+        }
+
+        &_primary {
+            background-color: colors.$primary;
+            color:colors.$white;
+            border-color: colors.$border;
+            svg path {
+                fill:colors.$white;
+            }
+        }
+
+        &_ghost {
+            opacity: 0.4;
+            background-color: colors.$background-muted;
+            border-color: colors.$background-muted;
+            color:colors.$white;
+            svg path {
+                fill:colors.$white;
+            }
+        }
+    }
+}

@@ -1,0 +1,15 @@
+@use "@/theme/mixins";
+
+.drawer__content {
+
+    &__input {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 16px;
+    }
+
+    &__sections {
+        margin-top: mixins.rem(18);
+    }
+}
