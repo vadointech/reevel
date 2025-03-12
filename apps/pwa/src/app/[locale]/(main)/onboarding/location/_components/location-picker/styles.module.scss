@@ -1,0 +1,13 @@
+@use "@/theme/mixins";
+
+.picker {
+    &__input {
+        padding-top: mixins.rem(32);
+    }
+
+    &__places {
+        overflow-y: scroll;
+        scroll-behavior: smooth;
+        @include mixins.no-scrollbar;
+    }
+}

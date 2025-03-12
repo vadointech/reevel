@@ -1,10 +1,22 @@
 import { UserEntity } from "@/entities/user";
-import { getSessionQuery } from "./query";
+import { fetcherClient } from "@/api/fetcher-client";
 
 export namespace GetSession {
-    export const url = "/users/me";
-
+    export type TInput = null;
     export type TOutput = UserEntity;
 
-    export const query = getSessionQuery;
+    export const queryKey = ["/user/session"];
 }
+
+export const getSession = fetcherClient<GetSession.TInput, GetSession.TOutput>({
+    fetcherFunc: async(fetcher, input) => {
+        return await fetcher.get("/users/me", {
+            ...input,
+            cache: "force-cache",
+            next: {
+                tags: GetSession.queryKey,
+                revalidate: false,
+            },
+        });
+    },
+});

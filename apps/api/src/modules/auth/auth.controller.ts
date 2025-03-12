@@ -1,4 +1,4 @@
-import { BadRequestException, Controller, Get, Query, Res } from "@nestjs/common";
+import { Controller, Get, Query, Res } from "@nestjs/common";
 import { Response } from "express";
 import { Public } from "@/decorators";
 import { JwtStrategy } from "./strategies/jwt.strategy";
@@ -26,15 +26,31 @@ export class AuthController {
         @Query("code") code: string,
         @Res({ passthrough: true }) response: Response,
     ) {
+        if(!code) {
+            return response.redirect(this.configService.env("PWA_PUBLIC_URL") + "/login");
+        }
 
-        if(!code) throw new BadRequestException("Bad Request");
+        try {
+            const user = await this.authService.getGoogleOAuthUser(code);
+            const session = await this.authService.authWithGoogle(user);
 
-        const user = await this.authService.getGoogleOAuthUser(code);
+            this.jwtStrategy.setJwtSession(response, session);
 
-        const session = await this.authService.authWithGoogle(user);
+            if(session.payload.completed === "true") {
+                return response.redirect(this.configService.env("PWA_PUBLIC_URL"));
+            } else {
+                return response.redirect(this.configService.env("PWA_PUBLIC_URL") + "/onboarding");
+            }
+        } catch {
+            return response.redirect(this.configService.env("PWA_PUBLIC_URL") + "/login");
+        }
+    }
 
-        this.jwtStrategy.setJwtSession(response, session);
-
-        return response.redirect(this.configService.env("PWA_PUBLIC_URL"));
+    @Get("/logout")
+    async logout(
+        @Res({ passthrough: true }) response: Response,
+    ) {
+        this.jwtStrategy.clearJwtSession(response);
+        return true;
     }
 }

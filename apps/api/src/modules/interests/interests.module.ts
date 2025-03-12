@@ -4,10 +4,12 @@ import { InterestsService } from "./interests.service";
 import { InterestsController } from "./interests.controller";
 import { InterestsEntity } from "./entities/interests.entity";
 import { InterestRelationsEntity } from "./entities/interest-relations.entity";
+import { ProfileEntity } from "@/modules/profile/entities/profile.entity";
 
 @Module({
     imports: [
         TypeOrmModule.forFeature([
+            ProfileEntity,
             InterestsEntity,
             InterestRelationsEntity,
         ]),

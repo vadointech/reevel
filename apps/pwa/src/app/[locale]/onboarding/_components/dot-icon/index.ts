@@ -1,1 +1,0 @@
-export { DotIcon } from "./dot-icon.component";
