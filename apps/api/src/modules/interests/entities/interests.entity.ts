@@ -1,7 +1,8 @@
-import { Column, Entity, JoinColumn, ManyToOne, OneToMany, PrimaryColumn } from "typeorm";
+import { Column, Entity, JoinColumn, JoinTable, ManyToMany, ManyToOne, OneToMany, PrimaryColumn } from "typeorm";
 import { ProfileInterestsEntity } from "@/modules/profile/entities/profile-interests.entity";
 import { InterestCategoriesEntity } from "./interest-category.entity";
 import { InterestRelationsEntity } from "./interest-relations.entity";
+import { Event } from "@/modules/event/entities/event.entity";
 
 @Entity("interests")
 export class InterestsEntity {
@@ -28,6 +29,14 @@ export class InterestsEntity {
     @JoinColumn({ name: "categoryId" })
     @ManyToOne(() => InterestCategoriesEntity, (category) => category.interests, { onDelete: "CASCADE" })
     category: InterestCategoriesEntity;
+
+    @ManyToMany(() => Event, event => event.interest)
+    @JoinTable({
+        name: "interests_events",
+        joinColumn: { name: "slug", referencedColumnName: "slug" },
+        inverseJoinColumn: { name: "event_id", referencedColumnName: "id" },
+    })
+    interestsEvents: Event[];
 
     @OneToMany(() => InterestRelationsEntity, relation => relation.sourceInterestSlug)
     sourceRelations: InterestRelationsEntity[];

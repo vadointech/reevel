@@ -14,7 +14,6 @@ import dbConfig from "@/config/db.config";
         ...modules,
         ConfigModule,
         TypeOrmModule.forRootAsync(dbConfig.masterConnection.provider),
-        EventModule,
     ],
     providers: [
         {

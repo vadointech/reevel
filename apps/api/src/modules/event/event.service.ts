@@ -2,7 +2,7 @@
 import { Injectable } from "@nestjs/common";
 import { CreateEventDto } from "./dto/create-event.dto";
 import { EntityManager, Repository } from "typeorm";
-import { Event } from "./entities/Event.entity";
+import { Event } from "./entities/event.entity";
 import { InjectRepository } from "@nestjs/typeorm";
 import { UpdateEventDto } from "./dto/update-event.dto";
 import { UUID } from "crypto";

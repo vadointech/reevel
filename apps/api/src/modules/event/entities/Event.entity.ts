@@ -1,4 +1,6 @@
-import { Column, Entity, Index, Point, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, Index, ManyToMany, Point, PrimaryGeneratedColumn } from "typeorm";
+import { UserEntity } from "@/modules/user/entities/user.entity";
+import { InterestsEntity } from "@/modules/interests/entities/interests.entity";
 
 export enum Visibility {
     PUBLIC = "Public",
@@ -39,11 +41,16 @@ export class Event {
     @Column({ type: "decimal" })
     price: number;
 
+    @ManyToMany(() => UserEntity, attendee => attendee.attendingEvents)
+    attendees?: UserEntity[];
+
+    @ManyToMany(() => UserEntity, creator => creator.attendingEvents)
+    creators?: UserEntity[];
+
+    @ManyToMany(() => InterestsEntity, interests => interests.interestsEvents)
+    interest: InterestsEntity[];
+
     constructor(event: Partial<Event>) {
         Object.assign(this, event);
     }
 }
-
-
-// @OneToMany(() => Comment, (comment) => comment.event, { cascade: true })
-// comments: Comment[];
