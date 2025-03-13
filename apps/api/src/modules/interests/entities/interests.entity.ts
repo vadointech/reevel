@@ -1,4 +1,4 @@
-import { Column, Entity, JoinColumn, ManyToOne, OneToMany, OneToOne, PrimaryColumn } from "typeorm";
+import { Column, Entity, JoinColumn, ManyToOne, OneToMany, PrimaryColumn } from "typeorm";
 import { ProfileInterestsEntity } from "@/modules/profile/entities/profile-interests.entity";
 import { InterestCategoriesEntity } from "./interest-category.entity";
 import { InterestRelationsEntity } from "./interest-relations.entity";

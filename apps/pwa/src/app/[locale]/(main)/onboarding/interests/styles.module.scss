@@ -1,0 +1,17 @@
+@use "@/theme/colors";
+@use "@/theme/mixins";
+
+.page {
+    &__info {
+        margin-top: mixins.rem(48);
+    }
+
+    &__buttons {
+        position: sticky;
+        bottom: 0;
+
+        display: flex;
+        justify-content: center;
+        flex-direction: column;
+    }
+}

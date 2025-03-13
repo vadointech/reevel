@@ -41,17 +41,20 @@ export class AuthService {
         } as GoogleOAuthUserInfo;
     }
 
-    async authWithGoogle(oauthUser: GoogleOAuthUserInfo): Promise<JwtSession> {
+    async authWithGoogle(oauthUser: GoogleOAuthUserInfo) {
         const dbUser = await this.userService.getByEmail(oauthUser.email);
 
-        if(dbUser) return this.loginUser(oauthUser.email);
-        return this.registerUser(oauthUser);
+        if(dbUser) {
+            return await this.loginUser(oauthUser.email);
+        } else {
+            return await this.registerUser(oauthUser);
+        }
     }
 
     async registerUser(oauthUser: GoogleOAuthUserInfo): Promise<JwtSession> {
         const user = await this.userService.createUser({ email: oauthUser.email });
 
-        await this.profileService.createProfile({
+        user.profile = await this.profileService.createProfile({
             userId: user.id,
             picture: oauthUser.picture,
             fullName: oauthUser.name,

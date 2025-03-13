@@ -1,9 +1,10 @@
 import Image from "next/image";
+import { StaticImport } from "next/dist/shared/lib/get-img-props";
+import { ReactNode } from "react";
 
 import styles from "./styles.module.scss";
 
 import avatar from "@/../public/assets/temp/avatar.png";
-import { ReactNode } from "react";
 
 import cx from "classnames"
 
@@ -19,12 +20,14 @@ export namespace Avatar {
         type?: Type;
         variant?: Variant;
         size?: Size | number;
+        src?: string | StaticImport;
     };
 }
 
 export const Avatar = ({
     type = "default",
     size = "default",
+    src = avatar,
     variant = "profile",
 }: Avatar.Props) => {
 
@@ -47,7 +50,7 @@ export const Avatar = ({
             >
                 <Image
                     fill
-                    src={avatar}
+                    src={src}
                     alt={"avatar"}
                 />
             </div>
@@ -65,7 +68,7 @@ export const Avatar = ({
                 >
                     <Image
                         fill
-                        src={avatar}
+                        src={src}
                         alt={"avatar"}
                     />
                 </div>

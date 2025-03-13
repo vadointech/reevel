@@ -1,6 +1,40 @@
 import { intlMiddleware } from "@/i18n/middleware";
+import { NextRequest } from "next/server";
+import { cookies } from "next/headers";
+import { authRoutes, publicRoutes } from "@/routes";
 
-export default intlMiddleware;
+export default async function(request: NextRequest) {
+    const {
+        nextUrl,
+    } = request;
+
+    const isPublicRoute = publicRoutes.includes(nextUrl.pathname);
+    const isAuthRoute = authRoutes.includes(nextUrl.pathname);
+
+    if(isPublicRoute) {
+        return intlMiddleware(request);
+    }
+
+    const cookieStore = await cookies();
+    const accessToken = cookieStore.get("access_token");
+    const refreshToken = cookieStore.get("refresh_token");
+
+    const isAuthenticated = accessToken && refreshToken;
+
+    if(isAuthenticated) {
+        if(isAuthRoute) {
+            return Response.redirect(new URL("/", nextUrl));
+        }
+    }
+
+    if(!isAuthenticated) {
+        if(!isAuthRoute) {
+            return Response.redirect(new URL("/login", nextUrl));
+        }
+    }
+
+    return intlMiddleware(request);
+};
 
 export const config = {
     matcher: [

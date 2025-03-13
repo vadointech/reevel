@@ -19,3 +19,8 @@ export const onScroll = (carousel: Carousel) => {
 
     plugins.forEach((plugin) => plugin(carousel));
 };
+
+export const onChange = (carousel: Carousel) => {
+    const { handlers } = carousel;
+    handlers.onChange?.(carousel);
+};

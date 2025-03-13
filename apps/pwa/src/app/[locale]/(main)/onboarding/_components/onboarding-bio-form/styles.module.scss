@@ -1,0 +1,8 @@
+@use "@/theme/mixins";
+
+.form {
+    margin-top: mixins.rem(32);
+    display: flex;
+    flex-direction: column;
+    row-gap: mixins.rem(24);
+}

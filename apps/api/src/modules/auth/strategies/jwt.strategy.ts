@@ -23,6 +23,7 @@ export class JwtStrategy {
         const payload: AccessJwtTokenPayload = {
             sub: user.id,
             email: user.email,
+            completed: user.profile.completed,
         };
 
         const [access_token, refresh_token] = await Promise.all([

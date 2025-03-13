@@ -15,6 +15,8 @@ export namespace Header {
         title: string;
         size?: Size;
         controlRightType: Type;
+        onControlLeftClick?: () => void;
+        onControlRightClick?: () => void;
     };
 }
 
@@ -25,6 +27,8 @@ export const Header = ({
     controlRightType,
     title,
     size,
+    onControlLeftClick,
+    onControlRightClick,
 }: Header.Props) => {
 
 
@@ -34,36 +38,46 @@ export const Header = ({
         ),
         button: (
             <div className={styles.controls__close}>
-                {controlRight}
+                { controlRight }
             </div>
         ),
     };
 
 
     return (
-        <div className={cx(
-            styles.header,
-            styles[`header__${size}`],
-            className,
-        )}>
-            <div className={cx(
-                styles.controls,
-                styles[`controls_${size}`],
-            )}>
+        <div
+            className={cx(
+                styles.header,
+                styles[`header__${size}`],
+                className,
+            )}
+        >
+            <div
+                className={cx(
+                    styles.controls,
+                    styles[`controls_${size}`],
+                )}
+                onClick={onControlLeftClick}
+            >
                 {controlLeft}
             </div>
 
-            <div className={cx(
-                styles.title,
-                styles[`title_${size}`],
-            )}>
-                {title}
+            <div
+                className={cx(
+                    styles.title,
+                    styles[`title_${size}`],
+                )}
+            >
+                { title }
             </div>
 
-            <div className={cx(
-                styles.controls,
-                styles[`controls__${controlRightType}`],
-            )}>
+            <div
+                className={cx(
+                    styles.controls,
+                    styles[`controls__${controlRightType}`],
+                )}
+                onClick={onControlRightClick}
+            >
                 {controlRight ?? ControlRightView[controlRightType]}
             </div>
         </div>

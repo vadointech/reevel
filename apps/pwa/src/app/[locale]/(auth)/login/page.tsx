@@ -1,13 +1,19 @@
 import { LoginCarousel, LoginCarouselPagination } from "./_components";
 import { Button, Container, Hint, Title } from "@/components/ui";
 import { IconApple, IconGoogle } from "@/components/icons";
+import { getGoogleOAuthLink } from "@/api/auth/get-google-oauth-link";
+import { headers } from "next/headers";
 
 import styles from "./styles.module.scss";
-import { GetGoogleOAuthLink } from "@/api/auth/get-google-oauth-link";
+
+export const dynamic = "force-static";
+export const revalidate = false;
 
 export default async function Home() {
 
-    const { data } = await GetGoogleOAuthLink.action(null);
+    const { data } = await getGoogleOAuthLink({
+        nextHeaders: await headers(),
+    });
 
     return (
         <div className={styles.page}>

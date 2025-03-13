@@ -10,15 +10,17 @@ export type Method =
   | "link" | "LINK"
   | "unlink" | "UNLINK";
 
-export type FetcherRequestConfig<Output = any, Params = any> = {
+export type FetcherRequestConfig<Input = any, Params extends Record<string, any> = object> = {
     url?: string;
     method?: Method | string;
     baseURL?: string;
     headers?: Record<string, string>;
+    nextHeaders?: Headers;
+    body?: Input;
     params?: Params;
-    data?: Output | null;
     credentials?: RequestCredentials
     next?: NextFetchRequestConfig;
+    cache?: RequestCache
 };
 
 export type FetcherResponse<Output = any> = {
@@ -40,6 +42,7 @@ export type FetcherInitDefaults = Omit<
 >;
 
 export interface IFetcher {
-    get<Output = any, Params = any>(url: string, config?: FetcherRequestConfig<Output, Params>): Promise<FetcherResponse<Output>>
-    post<Input = any, Output = any, Params = any>(url: string, data: Input, config?: FetcherRequestConfig<Output, Params>): Promise<FetcherResponse<Output>>
+    get<Input extends null = null, Output = any, Params extends Record<string, any> = object>(url: string, config?: FetcherRequestConfig<Input, Params>): Promise<FetcherResponse<Output>>
+    post<Input = any, Output = any, Params extends Record<string, any> = object>(url: string, config?: FetcherRequestConfig<Input, Params>): Promise<FetcherResponse<Output>>
+    patch<Input = any, Output = any, Params extends Record<string, any> = object>(url: string, config?: FetcherRequestConfig<Input, Params>): Promise<FetcherResponse<Output>>
 }

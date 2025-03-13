@@ -5,6 +5,6 @@ export default {
             "image/png",
             "image/jpeg",
         ],
-        maxFileSize: 6000000, // 4MB
+        maxFileSize: 4000000, // 4MB
     },
 };

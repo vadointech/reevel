@@ -14,12 +14,28 @@ export class UserService {
     async getByEmail(email: string): Promise<UserEntity | null> {
         return this.userRepository.findOne({
             where: { email },
+            relations: {
+                profile: true,
+            },
+            select: {
+                profile: {
+                    completed: true,
+                },
+            },
         });
     }
 
     async getUserById(id: string): Promise<UserEntity | null> {
         return this.userRepository.findOne({
             where: { id },
+            relations: {
+                profile: true,
+            },
+            select: {
+                profile: {
+                    completed: true,
+                },
+            },
         });
     }
 
@@ -34,9 +50,18 @@ export class UserService {
     async getUserSession(userId: string) {
         return this.userRepository.findOne({
             where: { id: userId },
+            relations: {
+                profile: true,
+            },
             select: {
                 id: true,
                 email: true,
+                profile: {
+                    picture: true,
+                    fullName: true,
+                    bio: true,
+                    completed: true,
+                },
             },
         });
     }
