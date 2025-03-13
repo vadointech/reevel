@@ -1,21 +1,21 @@
-import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
-import { Event } from "./Event.entity";
+// import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
+// import { Event } from "./Event.entity";
 
 
-@Entity("comment")
+// @Entity("comment")
 
-export class Comment {
-    @PrimaryGeneratedColumn()
-    id: number;
+// export class Comment {
+//     @PrimaryGeneratedColumn()
+//     id: number;
 
-    @Column()
+//     @Column()
 
-    content: string;
+//     content: string;
 
-    @ManyToOne(() => Event, (event) => event.comments)
-    event: Event;
+//     @ManyToOne(() => Event, (event) => event.comments)
+//     event: Event;
 
-    constructor(event: Partial<Event>) {
-        Object.assign(this, event);
-    }
-}
+//     constructor(event: Partial<Event>) {
+//         Object.assign(this, event);
+//     }
+// }

@@ -1,12 +1,17 @@
-import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from "typeorm";
-import { Comment } from "./comment.entity";
+import { Column, Entity, Index, Point, PrimaryGeneratedColumn } from "typeorm";
+
+export enum Visibility {
+    PUBLIC = "Public",
+    PRIVATE = "Private",
+}
 
 @Entity("event")
 export class Event {
 
-    @PrimaryGeneratedColumn()
-    id: number;
+    @PrimaryGeneratedColumn("uuid")
+    id: string;
 
+    @Index()
     @Column()
     title: string;
 
@@ -16,17 +21,29 @@ export class Event {
     @Column()
     image: string;
 
-    @Column()
-    seets: number;
+    @Index()
+    @Column("geography", { nullable: true, spatialFeatureType: "Point", srid: 4326 })
+    location?: Point;
 
     @Column()
-    type: string;
+    ticketCount: number;
 
-    @OneToMany(() => Comment, (comment) => comment.event, { cascade: true })
-    comments: Comment[];
+    @Column({ type: "enum", enum: Visibility })
+    visibility: Visibility;
+
+    @Index()
+    @Column({ type: "timestamp" })
+    eventDateTime: Date;
+
+    @Index()
+    @Column({ type: "decimal" })
+    price: number;
 
     constructor(event: Partial<Event>) {
         Object.assign(this, event);
     }
-
 }
+
+
+// @OneToMany(() => Comment, (comment) => comment.event, { cascade: true })
+// comments: Comment[];

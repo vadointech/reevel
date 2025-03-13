@@ -5,6 +5,7 @@ import { EntityManager, Repository } from "typeorm";
 import { Event } from "./entities/Event.entity";
 import { InjectRepository } from "@nestjs/typeorm";
 import { UpdateEventDto } from "./dto/update-event.dto";
+import { UUID } from "crypto";
 
 @Injectable()
 export class EventService {
@@ -15,21 +16,19 @@ export class EventService {
     ) { }
 
     async create(createEventDto: CreateEventDto) {
-        const event = new Event({ ...createEventDto, comments: [] });
+        const event = new Event({ ...createEventDto });
         await this.entityManager.save(event);
     }
 
     async findAll() {
-        return await this.eventsRepository.find({
-            relations: { comments: true },
-        });
+        return await this.eventsRepository.find();
     }
 
-    async findOne(id: number) {
+    async findOne(id: UUID) {
         return await this.eventsRepository.findOneBy({ id });
     }
 
-    async update(id: number, updateEventDto: UpdateEventDto) {
+    async update(id: UUID, updateEventDto: UpdateEventDto) {
         const event = await this.eventsRepository.findOneBy({ id });
 
         if (!event) {
@@ -40,7 +39,7 @@ export class EventService {
         await this.eventsRepository.save(event);
     }
 
-    async remove(id: number) {
+    async remove(id: UUID) {
         await this.eventsRepository.delete({ id });
     }
 }

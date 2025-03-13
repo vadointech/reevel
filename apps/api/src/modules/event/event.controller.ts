@@ -3,6 +3,7 @@ import { Body, Controller, Delete, Get, Param, Patch, Post } from "@nestjs/commo
 import { EventService } from "./event.service";
 import { CreateEventDto } from "./dto/create-event.dto";
 import { UpdateEventDto } from "./dto/update-event.dto";
+import { UUID } from "crypto";
 
 @Controller("event")
 export class EventController {
@@ -22,21 +23,21 @@ export class EventController {
 
     @Public()
     @Get(":id")
-    async getOne(@Param("id") id: number) {
-        return this.eventService.findOne(+id);
+    async getOne(@Param("id") id: UUID) {
+        return this.eventService.findOne(id);
     }
 
     @Public()
     @Patch(":id")
-    async update(@Param("id") id: string, @Body() updateEventDto: UpdateEventDto) {
-        return this.eventService.update(+id, updateEventDto);
+    async update(@Param("id") id: UUID, @Body() updateEventDto: UpdateEventDto) {
+        return this.eventService.update(id, updateEventDto);
 
     }
 
     @Public()
     @Delete(":id")
-    async remove(@Param("id") id: string) {
-        return this.eventService.remove(+id);
+    async remove(@Param("id") id: UUID) {
+        return this.eventService.remove(id);
 
     }
 }
