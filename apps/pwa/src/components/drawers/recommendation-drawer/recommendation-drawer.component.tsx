@@ -32,7 +32,7 @@ export const RecommendationDrawer = ({ }: RecommendationDrawer.Props) => {
                     <div className={styles.drawer}>
                         <div className={styles.drawer__content}>
                             <div className={styles.drawer__content__input}>
-                                <Input inputSize="default" variant="rounded" placeholder="Search events" icon={<Search />} />
+                                <Input variant="rounded" placeholder="Search events" icon={<Search />} />
                                 <Avatar size={40} variant="profile" type="custom" />
                             </div>
 
