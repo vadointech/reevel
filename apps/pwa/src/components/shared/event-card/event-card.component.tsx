@@ -44,7 +44,7 @@ export const EventCard = ({
                 <HostedBy author={author} />
 
                 <div className={styles.card__content__below}>
-                    <Badge title={date} variant="date" icon={<IconCalendar height={8} width={8} />} />
+                    <Badge title={date} icon={<IconCalendar height={8} width={8} />} className={styles.badge} />
                     <h3>{title}</h3>
                     <p>{descr}</p>
                 </div>

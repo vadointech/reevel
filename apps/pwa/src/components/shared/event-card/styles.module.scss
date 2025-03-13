@@ -73,3 +73,16 @@
 }
 }
 
+.badge {
+    height: mixins.rem(20);
+    padding: mixins.rem(6);
+
+    background-color: rgba(245, 246, 247, 0.4);  
+    font-size: mixins.rem(9);
+    border-color: rgba(245, 246, 247, 0.4);
+    color: colors.$white;
+    
+    svg path {
+        fill: colors.$white;
+    }
+}
