@@ -19,6 +19,9 @@ export class ProfileEntity {
     @Column("geography", { nullable: true, spatialFeatureType: "Point", srid: 4326 })
     location?: Point;
 
+    @Column({ nullable: true })
+    completed: string; // "true" | "false" | "current step"
+
     @Column()
     userId: string;
     @JoinColumn({ name: "userId" })

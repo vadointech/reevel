@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { Drawer as Vaul, DialogProps } from "vaul";
 import styles from "./styles.module.scss";
 
@@ -9,7 +9,7 @@ export namespace Drawer {
 
     export type Props = DialogProps & {
         overlay?: boolean;
-        closeAllowed?: boolean;
+        staticPoint?: SnapPoints | false;
         defaultPoint?: SnapPoints | false;
     };
 }
@@ -22,6 +22,7 @@ const snapPointsMap: Record<Drawer.SnapPoints, string | number> = {
 
 export const Drawer = ({
     overlay = true,
+    staticPoint = false,
     defaultPoint = false,
     dismissible = false,
     children,
@@ -29,9 +30,13 @@ export const Drawer = ({
     ...props
 }: Drawer.Props) => {
 
-    const defaultSnapPoint = defaultPoint ? snapPointsMap[defaultPoint] : snapPointsMap["low"];
+    const defaultSnapPoint = useMemo(() => {
+        if(staticPoint) return snapPointsMap[staticPoint];
+        if(defaultPoint) return snapPointsMap[defaultPoint];
+        return snapPointsMap["low"];
+    }, [staticPoint, defaultPoint, snapPointsMap]);
 
-    const [open, setOpen] = useState(!!defaultPoint);
+    const [open, setOpen] = useState(!!defaultPoint || !!staticPoint);
 
     const [snap, setSnap] = useState<number | string | null>(defaultSnapPoint);
 
@@ -41,7 +46,7 @@ export const Drawer = ({
             onOpenChange={setOpen}
             activeSnapPoint={snap}
             setActiveSnapPoint={setSnap}
-            snapPoints={snapPoints}
+            snapPoints={staticPoint ? [snapPointsMap[staticPoint]] : snapPoints}
             dismissible={dismissible}
             {...props}
         >

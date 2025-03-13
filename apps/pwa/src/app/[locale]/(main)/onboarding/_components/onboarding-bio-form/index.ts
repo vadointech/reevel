@@ -1,0 +1,1 @@
+export * from "./onboarding-bio-form.component";

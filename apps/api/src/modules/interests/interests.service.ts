@@ -3,6 +3,7 @@ import { InjectRepository } from "@nestjs/typeorm";
 import { InterestsEntity } from "./entities/interests.entity";
 import { In, Repository } from "typeorm";
 import { InterestRelationsEntity } from "@/modules/interests/entities/interest-relations.entity";
+import { ProfileEntity } from "@/modules/profile/entities/profile.entity";
 
 @Injectable()
 export class InterestsService {
@@ -12,9 +13,11 @@ export class InterestsService {
         private readonly interestsRepository: Repository<InterestsEntity>,
         @InjectRepository(InterestRelationsEntity)
         private readonly interestsRelationsRepository: Repository<InterestRelationsEntity>,
+        @InjectRepository(ProfileEntity)
+        private readonly profileRepository: Repository<ProfileEntity>,
     ) {}
 
-    async getInitialInterests(): Promise<InterestsEntity[]> {
+    async getInitialInterests(userId: string): Promise<InterestsEntity[]> {
         const slugs = [
             "reading",
             "cooking",
@@ -31,7 +34,20 @@ export class InterestsService {
             "movie-watching",
             "running",
             "pet-care",
+            "shopping",
         ];
+
+        const userProfile = await this.profileRepository.findOne({
+            where: { userId },
+            relations: {
+                interests: true,
+            },
+        });
+
+        if(userProfile) {
+            const userInterests = userProfile.interests.map(item => item.interestId);
+            slugs.push(...userInterests);
+        }
 
         return this.interestsRepository.find({
             where: {
@@ -48,6 +64,7 @@ export class InterestsService {
             relations: {
                 sourceInterest: {},
             },
+            take: 6,
         });
 
         return relatedInterests.map(item => item.sourceInterest);

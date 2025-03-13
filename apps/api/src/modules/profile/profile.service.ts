@@ -19,40 +19,67 @@ export class ProfileService {
             fullName: input.fullName,
             picture: input.picture,
             userId: input.userId,
+            completed: "false",
         });
 
         return this.profileRepository.save(profile);
     }
 
-    async updateProfile(profileId: string, input: UpdateProfileDto) {
+    async getProfile(userId: string) {
+        return this.profileRepository.findOne({
+            where: { userId },
+            relations: {
+                interests: {
+                    interest: true,
+                },
+            },
+        });
+    }
+
+    async updateProfile(userId: string, input: UpdateProfileDto) {
         const dbProfile = await this.profileRepository.findOne({
-            where: { id: profileId },
+            where: { userId: userId },
         });
 
         if (!dbProfile) {
             throw new NotFoundException();
         }
 
-        const newProfile = Object.assign(dbProfile, input, {
-            location: input.location ? {
+        const { id: profileId } = dbProfile;
+
+        const {
+            fullName,
+            bio,
+            picture,
+            location,
+            interests,
+            completed,
+        } = input;
+
+        const newProfile = Object.assign(dbProfile, {
+            fullName,
+            bio,
+            picture,
+            completed,
+            location: location ? {
                 type: "Point",
-                coordinates: input.location,
+                coordinates: location,
             } : dbProfile.location,
         });
 
         await this.profileRepository.save(newProfile);
 
-        if (input.interests?.length) {
+        if(interests) {
             await this.dataSource.transaction(async entityManager => {
-                if(!input.interests) return;
+                if(!interests) return;
 
                 await entityManager.delete(ProfileInterestsEntity, { profileId });
 
-                const interests = input.interests?.map(interestId =>
+                const newInterests = interests.map(interestId =>
                     entityManager.create(ProfileInterestsEntity, { profileId, interestId }),
                 );
 
-                await entityManager.save(ProfileInterestsEntity, interests);
+                await entityManager.save(ProfileInterestsEntity, newInterests);
             });
         }
 
