@@ -22,9 +22,6 @@ export const RecommendationDrawer = ({ }: RecommendationDrawer.Props) => {
                 Drawer here
             </DrawerTrigger>
             <DrawerBody>
-                <div>
-
-                </div>
                 <DrawerContent>
                     <div className={styles.drawer__content}>
                         <div className={styles.drawer__content__input}>
