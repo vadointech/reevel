@@ -22,7 +22,6 @@ export default function Page() {
                     <OnboardingTextBlock
                         title={"Tell us About Yourself"}
                         subtitle={"Share your name and a bit about yourself to make your profile unique."}
-                        className={styles.page__text}
                     />
                 </div>
                 <OnboardingBioForm />
