@@ -5,7 +5,7 @@ import { redirect } from "@/i18n/routing";
 import { headers } from "next/headers";
 
 import styles from "./styles.module.scss";
-import { CreateEventStoreProvider } from "@/features/onboarding/stores/event-create.store";
+import { CreateEventStoreProvider } from "@/features/event/stores/event-create.store";
 
 export const dynamic = "force-dynamic";
 

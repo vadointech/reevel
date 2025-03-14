@@ -1,16 +1,25 @@
-"use client";
-
-import { ArrowBack } from "@/components/icons";
-import { Avatar, Container } from "@/components/ui";
-import { useOnboardingStore } from "@/features/onboarding/stores/onboarding.store";
+import { IconPlus } from "@/components/icons";
+import { Container } from "@/components/ui";
 
 import styles from "./styles.module.scss";
 import { EventProgress } from "../_components/event-progress";
 import { OnboardingTextBlock } from "../../onboarding/_components";
+import { TabButton } from "@/components/ui/tab-button";
+import { getInitialInterests } from "@/api/interests";
+import { headers } from "next/headers";
 import { CreateEventBioForm } from "../_components/event-bio-form";
+import { InterestsSection } from "@/components/shared/interests-section";
+import { RecommendationDrawer } from "@/components/drawers/recommendation-drawer";
 
-export default function Page() {
+export default async function Page() {
     // Потім треба буде OnboardingTextBlock перенести в shared
+
+    const { data } = await getInitialInterests({
+        nextHeaders: await headers(),
+    });
+
+    const items = data?.slice(0, 8)
+
     return (
         <>
             <Container>
@@ -25,6 +34,16 @@ export default function Page() {
                 />
                 <CreateEventBioForm />
             </Container>
+
+            <Container>
+                <InterestsSection title="Interests">
+                    {items?.map((item) => (
+                        <TabButton key={item.slug} name={item.title_uk} icon={item.icon} />
+                    ))}
+                    <TabButton name="More" icon={<IconPlus width={10} height={10} strokeWidth={1.5} />} />
+                </InterestsSection>
+            </Container>
+            <RecommendationDrawer open={true} />
         </>
     );
 };

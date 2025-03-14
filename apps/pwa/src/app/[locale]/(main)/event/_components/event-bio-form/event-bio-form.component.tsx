@@ -2,13 +2,11 @@
 
 import { ComponentProps } from "react";
 import { Input, TextArea } from "@/components/ui";
-import { useOnboardingStore } from "@/features/onboarding/stores/onboarding.store";
 import { observer } from "mobx-react-lite";
 
 import cx from "classnames";
 import styles from "./styles.module.scss";
-import { useCreateEventStore } from "@/features/onboarding/stores/event-create.store";
-
+import { useCreateEventStore } from "@/features/event";
 export namespace CreateEventBioForm {
     export type Props = ComponentProps<"form">;
 }
