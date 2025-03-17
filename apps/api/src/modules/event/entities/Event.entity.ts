@@ -1,6 +1,7 @@
-import { Column, Entity, Index, ManyToMany, Point, PrimaryGeneratedColumn } from "typeorm";
-import { UserEntity } from "@/modules/user/entities/user.entity";
-import { InterestsEntity } from "@/modules/interests/entities/interests.entity";
+import { Column, Entity, Index, OneToMany, Point, PrimaryGeneratedColumn } from "typeorm";
+import { EventInterestsEntity } from "./event-interests.entity";
+import { EventAttendeeEntity } from "./event-attendee.entity";
+import { EventCreatorsEntity } from "./event-creators.entity";
 
 export enum Visibility {
     PUBLIC = "Public",
@@ -8,7 +9,7 @@ export enum Visibility {
 }
 
 @Entity("event")
-export class Event {
+export class EventEntity {
 
     @PrimaryGeneratedColumn("uuid")
     id: string;
@@ -41,16 +42,12 @@ export class Event {
     @Column({ type: "decimal" })
     price: number;
 
-    @ManyToMany(() => UserEntity, attendee => attendee.attendingEvents)
-    attendees?: UserEntity[];
+    @OneToMany(() => EventInterestsEntity, event => event.event)
+    interests: EventInterestsEntity[];
 
-    @ManyToMany(() => UserEntity, creator => creator.attendingEvents)
-    creators?: UserEntity[];
+    @OneToMany(() => EventAttendeeEntity, event => event.event)
+    attendees: EventInterestsEntity[];
 
-    @ManyToMany(() => InterestsEntity, interests => interests.interestsEvents)
-    interest: InterestsEntity[];
-
-    constructor(event: Partial<Event>) {
-        Object.assign(this, event);
-    }
+    @OneToMany(() => EventCreatorsEntity, event => event.event)
+    creators: EventCreatorsEntity[];
 }

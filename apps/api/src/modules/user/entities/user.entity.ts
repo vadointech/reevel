@@ -1,6 +1,7 @@
-import { Column, Entity, JoinTable, ManyToMany, OneToOne, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, OneToMany, OneToOne, PrimaryGeneratedColumn } from "typeorm";
 import { ProfileEntity } from "@/modules/profile/entities/profile.entity";
-import { Event } from "@/modules/event/entities/event.entity";
+import { EventAttendeeEntity } from "@/modules/event/entities/event-attendee.entity";
+import { EventCreatorsEntity } from "@/modules/event/entities/event-creators.entity";
 
 @Entity("users")
 export class UserEntity {
@@ -13,19 +14,9 @@ export class UserEntity {
     @OneToOne(() => ProfileEntity, (profile) => profile.user)
     profile: ProfileEntity;
 
-    @ManyToMany(() => Event, event => event.attendees)
-    @JoinTable({
-        name: "events_attendee",
-        joinColumn: { name: "user_id", referencedColumnName: "id" },
-        inverseJoinColumn: { name: "event_id", referencedColumnName: "id" },
-    })
-    attendingEvents: Event[];
+    @OneToMany(() => EventAttendeeEntity, event => event.user)
+    attendees: EventAttendeeEntity[];
 
-    @ManyToMany(() => Event, event => event.creators)
-    @JoinTable({
-        name: "events_creators",
-        joinColumn: { name: "user_id", referencedColumnName: "id" },
-        inverseJoinColumn: { name: "event_id", referencedColumnName: "id" },
-    })
-    creators: Event[];
+    @OneToMany(() => EventAttendeeEntity, event => event.user)
+    creators: EventCreatorsEntity[];
 }
