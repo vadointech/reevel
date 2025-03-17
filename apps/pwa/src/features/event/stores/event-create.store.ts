@@ -74,4 +74,4 @@ class CreateEventStore implements ICreateEventStore {
     }
 }
 
-export const [CreateEventStoreProvider, useCreateEventStore] = createMobxStoreProvider(CreateEventStore);
+export const [CreateEventStoreProvider, useEventStore] = createMobxStoreProvider(CreateEventStore);

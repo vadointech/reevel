@@ -1,0 +1,31 @@
+@use "@/theme/mixins";
+
+.drawer {
+    &__selected {
+        margin-top: mixins.rem(18);
+    }
+
+    &__more {
+        margin-top: 1rem;
+    }
+
+    &__buttons {
+        height: 104px;
+        width: 100%;
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        z-index: 9999999999999;
+        position: absolute;
+        bottom:0;
+        left: 0;
+    }
+
+    &__button {
+        display: flex;
+        justify-content: center;
+        flex-direction: column;
+    }
+}

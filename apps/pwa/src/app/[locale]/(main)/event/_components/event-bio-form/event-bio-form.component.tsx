@@ -6,7 +6,7 @@ import { observer } from "mobx-react-lite";
 
 import cx from "classnames";
 import styles from "./styles.module.scss";
-import { useCreateEventStore } from "@/features/event";
+import { useEventStore } from "@/features/event";
 export namespace CreateEventBioForm {
     export type Props = ComponentProps<"form">;
 }
@@ -25,10 +25,10 @@ export const CreateEventBioForm = ({ className, ...props }: CreateEventBioForm.P
 };
 
 const Title = observer(() => {
-    const createEventStore = useCreateEventStore();
+    const eventStore = useEventStore();
     return (
         <Input
-            onChange={(e) => createEventStore.setTitle(e.target.value)}
+            onChange={(e) => eventStore.setTitle(e.target.value)}
             label={"Title"}
             placeholder={"Enter title"}
             variant={"default"}
@@ -37,10 +37,10 @@ const Title = observer(() => {
 });
 
 export const Description = observer(() => {
-    const createEventStore = useCreateEventStore();
+    const eventStore = useEventStore();
     return (
         <TextArea
-            onChange={(e) => createEventStore.setDescription(e.target.value)}
+            onChange={(e) => eventStore.setDescription(e.target.value)}
             label={"Description"}
             placeholder={"Enter description"}
             variant={"default"}

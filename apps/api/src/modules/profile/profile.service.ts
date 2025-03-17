@@ -41,36 +41,37 @@ export class ProfileService {
         });
     }
 
-    // async getUserInterests(userId: string) {
-    //     const userWithInterests = await this.profileRepository.findOne({
-    //         where: { userId },
-    //         relations: {
-    //             interests: {
-    //                 interest: true,
-    //             },
-    //         },
-    //     });
+    async getUserInterests(userId: string) {
+        const userWithInterests = await this.profileRepository.findOne({
+            where: { userId },
+            relations: {
+                interests: {
+                    interest: true,
+                },
+            },
+        });
 
-    //     const userInterests = userWithInterests?.interests
-    //         ?.map(i => i.interest)
-    //         ?.slice(0, 5) || [];
+        const userInterests = userWithInterests?.interests
+            ?.map(i => i.interest)
+            ?.slice(0, 5) || [];
 
-    //     const userInterestIds = userInterests.map(i => i.slug) || [];
+        const userInterestIds = userInterests.map(i => i.slug) || [];
 
-    //     const limit = 8;
+        const limit = 8;
 
-    //     const randomInterests = await this.interestRepository
-    //         .createQueryBuilder("interest")
-    //         .where(userInterestIds.length ? "interest.slug NOT IN (:...userInterestIds)" : "1=1", { userInterestIds })
-    //         .orderBy("RANDOM()")
-    //         .limit(limit - userInterests.length)
-    //         .getMany();
+        const randomInterests = await this.interestRepository
+            .createQueryBuilder("interest")
+            .where(userInterestIds.length ? "interest.slug NOT IN (:...userInterestIds)" : "1=1", { userInterestIds })
+            .orderBy("RANDOM()")
+            .limit(limit - userInterests.length)
+            .getMany();
 
-    //     return {
-    //         userInterests,
-    //         randomInterests,
-    //     };
-    // }
+
+
+        return {
+            userInterests: userInterests.concat(randomInterests),
+        };
+    }
 
     async updateProfile(userId: string, input: UpdateProfileDto) {
         const dbProfile = await this.profileRepository.findOne({

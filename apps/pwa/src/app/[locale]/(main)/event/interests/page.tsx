@@ -1,24 +1,22 @@
-import { IconPlus } from "@/components/icons";
 import { Container } from "@/components/ui";
 
 import styles from "./styles.module.scss";
 import { EventProgress } from "../_components/event-progress";
 import { OnboardingTextBlock } from "../../onboarding/_components";
-import { TabButton } from "@/components/ui/tab-button";
-import { getInitialInterests } from "@/api/interests";
 import { headers } from "next/headers";
 import { CreateEventBioForm } from "../_components/event-bio-form";
-import { InterestsSection } from "@/components/shared/interests-section";
-import { RecommendationDrawer } from "@/components/drawers/recommendation-drawer";
+import { getUserInterests } from "@/api/interests";
+import { EventInterestsPicker } from "./_components";
 
 export default async function Page() {
-    // Потім треба буде OnboardingTextBlock перенести в shared
+    // Потім треба буде OnboardingTextBlock перенести в shared і зробити це просто textBlock
 
-    const { data } = await getInitialInterests({
+
+    const { data } = await getUserInterests({
         nextHeaders: await headers(),
     });
 
-    const items = data?.slice(0, 8)
+    const items = data?.userInterests.slice(0, 8)
 
     return (
         <>
@@ -36,14 +34,8 @@ export default async function Page() {
             </Container>
 
             <Container>
-                <InterestsSection title="Interests">
-                    {items?.map((item) => (
-                        <TabButton key={item.slug} name={item.title_uk} icon={item.icon} />
-                    ))}
-                    <TabButton name="More" icon={<IconPlus width={10} height={10} strokeWidth={1.5} />} />
-                </InterestsSection>
+                <EventInterestsPicker interests={items || []} />
             </Container>
-            <RecommendationDrawer open={true} />
         </>
     );
 };
