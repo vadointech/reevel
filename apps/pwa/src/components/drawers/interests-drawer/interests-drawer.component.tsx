@@ -59,9 +59,9 @@ export const InterestsDrawer = ({ open }: InterestsDrawer.Props) => {
                 </DrawerBody>
             </Drawer>
             {open &&
-                <div className={styles.drawer__buttons}>
+                <Container className={styles.drawer__buttons}>
                     <Button variant="default" className={styles.drawer__button}>Done</Button>
-                </div>
+                </Container>
             }
         </div>
     );

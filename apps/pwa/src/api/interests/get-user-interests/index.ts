@@ -1,11 +1,11 @@
-import { UserInterests } from "@/entities/interests";
+import { InterestEntity, UserInterests } from "@/entities/interests";
 import { fetcherClient } from "@/api/fetcher-client";
 import { GetSession } from "@/api/auth/get-session";
 
 export namespace GetUserInterests {
     export type TInput = null;
 
-    export type TOutput = UserInterests;
+    export type TOutput = InterestEntity[];
 
     export const queryKey = ["profile/interests", ...GetSession.queryKey];
 }

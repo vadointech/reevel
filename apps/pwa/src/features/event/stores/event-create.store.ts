@@ -1,5 +1,6 @@
 "use client";
 
+import { InterestEntity } from "@/entities/interests";
 import { createMobxStoreProvider, initStore } from "@/lib/mobx";
 import { action, makeObservable, observable } from "mobx";
 
@@ -7,6 +8,7 @@ export interface ICreateEventStore {
     title: string;
     description: string;
     interests: string[];
+    initialInterests: InterestEntity[];
     poster: string;
     location?: [number, number];
     locationQuery: string;
@@ -17,6 +19,7 @@ class CreateEventStore implements ICreateEventStore {
     description: string = "";
     poster: string = "";
     interests: string[] = [];
+    initialInterests: InterestEntity[] = [];
 
     locationQuery: string = "";
     location?: [number, number] = undefined;

@@ -66,11 +66,9 @@ export class ProfileService {
             .limit(limit - userInterests.length)
             .getMany();
 
+        const res = userInterests.concat(randomInterests);
 
-
-        return {
-            userInterests: userInterests.concat(randomInterests),
-        };
+        return res;
     }
 
     async updateProfile(userId: string, input: UpdateProfileDto) {

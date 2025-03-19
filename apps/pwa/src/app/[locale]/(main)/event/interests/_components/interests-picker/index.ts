@@ -1,1 +1,1 @@
-export * from "./event-interests-picker"
+export * from "./event-interests-picker.component"

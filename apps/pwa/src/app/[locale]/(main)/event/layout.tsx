@@ -6,6 +6,7 @@ import { headers } from "next/headers";
 
 import styles from "./styles.module.scss";
 import { CreateEventStoreProvider } from "@/features/event/stores/event-create.store";
+import { getUserInterests } from "@/api/interests";
 
 export const dynamic = "force-dynamic";
 
@@ -13,6 +14,10 @@ export default async function CreateEventLayout({ children, params }: PropsWithC
     const { locale } = await params;
 
     const { data } = await getUserProfile({
+        nextHeaders: await headers(),
+    });
+
+    const initialInterests = await getUserInterests({
         nextHeaders: await headers(),
     });
 
@@ -32,6 +37,7 @@ export default async function CreateEventLayout({ children, params }: PropsWithC
                 description: '',
                 poster: '',
                 interests: [],
+                initialInterests: initialInterests?.data ?? [],
                 location: data?.location?.coordinates,
             }]}
         >

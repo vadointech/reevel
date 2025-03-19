@@ -7,16 +7,10 @@ import { headers } from "next/headers";
 import { CreateEventBioForm } from "../_components/event-bio-form";
 import { getUserInterests } from "@/api/interests";
 import { EventInterestsPicker } from "./_components";
+import { useEventStore } from "@/features/event";
 
 export default async function Page() {
     // Потім треба буде OnboardingTextBlock перенести в shared і зробити це просто textBlock
-
-
-    const { data } = await getUserInterests({
-        nextHeaders: await headers(),
-    });
-
-    const items = data?.userInterests.slice(0, 8)
 
     return (
         <>
@@ -34,7 +28,7 @@ export default async function Page() {
             </Container>
 
             <Container>
-                <EventInterestsPicker interests={items || []} />
+                <EventInterestsPicker />
             </Container>
         </>
     );
