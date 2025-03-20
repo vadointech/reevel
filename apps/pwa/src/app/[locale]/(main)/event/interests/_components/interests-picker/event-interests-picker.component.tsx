@@ -4,10 +4,12 @@ import { observer } from "mobx-react-lite";
 import { InterestsSection } from "@/components/shared/interests-section";
 import { TabButton } from "@/components/ui/tab-button";
 import { IconPlus } from "@/components/icons";
-import { GetInitialInterests, GetUserInterests } from "@/api/interests";
+import { GetUserInterests } from "@/api/interests";
 import { useState } from "react";
 import { useInterestPicker } from "@/features/event/hooks/use-interest-picker.hook";
 import { useEventStore } from "@/features/event";
+import { InterestsDrawer } from "@/components/drawers/interests-drawer";
+import { InterestEntity } from "@/entities/interests";
 
 export namespace EventInterestsPicker {
     export type Props = {
@@ -22,15 +24,16 @@ export const EventInterestsPicker = observer(({ }: EventInterestsPicker.Props) =
     const initialInterests = eventStore.initialInterests
 
     const { interests, handlePickInterest } = useInterestPicker(initialInterests);
-    console.log(interests)
-    console.log(eventStore.interests, 'event store')
+
+
     return (
         <InterestsSection title="Interests">
             {interests?.map((interest) => (
                 <InterestItem
+                    interest={interest}
                     key={interest.slug}
                     {...interest}
-                    selected={eventStore.interests.includes(interest.slug)}
+                    selected={eventStore.interests.some((item) => item.slug === interest.slug)}
                     handlePickInterest={handlePickInterest}
                 />
             ))}
@@ -39,14 +42,18 @@ export const EventInterestsPicker = observer(({ }: EventInterestsPicker.Props) =
                 icon={<IconPlus width={10} height={10} strokeWidth={1.5} />}
                 onClick={() => setOpen(!open)}
             />
+
+            <InterestsDrawer open={open} />
         </InterestsSection>
+
     );
 });
 
 const InterestItem = observer((
-    { selected, handlePickInterest, ...interest }: GetUserInterests.TOutput[number] & {
+    { selected, handlePickInterest, interest }: {
         selected: boolean;
-        handlePickInterest: (slug: string) => void;
+        handlePickInterest: (interest: InterestEntity) => void;
+        interest: InterestEntity;
     }
 ) => {
     return (
@@ -55,7 +62,7 @@ const InterestItem = observer((
             key={interest.slug}
             name={interest.title_uk}
             icon={interest.icon}
-            onClick={() => handlePickInterest(interest.slug)}
+            onClick={() => handlePickInterest(interest)}
         />
     );
 });

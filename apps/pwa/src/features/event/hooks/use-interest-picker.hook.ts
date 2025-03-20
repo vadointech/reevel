@@ -8,20 +8,20 @@ export function useInterestPicker(initialInterests: InterestEntity[]) {
     const eventStore = useEventStore();
     const [interests, setInterests] = useState<InterestEntity[]>(initialInterests || []);
 
-    const handlePickInterest = (slug: string) => {
+    const handlePickInterest = (interest: InterestEntity) => {
         startTransition(() => {
-            if (!interests.some((item) => item.slug === slug)) {
+            if (!interests.some((item) => item.slug === interest.slug)) {
                 setInterests((state) => [
                     ...state,
-                    eventStore.initialInterests.find((item) => item.slug === slug)!,
+                    interest,
                 ]);
             }
         });
 
-        if (eventStore.interests.includes(slug)) {
-            eventStore.interests = eventStore.interests.filter((item) => item !== slug);
+        if (eventStore.interests.some((item) => item.slug === interest.slug)) {
+            eventStore.interests = eventStore.interests.filter((item) => item.slug !== interest.slug);
         } else {
-            eventStore.addInterest(slug)
+            eventStore.addInterest(interest);
         }
     };
 

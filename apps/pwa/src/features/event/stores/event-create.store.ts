@@ -7,7 +7,7 @@ import { action, makeObservable, observable } from "mobx";
 export interface ICreateEventStore {
     title: string;
     description: string;
-    interests: string[];
+    interests: InterestEntity[];
     initialInterests: InterestEntity[];
     poster: string;
     location?: [number, number];
@@ -18,7 +18,7 @@ class CreateEventStore implements ICreateEventStore {
     title: string = "";
     description: string = "";
     poster: string = "";
-    interests: string[] = [];
+    interests: InterestEntity[] = [];
     initialInterests: InterestEntity[] = [];
 
     locationQuery: string = "";
@@ -60,12 +60,12 @@ class CreateEventStore implements ICreateEventStore {
         this.description = description;
     }
 
-    addInterest(slug: string): void {
-        this.interests.push(slug);
+    addInterest(interest: InterestEntity): void {
+        this.interests.push(interest);
     }
 
-    removeInterest(slug: string): void {
-        this.interests = this.interests.filter(item => item !== slug);
+    removeInterest(interest: InterestEntity): void {
+        this.interests = this.interests.filter(item => item.slug !== interest.slug);
     }
 
     setLocationQuery(query: string) {

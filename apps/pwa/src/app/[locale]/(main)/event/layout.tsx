@@ -1,12 +1,11 @@
 import { PropsWithChildren } from "react";
 import { ParamsWithLocale } from "@/types/common";
 import { getUserProfile } from "@/api/profile/get-one";
-import { redirect } from "@/i18n/routing";
 import { headers } from "next/headers";
 
 import styles from "./styles.module.scss";
 import { CreateEventStoreProvider } from "@/features/event/stores/event-create.store";
-import { getUserInterests } from "@/api/interests";
+import { getAllInterest, getUserInterests } from "@/api/interests";
 
 export const dynamic = "force-dynamic";
 
@@ -18,6 +17,10 @@ export default async function CreateEventLayout({ children, params }: PropsWithC
     });
 
     const initialInterests = await getUserInterests({
+        nextHeaders: await headers(),
+    });
+
+    const allInterests = await getAllInterest({
         nextHeaders: await headers(),
     });
 
