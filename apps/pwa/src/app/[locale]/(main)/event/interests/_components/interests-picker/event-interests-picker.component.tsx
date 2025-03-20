@@ -4,7 +4,6 @@ import { observer } from "mobx-react-lite";
 import { InterestsSection } from "@/components/shared/interests-section";
 import { TabButton } from "@/components/ui/tab-button";
 import { IconPlus } from "@/components/icons";
-import { GetUserInterests } from "@/api/interests";
 import { useState } from "react";
 import { useInterestPicker } from "@/features/event/hooks/use-interest-picker.hook";
 import { useEventStore } from "@/features/event";
