@@ -5,9 +5,18 @@ import { EventProgress } from "../_components/event-progress";
 import { OnboardingTextBlock } from "../../onboarding/_components";
 import { CreateEventBioForm } from "../_components/event-bio-form";
 import { EventInterestsPicker } from "./_components";
+import { getUserInterests, searchInterests } from "@/api/interests";
+import { headers } from "next/headers";
 
 export default async function Page() {
     // Потім треба буде OnboardingTextBlock перенести в shared і зробити це просто textBlock
+
+    const { data: userInterests } = await getUserInterests({
+        nextHeaders: await headers(),
+    });
+
+    const { data: interests } = await searchInterests();
+
 
     return (
         <>
@@ -25,7 +34,7 @@ export default async function Page() {
             </Container>
 
             <Container>
-                <EventInterestsPicker />
+                <EventInterestsPicker userInterests={userInterests ?? []} initialInterests={interests ?? []} />
             </Container>
         </>
     );

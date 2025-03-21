@@ -12,17 +12,18 @@ import { InterestEntity } from "@/entities/interests";
 
 export namespace EventInterestsPicker {
     export type Props = {
+        userInterests: InterestEntity[]
+        initialInterests: InterestEntity[]
     };
 }
 
-export const EventInterestsPicker = observer(({ }: EventInterestsPicker.Props) => {
+export const EventInterestsPicker = observer(({ userInterests, initialInterests }: EventInterestsPicker.Props) => {
     const [open, setOpen] = useState<boolean>(false);
 
     const eventStore = useEventStore()
 
-    const initialInterests = eventStore.initialInterests
 
-    const { interests, handlePickInterest } = useInterestPicker(initialInterests);
+    const { interests, handlePickInterest } = useInterestPicker(userInterests ?? []);
 
 
     return (
@@ -42,7 +43,7 @@ export const EventInterestsPicker = observer(({ }: EventInterestsPicker.Props) =
                 onClick={() => setOpen(!open)}
             />
 
-            <InterestsDrawer open={open} />
+            <InterestsDrawer open={open} initialInterests={initialInterests} />
         </InterestsSection>
 
     );

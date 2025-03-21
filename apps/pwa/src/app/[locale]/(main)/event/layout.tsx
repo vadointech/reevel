@@ -16,14 +16,6 @@ export default async function CreateEventLayout({ children, params }: PropsWithC
         nextHeaders: await headers(),
     });
 
-    const initialInterests = await getUserInterests({
-        nextHeaders: await headers(),
-    });
-
-    const allInterests = await getAllInterest({
-        nextHeaders: await headers(),
-    });
-
     // const onboardingStatus = data?.completed;
 
     // if (onboardingStatus === "true") {
@@ -36,11 +28,6 @@ export default async function CreateEventLayout({ children, params }: PropsWithC
     return (
         <CreateEventStoreProvider
             init={[{
-                title: '',
-                description: '',
-                poster: '',
-                interests: [],
-                initialInterests: initialInterests?.data ?? [],
                 location: data?.location?.coordinates,
             }]}
         >
