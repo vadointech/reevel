@@ -8,10 +8,10 @@ export interface ICreateEventStore {
     title: string;
     description: string;
     interests: InterestEntity[];
-    initialInterests: InterestEntity[];
     poster: string;
     location?: [number, number];
     locationQuery: string;
+    interestQuery: string,
 }
 
 class CreateEventStore implements ICreateEventStore {
@@ -19,12 +19,11 @@ class CreateEventStore implements ICreateEventStore {
     description: string = "";
     poster: string = "";
     interests: InterestEntity[] = [];
-    initialInterests: InterestEntity[] = [];
 
+    interestQuery: string = "";
     locationQuery: string = "";
     location?: [number, number] = undefined;
 
-    initialState: Partial<ICreateEventStore> = {};
 
     constructor(init?: Partial<ICreateEventStore>) {
         makeObservable(this, {
@@ -32,6 +31,7 @@ class CreateEventStore implements ICreateEventStore {
             description: observable,
             poster: observable,
             interests: observable.shallow,
+            interestQuery: observable,
             locationQuery: observable,
             location: observable.ref,
             setTitle: action,
@@ -40,11 +40,11 @@ class CreateEventStore implements ICreateEventStore {
             addInterest: action,
             removeInterest: action,
             setLocationQuery: action,
+            setInterestQuery: action,
             setLocation: action,
         });
 
         initStore(this, init);
-        this.initialState = init || {};
     }
 
 
@@ -66,6 +66,9 @@ class CreateEventStore implements ICreateEventStore {
 
     removeInterest(interest: InterestEntity): void {
         this.interests = this.interests.filter(item => item.slug !== interest.slug);
+    }
+    setInterestQuery(query: string) {
+        this.interestQuery = query;
     }
 
     setLocationQuery(query: string) {

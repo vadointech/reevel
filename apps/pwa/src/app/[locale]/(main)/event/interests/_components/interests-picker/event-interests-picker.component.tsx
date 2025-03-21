@@ -22,6 +22,9 @@ export const EventInterestsPicker = observer(({ userInterests, initialInterests 
 
     const eventStore = useEventStore()
 
+    const onClose = () => {
+        setOpen(false)
+    }
 
     const { interests, handlePickInterest } = useInterestPicker(userInterests ?? []);
 
@@ -43,7 +46,7 @@ export const EventInterestsPicker = observer(({ userInterests, initialInterests 
                 onClick={() => setOpen(!open)}
             />
 
-            <InterestsDrawer open={open} initialInterests={initialInterests} />
+            <InterestsDrawer open={open} initialInterests={initialInterests} onClose={onClose} />
         </InterestsSection>
 
     );
@@ -60,7 +63,7 @@ const InterestItem = observer((
         <TabButton
             selected={selected}
             key={interest.slug}
-            name={interest.title_uk}
+            name={interest.title_en}
             icon={interest.icon}
             onClick={() => handlePickInterest(interest)}
         />

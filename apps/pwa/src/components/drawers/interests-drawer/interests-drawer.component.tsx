@@ -15,6 +15,7 @@ import { searchInterests } from "@/api/interests";
 import { InterestEntity } from "@/entities/interests";
 import { useInterestPicker } from "@/features/event/hooks/use-interest-picker.hook";
 import { observer } from "mobx-react-lite";
+import { useInterestSearch } from "@/features/event/hooks/use-interest-search.hook";
 
 export namespace InterestsDrawer {
     export type Props = {
@@ -26,19 +27,8 @@ export namespace InterestsDrawer {
 
 export const InterestsDrawer = ({ open, initialInterests, onClose }: InterestsDrawer.Props) => {
     const eventStore = useEventStore();
-    const [searchTerm, setSearchTerm] = useState("");
 
-    const { data: searchResults } = useQuery({
-        queryKey: ["interests", searchTerm],
-        initialData: initialInterests,
-        queryFn: async () => {
-            const response = await searchInterests({ params: { s: searchTerm } });
-            return response.data;
-        },
-        enabled: true,
-    });
-
-    const { interests, handlePickInterest } = useInterestPicker(searchResults ?? []);
+    const { interests, searchValue, handlePickInterest, onSearchValueChange } = useInterestSearch(initialInterests);
 
     return (
         <div>
@@ -50,12 +40,11 @@ export const InterestsDrawer = ({ open, initialInterests, onClose }: InterestsDr
                                 placeholder={"Enter interest"}
                                 variant={"rounded"}
                                 icon={<Search />}
-                                value={searchTerm}
-                                onChange={(e) => setSearchTerm(e.target.value)}
+                                value={searchValue}
+                                onChange={onSearchValueChange}
                             />
                         </div>
 
-                        {/* Вибрані інтереси */}
                         <InterestsSection title="Selected" count className={styles.drawer__selected}>
                             {eventStore.interests.map((interest) => (
                                 <TabButton
@@ -78,21 +67,20 @@ export const InterestsDrawer = ({ open, initialInterests, onClose }: InterestsDr
                                 />
                             ))}
                         </InterestsSection>
+                        {open && (
+                            <Container className={styles.drawer__buttons}>
+                                <Button
+                                    variant="default"
+                                    className={styles.drawer__button}
+                                    onClick={onClose}
+                                >
+                                    Done
+                                </Button>
+                            </Container>
+                        )}
                     </DrawerContent>
                 </DrawerBody>
             </Drawer>
-
-            {open && (
-                <Container className={styles.drawer__buttons}>
-                    <Button
-                        variant="default"
-                        className={styles.drawer__button}
-                        onClick={onClose}
-                    >
-                        Done
-                    </Button>
-                </Container>
-            )}
         </div>
     );
 };

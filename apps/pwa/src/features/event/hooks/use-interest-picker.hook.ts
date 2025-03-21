@@ -8,7 +8,6 @@ export function useInterestPicker(initialInterests: InterestEntity[]) {
     const eventStore = useEventStore();
     const [interests, setInterests] = useState<InterestEntity[]>(initialInterests || []);
 
-    // Update local state when initialInterests changes (e.g. from search)
     useEffect(() => {
         setInterests(initialInterests || []);
     }, [initialInterests]);
