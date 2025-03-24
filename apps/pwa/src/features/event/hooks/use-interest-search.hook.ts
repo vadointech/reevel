@@ -9,7 +9,6 @@ import { searchInterests } from "@/api/interests";
 
 export function useInterestSearch(initialInterests: InterestEntity[]) {
     const eventStore = useEventStore();
-    const [interests, setInterests] = useState<InterestEntity[]>(initialInterests || []);
     const [searchValue, setSearchValue] = useState("");
 
     const debounceSearchValue = useDebounce(searchValue, 300);
@@ -31,12 +30,6 @@ export function useInterestSearch(initialInterests: InterestEntity[]) {
         enabled: true
     });
 
-    useEffect(() => {
-        if (searchResults) {
-            setInterests(searchResults);
-        }
-    }, [searchResults]);
-
     const handlePickInterest = (interest: InterestEntity) => {
         const isSelected = eventStore.interests.some((item) => item.slug === interest.slug);
         if (isSelected) {
@@ -47,7 +40,7 @@ export function useInterestSearch(initialInterests: InterestEntity[]) {
     };
 
     return {
-        interests,
+        interests: searchResults,
         searchValue,
         handlePickInterest,
         onSearchValueChange,

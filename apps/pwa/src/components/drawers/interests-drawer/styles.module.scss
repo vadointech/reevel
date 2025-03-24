@@ -1,6 +1,9 @@
 @use "@/theme/mixins";
+@use "@/theme/colors";
+
 
 .drawer {
+    pointer-events: none;
     &__selected {
         margin-top: mixins.rem(18);
     }
@@ -10,15 +13,16 @@
     }
 
     &__buttons {
-        background-color: white;
-        height: 104px;
+        pointer-events: auto;
+        background-color: colors.$background;
+        height: mixins.rem(104);
         width: 100%;
 
         display: flex;
         align-items: center;
         justify-content: center;
 
-        z-index: 9999999999999;
+        z-index: 999;
         position: absolute;
         bottom:0;
         left: 0;
@@ -27,6 +31,5 @@
     &__button {
         display: flex;
         justify-content: center;
-        flex-direction: column;
     }
 }

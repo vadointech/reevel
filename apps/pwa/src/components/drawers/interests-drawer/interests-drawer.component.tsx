@@ -7,7 +7,7 @@ import styles from "./styles.module.scss";
 
 import { Drawer, DrawerBody, DrawerContent } from "@/components/shared/drawer";
 import { Button, Container, Input } from "@/components/ui";
-import { Search } from "@/components/icons";
+import { Check, Search } from "@/components/icons";
 import { InterestsSection } from "@/components/shared/interests-section";
 import { TabButton } from "@/components/ui/tab-button";
 import { useEventStore } from "@/features/event";
@@ -25,7 +25,7 @@ export namespace InterestsDrawer {
     };
 }
 
-export const InterestsDrawer = ({ open, initialInterests, onClose }: InterestsDrawer.Props) => {
+export const InterestsDrawer = observer(({ open, initialInterests, onClose }: InterestsDrawer.Props) => {
     const eventStore = useEventStore();
 
     const { interests, searchValue, handlePickInterest, onSearchValueChange } = useInterestSearch(initialInterests);
@@ -67,23 +67,25 @@ export const InterestsDrawer = ({ open, initialInterests, onClose }: InterestsDr
                                 />
                             ))}
                         </InterestsSection>
-                        {open && (
-                            <Container className={styles.drawer__buttons}>
-                                <Button
-                                    variant="default"
-                                    className={styles.drawer__button}
-                                    onClick={onClose}
-                                >
-                                    Done
-                                </Button>
-                            </Container>
-                        )}
+
                     </DrawerContent>
                 </DrawerBody>
+                {open && (
+                    <Container className={styles.drawer__buttons}>
+                        <Button
+                            variant="default"
+                            className={styles.drawer__button}
+                            onClick={onClose}
+                            iconBefore={<Check width={16} height={16} />}
+                        >
+                            Done
+                        </Button>
+                    </Container>
+                )}
             </Drawer>
         </div>
     );
-};
+});
 
 
 const InterestItem = observer((
