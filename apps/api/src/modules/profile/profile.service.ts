@@ -5,14 +5,19 @@ import { DataSource, Repository } from "typeorm";
 import { CreateProfileDto } from "@/modules/profile/dto/create-profile.dto";
 import { UpdateProfileDto } from "@/modules/profile/dto/update-profile.dto";
 import { ProfileInterestsEntity } from "@/modules/profile/entities/profile-interests.entity";
+import { InterestsEntity } from "../interests/entities/interests.entity";
 
 @Injectable()
 export class ProfileService {
     constructor(
         @InjectRepository(ProfileEntity)
         private readonly profileRepository: Repository<ProfileEntity>,
+
+        @InjectRepository(InterestsEntity)
+        private readonly interestRepository: Repository<InterestsEntity>,
+
         private dataSource: DataSource,
-    ) {}
+    ) { }
 
     async createProfile(input: CreateProfileDto): Promise<ProfileEntity> {
         const profile = this.profileRepository.create({
@@ -34,6 +39,36 @@ export class ProfileService {
                 },
             },
         });
+    }
+
+    async getUserInterests(userId: string) {
+        const userWithInterests = await this.profileRepository.findOne({
+            where: { userId },
+            relations: {
+                interests: {
+                    interest: true,
+                },
+            },
+        });
+
+        const userInterests = userWithInterests?.interests
+            ?.map(i => i.interest)
+            ?.slice(0, 5) || [];
+
+        const userInterestIds = userInterests.map(i => i.slug) || [];
+
+        const limit = 8;
+
+        const randomInterests = await this.interestRepository
+            .createQueryBuilder("interest")
+            .where(userInterestIds.length ? "interest.slug NOT IN (:...userInterestIds)" : "1=1", { userInterestIds })
+            .orderBy("RANDOM()")
+            .limit(limit - userInterests.length)
+            .getMany();
+
+        const res = userInterests.concat(randomInterests);
+
+        return res;
     }
 
     async updateProfile(userId: string, input: UpdateProfileDto) {
@@ -69,9 +104,9 @@ export class ProfileService {
 
         await this.profileRepository.save(newProfile);
 
-        if(interests) {
+        if (interests) {
             await this.dataSource.transaction(async entityManager => {
-                if(!interests) return;
+                if (!interests) return;
 
                 await entityManager.delete(ProfileInterestsEntity, { profileId });
 

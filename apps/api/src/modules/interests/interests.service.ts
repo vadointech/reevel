@@ -15,7 +15,7 @@ export class InterestsService {
         private readonly interestsRelationsRepository: Repository<InterestRelationsEntity>,
         @InjectRepository(ProfileEntity)
         private readonly profileRepository: Repository<ProfileEntity>,
-    ) {}
+    ) { }
 
     async getInitialInterests(userId: string): Promise<InterestsEntity[]> {
         const slugs = [
@@ -44,7 +44,7 @@ export class InterestsService {
             },
         });
 
-        if(userProfile) {
+        if (userProfile) {
             const userInterests = userProfile.interests.map(item => item.interestId);
             slugs.push(...userInterests);
         }
@@ -68,5 +68,13 @@ export class InterestsService {
         });
 
         return relatedInterests.map(item => item.sourceInterest);
+    }
+
+    async getAllInterests(): Promise<InterestsEntity[]> {
+        return this.interestsRepository.find();
+    }
+
+    async queryBuilder(alias: string) {
+        return this.interestsRepository.createQueryBuilder(alias);
     }
 }

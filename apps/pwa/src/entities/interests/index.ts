@@ -7,3 +7,8 @@ export type InterestEntity = {
     secondaryColor: string;
     categoryId: string;
 };
+
+
+export type UserInterests = {
+    userInterests: InterestEntity[]
+}

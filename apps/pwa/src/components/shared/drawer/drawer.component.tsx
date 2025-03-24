@@ -5,7 +5,7 @@ import { Drawer as Vaul, DialogProps } from "vaul";
 import styles from "./styles.module.scss";
 
 export namespace Drawer {
-    export type SnapPoints = "low" | "middle" | "full";
+    export type SnapPoints = "low" | "middle" | "upper" | "full";
 
     export type Props = DialogProps & {
         overlay?: boolean;
@@ -17,6 +17,7 @@ export namespace Drawer {
 const snapPointsMap: Record<Drawer.SnapPoints, string | number> = {
     low: "168px",
     middle: "348px",
+    upper: "605px",
     full: 1,
 };
 
@@ -31,8 +32,8 @@ export const Drawer = ({
 }: Drawer.Props) => {
 
     const defaultSnapPoint = useMemo(() => {
-        if(staticPoint) return snapPointsMap[staticPoint];
-        if(defaultPoint) return snapPointsMap[defaultPoint];
+        if (staticPoint) return snapPointsMap[staticPoint];
+        if (defaultPoint) return snapPointsMap[defaultPoint];
         return snapPointsMap["low"];
     }, [staticPoint, defaultPoint, snapPointsMap]);
 
@@ -56,7 +57,7 @@ export const Drawer = ({
                 )
             }
 
-            { children }
+            {children}
         </Vaul.Root>
     );
 };

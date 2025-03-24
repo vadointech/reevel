@@ -12,7 +12,7 @@ export namespace TabButton {
         name: string
         icon?: ReactNode | string
         selected?: boolean
-        onChange: (selected: boolean) => void
+        // onChange: (selected: boolean) => void
     };
 }
 
@@ -21,15 +21,15 @@ export const TabButton = ({
     name,
     icon,
     selected = false,
-    onChange,
+    // onChange,
     className,
     ...props
 }: TabButton.Props) => {
 
-    const handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
-        e.preventDefault();
-        onChange(!selected);
-    };
+    // const handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
+    //     e.preventDefault();
+    //     onChange(!selected);
+    // };
 
     return (
         <button
@@ -43,7 +43,7 @@ export const TabButton = ({
                 selected && styles.button__selected,
                 className,
             )}
-            onClick={handleClick}
+            // onClick={handleClick}
             {...props}
         >
             {icon && (

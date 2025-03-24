@@ -11,20 +11,14 @@ import { CollectionCard } from "@/components/shared/collection-card";
 
 export namespace RecommendationDrawer {
     export type Props = ComponentProps<"div"> & {
-
+        open?: boolean;
     };
 }
 
-export const RecommendationDrawer = ({ }: RecommendationDrawer.Props) => {
+export const RecommendationDrawer = ({ open }: RecommendationDrawer.Props) => {
     return (
-        <Drawer>
-            <DrawerTrigger>
-                Drawer here
-            </DrawerTrigger>
+        <Drawer open={open}>
             <DrawerBody>
-                <div>
-
-                </div>
                 <DrawerContent>
                     <div className={styles.drawer__content}>
                         <div className={styles.drawer__content__input}>
