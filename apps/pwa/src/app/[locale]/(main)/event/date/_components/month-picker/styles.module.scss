@@ -1,0 +1,20 @@
+@use "@/theme/mixins";
+@use "@/theme/fonts";
+@use "@/theme/colors";
+
+.picker {
+    position: relative;
+
+    &__options {
+        position: absolute;
+        top: mixins.rem(22);
+        left: 50%;
+        transform: translateX(-50%);
+        border: 1px solid colors.$primary;
+        border-radius: 50%;
+    }
+}
+
+.item {
+    @include fonts.font-creata('2xl',600);
+}

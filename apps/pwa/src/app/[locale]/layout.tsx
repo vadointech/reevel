@@ -28,7 +28,7 @@ export const viewport: Viewport = {
 };
 
 export function generateStaticParams() {
-    return locales.map((locale) => ({locale}));
+    return locales.map((locale) => ({ locale }));
 }
 
 export default async function RootLayout({ children, params }: PropsWithChildren<ParamsWithLocale>) {
@@ -59,7 +59,7 @@ export default async function RootLayout({ children, params }: PropsWithChildren
                                 }]}
                             >
                                 <StandaloneProvider>
-                                    { children }
+                                    {children}
                                 </StandaloneProvider>
                             </SessionStoreProvider>
                         </ReactQueryClientProvider>

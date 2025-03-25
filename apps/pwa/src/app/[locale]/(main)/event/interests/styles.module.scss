@@ -1,15 +1,5 @@
 .page {    
-    height: 100%;
     &__textBlock {
         margin-top: 3rem;
-    }
-
-    &__buttons {
-        position: sticky;
-        bottom: 0;
-
-        display: flex;
-        justify-content: center;
-        flex-direction: column;
     }
 }
