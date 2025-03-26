@@ -6,6 +6,7 @@ import { OnboardingTextBlock } from "../../onboarding/_components";
 import { ArrowBack } from "@/components/icons";
 import { Toggle } from "@/components/ui/toggle";
 import { EventDatePicker, EventMonthPicker } from "./_components";
+import { DateSection } from "./_components/date-section/date-section.component";
 
 export default async function Page() {
 
@@ -22,12 +23,7 @@ export default async function Page() {
                     className={styles.page__textBlock}
                 />
 
-                <Toggle time="11:40" date="October 1" className={styles.page__toggle} />
-
-                <div className={styles.page__carousels}>
-                    <EventMonthPicker defaultAvatars={['test', 'test']} />
-                    <EventDatePicker defaultAvatars={['test', 'test']} />
-                </div>
+                <DateSection />
 
             </Container>
 

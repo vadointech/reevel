@@ -6,6 +6,8 @@ import { useCircularCarousel } from "@/components/shared/circular-carousel/hooks
 
 import styles from "./styles.module.scss";
 import { observer } from "mobx-react-lite";
+import { useDatePicker } from "@/features/event/hooks/use-date-picker.hook";
+import { useEventStore } from "@/features/event";
 
 const SliderItem = ({ src }: { src?: string }) => {
     return <div className={styles.item}>{src} <span>Mon</span></div>;
@@ -13,20 +15,17 @@ const SliderItem = ({ src }: { src?: string }) => {
 
 export namespace EventDatePicker {
     export type Props = {
-        defaultAvatars: string[]
+        selectedStart: boolean
+
     };
 }
 
 export const EventDatePicker = observer(({
-    defaultAvatars,
+    selectedStart,
 }: EventDatePicker.Props) => {
-
-    // const {
-    //     avatars,
-    //     handleSetAvatar,
-    // } = useAvatarPicker(defaultAvatars);
-
     const slide = [...Array(30)].map((_, i) => (i + 1).toString());
+
+    // const { handleDate } = useDatePicker(slide, selectedStart)
 
     const slides = slide.map((item) => (
         <SliderItem key={item} src={item} />
@@ -39,7 +38,7 @@ export const EventDatePicker = observer(({
         plugins: [ActiveScale],
         // handlers: {
         //     onChange(carousel) {
-        //         handleSetAvatar(
+        //         handleDate(
         //             carousel.api.selectedScrollSnap(),
         //         );
         //     },

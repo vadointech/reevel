@@ -47,7 +47,21 @@ class DateEventStore implements IDateEventStore {
             endMonth: observable,
             endHour: observable,
             endMinute: observable,
+            setStartMonth: action,
+            setStartDate: action,
+            setEndMonth: action,
         });
+    }
+    setStartMonth(moth: string) {
+        this.startMonth = moth;
+    }
+
+    setStartDate(date: string) {
+        this.startDate = date;
+    }
+
+    setEndMonth(moth: string) {
+        this.endMonth = moth;
     }
 }
 

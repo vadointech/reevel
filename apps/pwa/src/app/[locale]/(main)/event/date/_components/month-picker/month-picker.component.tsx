@@ -8,6 +8,7 @@ import styles from "./styles.module.scss";
 import { observer } from "mobx-react-lite";
 import { useDatePicker } from "@/features/event/hooks/use-date-picker.hook";
 import { useEventStore } from "@/features/event";
+import { useEffect } from "react";
 
 const SliderItem = ({ src }: { src?: string }) => {
     return <p className={styles.item}>{src}</p>;
@@ -15,16 +16,16 @@ const SliderItem = ({ src }: { src?: string }) => {
 
 export namespace EventMonthPicker {
     export type Props = {
-        defaultAvatars: string[]
+        selectedStart: boolean
     };
 }
 
 export const EventMonthPicker = observer(({
-    defaultAvatars = ['Jan', 'Apr', 'Jul', 'Oct', 'Feb', 'May', 'Aug', 'Nov', 'Mar', 'Jun', 'Sep', 'Dec', 'Jan', 'Apr', 'Jul', 'Oct', 'Feb', 'May', 'Aug', 'Nov', 'Mar', 'Jun', 'Sep', 'Dec'],
+    selectedStart,
 }: EventMonthPicker.Props) => {
-
-
     const slide = ['Jan', 'Apr', 'Jul', 'Oct', 'Feb', 'May', 'Aug', 'Nov', 'Mar', 'Jun', 'Sep', 'Dec', 'Jan', 'Apr', 'Jul', 'Oct', 'Feb', 'May', 'Aug', 'Nov', 'Mar', 'Jun', 'Sep', 'Dec']
+
+    const { handleMonth } = useDatePicker(slide, selectedStart)
 
     const slides = slide.map((item) => (
         <SliderItem key={item} src={item} />
@@ -35,17 +36,14 @@ export const EventMonthPicker = observer(({
         itemWidth: 110,
         itemHeight: 100,
         plugins: [ActiveScale],
-        // handlers: {
-        //     onChange(carousel) {
-        //         handleSetAvatar(
-        //             carousel.api.selectedScrollSnap(),
-        //         );
-        //     },
-        // },
+        handlers: {
+            onChange(carousel) {
+                handleMonth(
+                    carousel.api.selectedScrollSnap(),
+                );
+            },
+        },
     });
-
-    const eventStore = useEventStore()
-    console.log(eventStore.date)
 
     return (
         <div
