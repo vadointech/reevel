@@ -7,4 +7,10 @@
     &__carousels {
         position: relative;
     }
+
+    &__date {
+        display: block;
+        unicode-bidi: isolate;
+        box-sizing: border-box;
+    }
 }

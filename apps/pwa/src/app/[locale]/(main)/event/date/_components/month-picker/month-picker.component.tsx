@@ -16,16 +16,14 @@ const SliderItem = ({ src }: { src?: string }) => {
 
 export namespace EventMonthPicker {
     export type Props = {
-        selectedStart: boolean
     };
 }
 
 export const EventMonthPicker = observer(({
-    selectedStart,
 }: EventMonthPicker.Props) => {
     const slide = ['Jan', 'Apr', 'Jul', 'Oct', 'Feb', 'May', 'Aug', 'Nov', 'Mar', 'Jun', 'Sep', 'Dec', 'Jan', 'Apr', 'Jul', 'Oct', 'Feb', 'May', 'Aug', 'Nov', 'Mar', 'Jun', 'Sep', 'Dec']
 
-    const { handleMonth } = useDatePicker(slide, selectedStart)
+    const { handleMonth } = useDatePicker(slide)
 
     const slides = slide.map((item) => (
         <SliderItem key={item} src={item} />

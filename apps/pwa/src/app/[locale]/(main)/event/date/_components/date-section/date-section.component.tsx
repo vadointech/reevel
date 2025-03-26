@@ -10,6 +10,7 @@ import { EventDatePicker } from "../date-picker";
 import styles from "./styles.module.scss";
 import { useEventStore } from "@/features/event";
 import { useState } from "react";
+import EmblaCarousel from "../time-carousel/time-carousel.component";
 
 
 export namespace DateSection {
@@ -19,8 +20,6 @@ export namespace DateSection {
 
 export const DateSection = observer(({
 }: DateSection.Props) => {
-    const [selectedStart, setSelectedStart] = useState<boolean>(true);
-
     const eventStore = useEventStore()
 
 
@@ -29,14 +28,22 @@ export const DateSection = observer(({
             <Toggle
                 startMonth={eventStore.dateStore.startMonth}
                 startDate={eventStore.dateStore.startDate}
+
+                endMonth={eventStore.dateStore.endMonth}
+                endDate={eventStore.dateStore.endDate}
+
                 className={styles.section__toggle}
-                selectedStart={selectedStart}
-                setSelectedStart={setSelectedStart}
+
             />
+            <section className={styles.section__date}>
+                <EmblaCarousel loop={true} />
+            </section>
+
 
             <div className={styles.section__carousels}>
-                <EventMonthPicker selectedStart={selectedStart} />
-                <EventDatePicker selectedStart={selectedStart} />
+                <EventMonthPicker />
+                <EventDatePicker />
+
             </div>
         </>
     );

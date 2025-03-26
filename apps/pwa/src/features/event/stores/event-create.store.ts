@@ -25,6 +25,8 @@ export interface IDateEventStore {
     endMonth: string;
     endHour: string;
     endMinute: string;
+
+    toggle: boolean;
 }
 
 class DateEventStore implements IDateEventStore {
@@ -37,6 +39,8 @@ class DateEventStore implements IDateEventStore {
     endMonth: string = "";
     endHour: string = "";
     endMinute: string = "";
+
+    toggle: boolean = true;
     constructor() {
         makeObservable(this, {
             startDate: observable,
@@ -47,11 +51,18 @@ class DateEventStore implements IDateEventStore {
             endMonth: observable,
             endHour: observable,
             endMinute: observable,
+            toggle: observable,
             setStartMonth: action,
             setStartDate: action,
             setEndMonth: action,
+            setEndDate: action,
+            setToggle: action,
         });
     }
+    setToggle(toggle: boolean) {
+        this.toggle = toggle;
+    }
+
     setStartMonth(moth: string) {
         this.startMonth = moth;
     }
@@ -62,6 +73,10 @@ class DateEventStore implements IDateEventStore {
 
     setEndMonth(moth: string) {
         this.endMonth = moth;
+    }
+
+    setEndDate(date: string) {
+        this.endDate = date;
     }
 }
 

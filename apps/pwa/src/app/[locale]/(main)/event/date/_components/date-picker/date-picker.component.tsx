@@ -15,17 +15,14 @@ const SliderItem = ({ src }: { src?: string }) => {
 
 export namespace EventDatePicker {
     export type Props = {
-        selectedStart: boolean
-
     };
 }
 
 export const EventDatePicker = observer(({
-    selectedStart,
 }: EventDatePicker.Props) => {
     const slide = [...Array(30)].map((_, i) => (i + 1).toString());
 
-    // const { handleDate } = useDatePicker(slide, selectedStart)
+    const { handleDate } = useDatePicker(slide)
 
     const slides = slide.map((item) => (
         <SliderItem key={item} src={item} />
@@ -36,13 +33,13 @@ export const EventDatePicker = observer(({
         itemWidth: 80,
         itemHeight: 100,
         plugins: [ActiveScale],
-        // handlers: {
-        //     onChange(carousel) {
-        //         handleDate(
-        //             carousel.api.selectedScrollSnap(),
-        //         );
-        //     },
-        // },
+        handlers: {
+            onChange(carousel) {
+                handleDate(
+                    carousel.api.selectedScrollSnap(),
+                );
+            },
+        },
     });
 
     return (

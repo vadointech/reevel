@@ -18,9 +18,6 @@ export namespace Toggle {
         endDate?: string
         endHour?: string
         endMinute?: string
-
-        selectedStart: boolean
-        setSelectedStart: Dispatch<SetStateAction<boolean>>;
     };
 }
 
@@ -29,9 +26,10 @@ export const Toggle = observer(({
     startDate,
     startHour,
     startMinute,
+
+    endMonth,
+    endDate,
     className,
-    selectedStart,
-    setSelectedStart,
     ...props
 }: Toggle.Props) => {
 
@@ -39,13 +37,13 @@ export const Toggle = observer(({
     return (
         <div
             className={cx(styles.toggle, className, {
-                [styles.toggle__selected]: selectedStart
+                [styles.toggle__selected]: eventStore.dateStore.toggle
             })}
-            onClick={() => setSelectedStart(!selectedStart)}
+            onClick={() => eventStore.dateStore.setToggle(!eventStore.dateStore.toggle)}
             {...props}
         >
             <div className={cx(styles.toggle__element, {
-                [styles.toggle__element_selected]: selectedStart
+                [styles.toggle__element_selected]: eventStore.dateStore.toggle
             })}>
 
                 {startMonth ? `${startMonth} ${startDate}` : "Required"}
@@ -55,9 +53,9 @@ export const Toggle = observer(({
             <Back strokeWidth={2} height={20} width={10} />
 
             <div className={cx(styles.toggle__element, {
-                [styles.toggle__element_selected]: !selectedStart
+                [styles.toggle__element_selected]: !eventStore.dateStore.toggle
             })}>
-                Optional
+                {endMonth ? `${endMonth} ${endDate}` : "Optional"}
                 <span>End Date</span>
             </div>
         </div>

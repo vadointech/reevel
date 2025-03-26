@@ -4,18 +4,15 @@ import { useEffect, useState } from "react";
 
 import { useEventStore } from "../stores/event-create.store";
 
-export function useDatePicker(defaultAvatars: string[], selectedStart: boolean) {
+export function useDatePicker(defaultAvatars: string[]) {
     const eventStore = useEventStore();
 
     const [avatars, setAvatars] = useState<string[]>(defaultAvatars);
 
-    useEffect(() => {
-        console.log("useDatePicker selectedStart:", selectedStart);
-    }, [selectedStart]);
+
 
     const handleMonth = (month: number) => {
-        console.log(selectedStart)
-        if (selectedStart == true) {
+        if (eventStore.dateStore.toggle == true) {
             eventStore.dateStore.setStartMonth(avatars[month])
         } else {
             eventStore.dateStore.setEndMonth(avatars[month])
@@ -23,10 +20,10 @@ export function useDatePicker(defaultAvatars: string[], selectedStart: boolean) 
     };
 
     const handleDate = (month: number) => {
-        if (selectedStart) {
+        if (eventStore.dateStore.toggle) {
             eventStore.dateStore.setStartDate(avatars[month])
         } else {
-            // eventStore.dateStore.setEndDate(avatars[month])
+            eventStore.dateStore.setEndDate(avatars[month])
         }
     };
 
