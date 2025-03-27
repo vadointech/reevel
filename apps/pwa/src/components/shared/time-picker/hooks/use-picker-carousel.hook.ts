@@ -4,7 +4,7 @@ import { useEffect } from "react";
 import useEmblaCarousel from "embla-carousel-react";
 import { TimePicker } from "./use-time-picker.hook";
 import { PickerCarousel } from "../carousel/picker-carousel";
-import { onPointerUp, onScroll, onActivate } from "../carousel/handlers";
+import { onPointerUp, onScroll, onActivate, onChange } from "../carousel/handlers";
 
 export function useTimePickerCarousel(controls: TimePicker) {
     const [emblaRef, emblaApi] = useEmblaCarousel({
@@ -24,7 +24,10 @@ export function useTimePickerCarousel(controls: TimePicker) {
             handlers: controls.handlers,
         });
 
-        emblaApi.on("pointerUp", () => onPointerUp(pickerCarousel));
+        emblaApi.on("pointerUp", () => {
+            onPointerUp(pickerCarousel);
+            onChange(pickerCarousel);
+        });
 
         emblaApi.on("scroll", () => onScroll(pickerCarousel));
 
