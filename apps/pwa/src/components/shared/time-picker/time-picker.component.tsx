@@ -1,6 +1,6 @@
 "use client";
 
-import { ReactNode } from "react";
+import { ReactNode, use, useEffect } from "react";
 import { TimePicker as TTimePicker } from "./hooks/use-time-picker.hook";
 import { useTimePickerCarousel } from "./hooks/use-picker-carousel.hook";
 
@@ -16,6 +16,8 @@ export namespace TimePicker {
 
 export const TimePicker = ({ controls, label }: TimePicker.Props) => {
     const { wheel } = controls;
+
+    console.log(controls)
 
     const [ref] = useTimePickerCarousel(controls);
 
@@ -37,7 +39,7 @@ export const TimePicker = ({ controls, label }: TimePicker.Props) => {
                                         className={styles.picker__slide}
                                         key={index}
                                     >
-                                        { index }
+                                        {index}
                                     </div>
                                 ))
                             }
@@ -45,7 +47,7 @@ export const TimePicker = ({ controls, label }: TimePicker.Props) => {
                     </div>
                 </div>
                 <div className={styles.picker__label}>
-                    { label }
+                    {label}
                 </div>
             </div>
         </div>
