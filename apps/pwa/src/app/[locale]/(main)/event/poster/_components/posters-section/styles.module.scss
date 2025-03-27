@@ -1,0 +1,12 @@
+@use "@/theme/mixins";
+
+.section { 
+    height: 100%;
+    overflow: hidden;
+
+    display: flex;
+    justify-content: space-around;
+
+    overflow-y: scroll; 
+    @include mixins.no-scrollbar;
+}

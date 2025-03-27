@@ -12,6 +12,7 @@ import { useEventStore } from "@/features/event";
 import { useState } from "react";
 import EmblaCarousel from "../time-carousel/time-carousel.component";
 import { ScheduledDrawer } from "@/components/drawers/scheduled-drawer";
+import { TimePicker, useTimePicker } from "@/components/shared/time-picker";
 
 
 export namespace DateSection {
@@ -40,10 +41,6 @@ export const DateSection = observer(({
                 className={styles.section__toggle}
 
             />
-            <section className={styles.section__date}>
-                <EmblaCarousel loop={true} />
-
-            </section>
 
             <button onClick={() => setOpen(true)}>
                 test
@@ -53,6 +50,7 @@ export const DateSection = observer(({
             <div className={styles.section__carousels}>
                 <EventMonthPicker />
                 <EventDatePicker />
+                <EmblaCarousel />
             </div>
 
             <ScheduledDrawer open={open} onClose={onClose} />
