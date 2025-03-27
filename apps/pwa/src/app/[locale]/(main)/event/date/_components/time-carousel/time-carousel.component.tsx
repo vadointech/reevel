@@ -1,27 +1,23 @@
-import React from 'react'
-import { EmblaOptionsType } from 'embla-carousel'
-import { IosPickerItem } from './item/item-carousel'
-
-import styles from "./styles.module.scss"
+import React from "react";
+import { EmblaOptionsType } from "embla-carousel";
+import { TimePicker, useTimePicker } from "@/components/shared/time-picker";
 
 type PropType = {
-    loop?: EmblaOptionsType['loop']
-}
+    loop?: EmblaOptionsType["loop"]
+};
 
-const EmblaCarousel: React.FC<PropType> = (props) => {
-    const { loop } = props
+const EmblaCarousel: React.FC<PropType> = () => {
+
+    const timePicker = useTimePicker({});
 
     return (
-        <div className={styles.embla}>
-            <IosPickerItem
-                slideCount={24}
-                perspective="left"
-                loop={loop}
-                label="Hr"
+        <div>
+            <TimePicker
+                controls={timePicker}
+                label={"Hr"}
             />
-
         </div>
-    )
-}
+    );
+};
 
-export default EmblaCarousel
+export default EmblaCarousel;
