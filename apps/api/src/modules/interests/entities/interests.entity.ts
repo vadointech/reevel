@@ -2,6 +2,7 @@ import { Column, Entity, JoinColumn, ManyToOne, OneToMany, PrimaryColumn } from 
 import { ProfileInterestsEntity } from "@/modules/profile/entities/profile-interests.entity";
 import { InterestCategoriesEntity } from "./interest-category.entity";
 import { InterestRelationsEntity } from "./interest-relations.entity";
+import { EventInterestsEntity } from "@/modules/event/entities/event-interests.entity";
 
 @Entity("interests")
 export class InterestsEntity {
@@ -37,4 +38,7 @@ export class InterestsEntity {
 
     @OneToMany(() => ProfileInterestsEntity, interests => interests.interest)
     profiles?: ProfileInterestsEntity[];
+
+    @OneToMany(() => EventInterestsEntity, interests => interests.interest)
+    events?: EventInterestsEntity[];
 }
