@@ -17,8 +17,6 @@ export namespace TimePicker {
 export const TimePicker = ({ controls, label }: TimePicker.Props) => {
     const { wheel } = controls;
 
-    console.log(controls)
-
     const [ref] = useTimePickerCarousel(controls);
 
     return (
@@ -39,7 +37,7 @@ export const TimePicker = ({ controls, label }: TimePicker.Props) => {
                                         className={styles.picker__slide}
                                         key={index}
                                     >
-                                        {index}
+                                        {index < 10 ? `0${index}` : index}
                                     </div>
                                 ))
                             }

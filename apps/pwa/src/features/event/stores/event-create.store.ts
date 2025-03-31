@@ -27,24 +27,29 @@ export interface IDateEventStore {
     endMinute: string;
 
     toggle: boolean;
+    error: string;
 }
 
+
+const monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+
 class DateEventStore implements IDateEventStore {
-    startDate: string = "";
-    startMonth: string = "";
+    startMonth = monthNames[new Date().getMonth()];
+    startDate: string = new Date().getDate().toString();
     startHour: string = "";
-    startMinute: string = "";
+    startMinute: string = "00";
 
     endDate: string = "";
     endMonth: string = "";
     endHour: string = "";
-    endMinute: string = "";
+    endMinute: string = "00";
 
     toggle: boolean = true;
+    error: string = ""
     constructor() {
         makeObservable(this, {
-            startDate: observable,
             startMonth: observable,
+            startDate: observable,
             startHour: observable,
             startMinute: observable,
             endDate: observable,
@@ -52,15 +57,24 @@ class DateEventStore implements IDateEventStore {
             endHour: observable,
             endMinute: observable,
             toggle: observable,
+            error: observable,
+            setError: action,
             setStartMonth: action,
             setStartDate: action,
+            setStartHour: action,
+            setStartMinute: action,
             setEndMonth: action,
             setEndDate: action,
+            setEndHour: action,
+            setEndMinute: action,
             setToggle: action,
         });
     }
     setToggle(toggle: boolean) {
         this.toggle = toggle;
+    }
+    setError(error: string) {
+        this.error = error
     }
 
     setStartMonth(moth: string) {
@@ -71,6 +85,14 @@ class DateEventStore implements IDateEventStore {
         this.startDate = date;
     }
 
+    setStartHour(hour: string) {
+        this.startHour = hour
+    }
+
+    setStartMinute(minute: string) {
+        this.startMinute = minute
+    }
+
     setEndMonth(moth: string) {
         this.endMonth = moth;
     }
@@ -78,10 +100,19 @@ class DateEventStore implements IDateEventStore {
     setEndDate(date: string) {
         this.endDate = date;
     }
+
+    setEndHour(hour: string) {
+        this.endHour = hour
+    }
+
+    setEndMinute(minute: string) {
+        this.endMinute = minute
+    }
 }
 
 
 class CreateEventStore implements ICreateEventStore {
+
     title: string = "";
     description: string = "";
     poster: string = "";

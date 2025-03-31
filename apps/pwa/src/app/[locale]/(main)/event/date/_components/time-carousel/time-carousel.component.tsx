@@ -7,6 +7,7 @@ import { TimePicker, useTimePicker } from "@/components/shared/time-picker";
 import styles from "./styles.module.scss"
 import { useEventStore } from "@/features/event";
 import { observer } from "mobx-react-lite";
+import { useDatePicker } from "@/features/event/hooks/use-date-picker.hook";
 
 type PropType = {
     loop?: EmblaOptionsType["loop"]
@@ -16,9 +17,6 @@ const EmblaCarousel: React.FC<PropType> = observer(() => {
 
     const eventStore = useEventStore()
 
-    const HadnleHour = (value: any) => {
-        console.log(value)
-    }
 
     const controlsLeft = useTimePicker({
         slideCount: 24,
@@ -28,7 +26,10 @@ const EmblaCarousel: React.FC<PropType> = observer(() => {
         loop: true,
         perspective: "left",
         handlers: {
-            onChange: (carousel) => HadnleHour(carousel.api.selectedScrollSnap()),
+            onChange: ({ api }) => {
+                const { index } = api.internalEngine();
+                handleHour(index.get())
+            }
         },
     });
     const controlsRight = useTimePicker({
@@ -39,9 +40,26 @@ const EmblaCarousel: React.FC<PropType> = observer(() => {
         loop: true,
         perspective: "left",
         handlers: {
-            onChange: (test) => console.log(test.handlers.onChange)
+            onChange: ({ api }) => {
+                const { index } = api.internalEngine();
+                handleMinute(index.get())
+            }
         },
     });
+
+    const leftDefaultVariables = controlsLeft.wheel.slides
+        .filter((num): num is number => num !== null && num !== undefined)
+        .map(num => num.toString());
+
+    const rightDefaultVariables = controlsRight.wheel.slides
+        .filter((num): num is number => num !== null && num !== undefined)
+        .map(num => num.toString());
+
+    const { handleHour } = useDatePicker(leftDefaultVariables)
+
+    const { handleMinute } = useDatePicker(rightDefaultVariables)
+
+
 
     return (
         <div className={styles.embla}>

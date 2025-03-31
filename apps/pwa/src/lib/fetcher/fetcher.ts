@@ -73,7 +73,7 @@ export class Fetcher implements IFetcher {
         };
 
         if (method !== "GET" && body !== undefined) {
-            if(typeof body === "string" || body instanceof FormData) {
+            if (typeof body === "string" || body instanceof FormData) {
                 requestOptions.body = body;
             } else {
                 mergedHeaders["Content-Type"] = "application/json";
@@ -98,7 +98,7 @@ export class Fetcher implements IFetcher {
             redirected: response.redirected,
         };
 
-        if(!response.ok) return fetcherResponse;
+        if (!response.ok) return fetcherResponse;
 
         const contentType = response.headers.get("Content-Type");
 
@@ -114,6 +114,6 @@ export class Fetcher implements IFetcher {
             }
         }
 
-        return fetcherResponse;
+        return { data: null };
     }
 }

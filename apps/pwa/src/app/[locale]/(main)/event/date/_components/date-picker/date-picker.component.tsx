@@ -1,7 +1,7 @@
 "use client";
 
 import { CircularCarousel } from "@/components/shared";
-import { ActiveScale } from "@/components/shared/circular-carousel/plugins";
+import { ActiveOpacity, ActiveScale } from "@/components/shared/circular-carousel/plugins";
 import { useCircularCarousel } from "@/components/shared/circular-carousel/hooks";
 
 import styles from "./styles.module.scss";
@@ -9,8 +9,8 @@ import { observer } from "mobx-react-lite";
 import { useDatePicker } from "@/features/event/hooks/use-date-picker.hook";
 import { useEventStore } from "@/features/event";
 
-const SliderItem = ({ src }: { src?: string }) => {
-    return <div className={styles.item}>{src} <span>Mon</span></div>;
+const SliderItem = ({ src, day }: { src?: string, day: string }) => {
+    return <div className={styles.item}>{src} <span>{day}</span></div>;
 };
 
 export namespace EventDatePicker {
@@ -18,29 +18,30 @@ export namespace EventDatePicker {
     };
 }
 
+
+// TODO - Коли змінюємо Start Date to EndDate і так туда сюда, в колесі потрібно показувати те що вибрано, а не по дефолту
 export const EventDatePicker = observer(({
 }: EventDatePicker.Props) => {
-    const slide = [...Array(30)].map((_, i) => (i + 1).toString());
+    const { daySlides, handleDate } = useDatePicker();
 
-    const { handleDate } = useDatePicker(slide)
-
-    const slides = slide.map((item) => (
-        <SliderItem key={item} src={item} />
+    const slides = daySlides.map(({ label, day }) => (
+        <SliderItem key={label} src={label} day={day} />
     ));
 
     const carousel = useCircularCarousel({
         items: slides,
         itemWidth: 80,
         itemHeight: 100,
-        plugins: [ActiveScale],
+        plugins: [ActiveScale, ActiveOpacity],
         handlers: {
             onChange(carousel) {
                 handleDate(
-                    carousel.api.selectedScrollSnap(),
+                    (carousel.api.selectedScrollSnap() + 1).toString()
                 );
             },
         },
     });
+
 
     return (
         <div

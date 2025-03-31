@@ -1,7 +1,7 @@
 "use client";
 
 import { CircularCarousel } from "@/components/shared";
-import { ActiveScale } from "@/components/shared/circular-carousel/plugins";
+import { ActiveOpacity, ActiveScale } from "@/components/shared/circular-carousel/plugins";
 import { useCircularCarousel } from "@/components/shared/circular-carousel/hooks";
 
 import styles from "./styles.module.scss";
@@ -33,7 +33,7 @@ export const EventMonthPicker = observer(({
         items: slides,
         itemWidth: 110,
         itemHeight: 100,
-        plugins: [ActiveScale],
+        plugins: [ActiveScale, ActiveOpacity],
         handlers: {
             onChange(carousel) {
                 handleMonth(

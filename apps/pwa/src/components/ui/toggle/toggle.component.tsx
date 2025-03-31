@@ -29,11 +29,18 @@ export const Toggle = observer(({
 
     endMonth,
     endDate,
+    endHour,
+    endMinute,
     className,
     ...props
 }: Toggle.Props) => {
 
     const eventStore = useEventStore()
+
+    const formattedHour = startHour ? String(startHour).padStart(2, "0") : "00";
+    const formattedMinute = startMinute ? String(startMinute).padStart(2, "0") : "00";
+
+    const timeString = startHour ? `${formattedHour}:${formattedMinute}` : "Start Date";
     return (
         <div
             className={cx(styles.toggle, className, {
@@ -47,7 +54,9 @@ export const Toggle = observer(({
             })}>
 
                 {startMonth ? `${startMonth} ${startDate}` : "Required"}
-                <span>Start Date</span>
+                <span>
+                    {timeString}
+                </span>
             </div>
 
             <Back strokeWidth={2} height={20} width={10} />
@@ -56,7 +65,7 @@ export const Toggle = observer(({
                 [styles.toggle__element_selected]: !eventStore.dateStore.toggle
             })}>
                 {endMonth ? `${endMonth} ${endDate}` : "Optional"}
-                <span>End Date</span>
+                <span>{endHour ? `${endHour}:${endMinute}` : "Start Date"}</span>
             </div>
         </div>
     );
