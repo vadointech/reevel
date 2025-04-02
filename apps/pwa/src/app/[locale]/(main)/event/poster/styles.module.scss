@@ -1,10 +1,14 @@
-.page {
-    &__buttons {
-        position: sticky;
-        bottom: 0;
+@use "@/theme/mixins";
 
-        display: flex;
-        justify-content: center;
-        flex-direction: column;
+.page {
+    &__content {
+        margin-top: 2rem;
+        overflow-y: scroll; 
+        @include mixins.no-scrollbar;
+    }
+    &__buttons {
+        margin-top: 1rem;        
+        margin-bottom: 2rem;
+        background-color: white;
     }
 }

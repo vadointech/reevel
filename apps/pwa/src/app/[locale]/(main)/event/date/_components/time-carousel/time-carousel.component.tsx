@@ -5,7 +5,7 @@ import { EmblaOptionsType } from "embla-carousel";
 import { TimePicker, useTimePicker } from "@/components/shared/time-picker";
 
 import styles from "./styles.module.scss"
-import { useEventStore } from "@/features/event";
+
 import { observer } from "mobx-react-lite";
 import { useDatePicker } from "@/features/event/hooks/use-date-picker.hook";
 
@@ -13,10 +13,7 @@ type PropType = {
     loop?: EmblaOptionsType["loop"]
 };
 
-const EmblaCarousel: React.FC<PropType> = observer(() => {
-
-    const eventStore = useEventStore()
-
+const EventTimePicker: React.FC<PropType> = observer(() => {
 
     const controlsLeft = useTimePicker({
         slideCount: 24,
@@ -76,4 +73,4 @@ const EmblaCarousel: React.FC<PropType> = observer(() => {
     );
 });
 
-export default EmblaCarousel;
+export default EventTimePicker;

@@ -5,9 +5,9 @@ export function ActiveOpacity({ api, wheelRef }: Carousel) {
     if (wheelRef.current.wheelItem) {
         wheelRef.current.wheelItem.forEach((item, index) => {
             if (item) {
-                const scale = index === activeIndex ? 1 : 0.5;
+                const opacity = index === activeIndex ? 1 : 0.5;
                 item.style.transition = "transform 1s ease-in-out";
-                item.style.opacity = `${scale}`;
+                item.style.opacity = `${opacity}`;
             }
         });
     }

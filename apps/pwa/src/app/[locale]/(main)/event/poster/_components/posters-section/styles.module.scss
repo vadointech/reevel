@@ -1,12 +1,7 @@
-@use "@/theme/mixins";
 
-.section { 
-    height: 100%;
-    overflow: hidden;
-
+.section {
     display: flex;
-    justify-content: space-around;
-
-    overflow-y: scroll; 
-    @include mixins.no-scrollbar;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    justify-content: center;
 }

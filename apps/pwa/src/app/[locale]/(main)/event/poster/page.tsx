@@ -5,7 +5,7 @@ import { EventProgress } from "../_components/event-progress";
 import { OnboardingTextBlock } from "../../onboarding/_components";
 import { ArrowBack } from "@/components/icons";
 import { Poster } from "../_components/poster";
-import { LeftColumn, PostersSection, RightColumn } from "./_components/posters-section";
+import { PostersSection } from "./_components/posters-section";
 import { OnboardingPhotoUploader } from "../../onboarding/photo/_components";
 
 
@@ -24,32 +24,24 @@ export default async function Page() {
                     className={styles.page__textBlock}
                 />
             </Container>
-            {/* <OnboardingPhotoUploader /> */}
 
-            <Container>
+            <Container className={styles.page__content}>
                 <PostersSection>
-                    <LeftColumn>
-                        <Poster size="default" />
-                        <Poster size="small" />
-                        <Poster size="default" />
-                        <Poster size="default" />
-
-                        <Poster size="default" />
-
-
-                    </LeftColumn>
-                    <RightColumn>
-                        <Poster size="default" />
-                        <Poster size="default" />
-                        <Poster size="default" />
-
-                        <Poster size="default" />
-
-                        <Poster size="default" />
-                    </RightColumn>
+                    <Poster size="default" />
+                    <Poster size="default" />
+                    <Poster size="default" />
+                    <Poster size="default" />
+                    <Poster size="default" />
+                    <Poster size="default" />
+                    <Poster size="default" />
+                    <Poster size="default" />
+                    <Poster size="default" />
+                    <Poster size="default" />
+                    <Poster size="default" />
+                    <Poster size="default" />
+                    <Poster size="default" />
                 </PostersSection>
             </Container>
-
             <Container className={styles.page__buttons}>
                 <Button
                     variant="primary"

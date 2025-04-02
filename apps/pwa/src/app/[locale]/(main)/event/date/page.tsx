@@ -4,7 +4,7 @@ import styles from "./styles.module.scss";
 import { EventProgress } from "../_components/event-progress";
 import { OnboardingTextBlock } from "../../onboarding/_components";
 import { ArrowBack } from "@/components/icons";
-import { Toggle } from "@/components/ui/toggle";
+import { Toggle } from "@/components/shared/toggle";
 import { EventDatePicker, EventMonthPicker } from "./_components";
 import { DateSection } from "./_components/date-section/date-section.component";
 

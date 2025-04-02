@@ -9,38 +9,20 @@ import { observer } from "mobx-react-lite";
 
 export namespace Toggle {
     export type Props = ComponentProps<"div"> & {
-        startMonth?: string
-        startDate?: string
-        startHour?: string
-        startMinute?: string
-
-        endMonth?: string
-        endDate?: string
-        endHour?: string
-        endMinute?: string
     };
 }
 
 export const Toggle = observer(({
-    startMonth,
-    startDate,
-    startHour,
-    startMinute,
-
-    endMonth,
-    endDate,
-    endHour,
-    endMinute,
     className,
     ...props
 }: Toggle.Props) => {
 
     const eventStore = useEventStore()
 
-    const formattedHour = startHour ? String(startHour).padStart(2, "0") : "00";
-    const formattedMinute = startMinute ? String(startMinute).padStart(2, "0") : "00";
+    const formattedHour = eventStore.dateStore.startHour ? String(eventStore.dateStore.startHour).padStart(2, "0") : "00";
+    const formattedMinute = eventStore.dateStore.startMinute ? String(eventStore.dateStore.startMinute).padStart(2, "0") : "00";
 
-    const timeString = startHour ? `${formattedHour}:${formattedMinute}` : "Start Date";
+    const timeString = eventStore.dateStore.startHour ? `${formattedHour}:${formattedMinute}` : "Start Date";
     return (
         <div
             className={cx(styles.toggle, className, {
@@ -53,7 +35,7 @@ export const Toggle = observer(({
                 [styles.toggle__element_selected]: eventStore.dateStore.toggle
             })}>
 
-                {startMonth ? `${startMonth} ${startDate}` : "Required"}
+                {eventStore.dateStore.startMonth ? `${eventStore.dateStore.startMonth} ${eventStore.dateStore.startDate}` : "Required"}
                 <span>
                     {timeString}
                 </span>
@@ -64,8 +46,8 @@ export const Toggle = observer(({
             <div className={cx(styles.toggle__element, {
                 [styles.toggle__element_selected]: !eventStore.dateStore.toggle
             })}>
-                {endMonth ? `${endMonth} ${endDate}` : "Optional"}
-                <span>{endHour ? `${endHour}:${endMinute}` : "Start Date"}</span>
+                {eventStore.dateStore.endMonth ? `${eventStore.dateStore.endMonth} ${eventStore.dateStore.endDate}` : "Optional"}
+                <span>{eventStore.dateStore.endHour ? `${eventStore.dateStore.endHour}:${eventStore.dateStore.endMinute}` : "Start Date"}</span>
             </div>
         </div>
     );
