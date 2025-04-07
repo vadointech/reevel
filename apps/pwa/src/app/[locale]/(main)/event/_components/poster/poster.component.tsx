@@ -1,19 +1,22 @@
 import Image, { StaticImageData } from "next/image";
 import styles from "./styles.module.scss"
 
-import image_1 from "@/../public/assets/temp/carousel1.jpg";
-
-
 import cx from "classnames"
 import { Check } from "@/components/icons";
+import { ComponentProps } from "react";
+
+
 export namespace Poster {
-    export type Props = {
+    export type Props = Omit<ComponentProps<"div">, "onClick"> & {
         size: "small" | "default"
         className?: string;
         src?: string | StaticImageData;
         selected?: boolean
+        onClick?: () => void;
     };
 }
+
+
 
 
 export const Poster = ({
@@ -21,6 +24,7 @@ export const Poster = ({
     size,
     selected,
     className,
+    onClick,
     ...props
 }: Poster.Props) => {
 
@@ -31,6 +35,7 @@ export const Poster = ({
                 styles[`poster__size_${size}`],
                 selected && styles.poster__selected
             )}
+            onClick={onClick}
             {...props}>
             <Image
                 fill

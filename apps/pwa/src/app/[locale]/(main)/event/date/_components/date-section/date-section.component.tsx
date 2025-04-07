@@ -33,7 +33,6 @@ export const DateSection = observer(({
         <>
             <Toggle className={styles.section__toggle} />
 
-            {/* /ХЗ чи треба зберігати помилку в Stori, але так всьо норм робить */}
             <div className={styles.section__error}>{eventStore.dateStore.error}</div>
 
             <button onClick={() => setOpen(true)}>

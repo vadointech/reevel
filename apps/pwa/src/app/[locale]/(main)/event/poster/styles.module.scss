@@ -10,5 +10,8 @@
         margin-top: 1rem;        
         margin-bottom: 2rem;
         background-color: white;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
     }
 }

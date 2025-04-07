@@ -3,28 +3,23 @@
 import { useMutation } from "@tanstack/react-query";
 import { uploadFile } from "@/api/upload";
 import { useCropperStore } from "@/components/shared/uploader/cropper";
-import { useSessionStore } from "@/features/session";
+import { useEventStore } from "@/features/event";
 
-export function useAvatarUpload() {
+export function useEventPosterUpload() {
     const cropperStore = useCropperStore();
-    const sessionStore = useSessionStore();
+    const eventStore = useEventStore();
 
     const { mutate } = useMutation({
         mutationFn: uploadFile,
         onSuccess: ({ data }) => {
-            sessionStore.updateSession({
-                profile: {
-                    picture: data?.[0].secure_url,
-                },
-            });
+            eventStore.setPoster(data?.[0].secure_url);
         },
         onSettled: () => {
             cropperStore.cleanup();
         },
     });
 
-    const handleUploadAvatar = (file: Blob) => {
-        console.log(file)
+    const handleUploadPoster = (file: Blob) => {
         mutate({
             body: { file },
         });
@@ -32,6 +27,6 @@ export function useAvatarUpload() {
 
     return {
         drawerOpen: !!cropperStore.imgSrc,
-        handleUploadAvatar,
+        handleUploadPoster,
     };
 }

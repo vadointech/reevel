@@ -4,19 +4,23 @@ import styles from "./styles.module.scss";
 import { EventProgress } from "../_components/event-progress";
 import { OnboardingTextBlock } from "../../onboarding/_components";
 import { ArrowBack } from "@/components/icons";
-import { Poster } from "../_components/poster";
-import { PostersSection } from "./_components/posters-section";
-import { OnboardingPhotoUploader } from "../../onboarding/photo/_components";
+import { PosterPicker } from "./_components/poster-picker";
+import { EventPosterUploader } from "./_components/poster-uploader";
 
+
+const defaultPosters = [
+    "http://localhost:3000/assets/temp/poster1.jpg",
+    "http://localhost:3000/assets/temp/poster2.png",
+    "http://localhost:3000/assets/temp/poster3.png",
+    "http://localhost:3000/assets/temp/poster4.png",
+    "http://localhost:3000/assets/temp/carousel2.jpg",
+];
 
 export default async function Page() {
-
-
-
     return (
         <>
             <Container>
-                <EventProgress step={2} />
+                <EventProgress step={4} />
 
                 <OnboardingTextBlock
                     title={"Show Off Your Event!"}
@@ -26,23 +30,11 @@ export default async function Page() {
             </Container>
 
             <Container className={styles.page__content}>
-                <PostersSection>
-                    <Poster size="default" />
-                    <Poster size="default" />
-                    <Poster size="default" />
-                    <Poster size="default" />
-                    <Poster size="default" />
-                    <Poster size="default" />
-                    <Poster size="default" />
-                    <Poster size="default" />
-                    <Poster size="default" />
-                    <Poster size="default" />
-                    <Poster size="default" />
-                    <Poster size="default" />
-                    <Poster size="default" />
-                </PostersSection>
+                <PosterPicker defaultPosters={defaultPosters} />
             </Container>
             <Container className={styles.page__buttons}>
+                <EventPosterUploader />
+
                 <Button
                     variant="primary"
                     iconAfter={<ArrowBack />}

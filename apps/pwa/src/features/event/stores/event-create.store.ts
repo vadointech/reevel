@@ -139,7 +139,7 @@ class CreateEventStore implements ICreateEventStore {
             location: observable.ref,
             dateStore: observable,
             setTitle: action,
-            setPicture: action,
+            setPoster: action,
             setDescription: action,
             addInterest: action,
             removeInterest: action,
@@ -157,7 +157,7 @@ class CreateEventStore implements ICreateEventStore {
         this.title = title;
     }
 
-    setPicture(poster: string) {
+    setPoster(poster: string) {
         this.poster = poster;
     }
 
