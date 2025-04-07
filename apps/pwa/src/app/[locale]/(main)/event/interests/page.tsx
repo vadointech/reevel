@@ -8,6 +8,8 @@ import { EventInterestsPicker } from "./_components";
 import { getUserInterests, searchInterests } from "@/api/interests";
 import { headers } from "next/headers";
 import { ArrowBack } from "@/components/icons";
+import { OptionItem } from "@/components/shared/options";
+import { InformationPicker } from "./_components/tickets-picker";
 
 export default async function Page() {
     // Потім треба буде OnboardingTextBlock перенести в shared і зробити це просто textBlock
@@ -32,6 +34,8 @@ export default async function Page() {
                 <CreateEventBioForm />
 
                 <EventInterestsPicker userInterests={userInterests ?? []} initialInterests={interests ?? []} />
+
+                <InformationPicker />
             </Container>
 
             <Container className={styles.page__buttons}>

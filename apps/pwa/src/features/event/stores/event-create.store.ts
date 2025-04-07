@@ -4,16 +4,7 @@ import { InterestEntity } from "@/entities/interests";
 import { createMobxStoreProvider, initStore } from "@/lib/mobx";
 import { action, makeObservable, observable } from "mobx";
 
-export interface ICreateEventStore {
-    title: string;
-    description: string;
-    interests: InterestEntity[];
-    poster: string;
-    date: number;
-    location?: [number, number];
-    locationQuery: string;
-    interestQuery: string,
-}
+const monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
 
 export interface IDateEventStore {
     startDate: string;
@@ -29,9 +20,6 @@ export interface IDateEventStore {
     toggle: boolean;
     error: string;
 }
-
-
-const monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
 
 class DateEventStore implements IDateEventStore {
     startMonth = monthNames[new Date().getMonth()];
@@ -110,6 +98,19 @@ class DateEventStore implements IDateEventStore {
     }
 }
 
+export interface ICreateEventStore {
+    title: string;
+    description: string;
+    interests: InterestEntity[];
+    poster: string;
+    date: number;
+    tickets: number;
+    price: number;
+
+    location?: [number, number];
+    locationQuery: string;
+    interestQuery: string,
+}
 
 class CreateEventStore implements ICreateEventStore {
 
@@ -118,6 +119,8 @@ class CreateEventStore implements ICreateEventStore {
     poster: string = "";
     interests: InterestEntity[] = [];
     date: number = 0;
+    tickets: number = 0
+    price: number = 0;
 
     interestQuery: string = "";
     locationQuery: string = "";
@@ -133,12 +136,15 @@ class CreateEventStore implements ICreateEventStore {
             description: observable,
             poster: observable,
             date: observable,
+            tickets: observable,
+            price: observable,
             interests: observable.shallow,
             interestQuery: observable,
             locationQuery: observable,
             location: observable.ref,
             dateStore: observable,
             setTitle: action,
+            setTickets: action,
             setPoster: action,
             setDescription: action,
             addInterest: action,
@@ -155,6 +161,14 @@ class CreateEventStore implements ICreateEventStore {
 
     setTitle(title: string) {
         this.title = title;
+    }
+
+    setTickets(tickets: number) {
+        this.tickets = tickets;
+    }
+
+    setPrice(price: number) {
+        this.price = price;
     }
 
     setPoster(poster: string) {

@@ -3,7 +3,7 @@ import styles from "./styles.module.scss";
 import cx from "classnames";
 
 export namespace Input {
-    export type Variant = "default" | "rounded";
+    export type Variant = "default" | "rounded" | "numeric";
     export type Background = "default" | "muted";
 
     export type BaseProps = {
@@ -23,6 +23,7 @@ export namespace Input {
 
 const InputBase = memo(({
     label,
+    variant,
     hint,
     error,
     icon,
@@ -33,9 +34,11 @@ const InputBase = memo(({
         <div className={styles.container}>
             {
                 label ? (
-                    <label htmlFor={id} className={styles.container__label}>
-                        { label }
-                    </label>
+                    variant !== "numeric" ?
+                        <label htmlFor={id} className={styles.container__label}>
+                            {label}
+                        </label>
+                        : null
                 ) : null
             }
 
@@ -44,13 +47,23 @@ const InputBase = memo(({
                 {
                     icon ? (
                         <div className={styles.container__input__icon}>
-                            { icon }
+                            {icon}
                         </div>
                     ) : null
                 }
 
-                { children }
+                {children}
             </div>
+
+            {
+                label ? (
+                    variant == "numeric" ?
+                        <label htmlFor={id} className={styles[`container__label_${variant}`]}>
+                            {label}
+                        </label>
+                        : null
+                ) : null
+            }
 
             {
                 (error || hint) ? (
@@ -60,7 +73,7 @@ const InputBase = memo(({
                             error && styles.container__error,
                         )}
                     >
-                        { error || hint }
+                        {error || hint}
                     </span>
                 ) : null
             }
@@ -84,6 +97,7 @@ export const Input = memo(({
             hint={hint}
             error={error}
             icon={icon}
+            variant={variant}
         >
             <input
                 className={cx(

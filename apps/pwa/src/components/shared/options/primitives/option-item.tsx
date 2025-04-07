@@ -8,6 +8,7 @@ export namespace OptionItem {
     export type Props = ComponentProps<"div"> & {
         label: string
         icon?: ReactNode;
+        value?: string | number;
         backIcon?: boolean;
         warn?: boolean;
         href?: string
@@ -18,6 +19,7 @@ export namespace OptionItem {
 export const OptionItem = ({
     label,
     icon,
+    value,
     backIcon = false,
     warn,
     href,
@@ -36,7 +38,10 @@ export const OptionItem = ({
                     {icon && icon}
                     {label}
                 </div>
-                {backIcon && <Back width={7} height={14} style={{ rotate: "180deg" }} />}
+                <div className={styles.option__value}>
+                    {value}
+                    {backIcon && <Back width={7} height={14} style={{ rotate: "180deg" }} />}
+                </div>
             </div>
         );
     }

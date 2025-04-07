@@ -13,14 +13,12 @@
 
 
 .option {
-    padding: 1rem 1.25rem;
+    padding: 1rem 0rem;
 
     display: flex;
     align-items: center;
 
     @include fonts.font-creata('');
-
-
 
     &__label {
         width: 100%;
@@ -32,5 +30,11 @@
         &__warn {
             color: red;
         }
+    }
+
+    &__value {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
     }
 }
