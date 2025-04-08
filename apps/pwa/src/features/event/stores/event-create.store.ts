@@ -145,6 +145,7 @@ class CreateEventStore implements ICreateEventStore {
             dateStore: observable,
             setTitle: action,
             setTickets: action,
+            setPrice: action,
             setPoster: action,
             setDescription: action,
             addInterest: action,

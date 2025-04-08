@@ -1,15 +1,16 @@
-import { Button, Container } from "@/components/ui";
+import { getUserInterests, searchInterests } from "@/api/interests";
+import { headers } from "next/headers";
 
-import styles from "./styles.module.scss";
+import { Button, Container } from "@/components/ui";
 import { EventProgress } from "../_components/event-progress";
 import { OnboardingTextBlock } from "../../onboarding/_components";
 import { CreateEventBioForm } from "../_components/event-bio-form";
 import { EventInterestsPicker } from "./_components";
-import { getUserInterests, searchInterests } from "@/api/interests";
-import { headers } from "next/headers";
 import { ArrowBack } from "@/components/icons";
-import { OptionItem } from "@/components/shared/options";
-import { InformationPicker } from "./_components/tickets-picker";
+import { TicketsPicker } from "./_components/tickets-picker";
+
+import styles from "./styles.module.scss";
+
 
 export default async function Page() {
     // Потім треба буде OnboardingTextBlock перенести в shared і зробити це просто textBlock
@@ -19,7 +20,6 @@ export default async function Page() {
     });
 
     const { data: interests } = await searchInterests();
-
 
     return (
         <>
@@ -35,7 +35,7 @@ export default async function Page() {
 
                 <EventInterestsPicker userInterests={userInterests ?? []} initialInterests={interests ?? []} />
 
-                <InformationPicker />
+                <TicketsPicker />
             </Container>
 
             <Container className={styles.page__buttons}>

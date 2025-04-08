@@ -1,54 +1,58 @@
 "use client";
 
 import { observer } from "mobx-react-lite";
-
 import { useState } from "react";
-
 import { OptionItem } from "@/components/shared/options";
 import { DollarIcon, TicketIcon } from "@/components/icons";
 import { TicketsDrawer } from "@/components/drawers/tickets-drawer";
-import { useEventStore } from "@/features/event";
 import { PricingDrawer } from "@/components/drawers/pricing-drawer";
-export namespace InformationPicker {
+import { useEventStore } from "@/features/event";
+
+export namespace TicketsPicker {
     export type Props = {};
 }
 
-export const InformationPicker = observer(({ }: InformationPicker.Props) => {
-    const eventStore = useEventStore()
+const formatTicketsValue = (tickets: number): string =>
+    tickets === 0 ? 'Unlimited' : tickets.toString();
 
-    const [openTickets, setOpenTickets] = useState<boolean>(false);
-    const [openPricing, setOpenPricing] = useState<boolean>(false);
+const formatPriceValue = (price: number): string =>
+    price === 0 ? 'Free' : price.toString();
 
+export const TicketsPicker = observer(({ }: TicketsPicker.Props) => {
+    const eventStore = useEventStore();
+    const [isTicketsDrawerOpen, setIsTicketsDrawerOpen] = useState(false);
+    const [isPricingDrawerOpen, setIsPricingDrawerOpen] = useState(false);
 
-    const onCloseTickets = () => {
-        setOpenTickets(false)
-    }
-
-    const onClosePricing = () => {
-        setOpenPricing(false)
-    }
-
+    const handleTicketsDrawerClose = () => setIsTicketsDrawerOpen(false);
+    const handlePricingDrawerClose = () => setIsPricingDrawerOpen(false);
 
     return (
         <div>
             <OptionItem
                 label="Tickets"
                 icon={<TicketIcon />}
-                onClick={() => setOpenTickets(true)}
-                value={eventStore.tickets == 0 ? 'Unlimited' : eventStore.tickets}
+                onClick={() => setIsTicketsDrawerOpen(true)}
+                value={formatTicketsValue(eventStore.tickets)}
                 backIcon
             />
+
             <OptionItem
                 label="Pricing"
                 icon={<DollarIcon />}
-                value={`${eventStore.price == 0 ? 'Free' : eventStore.price}`}
-                onClick={() => setOpenPricing(true)}
+                value={formatPriceValue(eventStore.price)}
+                onClick={() => setIsPricingDrawerOpen(true)}
                 backIcon
             />
 
-            <TicketsDrawer open={openTickets} onClose={onCloseTickets} />
-            <PricingDrawer open={openPricing} onClose={onClosePricing} />
+            <TicketsDrawer
+                open={isTicketsDrawerOpen}
+                onClose={handleTicketsDrawerClose}
+            />
 
+            <PricingDrawer
+                open={isPricingDrawerOpen}
+                onClose={handlePricingDrawerClose}
+            />
         </div>
     );
 });

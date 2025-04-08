@@ -53,10 +53,7 @@ const EventTimePicker: React.FC<PropType> = observer(() => {
         .map(num => num.toString());
 
     const { handleHour } = useDatePicker(leftDefaultVariables)
-
     const { handleMinute } = useDatePicker(rightDefaultVariables)
-
-
 
     return (
         <div className={styles.embla}>
@@ -67,7 +64,6 @@ const EventTimePicker: React.FC<PropType> = observer(() => {
             <TimePicker
                 controls={controlsRight}
                 label={"Min"}
-
             />
         </div>
     );

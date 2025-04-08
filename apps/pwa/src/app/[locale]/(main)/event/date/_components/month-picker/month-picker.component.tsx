@@ -7,25 +7,24 @@ import { useCircularCarousel } from "@/components/shared/circular-carousel/hooks
 import styles from "./styles.module.scss";
 import { observer } from "mobx-react-lite";
 import { useDatePicker } from "@/features/event/hooks/use-date-picker.hook";
-import { useEventStore } from "@/features/event";
-import { useEffect } from "react";
+
+const MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
 
 const SliderItem = ({ src }: { src?: string }) => {
     return <p className={styles.item}>{src}</p>;
 };
 
 export namespace EventMonthPicker {
-    export type Props = {
-    };
+    export type Props = {};
 }
 
 export const EventMonthPicker = observer(({
 }: EventMonthPicker.Props) => {
-    const slide = ['Jan', 'Apr', 'Jul', 'Oct', 'Feb', 'May', 'Aug', 'Nov', 'Mar', 'Jun', 'Sep', 'Dec', 'Jan', 'Apr', 'Jul', 'Oct', 'Feb', 'May', 'Aug', 'Nov', 'Mar', 'Jun', 'Sep', 'Dec']
+    const circularMonths = [...MONTHS, ...MONTHS];
 
-    const { handleMonth } = useDatePicker(slide)
+    const { handleMonth } = useDatePicker(circularMonths)
 
-    const slides = slide.map((item) => (
+    const slides = circularMonths.map((item) => (
         <SliderItem key={item} src={item} />
     ));
 

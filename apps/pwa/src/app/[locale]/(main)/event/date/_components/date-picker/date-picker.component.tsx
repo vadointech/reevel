@@ -7,7 +7,6 @@ import { useCircularCarousel } from "@/components/shared/circular-carousel/hooks
 import styles from "./styles.module.scss";
 import { observer } from "mobx-react-lite";
 import { useDatePicker } from "@/features/event/hooks/use-date-picker.hook";
-import { useEventStore } from "@/features/event";
 
 const SliderItem = ({ src, day }: { src?: string, day: string }) => {
     return <div className={styles.item}>{src} <span>{day}</span></div>;

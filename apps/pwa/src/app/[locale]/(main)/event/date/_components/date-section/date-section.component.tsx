@@ -1,28 +1,24 @@
 "use client";
 
-
+import { useEventStore } from "@/features/event";
+import { useState } from "react";
 import { observer } from "mobx-react-lite";
-import { Toggle } from "@/components/shared/toggle";
 
 import { EventMonthPicker } from "../month-picker";
 import { EventDatePicker } from "../date-picker";
+import { ScheduledDrawer } from "@/components/drawers/scheduled-drawer";
+import EventTimePicker from "../time-carousel/time-carousel.component";
+import { Toggle } from "../toggle";
 
 import styles from "./styles.module.scss";
-import { useEventStore } from "@/features/event";
-import { useState } from "react";
-import { ScheduledDrawer } from "@/components/drawers/scheduled-drawer";
-
-import EventTimePicker from "../time-carousel/time-carousel.component";
-
 
 export namespace DateSection {
-    export type Props = {
-    };
+    export type Props = {};
 }
 
 export const DateSection = observer(({
 }: DateSection.Props) => {
-    const eventStore = useEventStore()
+    const { dateStore } = useEventStore()
 
     const [open, setOpen] = useState<boolean>(false);
 
@@ -33,12 +29,7 @@ export const DateSection = observer(({
         <>
             <Toggle className={styles.section__toggle} />
 
-            <div className={styles.section__error}>{eventStore.dateStore.error}</div>
-
-            <button onClick={() => setOpen(true)}>
-                open
-            </button>
-
+            <div className={styles.section__error}>{dateStore.error}</div>
 
             <div className={styles.section__carousels}>
                 <EventMonthPicker />

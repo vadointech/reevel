@@ -3,7 +3,6 @@ import { Drawer, DrawerBody, DrawerContent } from "@/components/shared/drawer";
 
 import { OnboardingTextBlock } from "@/app/[locale]/(main)/onboarding/_components";
 import { useEventStore } from "@/features/event";
-import { IconGoogle } from "@/components/icons";
 import { OptionItem, Options } from "@/components/shared/options";
 
 
@@ -15,7 +14,9 @@ export namespace ScheduledDrawer {
 }
 
 export const ScheduledDrawer = ({ open, onClose }: ScheduledDrawer.Props) => {
-    const eventStore = useEventStore()
+    const { dateStore } = useEventStore()
+
+    const { startMonth, startDate, startHour, startMinute } = dateStore;
 
     return (
         <Drawer open={open} defaultPoint={"middle"}>
@@ -23,7 +24,7 @@ export const ScheduledDrawer = ({ open, onClose }: ScheduledDrawer.Props) => {
                 <DrawerContent>
                     <OnboardingTextBlock
                         title={`Are you sure?`}
-                        subtitle={`You already have an event scheduled for ${eventStore.dateStore.startMonth} ${eventStore.dateStore.startDate} at ${eventStore.dateStore.startHour}:${eventStore.dateStore.startMinute}`}
+                        subtitle={`You already have an event scheduled for ${startMonth} ${startDate} at ${startHour}:${startMinute}`}
                     />
 
                     <Options>
@@ -31,6 +32,7 @@ export const ScheduledDrawer = ({ open, onClose }: ScheduledDrawer.Props) => {
                         <OptionItem label="Skip step" onClick={onClose} backIcon />
                         <OptionItem label="Save as draft and leave" href="/" backIcon warn />
                     </Options>
+
                 </DrawerContent>
             </DrawerBody>
         </Drawer>
