@@ -25,7 +25,7 @@ export function useInterestPicker(interestsInit: GetRelatedInterests.TOutput) {
     };
 
     const { mutate } = useMutation({
-        mutationFn: async(input: GetRelatedInterests.TInput) => {
+        mutationFn: async (input: GetRelatedInterests.TInput) => {
             const response = await getRelatedInterests({
                 body: input,
             }).then(res => res.data || []);
@@ -41,9 +41,9 @@ export function useInterestPicker(interestsInit: GetRelatedInterests.TOutput) {
         const isInterestSelected = onboardingStore.interests.includes(slug);
         const related = relatedElRef.current[slug];
 
-        if(isInterestSelected) {
+        if (isInterestSelected) {
             onboardingStore.removeInterest(slug);
-            if(!related) return;
+            if (!related) return;
             startTransition(() => {
                 setInterests(state => {
                     return state.filter(item => !related.some(interest => interest.slug === item.slug));
@@ -51,14 +51,14 @@ export function useInterestPicker(interestsInit: GetRelatedInterests.TOutput) {
             });
         } else {
             onboardingStore.addInterest(slug);
-            if(!related) {
+            if (!related) {
                 mutate({ slug });
             } else {
                 updateInterests(related, slug);
             }
         }
     };
-  
+
     return {
         interests,
         handlePickInterest,

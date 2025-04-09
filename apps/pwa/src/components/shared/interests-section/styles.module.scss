@@ -1,0 +1,18 @@
+@use "@/theme/fonts";
+@use "@/theme/colors";
+
+.section {
+
+    &__items {
+        margin-top: 0.5rem;
+
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.5rem; 
+    }
+
+    h3 {
+        @include fonts.font-creata('sm',500);
+        color:colors.$secondary;
+    }
+}

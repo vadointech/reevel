@@ -14,20 +14,14 @@ import image_1 from "@/../public/assets/temp/carousel2.jpg";
 
 export namespace RecommendationDrawer {
     export type Props = ComponentProps<"div"> & {
-
+        open?: boolean;
     };
 }
 
-export const RecommendationDrawer = ({ }: RecommendationDrawer.Props) => {
+export const RecommendationDrawer = ({ open }: RecommendationDrawer.Props) => {
     return (
-        <Drawer>
-            <DrawerTrigger>
-                Drawer here
-            </DrawerTrigger>
+        <Drawer open={open}>
             <DrawerBody>
-                <div>
-
-                </div>
                 <DrawerContent>
                     <div className={styles.drawer}>
                         <div className={styles.drawer__content}>

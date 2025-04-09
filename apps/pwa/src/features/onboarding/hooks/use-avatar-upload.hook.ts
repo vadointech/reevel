@@ -24,6 +24,7 @@ export function useAvatarUpload() {
     });
 
     const handleUploadAvatar = (file: Blob) => {
+        console.log(file)
         mutate({
             body: { file },
         });

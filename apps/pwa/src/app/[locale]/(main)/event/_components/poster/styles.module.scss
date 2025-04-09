@@ -1,0 +1,54 @@
+@use "@/theme/mixins";
+@use "@/theme/colors";
+
+
+
+.poster {
+    width: mixins.rem(176);
+    position: relative;
+    overflow: hidden;
+
+    flex-shrink: 0;
+
+    box-sizing: border-box;
+    background-color: #D9D9D9;
+    border-radius: 1rem;
+    border: 1.6px solid transparent;
+
+    &__size {
+        &_small {
+            height: mixins.rem(176);
+        }
+        &_default {
+            height: mixins.rem(242);
+        }
+    }
+
+    &__selected {
+        border: 1.6px solid colors.$primary;
+    }
+
+    &__mark {
+        height: mixins.rem(25);
+        width: mixins.rem(25);
+
+        position: absolute;
+        bottom: mixins.rem(8);
+        right: mixins.rem(8);
+
+        background-color: colors.$primary;
+        border-radius: 1rem;
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        svg path {
+            fill: colors.$background;
+        }
+    }
+
+    & img {
+        object-fit: cover;
+    }
+}

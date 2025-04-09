@@ -8,13 +8,20 @@ import { ServerSession } from "@/modules/auth/dto/jwt.dto";
 export class ProfileController {
     constructor(
         private readonly profileService: ProfileService,
-    ) {}
+    ) { }
 
     @Get()
     async getProfile(
         @Session() session: ServerSession,
     ) {
         return this.profileService.getProfile(session.user.id);
+    }
+
+    @Get("/interests")
+    async getProfileInterests(
+        @Session() session: ServerSession,
+    ) {
+        return this.profileService.getUserInterests(session.user.id);
     }
 
     @Patch()
