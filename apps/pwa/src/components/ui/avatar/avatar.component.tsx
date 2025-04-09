@@ -6,13 +6,18 @@ import styles from "./styles.module.scss";
 
 import avatar from "@/../public/assets/temp/avatar.png";
 
+import cx from "classnames"
+
 export namespace Avatar {
 
-    export type Variant = "default" | "outlined" | "profile";
+    export type Type = "default" | "custom";
+
+    export type Variant = "default" | "outline" | "profile";
 
     export type Size = "default" | "large";
 
     export type Props = {
+        type?: Type;
         variant?: Variant;
         size?: Size | number;
         src?: string | StaticImport;
@@ -20,6 +25,7 @@ export namespace Avatar {
 }
 
 export const Avatar = ({
+    type = "default",
     size = "default",
     src = avatar,
     variant = "profile",
@@ -34,7 +40,7 @@ export const Avatar = ({
 
     // Не знаю чи доречно тут так робити, можна зробити просто в рендер винести і ставити просто стиль в залежності від варіанту
     // Але тоді завжди буде лишній div, той що для circle
-    const AvatarView: Record<Avatar.Variant, ReactNode> = {
+    const AvatarView: Record<Avatar.Type, ReactNode> = {
         default: (
             <div
                 className={styles.avatar}
@@ -49,11 +55,11 @@ export const Avatar = ({
                 />
             </div>
         ),
-        outlined: (
-            <></>
-        ),
-        profile: (
-            <div className={styles.avatar__variant_profile}>
+        custom: (
+            <div className={cx(
+                styles.avatar__variant,
+                styles[`avatar__variant_${variant}`]
+            )}>
                 <div
                     className={styles.avatar}
                     style={{
@@ -72,7 +78,7 @@ export const Avatar = ({
 
     return (
         <>
-            {AvatarView[variant]}
+            {AvatarView[type]}
         </>
     );
 };

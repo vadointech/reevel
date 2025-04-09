@@ -1,0 +1,21 @@
+@use "@/theme/fonts";
+@use "@/theme/colors";
+@use "@/theme/mixins";
+
+
+.container {
+    width: mixins.rem(96);
+    display: flex;
+    align-items: center;
+    gap: mixins.rem(6);
+
+    &__text {
+        @include fonts.font-creata();
+        font-size: mixins.rem(10);
+        font-weight: 300;
+        color: colors.$white;
+        span {
+            font-weight: 400;
+        }
+    }
+}
