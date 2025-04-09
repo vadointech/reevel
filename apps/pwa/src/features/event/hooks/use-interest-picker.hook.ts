@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, startTransition, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { InterestEntity } from "@/entities/interests";
 import { useEventStore } from "../stores/event-create.store";
 
@@ -20,7 +20,6 @@ export function useInterestPicker(initialInterests: InterestEntity[]) {
         } else {
             eventStore.addInterest(interest);
         }
-
     };
 
     return {

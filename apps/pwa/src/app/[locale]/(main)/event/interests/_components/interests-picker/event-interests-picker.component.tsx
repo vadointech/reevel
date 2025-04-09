@@ -29,7 +29,6 @@ export const EventInterestsPicker = observer(({ userInterests, initialInterests 
 
     const { interests, handlePickInterest } = useInterestPicker(userInterests);
 
-
     return (
         <InterestsSection title="Interests" className={styles.section}>
             {interests?.map((interest) => (
