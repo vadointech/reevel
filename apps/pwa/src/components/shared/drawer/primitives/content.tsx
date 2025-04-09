@@ -30,8 +30,8 @@ export const DrawerContent = ({
                     <div className={styles.drawer__icon} />
                 )
             }
-            
-            { children }
+
+            {children}
         </div>
     );
 };
