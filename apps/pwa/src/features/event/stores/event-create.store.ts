@@ -146,6 +146,7 @@ class CreateEventStore implements ICreateEventStore {
             setTitle: action,
             setTickets: action,
             setPrice: action,
+            setPrice: action,
             setPoster: action,
             setDescription: action,
             addInterest: action,
