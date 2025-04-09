@@ -25,10 +25,12 @@ export default async function CreateEventLayout({ children, params }: PropsWithC
     //     });
     // }
 
+
     return (
         <CreateEventStoreProvider
             init={[{
                 location: data?.location?.coordinates,
+
             }]}
         >
             <div className={styles.layout}>
