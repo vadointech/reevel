@@ -17,24 +17,31 @@
 
         }
 
-        &_outline {
-
-        }
-
+        &_outline,
         &_profile {
-            position: relative; 
+            width: fit-content;
+            height: fit-content;
+            position: relative;
 
             &::before {
-              content: "";
-              position: absolute;
-              width: 120%; 
-              height: 120%;
-              border-radius: 50%;
-              border: 1.5px solid colors.$secondary;
-              top: 50%;
-              left: 50%;
-              transform: translate(-50%, -50%);
+                content: "";
+                position: absolute;
+                width: 120%;
+                height: 120%;
+                border-radius: 50%;
+                border: 1.5px solid;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
             }
+        }
+
+        &_outline::before {
+            border-color: colors.$white;
+        }
+
+        &_profile::before {
+            border-color: colors.$secondary;
         }
     }
 

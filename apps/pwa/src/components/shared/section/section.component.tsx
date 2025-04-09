@@ -41,7 +41,7 @@ export const Section = ({
                 >
                     {title}
                 </h2>
-                <Badge type="Public" variant="default" icon={false} />
+                <Badge title="Public" variant="default" icon={false} />
             </div>
 
             <div className={cx(

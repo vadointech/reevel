@@ -1,15 +1,30 @@
 @use "@/theme/mixins";
 
-.drawer__content {
+.drawer {
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
 
-    &__input {
+    &__content {
         display: flex;
-        align-items: center;
-        justify-content: space-between;
-        gap: 16px;
-    }
+        flex-direction: column;
+        height: 100%;
+        
+        &__input {
+            display: flex;
+            gap: mixins.rem(12);
+            align-items: center;
+        }
 
-    &__sections {
-        margin-top: mixins.rem(18);
+        &__scroll {
+            flex: 1;
+            overflow-y: scroll;
+            @include mixins.no-scrollbar;
+        }
+
+        &__sections {
+            margin-top: mixins.rem(18);
+            margin-bottom: mixins.rem(24);
+        }
     }
 }

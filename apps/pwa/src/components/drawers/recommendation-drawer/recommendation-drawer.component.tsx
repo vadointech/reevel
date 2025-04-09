@@ -1,13 +1,16 @@
 import { ComponentProps } from "react";
-import cx from "classnames";
 import styles from "./styles.module.scss";
+
 import { Drawer, DrawerBody, DrawerContent, DrawerTrigger } from "@/components/shared/drawer";
+
 import { Avatar, Input } from "@/components/ui";
 import { Section } from "@/components/shared/section";
 import { Search } from "@/components/icons/search";
-import { EventDate } from "@/components/ui/date";
 import { RecentCard } from "@/components/shared/recent-card/recent-card.component";
 import { CollectionCard } from "@/components/shared/collection-card";
+import { EventCard } from "@/components/shared/event-card";
+
+import image_1 from "@/../public/assets/temp/carousel2.jpg";
 
 export namespace RecommendationDrawer {
     export type Props = ComponentProps<"div"> & {
@@ -20,52 +23,80 @@ export const RecommendationDrawer = ({ open }: RecommendationDrawer.Props) => {
         <Drawer open={open}>
             <DrawerBody>
                 <DrawerContent>
-                    <div className={styles.drawer__content}>
-                        <div className={styles.drawer__content__input}>
-                            <Input variant="rounded" placeholder="Search events" icon={<Search />} />
-                            <Avatar size={40} variant="profile" />
+                    <div className={styles.drawer}>
+                        <div className={styles.drawer__content}>
+                            <div className={styles.drawer__content__input}>
+                                <Input variant="rounded" placeholder="Search events" icon={<Search />} />
+                                <Avatar size={40} variant="profile" type="custom" />
+                            </div>
+
+                            <div className={styles.drawer__content__scroll}>
+                                <Section title="Recent" size="small" cols type="All" className={styles.drawer__content__sections}>
+                                    <RecentCard title="Outdoor Movie Night" img={''} />
+                                    <RecentCard title="Outdoor Movie Night" img={''} />
+                                    <RecentCard title="Outdoor Movie Night" img={''} />
+                                    <RecentCard title="Outdoor Movie Night" img={''} />
+                                    <RecentCard title="Outdoor Movie Night" img={''} />
+                                    <RecentCard title="Outdoor Movie Night" img={''} />
+                                    <RecentCard title="Outdoor Movie Night" img={''} />
+                                    <RecentCard title="Outdoor Movie Night" img={''} />
+                                    <RecentCard title="Outdoor Movie Night" img={''} />
+                                    <RecentCard title="Outdoor Movie Night" img={''} />
+                                    <RecentCard title="Outdoor Movie Night" img={''} />
+                                </Section>
+
+                                <Section title="Discover" size="small" type="All" className={styles.drawer__content__sections}>
+                                    <CollectionCard
+                                        title="Games"
+                                        city="Vinn"
+                                        emoji="🚜"
+                                        backgroundText="Games"
+                                        colorFrom="#7D9A5D"
+                                        colorTo="#4F6F3A"
+                                    />
+                                    <CollectionCard
+                                        title="Games"
+                                        city="Vinn"
+                                        emoji="🚜"
+                                        backgroundText="Games"
+                                        colorFrom="#7D9A5D"
+                                        colorTo="#4F6F3A"
+                                    />
+                                    <CollectionCard
+                                        title="Games"
+                                        city="Vinn"
+                                        emoji="🚜"
+                                        backgroundText="Games"
+                                        colorFrom="#7D9A5D"
+                                        colorTo="#4F6F3A"
+                                    />
+                                </Section>
+
+                                <Section title="Popular in Vinnytsia" size="small" type="All" className={styles.drawer__content__sections}>
+                                    <EventCard
+                                        date={'17 Sep'}
+                                        title="NYC Outdoor Movie Night"
+                                        descr="Contrary to popular belief, Lorem Ipsum is not simply..."
+                                        author="Jimmy Smith"
+                                        src={image_1}
+                                    />
+                                    <EventCard
+                                        date={'17 Sep'}
+                                        title="NYC Outdoor Movie Night"
+                                        descr="Contrary to popular belief, Lorem Ipsum is not simply..."
+                                        author="Jimmy Smith"
+                                        src={image_1}
+                                    />
+                                    <EventCard
+                                        date={'17 Sep'}
+                                        title="NYC Outdoor Movie Night"
+                                        descr="Contrary to popular belief, Lorem Ipsum is not simply..."
+                                        author="Jimmy Smith"
+                                        src={image_1}
+                                    />
+                                </Section>
+                            </div>
                         </div>
-
-                        <Section title="Recent" size="small" type="All" cols className={styles.drawer__content__sections}>
-                            <RecentCard title="Outdoor Movie Night" img={''} />
-                            <RecentCard title="Outdoor Movie Night" img={''} />
-                            <RecentCard title="Outdoor Movie Night" img={''} />
-                            <RecentCard title="Outdoor Movie Night" img={''} />
-                            <RecentCard title="Outdoor Movie Night" img={''} />
-                            <RecentCard title="Outdoor Movie Night" img={''} />
-                            <RecentCard title="Outdoor Movie Night" img={''} />
-                            <RecentCard title="Outdoor Movie Night" img={''} />
-                            <RecentCard title="Outdoor Movie Night" img={''} />
-                            <RecentCard title="Outdoor Movie Night" img={''} />
-                            <RecentCard title="Outdoor Movie Night" img={''} />
-                        </Section>
-
-                        <Section title="Discover" size="small" type="All" className={styles.drawer__content__sections}>
-                            <CollectionCard
-                                title="Games"
-                                city="Vinn"
-                                emoji="🚜"
-                                backgroundText="Games"
-                                colorFrom="#7D9A5D"
-                                colorTo="#4F6F3A"
-                            />
-                            <CollectionCard
-                                title="Games"
-                                city="Vinn"
-                                emoji="🚜"
-                                backgroundText="Games"
-                                colorFrom="#7D9A5D"
-                                colorTo="#4F6F3A"
-                            />
-                            <CollectionCard
-                                title="Games"
-                                city="Vinn"
-                                emoji="🚜"
-                                backgroundText="Games"
-                                colorFrom="#7D9A5D"
-                                colorTo="#4F6F3A"
-                            />
-                        </Section>
                     </div>
                 </DrawerContent>
             </DrawerBody>
