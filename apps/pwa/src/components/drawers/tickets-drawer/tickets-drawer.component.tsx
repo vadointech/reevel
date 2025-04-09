@@ -28,7 +28,15 @@ export const TicketsDrawer = observer(({ open, onClose }: TicketsDrawer.Props) =
                     <OnboardingTextBlock
                         title={`How Many Tickets?`}
                     />
-                    <Input placeholder={eventStore.tickets.toString()} variant="numeric" label="Tickets" className={styles.input} onChange={(e) => eventStore.setTickets(+e.target.value)} />
+                    <Input
+                        pattern="[0-9]*"
+                        type="tel"
+                        inputMode="numeric"
+                        placeholder={eventStore.tickets.toString()}
+                        variant="numeric" label="Tickets"
+                        className={styles.input}
+                        onChange={(e) => eventStore.setTickets(+e.target.value)}
+                    />
                     <div className={styles.buttons}>
                         <Button
                             variant="default"

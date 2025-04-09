@@ -28,7 +28,16 @@ export const PricingDrawer = observer(({ open, onClose }: PricingDrawer.Props) =
                     <OnboardingTextBlock
                         title={`How much does it cost?`}
                     />
-                    <Input placeholder={`${eventStore.price.toString()} ₴`} variant="numeric" label="per ticket" className={styles.input} onChange={(e) => eventStore.setPrice(+e.target.value)} />
+                    <Input
+                        pattern="[0-9]*"
+                        type="tel"
+                        inputMode="numeric"
+                        placeholder={`${eventStore.price.toString()} ₴`}
+                        variant="numeric"
+                        label="per ticket"
+                        className={styles.input}
+                        onChange={(e) => eventStore.setPrice(+e.target.value)}
+                    />
                     <div className={styles.buttons}>
                         <Button
                             variant="default"

@@ -5,7 +5,7 @@ import { useEventStore } from "../stores/event-create.store";
 
 export function usePosterPicker(initialPosters: string[]) {
     const eventStore = useEventStore();
-    const [posters, setPoster] = useState<string[]>([...initialPosters]);
+    const [posters, setPoster] = useState<string[]>(initialPosters);
 
     useEffect(() => {
         setPoster(state => {
