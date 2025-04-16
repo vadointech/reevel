@@ -1,0 +1,34 @@
+@use '@/theme/colors';
+@use '@/theme/fonts';
+
+
+
+.container {
+    height: 100%;
+
+    &__button {
+        display: inline;
+        background: none;
+        border: none;
+        padding: 0;
+        cursor: pointer;
+
+        @include fonts.font-creata("sm",600,140%);
+        color: inherit;
+
+    }
+
+    &__description {
+        width: 100%;
+
+        @include fonts.font-creata("sm",300,140%);
+        color: colors.$background;
+        
+        word-wrap: break-word; 
+        overflow-wrap: break-word;
+        white-space: normal; 
+    }
+}
+
+
+

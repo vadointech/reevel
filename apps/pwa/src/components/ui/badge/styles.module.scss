@@ -39,12 +39,20 @@
         }
 
         &_ghost {
-            opacity: 0.4;
-            background-color: colors.$background-muted;
-            border-color: colors.$background-muted;
-            color:colors.$white;
+            background-color: rgba(colors.$background-muted, 0.4);
+            border-color: rgba(colors.$background-muted, 0.4);
+            color: colors.$white;
             svg path {
-                fill:colors.$white;
+                fill: colors.$white;
+            }
+        }
+
+        &_fire {
+            background-color: colors.$orange;
+            border-color:none;
+            color: colors.$white;
+            svg path {
+                fill: colors.$white;
             }
         }
     }

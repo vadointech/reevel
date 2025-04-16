@@ -13,9 +13,10 @@
         @include fonts.font-creata();
         font-size: mixins.rem(10);
         font-weight: 300;
-        color: colors.$white;
+        color: colors.$background-muted;
         span {
             font-weight: 400;
+            color: colors.$white;
         }
     }
 }

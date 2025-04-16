@@ -7,13 +7,15 @@ import { Avatar } from "@/components/ui";
 
 export namespace HostedBy {
     export type Props = ComponentProps<"div"> & {
-        author: string
+        author: string,
+        src?: string,
     };
 }
 
 
 export const HostedBy = ({
     author,
+    src,
     className,
     ...props
 }: HostedBy.Props) => {

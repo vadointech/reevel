@@ -9,7 +9,7 @@ export type TabButtonVariant = "default" | "primary" | "outline" | "icon" | "das
 export namespace TabButton {
     export type Props = Omit<ComponentProps<"button">, "onChange"> & {
         variant?: TabButtonVariant
-        name: string
+        name?: string
         icon?: ReactNode | string
         selected?: boolean
         // onChange: (selected: boolean) => void
@@ -47,9 +47,9 @@ export const TabButton = ({
             {...props}
         >
             {icon && (
-                <div className={styles.button__icon}>
+                <span className={styles.button__icon}>
                     {icon}
-                </div>
+                </span>
             )}
             <p className={styles.button__text}>{name}</p>
         </button>

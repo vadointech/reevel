@@ -114,6 +114,7 @@ export class Fetcher implements IFetcher {
             }
         }
 
-        return fetcherResponse;
+        // return fetcherResponse;
+        return { data: null }
     }
 }

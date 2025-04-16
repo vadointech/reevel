@@ -32,7 +32,7 @@ export const InterestsDrawer = observer(({ open, initialInterests, onClose }: In
 
     return (
         <div>
-            <Drawer open={open} defaultPoint={"upper"}>
+            <Drawer open={open}>
                 <DrawerBody>
                     <DrawerContent>
                         <div>

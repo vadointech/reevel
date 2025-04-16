@@ -3,7 +3,6 @@ import { Drawer } from "../drawer.component";
 export const snapPointsMap: Record<Drawer.SnapPoints, string | number> = {
     low: "168px",
     middle: "348px",
-    upper: "605px",
     full: 1,
 };
 
