@@ -4,7 +4,7 @@ import { CreateEventDto } from "./dto/create-event.dto";
 import { UploadEventPosterDto } from "./dto/upload-poster.dto";
 import { Session } from "@/decorators";
 import { ServerSession } from "@/modules/auth/dto/jwt.dto";
-import { FileUploadInterceptor, UploadSpeedInterceptor } from "@/modules/uploads/uploads.interceptor";
+import { FileUploadInterceptor } from "@/modules/uploads/uploads.interceptor";
 import { UpdateEventDto } from "@/modules/event/dto/update-event.dto";
 
 @Controller("events")
@@ -22,7 +22,6 @@ export class EventController {
     }
 
     @Patch(":eventId")
-    @UseInterceptors(UploadSpeedInterceptor)
     async updateEvent(
         @Body() body: UpdateEventDto,
         @Param("eventId") eventId: string,
@@ -39,7 +38,7 @@ export class EventController {
     }
 
     @Post("/poster")
-    @UseInterceptors(FileUploadInterceptor, UploadSpeedInterceptor)
+    @UseInterceptors(FileUploadInterceptor)
     async uploadPoster(
         @Req() request: Express.Request,
         @Body() body: UploadEventPosterDto,

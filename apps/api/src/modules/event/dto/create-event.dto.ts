@@ -39,7 +39,7 @@ export class CreateEventDto {
 
     @IsNumber()
     @IsOptional()
-    ticketCount?: number;
+    ticketsAvailable?: number;
 
     @IsNumber()
     @IsOptional()

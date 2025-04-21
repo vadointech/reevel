@@ -36,7 +36,7 @@ export class UpdateEventDto {
 
     @IsNumber()
     @IsOptional()
-    ticketCount?: number;
+    ticketsAvailable?: number;
 
     @IsNumber()
     @IsOptional()

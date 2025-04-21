@@ -1,10 +1,5 @@
 import { DataSource, Repository } from "typeorm";
-import {
-    Injectable,
-    Logger,
-    BadRequestException,
-    NotFoundException,
-} from "@nestjs/common";
+import { BadRequestException, Injectable, Logger, NotFoundException } from "@nestjs/common";
 import { CreateEventDto } from "./dto/create-event.dto";
 import { UpdateEventDto } from "./dto/update-event.dto";
 import { EventsEntity } from "./entities/events.entity";
@@ -14,6 +9,8 @@ import { UploadsService } from "@/modules/uploads/uploads.service";
 import { InjectRepository } from "@nestjs/typeorm";
 import { ImageColorPalettePreset } from "@/modules/uploads/vibrant/types";
 import { UploadsFileType } from "@/modules/uploads/uploads.register";
+import { TicketsEntity } from "@/modules/booking/entities/tickets.entity";
+import { BookingService } from "@/modules/booking/booking.service";
 
 @Injectable()
 export class EventService {
@@ -22,6 +19,9 @@ export class EventService {
     constructor(
         @InjectRepository(EventsEntity)
         private readonly eventRepository: Repository<EventsEntity>,
+        @InjectRepository(TicketsEntity)
+        private readonly ticketRepository: Repository<TicketsEntity>,
+        private readonly bookingService: BookingService,
         private readonly uploadService: UploadsService,
         private dataSource: DataSource,
     ) {}
@@ -29,19 +29,18 @@ export class EventService {
     async createEvent(userId: string, input: CreateEventDto): Promise<EventsEntity> {
         try {
             return await this.dataSource.transaction(async entityManager => {
+                const {
+                    location,
+                    interests,
+                    ...event
+                } = input;
+
                 const newEvent = await entityManager.save(EventsEntity, {
-                    title: input.title,
-                    description: input.description,
-                    poster: input.poster,
-                    primaryColor: input.primaryColor,
+                    ...event,
                     location: {
                         type: "Point",
-                        coordinates: input.location,
+                        coordinates: location,
                     },
-                    ticketCount: input.ticketCount,
-                    ticketPrice: input.ticketPrice,
-                    visibility: input.visibility,
-                    dateTime: input.dateTime,
                 });
 
                 await entityManager.save(EventHostsEntity, {
@@ -49,10 +48,10 @@ export class EventService {
                     userId,
                 });
 
-                if(input.interests?.length) {
+                if(interests && interests.length > 0) {
                     await entityManager.save(
                         EventInterestsEntity,
-                        input.interests.map(interestId => ({
+                        interests.map(interestId => ({
                             eventId: newEvent.id,
                             interestId,
                         })),
@@ -77,10 +76,17 @@ export class EventService {
             const {
                 location,
                 interests,
-                ...newEvent
+                ...event
             } = input;
 
-            Object.assign(dbEvent, newEvent, {
+            if(event.ticketsAvailable !== null && event.ticketsAvailable !== undefined) {
+                const ticketsCount = await this.ticketRepository.countBy({ eventId });
+                if(ticketsCount > event.ticketsAvailable) {
+                    throw new BadRequestException("Invalid value of ticketsAvailable");
+                }
+            }
+
+            Object.assign(dbEvent, event, {
                 location: location ? {
                     type: "Point",
                     coordinates: location,
@@ -110,12 +116,19 @@ export class EventService {
     }
 
     async deleteEvent(userId: string, eventId: string) {
+        const deleteEventPromise = this.dataSource.transaction(async entityManager => {
+            await this.bookingService.reclaimTickets(entityManager, eventId);
+            await entityManager.delete(EventsEntity, { id: eventId });
+        });
+
+        const deleteFilesPromise = this.uploadService.deleteFiles(userId, {
+            folder: UploadsFileType.Events,
+            tags: this.uploadService.tagRegister.events(eventId),
+        });
+
         await Promise.all([
-            this.uploadService.deleteFiles(userId, {
-                folder: UploadsFileType.Events,
-                tags: this.uploadService.tagRegister.events(eventId),
-            }),
-            this.eventRepository.delete({ id: eventId }),
+            deleteEventPromise,
+            deleteFilesPromise,
         ]);
 
         return true;

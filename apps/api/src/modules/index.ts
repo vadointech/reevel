@@ -6,6 +6,8 @@ import { InterestsModule } from "./interests/interests.module";
 import { SeedModule } from "./seed/seed.module";
 import { UploadsModule } from "@/modules/uploads/uploads.module";
 import { EventModule } from "@/modules/event/event.module";
+import { BookingModule } from "@/modules/booking/booking.module";
+import { PaymentModule } from "@/modules/payment/payment.module";
 
 export default [
     AuthModule,
@@ -14,6 +16,8 @@ export default [
     ProfileModule,
     InterestsModule,
     EventModule,
+    BookingModule,
+    PaymentModule,
     SeedModule,
     UploadsModule,
 ];
