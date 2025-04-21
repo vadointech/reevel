@@ -26,7 +26,7 @@ export default async function Page() {
 
                 <OnboardingTextBlock
                     title={"Show Off Your Event!"}
-                    subtitle={"Choose or upload a poster that perfectly represents your event."}
+                    subtitle={"Choose or uploads a poster that perfectly represents your event."}
                     className={styles.page__textBlock}
                 />
             </Container>

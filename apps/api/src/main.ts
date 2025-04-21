@@ -2,7 +2,7 @@ import { NestFactory } from "@nestjs/core";
 import { AppModule } from "./app.module";
 import { ConfigService } from "@/config/config.service";
 import corsConfig from "@/config/cors.config";
-import { ValidationPipe } from "@nestjs/common";
+import { Logger, ValidationPipe } from "@nestjs/common";
 
 async function bootstrap() {
     const config = new ConfigService();
@@ -11,6 +11,8 @@ async function bootstrap() {
     app.setGlobalPrefix("api");
 
     app.enableCors(corsConfig);
+
+    app.useLogger(new Logger());
 
     app.useGlobalPipes(
         new ValidationPipe({
