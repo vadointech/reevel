@@ -38,7 +38,7 @@ export class EventsEntity {
     visibility: EventVisibility;
 
     @Column({ type: "timestamptz" })
-    eventDateTime: Date;
+    dateTime: Date;
 
     @OneToMany(() => EventHostsEntity, event => event.event)
     hosts: EventHostsEntity[];
