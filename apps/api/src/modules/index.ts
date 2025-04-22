@@ -8,6 +8,7 @@ import { UploadsModule } from "@/modules/uploads/uploads.module";
 import { EventModule } from "@/modules/event/event.module";
 import { BookingModule } from "@/modules/booking/booking.module";
 import { PaymentModule } from "@/modules/payment/payment.module";
+import { SubscriptionModule } from "@/modules/subscription/subscription.module";
 
 export default [
     AuthModule,
@@ -18,6 +19,7 @@ export default [
     EventModule,
     BookingModule,
     PaymentModule,
+    SubscriptionModule,
     SeedModule,
     UploadsModule,
 ];

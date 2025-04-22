@@ -18,15 +18,16 @@ export class EventController {
         @Body() body: CreateEventDto,
         @Session() session: ServerSession,
     ) {
-        return this.eventService.createEvent(session.user.id, body);
+        return this.eventService.createEvent(session, body);
     }
 
     @Patch(":eventId")
     async updateEvent(
         @Body() body: UpdateEventDto,
         @Param("eventId") eventId: string,
+        @Session() session: ServerSession,
     ) {
-        return this.eventService.updateEvent(eventId, body);
+        return this.eventService.updateEvent(session, eventId, body);
     }
 
     @Delete(":eventId")
@@ -34,7 +35,7 @@ export class EventController {
         @Param("eventId") eventId: string,
         @Session() session: ServerSession,
     ) {
-        return this.eventService.deleteEvent(session.user.id, eventId);
+        return this.eventService.deleteEvent(session, eventId);
     }
 
     @Post("/poster")

@@ -1,6 +1,7 @@
 import { Column, Entity, JoinColumn, ManyToOne, OneToOne, PrimaryGeneratedColumn } from "typeorm";
 import { UserEntity } from "@/modules/user/entities/user.entity";
 import { TicketsEntity } from "@/modules/booking/entities/tickets.entity";
+import { SubscriptionEntity } from "@/modules/subscription/entities/subscription.entity";
 
 export enum PaymentType {
     BOOKING_FEE = "BOOKING_FEE",
@@ -25,9 +26,6 @@ export class PaymentsEntity {
     @Column({ type: "enum", enum: PaymentStatus, default: PaymentStatus.PENDING })
     status: PaymentStatus;
 
-    @OneToOne(() => TicketsEntity, ticket => ticket.payment)
-    ticket: TicketsEntity;
-
     @Column({ type: "decimal", default: 0 })
     amount: number;
 
@@ -36,4 +34,10 @@ export class PaymentsEntity {
     @JoinColumn({ name: "userId" })
     @ManyToOne(() => UserEntity, user => user.payments, { onDelete: "CASCADE" })
     user: UserEntity;
+
+    @OneToOne(() => TicketsEntity, ticket => ticket.payment)
+    ticket: TicketsEntity;
+
+    @OneToOne(() => SubscriptionEntity, subscription => subscription.payment)
+    subscription: SubscriptionEntity;
 }

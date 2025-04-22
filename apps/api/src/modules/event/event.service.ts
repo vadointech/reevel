@@ -3,125 +3,117 @@ import { BadRequestException, Injectable, Logger, NotFoundException } from "@nes
 import { CreateEventDto } from "./dto/create-event.dto";
 import { UpdateEventDto } from "./dto/update-event.dto";
 import { EventsEntity } from "./entities/events.entity";
-import { EventInterestsEntity } from "./entities/event-interests.entity";
-import { EventHostsEntity } from "./entities/event-hosts.entity";
 import { UploadsService } from "@/modules/uploads/uploads.service";
 import { InjectRepository } from "@nestjs/typeorm";
 import { ImageColorPalettePreset } from "@/modules/uploads/vibrant/types";
 import { UploadsFileType } from "@/modules/uploads/uploads.register";
 import { TicketsEntity } from "@/modules/booking/entities/tickets.entity";
 import { BookingService } from "@/modules/booking/booking.service";
+import { EventRepository } from "@/modules/event/event.repository";
+import { Session } from "@/types";
 
 @Injectable()
 export class EventService {
     private logger = new Logger(EventService.name);
 
     constructor(
-        @InjectRepository(EventsEntity)
-        private readonly eventRepository: Repository<EventsEntity>,
         @InjectRepository(TicketsEntity)
         private readonly ticketRepository: Repository<TicketsEntity>,
         private readonly bookingService: BookingService,
         private readonly uploadService: UploadsService,
+
+        private readonly eventRepository: EventRepository,
+
         private dataSource: DataSource,
     ) {}
     
-    async createEvent(userId: string, input: CreateEventDto): Promise<EventsEntity> {
+    async createEvent(_: Session, input: CreateEventDto): Promise<EventsEntity> {
         try {
-            return await this.dataSource.transaction(async entityManager => {
-                const {
-                    location,
-                    interests,
-                    ...event
-                } = input;
+            const {
+                location,
+                interests,
+                ...newEvent
+            } = input;
 
-                const newEvent = await entityManager.save(EventsEntity, {
-                    ...event,
-                    location: {
-                        type: "Point",
-                        coordinates: location,
-                    },
-                });
-
-                await entityManager.save(EventHostsEntity, {
-                    eventId: newEvent.id,
-                    userId,
-                });
-
-                if(interests && interests.length > 0) {
-                    await entityManager.save(
-                        EventInterestsEntity,
-                        interests.map(interestId => ({
-                            eventId: newEvent.id,
-                            interestId,
-                        })),
-                    );
-                }
-
-                return newEvent;
+            const event = await this.eventRepository.create({
+                ...newEvent,
+                location: {
+                    type: "Point",
+                    coordinates: location,
+                },
             });
+
+            if(interests && interests.length > 0) {
+                event.interests = await this.eventRepository.createInterests(
+                    interests.map(interestId => ({
+                        eventId: event.id,
+                        interestId,
+                    })),
+                );
+            }
+
+            return event;
         } catch(error) {
             this.logger.error(`Unexpected error creating event: ${error.message}`, error.stack);
             throw new BadRequestException();
         }
     }
 
-    async updateEvent(eventId: string, input: UpdateEventDto): Promise<EventsEntity> {
+    async updateEvent(_: Session, eventId: string, input: UpdateEventDto): Promise<EventsEntity> {
         try {
-            const dbEvent = await this.eventRepository.findOneBy({ id: eventId });
-            if(!dbEvent) {
+            const event = await this.eventRepository.getByID(eventId);
+            if(!event) {
                 throw new NotFoundException();
             }
 
             const {
                 location,
                 interests,
-                ...event
+                ...newEvent
             } = input;
 
-            if(event.ticketsAvailable !== null && event.ticketsAvailable !== undefined) {
+            if(newEvent.ticketsAvailable !== null && newEvent.ticketsAvailable !== undefined) {
                 const ticketsCount = await this.ticketRepository.countBy({ eventId });
-                if(ticketsCount > event.ticketsAvailable) {
+                if(ticketsCount > newEvent.ticketsAvailable) {
                     throw new BadRequestException("Invalid value of ticketsAvailable");
                 }
             }
 
-            Object.assign(dbEvent, event, {
+            Object.assign(event, newEvent, {
                 location: location ? {
                     type: "Point",
                     coordinates: location,
-                } : dbEvent.location,
+                } : event.location,
             });
 
-            await this.eventRepository.save(dbEvent);
+            await this.eventRepository.create(event);
 
-            await this.dataSource.transaction(async entityManager => {
-                if(!interests) return [];
+            event.interests = await this.dataSource.transaction(async entityManager => {
+                if(!interests) return event.interests;
+                await this.eventRepository.deleteInterests(event.id, entityManager);
 
-                await entityManager.delete(EventInterestsEntity, { eventId });
-
-                return entityManager.save(
-                    EventInterestsEntity,
-                    interests.map(interestId =>
-                        entityManager.create(EventInterestsEntity, { eventId, interestId }),
-                    ),
+                return this.eventRepository.createInterests(
+                    interests.map(interestId => ({
+                        eventId: event.id,
+                        interestId,
+                    })),
                 );
             });
 
-            return dbEvent;
+            return event;
         } catch(error) {
             this.logger.error(`Unexpected error updating event: ${error.message}`, error.stack);
             throw new BadRequestException();
         }
     }
 
-    async deleteEvent(userId: string, eventId: string) {
+    async deleteEvent(session: Session, eventId: string) {
         const deleteEventPromise = this.dataSource.transaction(async entityManager => {
             await this.bookingService.reclaimTickets(entityManager, eventId);
-            await entityManager.delete(EventsEntity, { id: eventId });
+            await this.eventRepository.delete(eventId, entityManager);
         });
 
-        const deleteFilesPromise = this.uploadService.deleteFiles(userId, {
+        const deleteFilesPromise = this.uploadService.deleteFiles(session.user.id, {
             folder: UploadsFileType.Events,
             tags: this.uploadService.tagRegister.events(eventId),
         });

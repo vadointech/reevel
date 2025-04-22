@@ -3,6 +3,7 @@ import { ProfileEntity } from "@/modules/profile/entities/profile.entity";
 import { EventHostsEntity } from "@/modules/event/entities/event-hosts.entity";
 import { TicketsEntity } from "@/modules/booking/entities/tickets.entity";
 import { PaymentsEntity } from "@/modules/payment/entities/payment.entity";
+import { SubscriptionEntity } from "@/modules/subscription/entities/subscription.entity";
 
 @Entity("users")
 export class UserEntity {
@@ -23,4 +24,7 @@ export class UserEntity {
 
     @OneToMany(() => PaymentsEntity, payment => payment.user)
     payments: PaymentsEntity[];
+
+    @OneToOne(() => SubscriptionEntity, subscription => subscription.user)
+    subscription: SubscriptionEntity;
 }

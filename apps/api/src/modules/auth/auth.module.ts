@@ -3,22 +3,32 @@ import { AuthService } from "./auth.service";
 import { AuthController } from "./auth.controller";
 import { GoogleModule } from "@/modules/google/google.module";
 import { CookieService } from "@/services/cookie.service";
-import { UserModule } from "@/modules/user/user.module";
 import { JwtStrategy } from "@/modules/auth/strategies/jwt.strategy";
 import { JwtService } from "@nestjs/jwt";
 import { ProfileModule } from "@/modules/profile/profile.module";
-import { TypeOrmModule } from "@nestjs/typeorm";
-import { UserEntity } from "@/modules/user/entities/user.entity";
+import { UserRepository } from "@/modules/user/user.repository";
+import { ProfileRepository } from "@/modules/profile/profile.repository";
+import { SubscriptionRepository } from "@/modules/subscription/subscription.repository";
+import { EventRepository } from "@/modules/event/event.repository";
 
 @Module({
     imports: [
         GoogleModule.forFeature(["/auth/google/redirect"]),
-        TypeOrmModule.forFeature([UserEntity]),
-        UserModule,
         ProfileModule,
     ],
     controllers: [AuthController],
-    providers: [CookieService, AuthService, JwtService, JwtStrategy],
+    providers: [
+        AuthService,
+        JwtService,
+        JwtStrategy,
+
+        CookieService,
+
+        EventRepository,
+        UserRepository,
+        ProfileRepository,
+        SubscriptionRepository,
+    ],
     exports: [JwtStrategy],
 })
 export class AuthModule {}

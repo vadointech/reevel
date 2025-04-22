@@ -2,7 +2,6 @@ import authConfig from "@/modules/auth/auth.config";
 import { JwtService } from "@nestjs/jwt";
 import { BadRequestException, Injectable } from "@nestjs/common";
 import { Request, Response } from "express";
-import { UserService } from "@/modules/user/user.service";
 import { CookieService } from "@/services/cookie.service";
 import { UserEntity } from "@/modules/user/entities/user.entity";
 import {
@@ -10,13 +9,14 @@ import {
     RefreshJwtTokenPayload,
     JwtSession,
 } from "../dto/jwt.dto";
+import { UserRepository } from "@/modules/user/user.repository";
 
 @Injectable()
 export class JwtStrategy {
     constructor(
         private readonly jwtService: JwtService,
         private readonly cookieService: CookieService,
-        private readonly userService: UserService,
+        private readonly userRepository: UserRepository,
     ) {}
 
     async generateSession(user: UserEntity): Promise<JwtSession> {
@@ -24,6 +24,7 @@ export class JwtStrategy {
             sub: user.id,
             email: user.email,
             completed: user.profile.completed,
+            subscription: user.subscription.type,
         };
 
         const [access_token, refresh_token] = await Promise.all([
@@ -45,6 +46,7 @@ export class JwtStrategy {
             user: {
                 id: payload.sub,
                 email: payload.email,
+                subscription: payload.subscription,
             },
         };
     }
@@ -60,7 +62,7 @@ export class JwtStrategy {
     }
 
     async refreshSession(request: Request, response: Response, payload: RefreshJwtTokenPayload) {
-        const dbUser = await this.userService.getUserById(payload.sub);
+        const dbUser = await this.userRepository.getByID(payload.sub);
 
         if(!dbUser) {
             throw new BadRequestException("Refresh session: User does not exists");

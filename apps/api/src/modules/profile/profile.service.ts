@@ -2,7 +2,6 @@ import { Injectable, NotFoundException } from "@nestjs/common";
 import { ProfileEntity } from "./entities/profile.entity";
 import { InjectRepository } from "@nestjs/typeorm";
 import { DataSource, Repository } from "typeorm";
-import { CreateProfileDto } from "@/modules/profile/dto/create-profile.dto";
 import { UpdateProfileDto } from "@/modules/profile/dto/update-profile.dto";
 import { ProfileInterestsEntity } from "@/modules/profile/entities/profile-interests.entity";
 import { InterestsEntity } from "../interests/entities/interests.entity";
@@ -18,17 +17,6 @@ export class ProfileService {
 
         private dataSource: DataSource,
     ) { }
-
-    async createProfile(input: CreateProfileDto): Promise<ProfileEntity> {
-        const profile = this.profileRepository.create({
-            fullName: input.fullName,
-            picture: input.picture,
-            userId: input.userId,
-            completed: "false",
-        });
-
-        return this.profileRepository.save(profile);
-    }
 
     async getProfile(userId: string) {
         return this.profileRepository.findOne({
