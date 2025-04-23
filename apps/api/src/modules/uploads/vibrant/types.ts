@@ -6,11 +6,11 @@ export const ImageColorPalette = {
 } as const;
 export type ImageColorPalette = keyof typeof ImageColorPalette;
 
-export const ImageColorPalettePreset = {
-    Default: "Default",
-    Extended: "Extended",
-} as const;
-export type ImageColorPalettePreset = keyof typeof ImageColorPalettePreset;
+export enum ImageColorPalettePreset {
+    Single = "Single",
+    Default = "Default",
+    Extended = "Extended",
+}
 
 export type ColorPaletteOptions = {
     palette?: ImageColorPalette[];

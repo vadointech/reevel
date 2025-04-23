@@ -1,4 +1,4 @@
-import { Controller, Get, Param } from "@nestjs/common";
+import { Controller, Param, Post } from "@nestjs/common";
 import { BookingService } from "./booking.service";
 import { Session } from "@/decorators";
 import { ServerSession } from "@/modules/auth/dto/jwt.dto";
@@ -9,11 +9,11 @@ export class BookingController {
         private readonly bookingService: BookingService,
     ) {}
 
-    @Get(":eventId")
+    @Post(":eventId")
     async bookTicket(
         @Param("eventId") eventId: string,
         @Session() session: ServerSession,
     ) {
-        return this.bookingService.bookTicket(session.user.id, eventId);
+        return this.bookingService.bookTicket(session, eventId);
     }
 }

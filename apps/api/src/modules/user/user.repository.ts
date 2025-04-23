@@ -1,7 +1,7 @@
 import { Injectable } from "@nestjs/common";
 import { UserEntity } from "@/modules/user/entities/user.entity";
 import { DataSource, DeepPartial, EntityManager } from "typeorm";
-import { Repository } from "@/modules/repository";
+import { BaseRepository } from "@/modules/repository";
 
 interface IUserRepository {
     create(input: UserEntity, entityManager?: EntityManager): Promise<UserEntity>;
@@ -11,7 +11,7 @@ interface IUserRepository {
 }
 
 @Injectable()
-export class UserRepository extends Repository implements IUserRepository {
+export class UserRepository extends BaseRepository implements IUserRepository {
     constructor(dataSource: DataSource) {
         super(dataSource);
     }
@@ -25,7 +25,7 @@ export class UserRepository extends Repository implements IUserRepository {
     }
 
     getByID(id: string): Promise<UserEntity | null> {
-        return this.repository(UserEntity).findOne({
+        return this.dataSource.getRepository(UserEntity).findOne({
             where: { id },
             relations: {
                 profile: true,
@@ -43,7 +43,7 @@ export class UserRepository extends Repository implements IUserRepository {
     }
 
     getByEmail(email: string): Promise<UserEntity | null> {
-        return this.repository(UserEntity).findOne({
+        return this.dataSource.getRepository(UserEntity).findOne({
             where: { email },
             relations: {
                 profile: true,
@@ -61,7 +61,7 @@ export class UserRepository extends Repository implements IUserRepository {
     }
 
     getSession(userId: string): Promise<UserEntity | null> {
-        return this.repository(UserEntity).findOne({
+        return this.dataSource.getRepository(UserEntity).findOne({
             where: { id: userId },
             relations: {
                 profile: true,

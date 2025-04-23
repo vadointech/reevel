@@ -2,22 +2,30 @@ import { Module } from "@nestjs/common";
 import { EventController } from "./event.controller";
 import { EventService } from "./event.service";
 import { UploadsModule } from "@/modules/uploads/uploads.module";
-import { TypeOrmModule } from "@nestjs/typeorm";
-import { EventsEntity } from "./entities/events.entity";
-import { TicketsEntity } from "@/modules/booking/entities/tickets.entity";
-import { BookingModule } from "@/modules/booking/booking.module";
-import { EventRepository } from "@/modules/event/event.repository";
+import { EventRepository } from "./repositories/event.repository";
+import { EventInterestsRepository } from "./repositories/event-interests.repository";
+import { EventHostsRepository } from "./repositories/event-hosts.repository";
+import { SubscriptionRegistry } from "@/modules/subscription/registry/subscription.registry";
+import { TicketRepository } from "@/modules/booking/repositories/ticket.repository";
+import { BookingService } from "@/modules/booking/booking.service";
+import { PaymentRepository } from "@/modules/payment/repositories/payment.repository";
 
 @Module({
     imports: [
-        TypeOrmModule.forFeature([EventsEntity, TicketsEntity]),
         UploadsModule,
-        BookingModule,
     ],
     controllers: [EventController],
     providers: [
-        EventRepository,
         EventService,
+        BookingService,
+
+        EventRepository,
+        TicketRepository,
+        EventInterestsRepository,
+        EventHostsRepository,
+        PaymentRepository,
+
+        SubscriptionRegistry,
     ],
 })
 export class EventModule {}

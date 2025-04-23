@@ -9,7 +9,7 @@ import { ProfileModule } from "@/modules/profile/profile.module";
 import { UserRepository } from "@/modules/user/user.repository";
 import { ProfileRepository } from "@/modules/profile/profile.repository";
 import { SubscriptionRepository } from "@/modules/subscription/subscription.repository";
-import { EventRepository } from "@/modules/event/event.repository";
+import { EventRepository } from "@/modules/event/repositories/event.repository";
 
 @Module({
     imports: [

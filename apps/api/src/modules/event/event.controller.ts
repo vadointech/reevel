@@ -38,14 +38,14 @@ export class EventController {
         return this.eventService.deleteEvent(session, eventId);
     }
 
-    @Post("/poster")
+    @Post(":eventId/poster")
     @UseInterceptors(FileUploadInterceptor)
     async uploadPoster(
         @Req() request: Express.Request,
-        @Body() body: UploadEventPosterDto,
+        @Param("eventId") eventId: string,
         @Session() session: ServerSession,
     ) {
         const files = request.files as Express.Multer.File[];
-        return this.eventService.uploadPoster(session.user.id, body.eventId, files);
+        return this.eventService.uploadPoster(session, eventId, files);
     }
 }

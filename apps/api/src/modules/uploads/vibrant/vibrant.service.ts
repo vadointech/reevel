@@ -12,6 +12,8 @@ export class VibrantService {
     async extractColorPalette(buffer: Buffer, paletteOptions?: ColorPaletteOptions): Promise<string[]> {
         if(paletteOptions) {
             switch(paletteOptions.preset) {
+                case ImageColorPalettePreset.Single:
+                    return this.vibrantPresetService.vibrantSingle(buffer);
                 case ImageColorPalettePreset.Default:
                     return this.vibrantPresetService.vibrantDefault(buffer);
                 case ImageColorPalettePreset.Extended:

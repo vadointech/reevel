@@ -1,15 +1,18 @@
-import { DataSource, Repository } from "typeorm";
+import { DataSource } from "typeorm";
 import { BadRequestException, Injectable, Logger, NotFoundException } from "@nestjs/common";
 import { CreateEventDto } from "./dto/create-event.dto";
 import { UpdateEventDto } from "./dto/update-event.dto";
 import { EventsEntity } from "./entities/events.entity";
 import { UploadsService } from "@/modules/uploads/uploads.service";
-import { InjectRepository } from "@nestjs/typeorm";
-import { ImageColorPalettePreset } from "@/modules/uploads/vibrant/types";
 import { UploadsFileType } from "@/modules/uploads/uploads.register";
-import { TicketsEntity } from "@/modules/booking/entities/tickets.entity";
+
+import { EventRepository } from "./repositories/event.repository";
+import { EventHostsRepository } from "./repositories/event-hosts.repository";
+import { EventInterestsRepository } from "./repositories/event-interests.repository";
+import { TicketRepository } from "@/modules/booking/repositories/ticket.repository";
 import { BookingService } from "@/modules/booking/booking.service";
-import { EventRepository } from "@/modules/event/event.repository";
+import { SubscriptionRegistry } from "@/modules/subscription/registry/subscription.registry";
+
 import { Session } from "@/types";
 
 @Injectable()
@@ -17,17 +20,20 @@ export class EventService {
     private logger = new Logger(EventService.name);
 
     constructor(
-        @InjectRepository(TicketsEntity)
-        private readonly ticketRepository: Repository<TicketsEntity>,
-        private readonly bookingService: BookingService,
         private readonly uploadService: UploadsService,
+        private readonly bookingService: BookingService,
 
+        private readonly ticketRepository: TicketRepository,
         private readonly eventRepository: EventRepository,
+        private readonly eventHostsRepository: EventHostsRepository,
+        private readonly eventInterestsRepository: EventInterestsRepository,
+
+        private readonly subscriptionRegistry: SubscriptionRegistry,
 
         private dataSource: DataSource,
     ) {}
     
-    async createEvent(_: Session, input: CreateEventDto): Promise<EventsEntity> {
+    async createEvent(session: Session, input: CreateEventDto): Promise<EventsEntity> {
         try {
             const {
                 location,
@@ -35,24 +41,29 @@ export class EventService {
                 ...newEvent
             } = input;
 
-            const event = await this.eventRepository.create({
-                ...newEvent,
-                location: {
-                    type: "Point",
-                    coordinates: location,
-                },
-            });
+            const monthlyHostedCount = await this.eventHostsRepository.countMonthly(session.user.id);
 
-            if(interests && interests.length > 0) {
-                event.interests = await this.eventRepository.createInterests(
-                    interests.map(interestId => ({
-                        eventId: event.id,
-                        interestId,
-                    })),
-                );
+            if(monthlyHostedCount >= this.subscriptionRegistry.event.hostingLimit(session)) {
+                throw new BadRequestException("Reached the event hosting limit");
             }
 
-            return event;
+            return this.dataSource.transaction(async entityManager => {
+                const event = await this.eventRepository.create({
+                    ...newEvent,
+                    location: {
+                        type: "Point",
+                        coordinates: location,
+                    },
+                }, entityManager);
+
+                if(interests && interests.length > 0) {
+                    event.interests = await this.eventInterestsRepository.create(event.id, interests, entityManager);
+                }
+
+                event.hosts = await this.eventHostsRepository.create(event.id, [session.user.id], entityManager);
+
+                return event;
+            });
         } catch(error) {
             this.logger.error(`Unexpected error creating event: ${error.message}`, error.stack);
             throw new BadRequestException();
@@ -73,7 +84,7 @@ export class EventService {
             } = input;
 
             if(newEvent.ticketsAvailable !== null && newEvent.ticketsAvailable !== undefined) {
-                const ticketsCount = await this.ticketRepository.countBy({ eventId });
+                const ticketsCount = await this.ticketRepository.countByEventID(eventId);
                 if(ticketsCount > newEvent.ticketsAvailable) {
                     throw new BadRequestException("Invalid value of ticketsAvailable");
                 }
@@ -90,14 +101,8 @@ export class EventService {
 
             event.interests = await this.dataSource.transaction(async entityManager => {
                 if(!interests) return event.interests;
-                await this.eventRepository.deleteInterests(event.id, entityManager);
-
-                return this.eventRepository.createInterests(
-                    interests.map(interestId => ({
-                        eventId: event.id,
-                        interestId,
-                    })),
-                );
+                await this.eventInterestsRepository.deleteAll(eventId, entityManager);
+                return this.eventInterestsRepository.create(eventId, interests, entityManager);
             });
 
             return event;
@@ -109,7 +114,7 @@ export class EventService {
 
     async deleteEvent(session: Session, eventId: string) {
         const deleteEventPromise = this.dataSource.transaction(async entityManager => {
-            await this.bookingService.reclaimTickets(entityManager, eventId);
+            await this.bookingService.reclaimTickets(eventId, entityManager);
             await this.eventRepository.delete(eventId, entityManager);
         });
 
@@ -126,12 +131,12 @@ export class EventService {
         return true;
     }
 
-    async uploadPoster(userId: string, eventId: string, files: Express.Multer.File[]) {
+    async uploadPoster(session: Session, eventId: string, files: Express.Multer.File[]) {
         return this.uploadService.uploadImages(files, {
-            folder: this.uploadService.folderRegister.events(userId),
+            folder: this.uploadService.folderRegister.events(session.user.id),
             tags: [this.uploadService.tagRegister.events(eventId)],
             colorPalette: {
-                preset: ImageColorPalettePreset.Extended,
+                preset: this.subscriptionRegistry.event.posterColor(session),
             },
         });
     }

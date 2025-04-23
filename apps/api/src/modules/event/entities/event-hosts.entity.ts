@@ -2,7 +2,7 @@ import { Entity, JoinColumn, ManyToOne, PrimaryColumn } from "typeorm";
 import { EventsEntity } from "./events.entity";
 import { UserEntity } from "@/modules/user/entities/user.entity";
 
-@Entity("event_creators")
+@Entity("event_hosts")
 export class EventHostsEntity {
     @PrimaryColumn()
     eventId: string;

@@ -1,4 +1,4 @@
-import { Column, Entity, OneToMany, Point, PrimaryGeneratedColumn } from "typeorm";
+import { Column, CreateDateColumn, Entity, OneToMany, Point, PrimaryGeneratedColumn } from "typeorm";
 import { EventInterestsEntity } from "./event-interests.entity";
 import { EventHostsEntity } from "./event-hosts.entity";
 import { TicketsEntity } from "@/modules/booking/entities/tickets.entity";
@@ -39,6 +39,9 @@ export class EventsEntity {
 
     @Column({ type: "timestamptz" })
     dateTime: Date;
+
+    @CreateDateColumn({ type: "timestamp" })
+    createdAt: Date;
 
     @OneToMany(() => EventHostsEntity, event => event.event)
     hosts: EventHostsEntity[];

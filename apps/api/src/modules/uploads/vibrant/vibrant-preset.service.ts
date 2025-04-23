@@ -29,6 +29,11 @@ export class VibrantPresetService implements VibrantPreset {
             .then(res => this.removeDuplicates(res));
     }
 
+    async vibrantSingle(buffer: Buffer): Promise<[string]> {
+        return this.getPalette(buffer, this.defaultColorPalette, 20)
+            .then(res => [res[1] || res[0]]);
+    }
+
     async getPalette(buffer: Buffer, palette: ImageColorPalette[] = this.defaultColorPalette, quality: number = 20) {
         try {
             const vibrantPalette = await Vibrant.from(buffer)

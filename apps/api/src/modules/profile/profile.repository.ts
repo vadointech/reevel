@@ -1,5 +1,5 @@
 import { Injectable } from "@nestjs/common";
-import { Repository } from "@/modules/repository";
+import { BaseRepository } from "@/modules/repository";
 import { ProfileEntity } from "@/modules/profile/entities/profile.entity";
 import { DataSource, DeepPartial, EntityManager } from "typeorm";
 
@@ -8,7 +8,7 @@ interface IProfileRepository {
 }
 
 @Injectable()
-export class ProfileRepository extends Repository implements IProfileRepository {
+export class ProfileRepository extends BaseRepository implements IProfileRepository {
     constructor(dataSource: DataSource) {
         super(dataSource);
     }

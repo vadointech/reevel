@@ -1,14 +1,14 @@
 import { Injectable } from "@nestjs/common";
 import { SubscriptionEntity } from "./entities/subscription.entity";
 import { DataSource, DeepPartial, EntityManager } from "typeorm";
-import { Repository } from "@/modules/repository";
+import { BaseRepository } from "@/modules/repository";
 
 export interface ISubscriptionRepository {
     create(input: SubscriptionEntity, entityManager?: EntityManager): Promise<SubscriptionEntity>
 }
 
 @Injectable()
-export class SubscriptionRepository extends Repository implements ISubscriptionRepository {
+export class SubscriptionRepository extends BaseRepository implements ISubscriptionRepository {
     constructor(dataSource: DataSource) {
         super(dataSource);
     }
