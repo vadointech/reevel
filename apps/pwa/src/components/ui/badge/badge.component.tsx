@@ -1,7 +1,6 @@
 import { ComponentProps, ReactNode } from "react";
 import styles from "./styles.module.scss";
 import cx from "classnames";
-import { IconWorld } from "@/components/icons/world";
 
 export type Variant = 'default' | 'primary' | 'ghost' | 'date' | 'fire';
 

@@ -1,6 +1,6 @@
 import { ComponentProps } from "react";
 
-export const Navigation = (props: ComponentProps<"svg">) => (
+export const IconNavigation = (props: ComponentProps<"svg">) => (
     <svg
         width={14}
         height={14}

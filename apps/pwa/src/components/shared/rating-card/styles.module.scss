@@ -1,0 +1,46 @@
+@use "@/theme/mixins";
+@use "@/theme/colors";
+@use "@/theme/fonts";
+
+
+
+.card {
+    width: mixins.rem(292);
+    height: mixins.rem(154);
+
+    background-color: colors.$background;
+
+    border-radius: 0.75rem;
+    padding: 1rem;
+
+
+    &__feedback {
+        @include fonts.font-creata("sm")
+    }
+
+    &__details {
+        margin-top:0.5rem;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+
+        &__wrapper {
+            &__stars {
+                display: flex;
+                gap: 0.25rem;
+            }
+
+            &__author {
+                @include fonts.font-creata("xs");
+                display: flex;
+                align-items: start;
+                gap: 0.25rem;
+                
+                span {
+                    color:colors.$secondary;
+                }
+            }
+        }
+    }
+
+}

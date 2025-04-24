@@ -11,9 +11,9 @@
 
     height: mixins.rem(38);
     width: fit-content;
-    padding:  0px mixins.rem(18);
+    padding:  0rem mixins.rem(18);
     border-radius: 100;
-    @include fonts.font-creata("sm", 400, 20px);
+    @include fonts.font-creata("sm", 400, mixins.rem(20));
 
 
     display: flex;

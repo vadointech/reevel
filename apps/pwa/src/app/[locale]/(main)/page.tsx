@@ -1,14 +1,15 @@
-import { StartDrawer } from "@/components/drawers/start-drawer";
-import { EventDrawer } from "@/components/shared/event-drawer";
+import { EventDrawer } from "@/components/drawers/event-drawer";
+import { sampleEvent } from "@/components/drawers/event-drawer/mock.data";
 import { MapView } from "@/components/shared/map";
-import { BasePoint, Point } from "@/components/shared/map/types";
+
+const data = sampleEvent
 
 export default function Home() {
     return (
         <>
             <MapView
             />
-            <EventDrawer open={true} />
+            <EventDrawer data={data} open={true} />
         </>
     );
 }
