@@ -6,8 +6,7 @@ import { EventRepository } from "./repositories/event.repository";
 import { EventInterestsRepository } from "./repositories/event-interests.repository";
 import { EventHostsRepository } from "./repositories/event-hosts.repository";
 import { SubscriptionRegistry } from "@/modules/subscription/registry/subscription.registry";
-import { TicketRepository } from "@/modules/booking/repositories/ticket.repository";
-import { BookingService } from "@/modules/booking/booking.service";
+import { EventTicketsRepository } from "@/modules/event/repositories/event-tickets.repository";
 import { PaymentRepository } from "@/modules/payment/repositories/payment.repository";
 
 @Module({
@@ -17,10 +16,9 @@ import { PaymentRepository } from "@/modules/payment/repositories/payment.reposi
     controllers: [EventController],
     providers: [
         EventService,
-        BookingService,
 
         EventRepository,
-        TicketRepository,
+        EventTicketsRepository,
         EventInterestsRepository,
         EventHostsRepository,
         PaymentRepository,

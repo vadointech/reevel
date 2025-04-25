@@ -9,8 +9,7 @@ import { UploadsFileType } from "@/modules/uploads/uploads.register";
 import { EventRepository } from "./repositories/event.repository";
 import { EventHostsRepository } from "./repositories/event-hosts.repository";
 import { EventInterestsRepository } from "./repositories/event-interests.repository";
-import { TicketRepository } from "@/modules/booking/repositories/ticket.repository";
-import { BookingService } from "@/modules/booking/booking.service";
+import { EventTicketsRepository } from "@/modules/event/repositories/event-tickets.repository";
 import { SubscriptionRegistry } from "@/modules/subscription/registry/subscription.registry";
 
 import { Session } from "@/types";
@@ -21,9 +20,8 @@ export class EventService {
 
     constructor(
         private readonly uploadService: UploadsService,
-        private readonly bookingService: BookingService,
 
-        private readonly ticketRepository: TicketRepository,
+        private readonly ticketRepository: EventTicketsRepository,
         private readonly eventRepository: EventRepository,
         private readonly eventHostsRepository: EventHostsRepository,
         private readonly eventInterestsRepository: EventInterestsRepository,
@@ -84,7 +82,7 @@ export class EventService {
             } = input;
 
             if(newEvent.ticketsAvailable !== null && newEvent.ticketsAvailable !== undefined) {
-                const ticketsCount = await this.ticketRepository.countByEventID(eventId);
+                const ticketsCount = await this.ticketRepository.countAvailable(eventId);
                 if(ticketsCount > newEvent.ticketsAvailable) {
                     throw new BadRequestException("Invalid value of ticketsAvailable");
                 }
@@ -114,7 +112,7 @@ export class EventService {
 
     async deleteEvent(session: Session, eventId: string) {
         const deleteEventPromise = this.dataSource.transaction(async entityManager => {
-            await this.bookingService.reclaimTickets(eventId, entityManager);
+            // await this.bookingService.reclaimTickets(eventId, entityManager);
             await this.eventRepository.delete(eventId, entityManager);
         });
 

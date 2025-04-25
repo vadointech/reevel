@@ -1,47 +1,111 @@
-import { EntityManager } from "typeorm";
-import { BadRequestException, Injectable, Logger } from "@nestjs/common";
-import { PaymentsEntity, PaymentStatus } from "./entities/payment.entity";
-import { CreatePaymentDto } from "./dto/create-payment.dto";
+import { BadRequestException, Injectable, Logger, NotFoundException } from "@nestjs/common";
+import { PaymentRepository } from "@/modules/payment/repositories/payment.repository";
+import { MonobankApi } from "@/modules/payment/monobank/types";
+import { PaymentStatus, SupportedCurrencies } from "@/modules/payment/entities/payment.entity";
+import { Session } from "@/types";
+import { DataSource } from "typeorm";
+import { MonobankService } from "@/modules/payment/monobank/monobank.service";
+import { CreateInvoiceDto } from "@/modules/payment/monobank/dto/create-invoice.dto";
+import { DeleteInvoiceDto } from "@/modules/payment/monobank/dto/delete-invoice.dto";
 
 @Injectable()
 export class PaymentService {
     private logger = new Logger(PaymentService.name);
-  
-    constructor() {}
 
-    async createPayment(entityManager: EntityManager, input: CreatePaymentDto & { userId: string }): Promise<PaymentsEntity> {
+    constructor(
+        private readonly monobankService: MonobankService,
+
+        private readonly paymentRepository: PaymentRepository,
+
+        private readonly dataSource: DataSource,
+    ) {}
+
+    async createInvoice(session: Session, input: CreateInvoiceDto) {
         try {
-            return entityManager.save(PaymentsEntity, {
-                type: input.type,
+            return this.monobankService.createInvoice({
                 amount: input.amount,
-                userId: input.userId,
-                status: PaymentStatus.PENDING,
+                agentFeePercent: 7,
+                ccy: SupportedCurrencies.EUR,
+                saveCardData: {
+                    walletId: session.user.id,
+                    saveCard: true,
+                },
             });
         } catch(error) {
-            this.logger.error(`Unexpected error making payment: ${error.message}`, error.stack);
+            this.logger.error(`Unexpected error creating invoice: ${error.message}`, error.stack);
             throw new BadRequestException();
         }
     }
 
-    async reclaimPayment(entityManager: EntityManager, paymentId: string): Promise<boolean> {
-        try {
-            await entityManager.update(PaymentsEntity, { id: paymentId }, {
-                status: PaymentStatus.RECLAIMED,
-            });
 
-            return true;
+    async deleteInvoice(invoiceId: string) {
+        try {
+            return this.monobankService.deleteInvoice(invoiceId);
         } catch(error) {
-            this.logger.error(`Unexpected error reclaiming payment: ${error.message}`, error.stack);
+            this.logger.error(`Unexpected error canceling invoice: ${error.message}`, error.stack);
             throw new BadRequestException();
         }
     }
 
-    async deletePayment(entityManager: EntityManager, paymentId: string): Promise<boolean> {
+    async chargeFunds(invoice: MonobankApi.InvoiceStatusResponse) {
         try {
-            await entityManager.delete(PaymentsEntity, { id: paymentId });
-            return true;
+            return this.dataSource.transaction(async entityManager => {
+                let payment = await this.paymentRepository.update({ invoiceId: invoice.invoiceId }, {
+                    status: PaymentStatus.CHARGED,
+                }, entityManager);
+
+                if(invoice.walletData?.cardToken) {
+                    payment = await this.paymentRepository.update({ invoiceId: invoice.invoiceId }, {
+                        cardToken: payment.cardToken,
+                        status: PaymentStatus.CHARGED,
+                    }, entityManager);
+                }
+
+                return payment;
+            });
         } catch(error) {
-            this.logger.error(`Unexpected error deleting payment: ${error.message}`, error.stack);
+            this.logger.error(`Unexpected error charging funds: ${error.message}`, error.stack);
+            throw new BadRequestException();
+        }
+    }
+
+    async reclaimFunds(paymentId: string) {
+        try {
+            const invoice = await this.paymentRepository.getByID(paymentId);
+
+            if(!invoice) {
+                throw new NotFoundException("Invoice does not exist");
+            }
+
+            if(invoice.status === PaymentStatus.CHARGED) {
+                await this.paymentRepository.update({ id: paymentId }, {
+                    status: PaymentStatus.RECLAIMED,
+                });
+            }
+        } catch(error) {
+            this.logger.error(`Unexpected error reclaiming invoice: ${error.message}`, error.stack);
+            throw new BadRequestException();
+        }
+    }
+
+    async refundFunds(paymentId: string) {
+        try {
+            const invoice = await this.paymentRepository.getByID(paymentId);
+
+            if(!invoice) {
+                throw new NotFoundException("Invoice does not exist");
+            }
+
+            if(invoice.cardToken && invoice.status === PaymentStatus.CHARGED) {
+                await this.monobankService.makePayment({
+                    cardToken: invoice.cardToken,
+                    amount: invoice.amount,
+                    ccy: invoice.currency,
+                    initiationKind: MonobankApi.PaymentInitialization.Merchant,
+                });
+            }
+        } catch(error) {
+            this.logger.error(`Unexpected error refunding invoice: ${error.message}`, error.stack);
             throw new BadRequestException();
         }
     }

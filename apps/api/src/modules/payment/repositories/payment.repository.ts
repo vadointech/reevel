@@ -1,12 +1,23 @@
 import { Injectable } from "@nestjs/common";
 import { BaseRepository } from "@/modules/repository";
-import { PaymentsEntity, PaymentStatus } from "@/modules/payment/entities/payment.entity";
-import { DataSource, DeepPartial, EntityManager } from "typeorm";
+import { PaymentsEntity } from "@/modules/payment/entities/payment.entity";
+import { DataSource, DeepPartial, EntityManager, FindOptionsWhere } from "typeorm";
 
 interface IPaymentRepository {
-    create(input: PaymentsEntity): Promise<PaymentsEntity>;
-    delete(id: string): Promise<boolean>;
-    reclaim(id: string): Promise<boolean>;
+    create(input: DeepPartial<PaymentsEntity>): Promise<PaymentsEntity>;
+
+    update(
+        criteria: FindOptionsWhere<PaymentsEntity>,
+        input: DeepPartial<PaymentsEntity>,
+        entityManager?: EntityManager
+    ): Promise<PaymentsEntity>;
+
+    deleteByID(paymentId: string, entityManager?: EntityManager): Promise<boolean>;
+
+    getByID(id: string): Promise<PaymentsEntity | null>;
+    getByInvoiceID(invoiceId: string): Promise<PaymentsEntity | null>;
+
+    saveCardToken(paymentId: string, cardToken: string, entityManager?: EntityManager): Promise<PaymentsEntity>;
 }
 
 @Injectable()
@@ -16,26 +27,28 @@ export class PaymentRepository extends BaseRepository implements IPaymentReposit
     }
 
     create(input: DeepPartial<PaymentsEntity>, entityManager?: EntityManager): Promise<PaymentsEntity> {
-        return this.query(PaymentsEntity, (repository) => {
-            return repository.save(
-                repository.create(input),
-            );
+        return this.queryRunner.create(PaymentsEntity, input, entityManager);
+    }
+
+    deleteByID(paymentId: string, entityManager?: EntityManager): Promise<boolean> {
+        return this.queryRunner.delete(PaymentsEntity, { id: paymentId }, entityManager);
+    }
+
+    update(criteria: FindOptionsWhere<PaymentsEntity>, input: DeepPartial<PaymentsEntity>, entityManager?: EntityManager): Promise<PaymentsEntity> {
+        return this.queryRunner.update(PaymentsEntity, criteria, input, entityManager);
+    }
+
+    getByID(id: string): Promise<PaymentsEntity | null> {
+        return this.queryRunner.findOneBy(PaymentsEntity, { id });
+    }
+
+    saveCardToken(paymentId: string, cardToken: string, entityManager?: EntityManager): Promise<PaymentsEntity> {
+        return this.queryRunner.update(PaymentsEntity, { id: paymentId }, {
+            cardToken,
         }, entityManager);
     }
 
-    delete(paymentId: string, entityManager?: EntityManager): Promise<boolean> {
-        return this.query(PaymentsEntity, async(repository) => {
-            await repository.delete({ id: paymentId });
-            return true;
-        }, entityManager);
-    }
-
-    reclaim(paymentId: string, entityManager?: EntityManager): Promise<boolean> {
-        return this.query(PaymentsEntity, async(repository) => {
-            await repository.update({ id: paymentId }, {
-                status: PaymentStatus.RECLAIMED,
-            });
-            return true;
-        }, entityManager);
+    getByInvoiceID(invoiceId: string): Promise<PaymentsEntity | null> {
+        return this.queryRunner.findOneBy(PaymentsEntity, { invoiceId });
     }
 }

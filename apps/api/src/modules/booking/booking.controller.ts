@@ -9,11 +9,11 @@ export class BookingController {
         private readonly bookingService: BookingService,
     ) {}
 
-    @Post(":eventId")
+    @Post("reserve/:eventId")
     async bookTicket(
         @Param("eventId") eventId: string,
         @Session() session: ServerSession,
     ) {
-        return this.bookingService.bookTicket(session, eventId);
+        return this.bookingService.reserveTicket(session, eventId);
     }
 }

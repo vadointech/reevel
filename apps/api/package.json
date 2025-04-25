@@ -12,6 +12,7 @@
     "@googleapis/oauth2": "^1.0.7",
     "@nestjs/common": "^10.0.0",
     "@nestjs/core": "^10.0.0",
+    "@nestjs/event-emitter": "^3.0.1",
     "@nestjs/jwt": "^11.0.0",
     "@nestjs/mapped-types": "*",
     "@nestjs/platform-express": "^10.0.0",

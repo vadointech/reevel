@@ -1,7 +1,8 @@
 import { Column, CreateDateColumn, Entity, OneToMany, Point, PrimaryGeneratedColumn } from "typeorm";
 import { EventInterestsEntity } from "./event-interests.entity";
 import { EventHostsEntity } from "./event-hosts.entity";
-import { TicketsEntity } from "@/modules/booking/entities/tickets.entity";
+import { EventTicketsEntity } from "@/modules/event/entities/event-tickets.entity";
+import { SupportedCurrencies } from "@/modules/payment/entities/payment.entity";
 
 export enum EventVisibility {
     PUBLIC = "PUBLIC",
@@ -31,8 +32,11 @@ export class EventsEntity {
     @Column({ nullable: true })
     ticketsAvailable?: number;
 
-    @Column({ type: "decimal", nullable: true })
+    @Column("numeric", { nullable: true, precision: 10, scale: 2 })
     ticketPrice?: number;
+
+    @Column({ type: "enum", enum: SupportedCurrencies, default: SupportedCurrencies.UAH })
+    ticketPriceCurrency: SupportedCurrencies;
 
     @Column({ type: "enum", enum: EventVisibility, default: EventVisibility.PRIVATE })
     visibility: EventVisibility;
@@ -49,6 +53,6 @@ export class EventsEntity {
     @OneToMany(() => EventInterestsEntity, event => event.event)
     interests: EventInterestsEntity[];
 
-    @OneToMany(() => TicketsEntity, ticket => ticket.event)
-    tickets: TicketsEntity[];
+    @OneToMany(() => EventTicketsEntity, ticket => ticket.event)
+    tickets: EventTicketsEntity[];
 }
