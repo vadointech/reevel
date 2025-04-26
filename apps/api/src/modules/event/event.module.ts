@@ -8,10 +8,12 @@ import { EventHostsRepository } from "./repositories/event-hosts.repository";
 import { SubscriptionRegistry } from "@/modules/subscription/registry/subscription.registry";
 import { EventTicketsRepository } from "@/modules/event/repositories/event-tickets.repository";
 import { PaymentRepository } from "@/modules/payment/repositories/payment.repository";
+import { BookingModule } from "@/modules/booking/booking.module";
 
 @Module({
     imports: [
         UploadsModule,
+        BookingModule,
     ],
     controllers: [EventController],
     providers: [

@@ -5,18 +5,19 @@ import {
     Logger,
     NotFoundException,
 } from "@nestjs/common";
-import { Session } from "@/types";
-
 import { DataSource, EntityManager } from "typeorm";
-import { PaymentStatus, PaymentType, SupportedCurrencies } from "@/modules/payment/entities/payment.entity";
+
+import { PaymentService } from "@/modules/payment/payment.service";
+
 import { EventRepository } from "@/modules/event/repositories/event.repository";
 import { EventTicketsRepository } from "../event/repositories/event-tickets.repository";
-import { PaymentService } from "@/modules/payment/payment.service";
-import { ReserveTicketResponse } from "@/modules/booking/types";
-import { OnEvent } from "@nestjs/event-emitter";
-import { PaymentEmitterEvents } from "@/modules/payment/payment.emitter";
 import { PaymentRepository } from "@/modules/payment/repositories/payment.repository";
-import { EventTicketsEntity } from "@/modules/event/entities/event-tickets.entity";
+
+import { PaymentStatus, PaymentType } from "@/modules/payment/entities/payment.entity";
+
+import { v4 as uuidv4 } from "uuid";
+import { Session } from "@/types";
+import { ReserveTicketResponse } from "./types";
 
 @Injectable()
 export class BookingService {
@@ -25,8 +26,8 @@ export class BookingService {
     constructor(
         private readonly paymentService: PaymentService,
 
-        private readonly eventTicketsRepository: EventTicketsRepository,
         private readonly eventRepository: EventRepository,
+        private readonly eventTicketsRepository: EventTicketsRepository,
         private readonly paymentRepository: PaymentRepository,
 
         private readonly dataSource: DataSource,
@@ -34,7 +35,13 @@ export class BookingService {
 
     async reserveTicket(session: Session, eventId: string): Promise<ReserveTicketResponse> {
         try {
-            const event = await this.eventRepository.getByID(eventId);
+            const [event, ticketCount, userTicket, reclaimedPayment] = await Promise.all([
+                this.eventRepository.findOneBy({ id: eventId }),
+                this.eventTicketsRepository.countBy({ eventId }),
+                this.eventTicketsRepository.exists({ where: { eventId, userId: session.user.id } }),
+                this.paymentRepository.findOneBy({ userId: session.user.id, status: PaymentStatus.RECLAIMED }),
+            ]);
+
             if(!event) {
                 throw new NotFoundException("Event doesn't exist");
             }
@@ -44,49 +51,53 @@ export class BookingService {
             }
 
             if(event.ticketsAvailable !== null && event.ticketsAvailable !== undefined) {
-                if(event.ticketsAvailable === 0) {
-                    throw new BadRequestException("No tickets left");
-                }
-
-                const ticketsBooked = await this.eventTicketsRepository.countAvailable(eventId);
-                if(ticketsBooked >= event.ticketsAvailable) {
+                if(ticketCount >= event.ticketsAvailable) {
                     throw new BadRequestException("No tickets left");
                 }
             }
 
-            const userTicket = await this.eventTicketsRepository.getOneByUserID(session.user.id, eventId);
             if(userTicket) {
                 throw new BadRequestException("Ticket already exists");
             }
 
+            if(reclaimedPayment) {
+                const ticket = await this.eventTicketsRepository.create({
+                    eventId,
+                    paymentId: reclaimedPayment.id,
+                    userId: session.user.id,
+                });
+
+                return { event, ticket };
+            }
+
+            const paymentId = uuidv4();
 
             const invoice = await this.paymentService.createInvoice(session, {
-                amount: event.ticketPrice!,
-                ccy: SupportedCurrencies.UAH,
+                paymentId,
+                paymentType: PaymentType.BOOKING_FEE,
+                ticketPrice: event.ticketPrice,
+                ticketCurrency: event.ticketPriceCurrency,
             });
 
             try {
                 const ticket = await this.dataSource.transaction(async entityManager => {
-                    const payment = await this.paymentRepository.create({
+                    await this.paymentRepository.create({
+                        id: paymentId,
                         type: PaymentType.BOOKING_FEE,
                         amount: event.ticketPrice!,
                         userId: session.user.id,
                         invoiceId: invoice.invoiceId,
-                        currency: SupportedCurrencies.EUR,
-                    });
+                        currency: event.ticketPriceCurrency,
+                    }, entityManager);
 
-                    return await this.eventTicketsRepository.create({
+                    return this.eventTicketsRepository.create({
                         eventId,
+                        paymentId,
                         userId: session.user.id,
-                        paymentId: payment.id,
                     }, entityManager);
                 });
 
-                return {
-                    event,
-                    ticket,
-                    invoice,
-                };
+                return { event, ticket, invoice };
             } catch(error) {
                 await this.paymentService.deleteInvoice(invoice.invoiceId);
                 throw error;
@@ -97,59 +108,43 @@ export class BookingService {
         }
     }
 
-    @OnEvent(PaymentEmitterEvents.PaymentSuccess.name)
-    async bookTicket(payload: PaymentEmitterEvents.PaymentSuccess.Payload) {
-        await this.paymentService.chargeFunds(payload);
-    }
-
-    @OnEvent(PaymentEmitterEvents.PaymentFailure.name)
-    async releaseTicketByInvoice(payload: PaymentEmitterEvents.PaymentFailure.Payload): Promise<boolean> {
+    async reclaimTickets(eventId: string, entityManager?: EntityManager) {
         try {
-            const ticket = await this.eventTicketsRepository.getOneByInvoiceID(payload.invoiceId);
 
-            if(!ticket) {
-                throw new BadRequestException("Ticket doesn't exist");
-            }
+            /**
+             * Updating status for paid tickets
+             */
+            await this.paymentRepository.query(
+                `
+                    UPDATE payments
+                        SET status = $1
+                        WHERE status = $2
+                        AND id IN (
+                            SELECT "paymentId"
+                            FROM event_tickets
+                            WHERE "eventId" = $3
+                        )
+                `,
+                [PaymentStatus.RECLAIMED, PaymentStatus.CHARGED, eventId],
+                entityManager,
+            );
 
-            return this.releaseTicket(ticket);
-        } catch(error) {
-            this.logger.error(`Unexpected error releasing ticket: ${error.message}`, error.stack);
-            return false;
-        }
-    }
-
-    async releaseTicket(ticket: EventTicketsEntity): Promise<boolean> {
-        try {
-            await this.dataSource.transaction(async entityManager => {
-                await this.eventTicketsRepository.deleteByID(ticket.id, entityManager);
-                if(ticket.paymentId) {
-                    await this.paymentRepository.deleteByID(ticket.paymentId, entityManager);
-                }
-            });
-            return true;
-        } catch(error) {
-            this.logger.error(`Unexpected error releasing ticket: ${error.message}`, error.stack);
-            return false;
-        }
-    }
-
-    async reclaimTickets(eventId: string, entityManager: EntityManager) {
-        try {
-            const tickets = await this.eventTicketsRepository.getByEventID(eventId, entityManager);
-
-            const reclaimPromises = tickets.map(ticket => {
-                if(!ticket.payment) return;
-                const { payment } = ticket;
-                if(payment.status === PaymentStatus.PENDING) {
-                    // return this.paymentRepository.delete(payment.id, entityManager);
-                }
-
-                if(payment.status === PaymentStatus.CHARGED) {
-                    // this.paymentRepository.reclaim(payment.id, entityManager);
-                }
-            });
-
-            await Promise.all(reclaimPromises);
+            /**
+             * Deleting unpaid tickets
+             */
+            await this.paymentRepository.query(
+                `
+                    DELETE FROM payments
+                    WHERE status = $1
+                        AND id IN (
+                            SELECT "paymentId"
+                            FROM event_tickets
+                            WHERE "eventId" = $2
+                        )
+                `,
+                [PaymentStatus.PENDING, eventId],
+                entityManager,
+            );
         } catch(error) {
             this.logger.error(`Unexpected error reclaiming ticket: ${error.message}`, error.stack);
             throw new InternalServerErrorException();

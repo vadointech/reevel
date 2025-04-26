@@ -5,5 +5,5 @@ import { EventTicketsEntity } from "@/modules/event/entities/event-tickets.entit
 export type ReserveTicketResponse = {
     event: EventsEntity;
     ticket: EventTicketsEntity
-    invoice: MonobankApi.InvoiceResponse
+    invoice?: MonobankApi.InvoiceResponse
 };

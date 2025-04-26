@@ -1,5 +1,3 @@
-import { PaymentsEntity } from "@/modules/payment/entities/payment.entity";
-
 export namespace MonobankApi {
     export enum InvoiceStatus {
         Created = "created",
@@ -17,7 +15,6 @@ export namespace MonobankApi {
         Merchant = "merchant",
         Client = "client",
     }
-
 
     export type InvoiceResponse = {
         invoiceId: string;

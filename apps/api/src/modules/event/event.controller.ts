@@ -1,7 +1,6 @@
 import { Body, Controller, Delete, Param, Patch, Post, Req, UseInterceptors } from "@nestjs/common";
 import { EventService } from "./event.service";
 import { CreateEventDto } from "./dto/create-event.dto";
-import { UploadEventPosterDto } from "./dto/upload-poster.dto";
 import { Session } from "@/decorators";
 import { ServerSession } from "@/modules/auth/dto/jwt.dto";
 import { FileUploadInterceptor } from "@/modules/uploads/uploads.interceptor";

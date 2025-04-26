@@ -5,6 +5,7 @@ import { PaymentRepository } from "@/modules/payment/repositories/payment.reposi
 import { MonobankModule } from "@/modules/payment/monobank/monobank.module";
 import { PaymentWebhook } from "@/modules/payment/payment.webhook";
 import { PaymentEmitter } from "@/modules/payment/payment.emitter";
+import { EventTicketsRepository } from "@/modules/event/repositories/event-tickets.repository";
 
 @Module({
     imports: [
@@ -14,7 +15,10 @@ import { PaymentEmitter } from "@/modules/payment/payment.emitter";
     providers: [
         PaymentService,
         PaymentWebhook,
+
         PaymentRepository,
+        EventTicketsRepository,
+
         PaymentEmitter,
     ],
     exports: [PaymentService],

@@ -1,4 +1,4 @@
-import { Column, Entity, JoinColumn, ManyToOne, OneToOne, PrimaryColumn, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, JoinColumn, ManyToOne, OneToOne, PrimaryGeneratedColumn } from "typeorm";
 import { EventsEntity } from "@/modules/event/entities/events.entity";
 import { UserEntity } from "@/modules/user/entities/user.entity";
 import { PaymentsEntity } from "@/modules/payment/entities/payment.entity";
@@ -14,7 +14,7 @@ export class EventTicketsEntity {
     @ManyToOne(() => EventsEntity, event => event.tickets, { onDelete: "CASCADE" })
     event: EventsEntity;
 
-    @PrimaryColumn()
+    @Column()
     userId: string;
     @JoinColumn({ name: "userId" })
     @ManyToOne(() => UserEntity, user => user.tickets, { onDelete: "CASCADE" })

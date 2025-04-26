@@ -1,31 +1,22 @@
 import { Injectable } from "@nestjs/common";
 import { UserEntity } from "@/modules/user/entities/user.entity";
-import { DataSource, DeepPartial, EntityManager } from "typeorm";
-import { BaseRepository } from "@/modules/repository";
+import { DataSource } from "typeorm";
+import { Repository } from "@/modules/repository";
 
 interface IUserRepository {
-    create(input: UserEntity, entityManager?: EntityManager): Promise<UserEntity>;
     getByID(id: string): Promise<UserEntity | null>;
     getByEmail(email: string): Promise<UserEntity | null>;
     getSession(userId: string): Promise<UserEntity | null>;
 }
 
 @Injectable()
-export class UserRepository extends BaseRepository implements IUserRepository {
+export class UserRepository extends Repository<UserEntity> implements IUserRepository {
     constructor(dataSource: DataSource) {
-        super(dataSource);
+        super(dataSource, UserEntity);
     }
 
-    create(input: DeepPartial<UserEntity>, entityManager?: EntityManager): Promise<UserEntity> {
-        return this.query(UserEntity, (repository) => {
-            return repository.save(
-                repository.create(input),
-            );
-        }, entityManager);
-    }
-
-    getByID(id: string): Promise<UserEntity | null> {
-        return this.dataSource.getRepository(UserEntity).findOne({
+    async getByID(id: string): Promise<UserEntity | null> {
+        return this.findOne({
             where: { id },
             relations: {
                 profile: true,
@@ -42,8 +33,8 @@ export class UserRepository extends BaseRepository implements IUserRepository {
         });
     }
 
-    getByEmail(email: string): Promise<UserEntity | null> {
-        return this.dataSource.getRepository(UserEntity).findOne({
+    async getByEmail(email: string): Promise<UserEntity | null> {
+        return this.findOne({
             where: { email },
             relations: {
                 profile: true,
@@ -61,7 +52,7 @@ export class UserRepository extends BaseRepository implements IUserRepository {
     }
 
     getSession(userId: string): Promise<UserEntity | null> {
-        return this.dataSource.getRepository(UserEntity).findOne({
+        return this.findOne({
             where: { id: userId },
             relations: {
                 profile: true,

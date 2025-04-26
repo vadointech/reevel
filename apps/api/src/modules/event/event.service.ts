@@ -1,16 +1,20 @@
 import { DataSource } from "typeorm";
 import { BadRequestException, Injectable, Logger, NotFoundException } from "@nestjs/common";
-import { CreateEventDto } from "./dto/create-event.dto";
-import { UpdateEventDto } from "./dto/update-event.dto";
-import { EventsEntity } from "./entities/events.entity";
+
 import { UploadsService } from "@/modules/uploads/uploads.service";
-import { UploadsFileType } from "@/modules/uploads/uploads.register";
+import { BookingService } from "@/modules/booking/booking.service";
 
 import { EventRepository } from "./repositories/event.repository";
 import { EventHostsRepository } from "./repositories/event-hosts.repository";
 import { EventInterestsRepository } from "./repositories/event-interests.repository";
 import { EventTicketsRepository } from "@/modules/event/repositories/event-tickets.repository";
 import { SubscriptionRegistry } from "@/modules/subscription/registry/subscription.registry";
+
+import { EventsEntity } from "./entities/events.entity";
+
+import { CreateEventDto } from "./dto/create-event.dto";
+import { UpdateEventDto } from "./dto/update-event.dto";
+import { UploadsFileType } from "@/modules/uploads/uploads.register";
 
 import { Session } from "@/types";
 
@@ -20,8 +24,9 @@ export class EventService {
 
     constructor(
         private readonly uploadService: UploadsService,
+        private readonly bookingService: BookingService,
 
-        private readonly ticketRepository: EventTicketsRepository,
+        private readonly eventTicketsRepository: EventTicketsRepository,
         private readonly eventRepository: EventRepository,
         private readonly eventHostsRepository: EventHostsRepository,
         private readonly eventInterestsRepository: EventInterestsRepository,
@@ -39,7 +44,7 @@ export class EventService {
                 ...newEvent
             } = input;
 
-            const monthlyHostedCount = await this.eventHostsRepository.countMonthly(session.user.id);
+            const monthlyHostedCount = await this.eventHostsRepository.countMonthlyHosted(session.user.id);
 
             if(monthlyHostedCount >= this.subscriptionRegistry.event.hostingLimit(session)) {
                 throw new BadRequestException("Reached the event hosting limit");
@@ -55,10 +60,18 @@ export class EventService {
                 }, entityManager);
 
                 if(interests && interests.length > 0) {
-                    event.interests = await this.eventInterestsRepository.create(event.id, interests, entityManager);
+                    event.interests = await this.eventInterestsRepository.createInterests(
+                        event.id,
+                        interests,
+                        entityManager,
+                    );
                 }
 
-                event.hosts = await this.eventHostsRepository.create(event.id, [session.user.id], entityManager);
+                event.hosts = await this.eventHostsRepository.createHosts(
+                    event.id,
+                    [session.user.id],
+                    entityManager,
+                );
 
                 return event;
             });
@@ -70,7 +83,7 @@ export class EventService {
 
     async updateEvent(_: Session, eventId: string, input: UpdateEventDto): Promise<EventsEntity> {
         try {
-            const event = await this.eventRepository.getByID(eventId);
+            const event = await this.eventRepository.findOneBy({ id: eventId });
             if(!event) {
                 throw new NotFoundException();
             }
@@ -82,7 +95,7 @@ export class EventService {
             } = input;
 
             if(newEvent.ticketsAvailable !== null && newEvent.ticketsAvailable !== undefined) {
-                const ticketsCount = await this.ticketRepository.countAvailable(eventId);
+                const ticketsCount = await this.eventTicketsRepository.countBy({ eventId });
                 if(ticketsCount > newEvent.ticketsAvailable) {
                     throw new BadRequestException("Invalid value of ticketsAvailable");
                 }
@@ -99,8 +112,7 @@ export class EventService {
 
             event.interests = await this.dataSource.transaction(async entityManager => {
                 if(!interests) return event.interests;
-                await this.eventInterestsRepository.deleteAll(eventId, entityManager);
-                return this.eventInterestsRepository.create(eventId, interests, entityManager);
+                return this.eventInterestsRepository.updateInterests(eventId, interests, entityManager);
             });
 
             return event;
@@ -112,8 +124,8 @@ export class EventService {
 
     async deleteEvent(session: Session, eventId: string) {
         const deleteEventPromise = this.dataSource.transaction(async entityManager => {
-            // await this.bookingService.reclaimTickets(eventId, entityManager);
-            await this.eventRepository.delete(eventId, entityManager);
+            await this.bookingService.reclaimTickets(eventId, entityManager);
+            await this.eventRepository.delete({ id: eventId }, entityManager);
         });
 
         const deleteFilesPromise = this.uploadService.deleteFiles(session.user.id, {

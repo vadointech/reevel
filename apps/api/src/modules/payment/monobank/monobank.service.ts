@@ -1,38 +1,37 @@
 import { BadRequestException, Injectable, Logger } from "@nestjs/common";
-import { MonobankApi } from "@/modules/payment/monobank/types";
+
 import { ConfigService } from "@/config/config.service";
-import crypto from "node:crypto";
-import { CreateInvoiceDto } from "./dto/create-invoice.dto";
+
+import { CreateInvoiceMonobankDto } from "./dto/create-invoice.dto";
 import { MakePaymentDto } from "@/modules/payment/monobank/dto/refund-invoice.dto";
+
 import { transformAndValidate } from "class-transformer-validator";
-import { DeleteInvoiceDto } from "@/modules/payment/monobank/dto/delete-invoice.dto";
+import crypto from "node:crypto";
+
+import { MonobankApi } from "@/modules/payment/monobank/types";
 
 @Injectable()
 export class MonobankService {
     private logger = new Logger(MonobankService.name);
 
     private BASE_API_URL = "https://api.monobank.ua/api";
+    private BASE_API_HEADERS = new Headers();
 
     constructor(
         private readonly configService: ConfigService,
-    ) {}
+    ) {
+        this.BASE_API_HEADERS.set("Content-Type", "application/json");
+        this.BASE_API_HEADERS.set("X-Token", this.configService.env("MONOBANK_PUBLIC_API_TOKEN"));
+    }
     
-    async createInvoice(input: CreateInvoiceDto): Promise<MonobankApi.InvoiceResponse> {
+    async createInvoice(input: CreateInvoiceMonobankDto): Promise<MonobankApi.InvoiceResponse> {
         try {
-            const dto = await transformAndValidate(CreateInvoiceDto, input);
+            const dto = await transformAndValidate(CreateInvoiceMonobankDto, input);
 
             const response = await fetch(this.BASE_API_URL + "/merchant/invoice/create", {
                 method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                    "X-Token": this.configService.env("MONOBANK_PUBLIC_API_TOKEN"),
-                },
-                body: JSON.stringify({
-                    ...dto,
-                    agentFeePercent: input.agentFeePercent ? Number(input.agentFeePercent) : undefined,
-                    redirectUrl: this.configService.env("API_PUBLIC_URL_INTERFACE") + "/payments/invoice/redirect",
-                    webHookUrl: this.configService.env("API_PUBLIC_URL_INTERFACE") + "/payments/invoice/webhook",
-                }),
+                headers: this.BASE_API_HEADERS,
+                body: JSON.stringify(dto),
             });
 
             return await this.handleResponse(response);
@@ -46,14 +45,28 @@ export class MonobankService {
         try {
             const response = await fetch(this.BASE_API_URL + "/merchant/invoice/remove", {
                 method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                    "X-Token": this.configService.env("MONOBANK_PUBLIC_API_TOKEN"),
-                },
+                headers: this.BASE_API_HEADERS,
                 body: JSON.stringify({
                     invoiceId,
-                    redirectUrl: this.configService.env("API_PUBLIC_URL_INTERFACE") + "/payments/invoice/redirect",
+                    redirectUrl: this.configService.env("API_PUBLIC_URL_INTERFACE") + `/payments/invoice/${invoiceId}/redirect`,
                     webHookUrl: this.configService.env("API_PUBLIC_URL_INTERFACE") + "/payments/invoice/webhook",
+                }),
+            });
+
+            return await this.handleResponse(response);
+        } catch(error) {
+            this.logger.error(`Unexpected error deleting invoice: ${error.message}`, error.stack);
+            throw new BadRequestException(error);
+        }
+    }
+
+    async cancelInvoice(invoiceId: string) {
+        try {
+            const response = await fetch(this.BASE_API_URL + "/merchant/invoice/cancel", {
+                method: "POST",
+                headers: this.BASE_API_HEADERS,
+                body: JSON.stringify({
+                    invoiceId,
                 }),
             });
 
@@ -68,10 +81,7 @@ export class MonobankService {
         try {
             const response = await fetch(this.BASE_API_URL + "/merchant/wallet/payment", {
                 method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                    "X-Token": this.configService.env("MONOBANK_PUBLIC_API_TOKEN"),
-                },
+                headers: this.BASE_API_HEADERS,
                 body: JSON.stringify({
                     cardToken: input.cardToken,
                     amount: input.amount ? Number(input.amount) : 0,

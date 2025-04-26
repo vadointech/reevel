@@ -18,5 +18,7 @@ import { PaymentRepository } from "@/modules/payment/repositories/payment.reposi
         EventRepository,
         PaymentRepository,
     ],
+
+    exports: [BookingService],
 })
 export class BookingModule {}

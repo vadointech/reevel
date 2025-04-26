@@ -1,4 +1,4 @@
-import { Column, Entity, JoinColumn, ManyToOne, OneToOne, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, JoinColumn, ManyToOne, OneToOne, PrimaryColumn, PrimaryGeneratedColumn } from "typeorm";
 import { UserEntity } from "@/modules/user/entities/user.entity";
 import { EventTicketsEntity } from "@/modules/event/entities/event-tickets.entity";
 import { SubscriptionEntity } from "@/modules/subscription/entities/subscription.entity";
@@ -13,6 +13,7 @@ export enum PaymentStatus {
     CHARGED = "CHARGED",
     RECLAIMED = "RECLAIMED",
     REFUNDED = "REFUNDED",
+    FAILED = "FAILED",
 }
 
 export enum SupportedCurrencies {
@@ -23,7 +24,7 @@ export enum SupportedCurrencies {
 
 @Entity("payments")
 export class PaymentsEntity {
-    @PrimaryGeneratedColumn("uuid")
+    @PrimaryColumn("uuid")
     id: string;
 
     @Column()
