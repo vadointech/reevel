@@ -8,6 +8,11 @@
     width: mixins.rem(292);
     height: mixins.rem(154);
 
+    display: flex;
+    flex-direction:column;
+    gap: 0.5rem;
+
+
     background-color: colors.$background;
 
     border-radius: 0.75rem;
@@ -15,16 +20,16 @@
 
 
     &__feedback {
-        @include fonts.font-creata("sm")
+        @include fonts.font-creata("sm",400,mixins.rem(20))
     }
 
     &__details {
-        margin-top:0.5rem;
         display: flex;
         align-items: center;
         gap: 0.5rem;
 
         &__wrapper {
+
             &__stars {
                 display: flex;
                 gap: 0.25rem;

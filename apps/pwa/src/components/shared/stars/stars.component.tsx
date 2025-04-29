@@ -4,7 +4,7 @@ import styles from "./styles.module.scss";
 export namespace Stars {
     export type Props = ComponentProps<"div"> & {
         count: number,
-        defaultRating?: string,
+        defaultRating: string,
         icon?: string,
         color?: string,
         iconSize?: number,
