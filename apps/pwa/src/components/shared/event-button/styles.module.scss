@@ -1,0 +1,52 @@
+@use "@/theme/fonts";
+@use "@/theme/colors";
+@use "@/theme/mixins";
+@use "@/theme/motions";
+
+.button {
+	all: unset;
+	user-select: none;
+	cursor: pointer;
+
+	box-sizing: border-box;
+	border-radius: mixins.rem(8);
+
+	height: mixins.rem(54);
+	width: 100%;
+
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	column-gap: .5rem;
+
+	border: 1px solid colors.$white;
+
+    &:disabled {
+        opacity: .3;
+        box-shadow: none;
+        pointer-events: none;
+    }
+	span {
+		@include fonts.font-creata('xs');
+		color: colors.$white;
+	}
+
+	svg {
+		fill: colors.$white;
+	}
+
+	&_fill {
+		background-color:colors.$white;
+
+		span {
+			color: colors.$primary;
+		}
+
+		svg {
+			fill: colors.$primary;
+		}
+	}
+
+}
+

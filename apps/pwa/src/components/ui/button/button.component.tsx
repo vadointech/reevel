@@ -39,14 +39,14 @@ export const Button = ({
                 )}
                 {...props}
             >
-                { iconBefore }
-                <span>{ children }</span>
-                { iconAfter }
+                {iconBefore}
+                <span>{children}</span>
+                {iconAfter}
             </button>
         );
     };
 
-    if(href) {
+    if (href) {
         return (
             <Link href={href}>
                 <ButtonComponent />

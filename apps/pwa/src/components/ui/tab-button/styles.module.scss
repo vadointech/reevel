@@ -11,9 +11,9 @@
 
     height: mixins.rem(38);
     width: fit-content;
-    padding:  0px mixins.rem(18);
+    padding:  0rem mixins.rem(18);
     border-radius: 100;
-    @include fonts.font-creata("sm", 400, 20px);
+    @include fonts.font-creata("sm", 400, mixins.rem(20));
 
 
     display: flex;
@@ -57,9 +57,12 @@
         }
 
         &_icon {
+            width: mixins.rem(32);
+            height: mixins.rem(32);
+            padding: 0;
             background-color: colors.$background-muted;
-            svg {
-                color: colors.$secondary
+            svg path {
+                stroke: colors.$secondary;
             }
         }
 

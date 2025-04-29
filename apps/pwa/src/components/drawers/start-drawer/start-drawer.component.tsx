@@ -1,8 +1,9 @@
 import { ComponentProps } from "react";
-import cx from "classnames";
-import styles from "./styles.module.scss";
+
 import { Drawer, DrawerBody, DrawerContent, DrawerTrigger } from "@/components/shared/drawer";
 import { OnboardingTextBlock } from "@/app/[locale]/(main)/onboarding/_components";
+
+import styles from "./styles.module.scss";
 import { VisibilityCard } from "./visibility-card";
 
 

@@ -7,21 +7,23 @@ import { Avatar } from "@/components/ui";
 
 export namespace HostedBy {
     export type Props = ComponentProps<"div"> & {
-        author: string
+        author: string,
+        avatar?: string,
     };
 }
 
 
 export const HostedBy = ({
     author,
+    avatar,
     className,
     ...props
 }: HostedBy.Props) => {
     return (
         <div className={cx(styles.container, className)} {...props}>
-            <Avatar variant="outline" type="custom" size={25} />
+            <Avatar src={avatar} variant="outline" type="custom" size={32} />
             <div className={styles.container__text}>
-                Hosted by <span>{author}</span>
+                <div>Hosted by</div> <span>{author}</span>
             </div>
         </div>
     );

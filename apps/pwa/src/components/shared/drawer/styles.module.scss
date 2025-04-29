@@ -15,6 +15,7 @@
 
         height: 100%;
         max-height: 97%;
+        transition: transform 0.3s cubic-bezier(0.32, 0.72, 0, 1) !important;
     }
 
     &__content {
@@ -23,11 +24,12 @@
 
         display: flex;
         flex-direction: column;
+        overflow: hidden;
 
         padding-top: mixins.rem(24);
         padding-inline: 1rem;
 
-        background-color: colors.$background;
+        background-color: colors.$background-muted;
         border-radius: mixins.rem(20) mixins.rem(20) 0 0;
     }
 
@@ -42,6 +44,8 @@
         height: mixins.rem(5);
         border-radius: mixins.rem(30);
         background-color: colors.$foreground;
+
+        z-index: 999;
     }
 
     &__overlay {
