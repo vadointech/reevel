@@ -10,7 +10,8 @@ export namespace Section {
         title: string;
         type?: string;
         size?: Size;
-        cols?: boolean
+        cols?: "column" | "cols" | "flex",
+        onClick?: () => void;
     };
 }
 
@@ -20,6 +21,7 @@ export const Section = ({
     size = 'default',
     children,
     cols,
+    onClick,
     className,
     ...props
 }: Section.Props) => {
@@ -42,7 +44,7 @@ export const Section = ({
                     {title}
                 </h2>
 
-                {type && <div className={styles.section__header__more}>{type}</div>}
+                {type && <div onClick={onClick} className={styles.section__header__more}>{type}</div>}
 
             </div>
 

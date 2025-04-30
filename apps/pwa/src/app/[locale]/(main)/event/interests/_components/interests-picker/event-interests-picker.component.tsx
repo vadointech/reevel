@@ -11,6 +11,7 @@ import { InterestsDrawer } from "@/components/drawers/interests-drawer";
 import { InterestEntity } from "@/entities/interests";
 
 import styles from "./styles.module.scss"
+import { Section } from "@/components/shared/section";
 export namespace EventInterestsPicker {
     export type Props = {
         userInterests: InterestEntity[]
@@ -30,7 +31,7 @@ export const EventInterestsPicker = observer(({ userInterests, initialInterests 
     const { interests, handlePickInterest } = useInterestPicker(userInterests);
 
     return (
-        <InterestsSection title="Interests" className={styles.section}>
+        <Section title="Interests" type="See all" className={styles.section}>
             {interests?.map((interest) => (
                 <InterestItem
                     interest={interest}
@@ -47,7 +48,7 @@ export const EventInterestsPicker = observer(({ userInterests, initialInterests 
             />
 
             <InterestsDrawer open={open} initialInterests={initialInterests} onClose={onClose} />
-        </InterestsSection>
+        </Section>
 
     );
 });

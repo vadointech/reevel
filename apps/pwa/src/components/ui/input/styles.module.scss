@@ -10,38 +10,77 @@
   min-width: mixins.rem(302);
 
   &__label {
-    @include fonts.font-creata("sm", 500);
+    position: absolute;
+    top: 0rem;
+    margin-top: 0.75rem;
+    margin-left: 1rem;
+    @include fonts.font-creata("xs", 400);
     color: colors.$secondary;
+
     &_numeric {
       @include fonts.font-creata("base", 500);
       text-align: center;
     }
   }
 
+  &__placeholder {
+    position: absolute;
+    margin-left: 1rem;
+    margin-top: 0.75rem;
+    box-sizing:border-box;
+    @include fonts.font-creata("", 400,mixins.rem(24));
+    pointer-events: none;
+
+    transition: color motions.$motion-duration-mid motions.$motion-ease-in-out,
+    opacity motions.$motion-duration-mid motions.$motion-ease-in-out;
+
+    &_textarea {
+      top: 1rem;
+    }
+
+    &_withIcon {
+      position: absolute;
+      margin: 0rem;
+      margin-left: mixins.rem(40);
+    }
+
+  }
+
   &__input {
+    height: mixins.rem(70);
     width: 100%;
-    background: colors.$background;
-    padding: 12px 16px;
+    background: colors.$secondary-muted;
+    padding: 0.75rem 1rem;
+    padding-top: 1.5rem;
 
     @include fonts.font-creata("base", 400);
-    color: colors.$secondary-muted;
-    border: 1px solid colors.$border ;
+    border:none;
     transition: background-color motions.$motion-duration-mid motions.$motion-ease-in-out,
-    border-color motions.$motion-duration-mid motions.$motion-ease-in-out;
+    border-color motions.$motion-duration-mid motions.$motion-ease-in-out,
+    color motions.$motion-duration-mid motions.$motion-ease-in-out;
 
-    &:focus {
+    &:focus + .container__placeholder {
+      color: colors.$primary;
+    }
+    &:not(:placeholder-shown) + .container__placeholder {
+      opacity: 0;
+    }
+
+    &:focus,&:not(:placeholder-shown) {
       border-color: colors.$background-muted;
       outline: none;
+      background-color: colors.$secondary-highlight;
+      color: colors.$primary;
     }
 
     &:disabled {
       opacity: 0.3;
       cursor: not-allowed;
     }
+    
     &::placeholder {
       @include fonts.font-creata("base", 400);
       color: colors.$secondary-muted;
-      margin-left: mixins.rem(20);
     }
 
     &__wrapper {
@@ -51,15 +90,16 @@
     }
 
     &__withIcon {
-      padding-left: mixins.rem(40); 
+      padding: mixins.rem(14) 0.75rem;
+      height: mixins.rem(40);
     }
 
     &__icon {
       position: absolute;
-      left: mixins.rem(12);
+      left: 0.75rem;
       top: 50%;
       transform: translateY(-50%);
-      font-size: 18px;
+      font-size: mixins.rem(18);
       svg path {
         stroke: colors.$secondary-muted;
       }
@@ -71,12 +111,12 @@
       }
       
       &_rounded {
-        border-radius: mixins.rem(100);
+        border-radius: mixins.rem(26);
       }
       
       &_numeric {
         border: none;
-        padding: 0px;
+        padding: 0rem;
         text-align: center;
 
         @include fonts.font-creata("", 600);
@@ -106,26 +146,11 @@
 
     
     &__size {
-      &_default {
-        // height: mixins.rem(48);
-      }
-      
       &_large {
-        height: mixins.rem(100);
+        height: mixins.rem(140);
+        padding-top: 2rem;
       }
     }
-
-    &__background {
-
-      &_default {
-        background: colors.$background;
-      }
-      
-      &_muted {
-        background: colors.$background-muted;
-      }
-    }
-
   }
 
   &__hint {

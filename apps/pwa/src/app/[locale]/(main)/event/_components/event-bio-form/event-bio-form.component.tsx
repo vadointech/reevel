@@ -7,6 +7,7 @@ import { observer } from "mobx-react-lite";
 import cx from "classnames";
 import styles from "./styles.module.scss";
 import { useEventStore } from "@/features/event";
+import { IconApple } from "@/components/icons";
 export namespace CreateEventBioForm {
     export type Props = ComponentProps<"form">;
 }
@@ -30,7 +31,7 @@ const Title = observer(() => {
         <Input
             onChange={(e) => eventStore.setTitle(e.target.value)}
             label={"Title"}
-            placeholder={"Enter title"}
+            placeholderr={"Enter title"}
             variant={"default"}
         />
     );
@@ -42,7 +43,7 @@ export const Description = observer(() => {
         <TextArea
             onChange={(e) => eventStore.setDescription(e.target.value)}
             label={"Description"}
-            placeholder={"Enter description"}
+            placeholderr={"Enter description"}
             variant={"default"}
         />
     );

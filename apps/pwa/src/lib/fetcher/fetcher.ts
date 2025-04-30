@@ -83,6 +83,8 @@ export class Fetcher implements IFetcher {
 
         const response = await fetch(fullURL.toString(), requestOptions);
         return this.parseResponse(response);
+
+
     }
 
 

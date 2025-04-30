@@ -19,7 +19,6 @@
     display: flex;
     align-items: center;    
 
-    @include fonts.font-creata();
     color: colors.$primary;
 
     svg path {
@@ -67,6 +66,6 @@
 
     }
     &_large {
-        @include fonts.font-creata("xl",500,24px);
+        @include fonts.font-creata("lg",500,24px);
     }
 }

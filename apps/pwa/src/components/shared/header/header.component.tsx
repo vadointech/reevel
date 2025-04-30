@@ -14,7 +14,7 @@ export namespace Header {
         controlRight?: ReactNode | string;
         title: string;
         size?: Size;
-        controlRightType: Type;
+        controlRightType?: Type;
         onControlLeftClick?: () => void;
         onControlRightClick?: () => void;
     };
@@ -22,9 +22,9 @@ export namespace Header {
 
 export const Header = ({
     className,
-    controlLeft = <Back width={11} height={20} strokeWidth={0.3} />,
+    controlLeft = <Back width={10} height={18} strokeWidth={0.1} />,
     controlRight,
-    controlRightType,
+    controlRightType = "textButton",
     title,
     size,
     onControlLeftClick,
@@ -38,7 +38,7 @@ export const Header = ({
         ),
         button: (
             <div className={styles.controls__close}>
-                { controlRight }
+                {controlRight}
             </div>
         ),
     };
@@ -68,18 +68,23 @@ export const Header = ({
                     styles[`title_${size}`],
                 )}
             >
-                { title }
+                {title}
             </div>
 
-            <div
-                className={cx(
-                    styles.controls,
-                    styles[`controls__${controlRightType}`],
-                )}
-                onClick={onControlRightClick}
-            >
-                {controlRight ?? ControlRightView[controlRightType]}
-            </div>
+            {
+                controlRight
+                    ? <div
+                        className={cx(
+                            styles.controls,
+                            styles[`controls__${controlRightType}`],
+                        )}
+                        onClick={onControlRightClick}
+                    >
+                        {ControlRightView[controlRightType]}
+                    </div>
+
+                    : <div />
+            }
         </div>
     );
 };
