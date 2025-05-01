@@ -3,12 +3,12 @@ import styles from "./styles.module.scss";
 import cx from "classnames";
 import { Badge } from "@/components/ui/badge/badge.component";
 
-export type Size = "default" | "small"
+export type Size = "default" | "small";
 
 export namespace Section {
     export type Props = ComponentProps<"div"> & {
         title: string;
-        type: string;
+        type?: string;
         size?: Size;
         cols?: boolean
     };
@@ -41,7 +41,9 @@ export const Section = ({
                 >
                     {title}
                 </h2>
-                <Badge title="Public" variant="default" icon={false} />
+
+                {type && <div className={styles.section__header__more}>{type}</div>}
+
             </div>
 
             <div className={cx(

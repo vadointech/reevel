@@ -38,7 +38,7 @@ export const EventMarker = observer(({
                 )}
             >
                 {/*TODO: Replace by fallback image src*/}
-                <Image fill src={point.image || ""} alt="Marker" />
+                <Image fill src={"http://localhost:3000/assets/temp/valentine.png"} alt="Marker" />
             </div>
         </div>
     );

@@ -1,0 +1,44 @@
+@use "@/theme/colors";
+@use "@/theme/fonts";
+@use "@/theme/mixins";
+
+
+.section {
+    display: flex;
+    align-items: center;
+
+    &__image {
+        position: relative;
+        width: mixins.rem(26);
+        height: mixins.rem(26);
+
+        margin-left: -0.5rem;
+
+        img {
+            border: 1px solid colors.$background;
+            border-radius: mixins.rem(100);
+        }
+
+        &_small {
+            height: mixins.rem(18);
+            width: mixins.rem(18);
+        }
+    }
+
+    &__more {
+        background-color: colors.$background;
+        padding: 0.5rem ;
+        border-radius: mixins.rem(100);
+        margin-left: -0.5rem;
+        z-index: 1;
+
+        @include fonts.font-creata();
+        font-size: mixins.rem(10);
+
+        &_small {
+            font-size: 0.5rem;
+            padding: mixins.rem(6);
+        }
+
+    }
+}

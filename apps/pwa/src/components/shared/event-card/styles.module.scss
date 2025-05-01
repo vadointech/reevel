@@ -4,8 +4,21 @@
 
 .card {
     position: relative;
-    width: mixins.rem(184);
-    height: mixins.rem(282);
+    width: mixins.rem(257);
+    height: mixins.rem(337);
+    
+    padding: mixins.rem(16);
+
+    --top-color: #21252990;
+    --bottom-color: #212529;
+
+
+    &_small {
+        width: mixins.rem(220);
+        height: mixins.rem(288);
+        padding: mixins.rem(14);
+
+    }
 
     img {
         object-fit: cover;
@@ -14,63 +27,67 @@
         height: 100%;
     }
 
-    &::before {
+    &::after {
         content: '';
         position: absolute;
         top: 0;
         left: 0;
         width: 100%;
         height: mixins.rem(50);
-        background: linear-gradient(180deg, 
-            rgba(33, 37, 41, 50%) 48%, 
-            rgba(0, 0, 0, 0) 100%
-        );
+        background: linear-gradient(
+            180deg,
+            var(--top-color) 48%,
+            transparent 100%
+          );
         border-radius: mixins.rem(12);
         z-index: 1;
     }
 
-    &::after {
+    &::before {
         content: '';
         position: absolute;
         bottom: 0;
         left: 0;
         width: 100%;
         height: mixins.rem(119);
-        background: linear-gradient(180deg, 
-            rgba(0, 0, 0, 0) 0%,
-            rgba(33, 37, 41, 100%) 65%
-        );
+        background: linear-gradient(
+            180deg,
+            transparent 0%,
+            var(--bottom-color) 65%
+          );
         border-radius: mixins.rem(12);
         z-index: 1;
     }
 
-    &__content {
-        height: 100%;
-        position: relative;
-        z-index: 3;
-        padding: mixins.rem(12) mixins.rem(12) mixins.rem(6) mixins.rem(12);
+        &__content {
+            height: 100%;
+            position: relative;
+            z-index: 3;
 
-        display: flex;
-        flex-direction: column;
-        justify-content: space-between;
-    &__below {
-        display: flex;
-        flex-direction: column;
-        gap: mixins.rem(8);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            &__below {
+                display: flex;
+                flex-direction: column;
+                gap: mixins.rem(8);
 
-        h3 {
-            @include fonts.font-creata('base',600);
-            color: colors.$white;
-        }
+                h3 {
+                    @include fonts.font-creata('base',600);
+                    color: colors.$white;
+                }
 
-        p {
-            @include fonts.font-creata();
-            font-size: mixins.rem(10);
-            color: colors.$white;
-            opacity: 0.6;
-        }
+                p {
+                    @include fonts.font-creata();
+                    font-size: mixins.rem(10);
+                    color: colors.$white;
+                    opacity: 0.6;
+                }
+            }
     }
-}
+    &__attenders {
+        margin-left: 0.5rem ;
+    }
 }
 
 .badge {
@@ -85,4 +102,9 @@
     svg path {
         fill: colors.$white;
     }
+}
+
+.place {
+    // @include fonts.font-creata('xs');
+    font-size: 0.625rem !important;
 }

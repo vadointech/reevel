@@ -1,5 +1,7 @@
 @use "@/theme/mixins";
 @use "@/theme/fonts";
+@use "@/theme/colors";
+
 
 .section {
     &__header {
@@ -19,7 +21,12 @@
                 }
             }
         }
+        &__more {
+            @include fonts.font-creata('sm', 500);
+            color: colors.$accent;
+        }
     }
+
     &__items {
         margin-top: mixins.rem(12);
         

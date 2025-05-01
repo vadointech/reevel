@@ -7,6 +7,7 @@ import { Link } from "@/i18n/routing";
 export namespace OptionItem {
     export type Props = ComponentProps<"div"> & {
         label: string
+        description?: string;
         icon?: ReactNode;
         value?: string | number;
         backIcon?: boolean;
@@ -18,6 +19,7 @@ export namespace OptionItem {
 
 export const OptionItem = ({
     label,
+    description,
     icon,
     value,
     backIcon = false,
@@ -32,11 +34,16 @@ export const OptionItem = ({
         return (
             <div className={styles.option} onClick={onClick} {...props}>
                 <div className={cx(
-                    styles.option__label,
-                    warn && styles.option__label__warn
+                    styles.option__text,
+                    warn && styles.option__text__warn
                 )}>
                     {icon && icon}
-                    {label}
+                    <div className={styles.option__text__meta}>
+                        {label}
+                        <span>
+                            {description}
+                        </span>
+                    </div>
                 </div>
                 <div className={styles.option__value}>
                     {value}

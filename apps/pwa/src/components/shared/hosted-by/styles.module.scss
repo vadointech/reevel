@@ -4,18 +4,17 @@
 
 
 .container {
-    width: mixins.rem(96);
     display: flex;
     align-items: center;
-    gap: mixins.rem(6);
+    gap: mixins.rem(12);
 
     &__text {
-        @include fonts.font-creata();
-        font-size: mixins.rem(10);
-        font-weight: 300;
-        color: colors.$white;
+        @include fonts.font-creata("sm",300,20px);
+        color: colors.$foreground;
         span {
             font-weight: 400;
+            color: colors.$white;
+            height: mixins.rem(20);
         }
     }
 }

@@ -11,6 +11,5 @@
     align-items: center;
     gap: mixins.rem(4);
 
-    @include fonts.font-creata('xs', 300);
-    color: colors.$secondary
+    @include fonts.font-creata('sm', 300);
 }
