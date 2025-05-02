@@ -1,6 +1,6 @@
 import { ComponentProps } from "react";
 
-export const TicketIcon = (props: ComponentProps<"svg">) => (
+export const IconTicket = (props: ComponentProps<"svg">) => (
   <svg
     width={22}
     height={22}

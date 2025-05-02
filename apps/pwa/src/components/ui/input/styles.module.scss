@@ -78,10 +78,6 @@
       cursor: not-allowed;
     }
     
-    &::placeholder {
-      @include fonts.font-creata("base", 400);
-      color: colors.$secondary-muted;
-    }
 
     &__wrapper {
         position: relative;
@@ -90,8 +86,9 @@
     }
 
     &__withIcon {
-      padding: mixins.rem(14) 0.75rem;
+      padding: mixins.rem(14) 2.5rem;
       height: mixins.rem(40);
+      
     }
 
     &__icon {
@@ -100,9 +97,6 @@
       top: 50%;
       transform: translateY(-50%);
       font-size: mixins.rem(18);
-      svg path {
-        stroke: colors.$secondary-muted;
-      }
     }
 
     &__variant {
@@ -128,6 +122,14 @@
           @include fonts.font-creata("", 600);
           font-size: 3.5rem;
           margin-left: mixins.rem(20);
+          color:colors.$secondary-highlight;
+        }
+
+        &:focus,&:not(:placeholder-shown) {
+          border-color: colors.$background-muted;
+          outline: none;
+          background-color: transparent;
+          color: colors.$primary;
         }
 
         &:focus {

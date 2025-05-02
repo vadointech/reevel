@@ -1,14 +1,13 @@
-import { StartDrawer } from "@/components/drawers/start-drawer";
 import { Container } from "@/components/ui";
-import { OnboardingTextBlock } from "../onboarding/_components";
 import { Header } from "@/components/shared/header";
-import { IconApple } from "@/components/icons";
 import { CreateEventBioForm } from "./_components/event-bio-form";
-import { Section } from "@/components/shared/section";
 import { getUserInterests, searchInterests } from "@/api/interests";
 import { headers } from "next/headers";
-import { EventInterestsPicker } from "./interests/_components";
+import { EventInterestsPicker, TicketsPicker } from "./interests/_components";
 
+import styles from "./styles.module.scss"
+import { OptionItem } from "@/components/shared/options";
+import { IconApple, IconNavigation } from "@/components/icons";
 
 
 
@@ -18,15 +17,26 @@ export default async function Home() {
         nextHeaders: await headers(),
     });
 
-    const { data: interests } = await searchInterests();
-
     return (
-        <Container>
-            <Header title="Create event" size="large" />
+        <div className={styles.page}>
+            <Container>
+                <Header title="Create event" size="large" />
+            </Container>
+            <Container className={styles.page__wrapper}>
+                <CreateEventBioForm />
 
-            <CreateEventBioForm />
+                <EventInterestsPicker userInterests={userInterests ?? []} className={styles.page__wrapper__interests} />
 
-            <EventInterestsPicker userInterests={userInterests ?? []} initialInterests={interests ?? []} />
-        </Container>
+                <OptionItem
+                    label="Location"
+                    description="Required"
+                    icon={<IconNavigation />}
+                    backIcon
+                    className={styles.page__wrapper__location}
+                />
+
+                <TicketsPicker />
+            </Container>
+        </div>
     )
 }

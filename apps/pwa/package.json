@@ -24,6 +24,7 @@
     "next": "15.2",
     "next-intl": "^3.26.3",
     "react": "^19.0.0",
+    "react-day-picker": "^9.6.7",
     "react-dom": "^19.0.0",
     "react-image-crop": "^11.0.7",
     "react-map-gl": "^8.0.1",

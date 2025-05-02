@@ -7,7 +7,7 @@ import styles from "./styles.module.scss";
 
 import { Drawer, DrawerBody, DrawerContent } from "@/components/shared/drawer";
 import { Button, Container, Input } from "@/components/ui";
-import { Check, Search } from "@/components/icons";
+import { Check, IconSearch } from "@/components/icons";
 import { InterestsSection } from "@/components/shared/interests-section";
 import { TabButton } from "@/components/ui/tab-button";
 import { useEventStore } from "@/features/event";
@@ -39,7 +39,7 @@ export const InterestsDrawer = observer(({ open, initialInterests, onClose }: In
                             <Input
                                 placeholder={"Enter interest"}
                                 variant={"rounded"}
-                                icon={<Search />}
+                                icon={<IconSearch />}
                                 value={searchValue}
                                 onChange={onSearchValueChange}
                             />

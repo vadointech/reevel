@@ -40,13 +40,11 @@
 
     &__variant {
         &_default {
-            border:1px solid colors.$border;
-            background-color: colors.$background-muted;
+            background-color: colors.$foreground;
             color: colors.$secondary;
         }
 
         &_primary {
-            border:1px solid transparent;
             background-color: colors.$primary;
             color: colors.$background;
         }

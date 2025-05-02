@@ -12,11 +12,12 @@ export namespace Header {
     export type Props = ComponentProps<"div"> & {
         controlLeft?: ReactNode;
         controlRight?: ReactNode | string;
-        title: string;
+        title?: string;
         size?: Size;
         controlRightType?: Type;
         onControlLeftClick?: () => void;
         onControlRightClick?: () => void;
+        children?: ReactNode;
     };
 }
 
@@ -29,8 +30,8 @@ export const Header = ({
     size,
     onControlLeftClick,
     onControlRightClick,
+    children,
 }: Header.Props) => {
-
 
     const ControlRightView: Record<Header.Type, ReactNode> = {
         textButton: (
@@ -69,6 +70,7 @@ export const Header = ({
                 )}
             >
                 {title}
+                {children}
             </div>
 
             {

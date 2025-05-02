@@ -27,10 +27,10 @@ export const PricingDrawer = observer(({ open, onClose }: PricingDrawer.Props) =
                 <DrawerContent className={styles.drawer}>
                     <OnboardingTextBlock
                         title={`How much does it cost?`}
+                        className={styles.drawer__text}
                     />
                     <Input
                         pattern="[0-9]*"
-                        type="tel"
                         inputMode="numeric"
                         placeholder={`${eventStore.price.toString()} ₴`}
                         variant="numeric"
@@ -40,11 +40,10 @@ export const PricingDrawer = observer(({ open, onClose }: PricingDrawer.Props) =
                     />
                     <div className={styles.buttons}>
                         <Button
-                            variant="default"
-                            iconBefore={<Check width={16} height={16} />}
+                            variant="primary"
                             onClick={onClose}
                         >
-                            Done
+                            Confirm
                         </Button>
                     </div>
                 </DrawerContent>

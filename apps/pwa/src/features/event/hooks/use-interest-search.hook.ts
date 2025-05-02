@@ -11,7 +11,7 @@ export function useInterestSearch(initialInterests: InterestEntity[]) {
     const eventStore = useEventStore();
     const [searchValue, setSearchValue] = useState("");
 
-    const debounceSearchValue = useDebounce(searchValue, 300);
+    const debounceSearchValue = useDebounce(searchValue, 1000);
 
     const onSearchValueChange = (e: ChangeEvent<HTMLInputElement>) => {
         setSearchValue(e.target.value);

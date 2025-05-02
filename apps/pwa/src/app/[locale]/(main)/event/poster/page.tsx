@@ -34,7 +34,7 @@ export default async function Page() {
             <Container className={styles.page__content}>
                 <PosterPicker defaultPosters={defaultPosters} />
             </Container>
-            
+
             <Container className={styles.page__buttons}>
                 <EventPosterUploader />
 

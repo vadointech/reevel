@@ -1,2 +1,2 @@
-export * from "./interests-picker"
-export * from "./tickets-picker"
+export * from "../../_components/interests-picker"
+export * from "../../_components/tickets-picker"

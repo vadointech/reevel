@@ -1,6 +1,6 @@
 import { ComponentProps } from "react";
 
-export const DollarIcon = (props: ComponentProps<"svg">) => (
+export const IconDollar = (props: ComponentProps<"svg">) => (
   <svg
     width={20}
     height={20}

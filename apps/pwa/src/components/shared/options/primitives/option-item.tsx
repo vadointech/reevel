@@ -32,12 +32,13 @@ export const OptionItem = ({
 
     const ItemComponent = () => {
         return (
-            <div className={styles.option} onClick={onClick} {...props}>
+            <div className={cx(styles.option, className)} onClick={onClick} {...props}>
                 <div className={cx(
                     styles.option__text,
                     warn && styles.option__text__warn
                 )}>
-                    {icon && icon}
+                    <div>                    {icon && icon}
+                    </div>
                     <div className={styles.option__text__meta}>
                         {label}
                         <span>

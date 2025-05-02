@@ -54,8 +54,7 @@ export const Drawer = ({
                 snapPoints={staticPoint ? [snapPointsMap[staticPoint]] : snapPoints}
                 dismissible={dismissible}
                 {...props}
-            // З оцим можеш погратися якщо хочеш і зробити краще дровер для  події
-            // onDrag={(e, percentafeDragged) => console.log(percentafeDragged)}
+
             >
                 {
                     overlay && (

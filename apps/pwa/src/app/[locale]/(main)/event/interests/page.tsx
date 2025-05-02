@@ -1,51 +1,19 @@
-import { getUserInterests, searchInterests } from "@/api/interests";
-import { headers } from "next/headers";
-
-import { Button, Container } from "@/components/ui";
-import { EventProgress } from "../_components/event-progress";
-import { OnboardingTextBlock } from "../../onboarding/_components";
-import { CreateEventBioForm } from "../_components/event-bio-form";
-import { EventInterestsPicker } from "./_components";
-import { ArrowBack } from "@/components/icons";
-import { TicketsPicker } from "./_components/tickets-picker";
+import { Container, Input } from "@/components/ui";
 
 import styles from "./styles.module.scss";
 
+import { searchInterests } from "@/api/interests";
+import { InterestsSearch } from "./_components/interests-search/interests-search.component";
+
 
 export default async function Page() {
-    // Потім треба буде OnboardingTextBlock перенести в shared і зробити це просто textBlock
-
-    const { data: userInterests } = await getUserInterests({
-        nextHeaders: await headers(),
-    });
 
     const { data: interests } = await searchInterests();
 
+
+
+
     return (
-        <>
-            <Container>
-                <EventProgress step={1} />
-
-                <OnboardingTextBlock
-                    title={"Describe Your Event"}
-                    subtitle={"Think of a catchy name and provide a brief description that will excite potential attendees!"}
-                    className={styles.page__textBlock}
-                />
-                <CreateEventBioForm />
-
-                <EventInterestsPicker userInterests={userInterests ?? []} initialInterests={interests ?? []} />
-
-                <TicketsPicker />
-            </Container>
-
-            <Container className={styles.page__buttons}>
-                <Button
-                    variant="primary"
-                    iconAfter={<ArrowBack />}
-                >
-                    Next step
-                </Button>
-            </Container>
-        </>
+        <InterestsSearch initialInterests={interests ?? []} />
     );
 };

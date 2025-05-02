@@ -2,6 +2,8 @@ import { ComponentProps } from "react";
 import styles from "./styles.module.scss";
 import cx from "classnames";
 import { Badge } from "@/components/ui/badge/badge.component";
+import { SectionItems } from "./primitives/secion-items.component";
+import Link from "next/link";
 
 export type Size = "default" | "small";
 
@@ -10,8 +12,8 @@ export namespace Section {
         title: string;
         type?: string;
         size?: Size;
-        cols?: "column" | "cols" | "flex",
         onClick?: () => void;
+        href?: string;
     };
 }
 
@@ -19,9 +21,9 @@ export const Section = ({
     title,
     type,
     size = 'default',
-    children,
-    cols,
+    href,
     onClick,
+    children,
     className,
     ...props
 }: Section.Props) => {
@@ -44,16 +46,12 @@ export const Section = ({
                     {title}
                 </h2>
 
-                {type && <div onClick={onClick} className={styles.section__header__more}>{type}</div>}
+                {href && <Link href={href}>{type && <div onClick={onClick} className={styles.section__header__more}>{type}</div>}</Link>}
+
 
             </div>
-
-            <div className={cx(
-                styles.section__items,
-                cols && styles.section__items__cols,
-            )}>
-                {children}
-            </div>
+            {children}
         </div>
     );
 }
+
