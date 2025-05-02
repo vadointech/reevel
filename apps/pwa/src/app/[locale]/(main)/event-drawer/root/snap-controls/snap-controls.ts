@@ -19,8 +19,9 @@ class SnapPointControl {
         /**
          * Order is important (DESC)
          */
-        const snapPointsArray = Array.from(this.snapPointsMap.values())
-            .sort((a, b) => b - a);
+        const snapPointsArray =
+          Array.from(this.snapPointsMap.values())
+              .sort((a, b) => b - a);
 
         this.snapPointsArray = snapPointsArray;
         this.snapPointsCount = snapPointsArray.length;

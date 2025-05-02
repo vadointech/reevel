@@ -4,17 +4,16 @@ import cx from "classnames";
 
 import { Avatar } from "@/components/ui";
 
-
 export namespace HostedBy {
     export type Props = ComponentProps<"div"> & {
-        author: string,
+        name: string,
         avatar?: string,
     };
 }
 
 
 export const HostedBy = ({
-    author,
+    name,
     avatar,
     className,
     ...props
@@ -23,8 +22,8 @@ export const HostedBy = ({
         <div className={cx(styles.container, className)} {...props}>
             <Avatar src={avatar} variant="outline" type="custom" size={32} />
             <div className={styles.container__text}>
-                <div>Hosted by</div> <span>{author}</span>
+                <div>Hosted by</div> <span>{name}</span>
             </div>
         </div>
     );
-}
+};

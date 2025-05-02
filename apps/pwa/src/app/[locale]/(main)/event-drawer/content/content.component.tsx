@@ -8,9 +8,11 @@ import { useDrawerDragYProgress } from "../root";
 import {
     EventDrawerContentHeader,
     EventDrawerContentHero,
+    EventDrawerContentHost,
     EventDrawerContentPoster,
     EventDrawerContentScroller,
 } from "./primitives";
+import { IconClose } from "@/components/icons";
 
 import styles from "./styles.module.scss";
 
@@ -23,6 +25,10 @@ export namespace EventDrawerContent {
         date: Date;
         price: string | number;
         currency: string;
+        host: {
+            name: string;
+            avatar: string;
+        },
         attendees: Array<{
             id: string;
             avatar: string;
@@ -35,6 +41,7 @@ export namespace EventDrawerContent {
 }
 
 export const EventDrawerContent = ({
+    host,
     poster,
     primaryColor,
     title,
@@ -50,6 +57,10 @@ export const EventDrawerContent = ({
 
     return (
         <>
+            <div className={styles.content__close}>
+                <IconClose width={8} height={8} />
+            </div>
+            <EventDrawerContentHost host={host} primaryColor={primaryColor} />
             <EventDrawerContentPoster src={poster} />
             <EventDrawerContentHeader
                 title={title}

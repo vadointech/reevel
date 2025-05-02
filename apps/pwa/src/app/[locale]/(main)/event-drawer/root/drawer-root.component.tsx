@@ -1,8 +1,8 @@
 "use client";
 
-import { ReactNode } from "react";
+import { ReactNode, useEffect } from "react";
 import { motion, useAnimation, useDragControls } from "motion/react";
-import { snapControls } from "./snap-controls";
+import { snapControls, SnapPoints } from "./snap-controls";
 import { drawerDragYPx } from "./motion-values";
 import { useDrawerRoot } from "./use-drawer-root";
 
@@ -19,6 +19,14 @@ export const EventDrawerRoot = ({ children }: EventDrawerRoot.Props) => {
     const controls = useDragControls();
     const { handleDragEnd } = useDrawerRoot(animate);
 
+    useEffect(() => {
+        animate.start({ y: snapControls.getSnapPointValue(SnapPoints.High) }, {
+            type: "tween",
+            duration: .2,
+            ease: "easeOut",
+        });
+    }, []);
+
     return (
         <motion.div
             style={{
@@ -28,7 +36,7 @@ export const EventDrawerRoot = ({ children }: EventDrawerRoot.Props) => {
             animate={animate}
             dragElastic={false}
             dragControls={controls}
-            initial={{ y: snapControls.High }}
+            initial={{ y: snapControls.clientHeight }}
             dragConstraints={{
                 top: snapControls.High,
                 bottom: snapControls.clientHeight - snapControls.High,

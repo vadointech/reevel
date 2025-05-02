@@ -32,6 +32,43 @@
         padding: mixins.rem(22) 1rem;
         pointer-events: none;
     }
+
+    &__close {
+        position: absolute;
+        top: 0;
+        right: 0;
+        z-index: 2;
+
+        margin: mixins.rem(24) 1rem;
+
+        background: white;
+        border-radius: 50%;
+        width: mixins.rem(30);
+        aspect-ratio: 1;
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        svg {
+            width: .5rem;
+            height: .5rem;
+            path {
+                stroke: black;
+                stroke-width: 3px;
+            }
+        }
+    }
+
+    &__host {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        z-index: 1;
+
+        padding: mixins.rem(24) 1rem;
+    }
 }
 
 .hero {
@@ -58,9 +95,7 @@
     }
 
     &__title {
-        @include fonts.font-creata("2xl");
-        font-weight: 700;
-        line-height: mixins.rem(36);
+        @include fonts.font-creata("2xl", 700, mixins.rem(36));
     }
 
     &__date {
