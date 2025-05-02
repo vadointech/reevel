@@ -1,6 +1,6 @@
 import { motionValue } from "motion";
 import { useTransform } from "motion/react";
-import { snapControls } from "@/app/[locale]/(main)/event-drawer/root/snap-controls/snap-controls";
+import { snapControls } from "@/components/drawers/event/snap-controls/snap-controls";
 
 export const drawerDragYPx = motionValue(0);
 export function useDrawerDragYProgress() {

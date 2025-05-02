@@ -3,8 +3,8 @@
 import { ReactNode } from "react";
 import { motion, useTransform } from "motion/react";
 
-import { HERO_SECTION_OFFSET } from "../../root/snap-controls";
-import { useDrawerContentDragYProgress } from "../../root";
+import { useDrawerContentDragYProgress } from "../../config/motion-values";
+import { HERO_SECTION_OFFSET } from "../../config/snap-points";
 
 import styles from "../styles.module.scss";
 

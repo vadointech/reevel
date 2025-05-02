@@ -3,10 +3,10 @@
 import { ReactNode, useLayoutEffect, useRef, useState } from "react";
 import { motion } from "motion/react";
 import { observer } from "mobx-react-lite";
-
-import { drawerContentDragYPx } from "../../root";
-import { activeSnapPoint, snapControls } from "../../root/snap-controls";
-import { HERO_SECTION_OFFSET } from "../../root/snap-controls";
+import { snapControls } from "../../snap-controls";
+import { HERO_SECTION_OFFSET } from "../../config/snap-points";
+import { activeSnapPoint } from "../../config/observable";
+import { drawerContentDragYPx } from "../../config/motion-values";
 
 export namespace EventDrawerContentScroller {
     export type Props = {
@@ -42,7 +42,6 @@ export const EventDrawerContentScroller = observer(({ children }: EventDrawerCon
             }}
         >
             { children }
-            <div style={{ height: 1000, background: "white"}} />
         </motion.div>
     );
 });

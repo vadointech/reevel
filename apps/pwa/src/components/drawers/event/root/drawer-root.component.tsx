@@ -2,9 +2,11 @@
 
 import { ReactNode, useEffect } from "react";
 import { motion, useAnimation, useDragControls } from "motion/react";
-import { snapControls, SnapPoints } from "./snap-controls";
-import { drawerDragYPx } from "./motion-values";
-import { useDrawerRoot } from "./use-drawer-root";
+
+import { SnapPoints } from "../config/snap-points";
+import { snapControls } from "../snap-controls";
+import { drawerDragYPx } from "../config/motion-values";
+import { useDrawerRoot } from "../hooks/use-drawer-root";
 
 import styles from "./styles.module.scss";
 

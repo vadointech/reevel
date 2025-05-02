@@ -1,4 +1,4 @@
-import { EventDrawer } from "@/app/[locale]/(main)/event-drawer";
+import { EventDrawer } from "@/components/drawers/event";
 
 export default function Page() {
     return (

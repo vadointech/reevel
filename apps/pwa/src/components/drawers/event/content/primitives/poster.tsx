@@ -7,7 +7,7 @@ import {
     useDrawerContentDragYProgress,
     useDrawerContentOverscrollYProgress,
     useDrawerDragYProgress,
-} from "../../root";
+} from "../../config/motion-values";
 
 import styles from "../styles.module.scss";
 
@@ -29,8 +29,8 @@ export const EventDrawerContentPoster = ({ src }: EventDrawerContentPoster.Props
 
     const posterTranslate = useTransform<number, number>(
         [drawerDragYProgress, drawerContentDragYProgress],
-        ([drawerDragYProgress, contentDragYProgress]) => {
-            return (1 - drawerDragYProgress) * -100 + contentDragYProgress / -6;
+        ([drawerY, contentY]) => {
+            return (1 - drawerY) * -100 + contentY / -6;
         },
     );
 

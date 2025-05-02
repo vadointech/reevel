@@ -37,7 +37,7 @@
         position: absolute;
         top: 0;
         right: 0;
-        z-index: 2;
+        z-index: 3;
 
         margin: mixins.rem(24) 1rem;
 
@@ -95,6 +95,7 @@
     }
 
     &__title {
+        max-width: calc(100% - 40px);
         @include fonts.font-creata("2xl", 700, mixins.rem(36));
     }
 

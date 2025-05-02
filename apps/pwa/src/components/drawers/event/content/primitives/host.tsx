@@ -1,12 +1,13 @@
 import { ComponentProps } from "react";
 import { motion, useTransform } from "motion/react";
 
-import { useDrawerDragYProgress } from "../../root";
 import { hexToRgba } from "@/utils/hex-to-rgba";
+import { useDrawerContentDragYProgress, useDrawerDragYProgress } from "../../config/motion-values";
 
 import { HostedBy } from "@/components/shared/hosted-by";
 
 import styles from "../styles.module.scss";
+import { HERO_SECTION_OFFSET } from "@/components/drawers/event/config/snap-points";
 
 export namespace EventDrawerContentHost {
     export type Props = ComponentProps<"div"> & {
@@ -22,22 +23,23 @@ export const EventDrawerContentHost = ({
     primaryColor,
 }: EventDrawerContentHost.Props) => {
     const drawerDragYProgress = useDrawerDragYProgress();
+    const drawerContentDragYProgress = useDrawerContentDragYProgress();
 
-    const hostOpacity = useTransform(
-        drawerDragYProgress,
-        [
-            1,
-            .5,
-            .4,
-            .1,
-        ],
-        [
-            1,
-            1,
-            1,
-            0,
-        ],
+    const hostOpacity = useTransform<number, number>(
+        [drawerDragYProgress, drawerContentDragYProgress],
+        ([drawerY, contentY]) => {
+            if(contentY > 0) {
+                if (contentY <= HERO_SECTION_OFFSET - 100) return 1;
+                if (contentY >= HERO_SECTION_OFFSET) return 0;
+                return (HERO_SECTION_OFFSET - contentY) / 100;
+            }
+            if (drawerY >= 0.4) return 1;
+            if (drawerY <= 0.1) return 0;
+
+            return (drawerY - 0.1) / (0.4 - 0.1);
+        },
     );
+
 
     return (
         <motion.div

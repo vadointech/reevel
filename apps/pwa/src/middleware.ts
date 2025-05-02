@@ -8,6 +8,8 @@ export default async function(request: NextRequest) {
         nextUrl,
     } = request;
 
+    return intlMiddleware(request);
+
     const isPublicRoute = publicRoutes.includes(nextUrl.pathname);
     const isAuthRoute = authRoutes.includes(nextUrl.pathname);
 

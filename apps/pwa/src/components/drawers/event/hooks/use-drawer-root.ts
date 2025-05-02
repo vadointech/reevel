@@ -1,9 +1,9 @@
 import { AnimationControls, PanInfo } from "motion/react";
 import {
-    setActiveSnapPoint,
     snapControls,
     determineSnapPoint,
-} from "./snap-controls";
+} from "../snap-controls";
+import { setActiveSnapPoint } from "../config/observable";
 
 export function useDrawerRoot(animate: AnimationControls) {
     const handleDragEnd = (_: any, info: PanInfo) => {
@@ -20,7 +20,7 @@ export function useDrawerRoot(animate: AnimationControls) {
             ease: "easeOut",
         });
     };
-    
+
     return {
         handleDragEnd,
     };

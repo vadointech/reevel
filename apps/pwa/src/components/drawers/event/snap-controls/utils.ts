@@ -1,4 +1,4 @@
-import { activeSnapPoint } from "./observable";
+import { activeSnapPoint } from "../config/observable";
 import { snapControls } from "./snap-controls";
 
 export function determineSnapPoint(velocity: number, position: number) {

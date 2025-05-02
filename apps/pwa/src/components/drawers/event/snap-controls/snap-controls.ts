@@ -1,6 +1,6 @@
 "use client";
 
-import { snapPoints, SnapPoints } from "./config";
+import { snapPoints, SnapPoints } from "../config/snap-points";
 
 class SnapPointControl {
     readonly clientHeight: number;

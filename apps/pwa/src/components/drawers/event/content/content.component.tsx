@@ -2,8 +2,8 @@
 
 import { motion, useTransform } from "motion/react";
 
-import { HERO_SECTION_OFFSET } from "../root/snap-controls";
-import { useDrawerDragYProgress } from "../root";
+import { useDrawerDragYProgress } from "../config/motion-values";
+import { HERO_SECTION_OFFSET } from "../config/snap-points";
 
 import {
     EventDrawerContentHeader,
@@ -15,6 +15,7 @@ import {
 import { IconClose } from "@/components/icons";
 
 import styles from "./styles.module.scss";
+import { Section } from "@/components/shared/section";
 
 export namespace EventDrawerContent {
     export type Data = {

@@ -1,19 +1,18 @@
 "use client";
 
 import Image from "next/image";
-import { ReactNode, useCallback, useEffect, useRef } from "react";
-import { motion, useAnimation, useTransform, AnimationControls } from "motion/react";
+import { motion, useTransform } from "motion/react";
 
-import { HERO_SECTION_OFFSET } from "../../root/snap-controls";
-import { useDrawerContentDragYProgress } from "../../root";
 import { hexToRgba } from "@/utils/hex-to-rgba";
 import { useLocale } from "next-intl";
+import { useDrawerContentDragYProgress } from "../../config/motion-values";
+import { HERO_SECTION_OFFSET } from "../../config/snap-points";
 
+import { EventDrawerContentDescription } from "./description";
 import { IconCalendar, IconEllipsisHorizontal, IconLocation, IconShare, IconTicket } from "@/components/icons";
 
 import cx from "classnames";
 import styles from "../styles.module.scss";
-import { EventDrawerContentDescription } from "@/app/[locale]/(main)/event-drawer/content/primitives/description";
 
 export namespace EventDrawerContentHero {
     export type Data = {
@@ -35,7 +34,7 @@ export namespace EventDrawerContentHero {
 
 function formatDate(date: Date, locale: string) {
 
-    const formattedDate = new Date(date).toLocaleDateString("en-US", {
+    const formattedDate = new Date(date).toLocaleDateString(locale, {
         weekday: "long",
         month: "short",
         day: "numeric",

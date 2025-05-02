@@ -1,6 +1,6 @@
 import { motion, useAnimation } from "motion/react";
 import { useTruncatedText } from "../../hooks/use-truncate-text.hook";
-import styles from "./../styles.module.scss";
+import styles from "../styles.module.scss";
 
 export namespace EventDrawerContentDescription {
     export type Props = {
