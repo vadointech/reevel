@@ -5,30 +5,33 @@
 
 
 .card {
+    flex-shrink: 0;
     position: relative;
     overflow: hidden;
 
     height: mixins.rem(148);
     width: mixins.rem(254);
 
-    border-radius:0.5rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+
+    border-radius: .5rem;
+    padding: mixins.rem(20) mixins.rem(12) 1rem;
 
     &__info {
-        
-        padding: mixins.rem(6) mixins.rem(12) mixins.rem(0);
         &__title {
-            height: mixins.rem(52);
-
             @include fonts.font-creata();
             font-size: mixins.rem(42);
-            color: colors.$white;
-            font-weight:500;
+            color: colors.$foreground;
+            line-height: 1;
+            font-weight: 500;
         }
 
         &__city {
             height: mixins.rem(18);
             @include fonts.font-creata('base');
-            color: colors.$white;
+            color: colors.$foreground;
             opacity: 0.6;
         }
     }
@@ -36,9 +39,10 @@
 
     &__foreground {
         position: absolute;
-        bottom: -15%;
-        right: -5%;
-        font-size: 134px;
+        z-index: 2;
+        right: -10%;
+        bottom: -25%;
+        font-size: mixins.rem(134);
     }
 
     &__detailed {
@@ -48,12 +52,12 @@
         align-items: center;
         gap: mixins.rem(4);
 
-        padding: mixins.rem(42) mixins.rem(12);
+        //padding: mixins.rem(42) mixins.rem(12);
 
         &__icon {
             width: 1rem;
             height: 1rem;
-            background-color: colors.$white;
+            background: colors.$foreground;
             border-radius: mixins.rem(24);
 
             display: flex;
@@ -70,7 +74,7 @@
             @include fonts.font-creata();
             text-transform: uppercase;
             font-size: mixins.rem(9);
-            color: colors.$white
+            color: colors.$foreground;
         }
     }
 
@@ -86,8 +90,8 @@
         transform: rotateZ(-26deg);
 
         @include fonts.font-creata();
-        font-size:mixins.rem(130);
+        font-size: mixins.rem(130);
         font-weight: 500;
-        color: colors.$white;
+        color: colors.$foreground;
     }
 }   

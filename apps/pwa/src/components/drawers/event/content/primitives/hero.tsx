@@ -10,9 +10,11 @@ import { HERO_SECTION_OFFSET } from "../../config/snap-points";
 
 import { EventDrawerContentDescription } from "./description";
 import { IconCalendar, IconEllipsisHorizontal, IconLocation, IconShare, IconTicket } from "@/components/icons";
+import { UserProfileEntity } from "@/entities/profile";
 
 import cx from "classnames";
 import styles from "../styles.module.scss";
+import { AttendersSection } from "@/components/shared/attenders";
 
 export namespace EventDrawerContentHero {
     export type Data = {
@@ -22,11 +24,7 @@ export namespace EventDrawerContentHero {
         date: Date;
         price: string | number;
         currency: string;
-        attendees: Array<{
-            id: string;
-            avatar: string;
-        }>
-        attendeesCount: number;
+        attendees: UserProfileEntity[];
         description: string;
     };
     export type Props = Data;
@@ -56,7 +54,6 @@ export const EventDrawerContentHero = ({
     price,
     currency,
     attendees,
-    attendeesCount,
     description,
 }: EventDrawerContentHero.Props) => {
     const drawerContentDragYProgress = useDrawerContentDragYProgress();
@@ -126,27 +123,7 @@ export const EventDrawerContentHero = ({
                 <span>
                     { price } { currency }
                 </span>
-                {
-                    attendees.length > 0 && (
-                        <div className={styles.hero__attendees}>
-                            {
-                                attendees.map(item => (
-                                    <Avatar
-                                        key={item.id}
-                                        src={item.avatar}
-                                    />
-                                ))
-                            }
-                            {
-                                attendees.length >= 3 && (
-                                    <div className={styles.hero__attendees_more}>
-                                        +{ attendeesCount - attendees.length } more going
-                                    </div>
-                                )
-                            }
-                        </div>
-                    )
-                }
+                <AttendersSection users={attendees} />
             </div>
 
             <div className={styles.hero__buttons}>

@@ -1,5 +1,5 @@
 import { AnimationControls } from "motion/react";
-import { useCallback, useRef } from "react";
+import { MouseEvent, useCallback, useRef } from "react";
 
 type TruncateTextParams = {
     text: string;
@@ -71,7 +71,7 @@ export function useTruncatedText(animate: AnimationControls, {
         });
     };
 
-    const handleToggleOpen = useCallback(() => {
+    const handleToggleOpen = useCallback((event: MouseEvent<HTMLParagraphElement>) => {
         if(!ref.current) return;
         if(isOpen.current) return handleClose();
         else return handleOpen();

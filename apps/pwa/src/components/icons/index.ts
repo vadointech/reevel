@@ -18,4 +18,4 @@ export * from "./share";
 export * from "./fire";
 export * from "./lock";
 export * from "./star";
-export * from "./warn";
+export * from "./report";

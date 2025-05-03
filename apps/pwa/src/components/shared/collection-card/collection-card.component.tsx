@@ -29,7 +29,9 @@ export const CollectionCard = ({
     return (
         <div
             className={cx(styles.card, className)}
-            style={{ background: `linear-gradient(94deg, ${colorFrom} 50%, ${colorTo} 100%)` }}
+            style={{
+                background: `linear-gradient(94deg, ${colorFrom} 50%, ${colorTo} 100%)`,
+            }}
             {...props}
         >
             <div className={styles.card__info}>

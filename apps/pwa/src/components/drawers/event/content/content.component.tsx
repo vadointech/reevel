@@ -1,5 +1,6 @@
 "use client";
 
+import { ReactNode } from "react";
 import { motion, useTransform } from "motion/react";
 
 import { useDrawerDragYProgress } from "../config/motion-values";
@@ -13,9 +14,9 @@ import {
     EventDrawerContentScroller,
 } from "./primitives";
 import { IconClose } from "@/components/icons";
+import { UserProfileEntity } from "@/entities/profile";
 
 import styles from "./styles.module.scss";
-import { Section } from "@/components/shared/section";
 
 export namespace EventDrawerContent {
     export type Data = {
@@ -30,15 +31,14 @@ export namespace EventDrawerContent {
             name: string;
             avatar: string;
         },
-        attendees: Array<{
-            id: string;
-            avatar: string;
-        }>
+        attendees: UserProfileEntity[]
         attendeesCount: number;
         description: string;
     };
 
-    export type Props = Data;
+    export type Props = Data & {
+        children: ReactNode;
+    };
 }
 
 export const EventDrawerContent = ({
@@ -46,6 +46,7 @@ export const EventDrawerContent = ({
     poster,
     primaryColor,
     title,
+    children,
     ...data
 }: EventDrawerContent.Props) => {
     const dragYProgress = useDrawerDragYProgress();
@@ -77,6 +78,9 @@ export const EventDrawerContent = ({
                         title={title}
                         {...data}
                     />
+                    <div className={styles.content__content}>
+                        { children }
+                    </div>
                 </EventDrawerContentScroller>
             </motion.div>
         </>

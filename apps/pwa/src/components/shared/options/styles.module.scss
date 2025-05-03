@@ -2,14 +2,10 @@
 @use "@/theme/mixins";
 @use "@/theme/fonts";
 
-
-
 .options {
-    background-color: colors.$background;
-    border-radius: 12;
-
-    margin-top: 1.5rem;
-    padding: mixins.rem(22);
+    background-color: colors.$foreground;
+    border-radius: mixins.rem(17);
+    padding: 1rem mixins.rem(18);
     display: flex;
     flex-direction: column;
     gap: 2rem;
@@ -20,7 +16,11 @@
     display: flex;
     align-items: center;
 
-    @include fonts.font-creata('',500,1.5rem);
+    @include fonts.font-creata('base', 400, mixins.rem(24));
+
+    svg {
+        height: mixins.rem(22);
+    }
 
     &__text {
         width: 100%;
@@ -29,15 +29,15 @@
         justify-content: flex-start;
         gap: 0.75rem;
         align-items: center;
-        &__warn {
-            color: red;
+        &_danger {
+            color: colors.$danger;
         }
         &__meta {
             display: flex;
             flex-direction: column;
             span {
                 @include fonts.font-creata('sm',400,mixins.rem(20));
-                color:colors.$secondary
+                color: colors.$secondary
             }
         }
     }

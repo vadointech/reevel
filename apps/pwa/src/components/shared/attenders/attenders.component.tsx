@@ -1,22 +1,23 @@
 import { ComponentProps } from "react";
 
-import cx from "classnames";
-import styles from "./styles.module.scss";
-import Image from "next/image";
+import { Avatar } from "@/components/shared/_redesign";
 
 import { UserProfileEntity } from "@/entities/profile";
+import { UISize } from "@/types/common";
 
-export type Size = "default" | "small"
+import cx from "classnames";
+import styles from "./styles.module.scss";
+
 
 export namespace AttendersSection {
     export type Props = ComponentProps<"div"> & {
         users: UserProfileEntity[]
-        size: Size,
+        size?: UISize,
     };
 }
 
 export const AttendersSection = ({
-    size,
+    size = "default",
     users,
     className,
     ...props
@@ -25,23 +26,37 @@ export const AttendersSection = ({
     const remainingCount = Math.max(0, users.length - 3);
 
     return (
-        <div className={cx(styles.section, className)} {...props}>
-            {displayedUsers.map((user) => (
-                <div key={user.id} className={cx(
-                    styles.section__image,
-                    styles[`section__image_${size}`]
-                )}>
-                    <Image src={user.picture ?? ""} alt="User" fill />
-                </div>
-            ))}
-            {remainingCount > 0 && (
-                <div className={cx(
-                    styles.section__more,
-                    styles[`section__more_${size}`]
-                )}>
-                    +{remainingCount} more going
-                </div>
+        <div
+            className={cx(
+                styles.section,
+                styles[`section__size_${size}`],
+                className,
             )}
+            {...props}
+        >
+            {
+                displayedUsers.map((user) => (
+                    <Avatar
+                        key={user.id}
+                        image={user.picture}
+                        variant={"outline"}
+                    />
+                ))
+            }
+            {
+                remainingCount > 0 && (
+                    <div
+                        className={cx(
+                            styles.section__more,
+                            styles[`section__more_size_${size}`],
+                        )}
+                    >
+                        <span>
+                            +{remainingCount} more going
+                        </span>
+                    </div>
+                )
+            }
         </div>
     );
 };

@@ -1,0 +1,34 @@
+@use "@/theme/mixins";
+@use "@/theme/colors";
+@use "@/theme/fonts";
+
+
+
+.reviews {
+    height: mixins.rem(154);
+    border-radius: mixins.rem(12);
+    padding: 1rem;
+
+    background: colors.$foreground;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: end;
+    row-gap: mixins.rem(6);
+
+    &__content {
+        display: flex;
+        align-items: flex-end;
+        column-gap: mixins.rem(6);
+    }
+
+    &__rating {
+        @include fonts.font-creata("xl", 700, 1, mixins.rem(-6));
+        color: colors.$primary;
+    }
+
+    &__count {
+        @include fonts.font-creata("xs");
+        color: colors.$secondary;
+    }
+}

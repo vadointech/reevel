@@ -1,0 +1,37 @@
+@use "@/theme/mixins";
+@use "@/theme/colors";
+@use "@/theme/fonts";
+
+.button {
+    height: mixins.rem(38);
+    width: fit-content;
+    border-radius: mixins.rem(100);
+    padding-inline: mixins.rem(18);
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    column-gap: .5rem;
+
+    &__icon {
+        width: mixins.rem(14);
+        height: mixins.rem(14);
+        @include fonts.font-creata("sm", 400, 1, mixins.rem(-4))
+    }
+
+    &_text {
+        @include fonts.font-creata("sm", 400, 1, mixins.rem(-2));
+    }
+
+    &_default {
+        background: colors.$foreground;
+    }
+
+    &_text {
+
+    }
+
+    &_primary {
+
+    }
+}

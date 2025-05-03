@@ -1,9 +1,8 @@
-import { ComponentProps } from 'react';
+import { ComponentProps } from "react";
+import { IconNavigation } from "@/components/icons";
 
-import styles from "./styles.module.scss"
-import cx from "classnames"
-
-import { IconNavigation } from '@/components/icons';
+import styles from "./styles.module.scss";
+import cx from "classnames";
 
 
 export namespace Place {
@@ -11,7 +10,7 @@ export namespace Place {
         place: string,
         iconHeight?: number,
         iconWidth?: number,
-    }
+    };
 }
 
 export const Place = ({

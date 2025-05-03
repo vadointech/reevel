@@ -1,0 +1,32 @@
+@use "@/theme/fonts";
+@use "@/theme/colors";
+@use "@/theme/mixins";
+
+.section {
+    width: 100%;
+
+    &__head {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding-inline: 1rem;
+
+        margin-bottom: mixins.rem(12);
+    }
+
+    &__title {
+        @include fonts.font-creata("lg", 500, mixins.rem(26));
+        color: colors.$primary;
+    }
+
+    &__cta {
+        @include fonts.font-creata("sm", 500, mixins.rem(26));
+        color: colors.$accent;
+    }
+
+    &__content {
+        &_container {
+            padding-inline: 1rem;
+        }
+    }
+}

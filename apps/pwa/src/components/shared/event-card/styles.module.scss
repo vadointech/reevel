@@ -3,108 +3,93 @@
 @use "@/theme/colors";
 
 .card {
+    flex-shrink: 0;
     position: relative;
-    width: mixins.rem(257);
-    height: mixins.rem(337);
-    
-    padding: mixins.rem(16);
+    z-index: 0;
+    overflow: hidden;
 
-    --top-color: #21252990;
-    --bottom-color: #212529;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
 
+    color: colors.$foreground;
 
-    &_small {
-        width: mixins.rem(220);
-        height: mixins.rem(288);
-        padding: mixins.rem(14);
-
+    &_size {
+        &_default {
+            width: mixins.rem(257);
+            height: mixins.rem(337);
+            border-radius: mixins.rem(20);
+        }
+        &_small {
+            width: mixins.rem(220);
+            height: mixins.rem(288);
+            border-radius: mixins.rem(17);
+        }
     }
 
-    img {
+    &__section {
+        &_size {
+            &_default {
+                padding: 1rem;
+            }
+            &_small {
+                padding: mixins.rem(14);
+            }
+        }
+    }
+
+    &__background {
+        position: absolute;
+        z-index: -1;
+        inset: 0;
         object-fit: cover;
-        border-radius: mixins.rem(12);
-        width: 100%;
-        height: 100%;
     }
 
-    &::after {
-        content: '';
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: mixins.rem(50);
-        background: linear-gradient(
-            180deg,
-            var(--top-color) 48%,
-            transparent 100%
-          );
-        border-radius: mixins.rem(12);
-        z-index: 1;
+
+    &__title {
+        &_size {
+            &_default {
+                @include fonts.font-creata("lg", 700, mixins.rem(26));
+                margin-bottom: .5rem;
+            }
+            &_small {
+                @include fonts.font-creata("base", 700, mixins.rem(24));
+                margin-bottom: mixins.rem(6);
+            }
+        }
     }
 
-    &::before {
-        content: '';
-        position: absolute;
-        bottom: 0;
-        left: 0;
-        width: 100%;
-        height: mixins.rem(119);
-        background: linear-gradient(
-            180deg,
-            transparent 0%,
-            var(--bottom-color) 65%
-          );
-        border-radius: mixins.rem(12);
-        z-index: 1;
-    }
+    &__location {
+        display: flex;
+        align-items: center;
 
-        &__content {
-            height: 100%;
-            position: relative;
-            z-index: 3;
+        svg path {
+            fill: colors.$foreground;
+        }
 
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-            &__below {
-                display: flex;
-                flex-direction: column;
-                gap: mixins.rem(8);
-
-                h3 {
-                    @include fonts.font-creata('base',600);
-                    color: colors.$white;
+        &_size {
+            &_default {
+                column-gap: mixins.rem(8);
+                margin-bottom: mixins.rem(8);
+                svg {
+                    width: mixins.rem(12);
+                    height: mixins.rem(12);
                 }
-
-                p {
-                    @include fonts.font-creata();
-                    font-size: mixins.rem(10);
-                    color: colors.$white;
-                    opacity: 0.6;
+                span {
+                    @include fonts.font-creata("xs", 400, 1, mixins.rem(-2));
                 }
             }
+            &_small {
+                column-gap: mixins.rem(6);
+                margin-bottom: mixins.rem(6);
+                svg {
+                    width: mixins.rem(10);
+                    height: mixins.rem(10);
+                }
+                span {
+                    @include fonts.font-creata("xxs", 400, 1, mixins.rem(-1));
+                }
+            }
+        }
     }
-    &__attenders {
-        margin-left: 0.5rem ;
-    }
-}
-
-.badge {
-    height: mixins.rem(20);
-    padding: mixins.rem(6);
-
-    background-color: rgba(245, 246, 247, 0.4);  
-    font-size: mixins.rem(9);
-    border-color: rgba(245, 246, 247, 0.4);
-    color: colors.$white;
-    
-    svg path {
-        fill: colors.$white;
-    }
-}
-
-.place {
-    // @include fonts.font-creata('xs');
-    font-size: 0.625rem !important;
 }

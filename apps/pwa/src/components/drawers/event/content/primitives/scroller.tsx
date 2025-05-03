@@ -33,6 +33,7 @@ export const EventDrawerContentScroller = observer(({ children }: EventDrawerCon
         <motion.div
             ref={scrollerRef}
             drag={"y"}
+            dragDirectionLock
             style={{ y: drawerContentDragYPx }}
             onClick={(e) => e.stopPropagation()}
             dragListener={dragListeners}

@@ -13,7 +13,7 @@
         color: colors.$foreground;
         span {
             font-weight: 400;
-            color: colors.$white;
+            color: colors.$foreground;
             height: mixins.rem(20);
         }
     }
