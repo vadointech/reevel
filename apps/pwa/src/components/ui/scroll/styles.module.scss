@@ -1,0 +1,22 @@
+@use "@/theme/mixins";
+
+.scroll {
+    width: 100%;
+
+    &_variant {
+        &_horizontal {
+            touch-action: pan-x;
+            display: flex;
+            align-items: center;
+        }
+    }
+
+    &_size {
+        &_default {
+            column-gap: mixins.rem(12);
+        }
+        &_small {
+            column-gap: .5rem;
+        }
+    }
+}

@@ -2,10 +2,7 @@ import { ComponentProps } from "react";
 
 export const IconNavigation = (props: ComponentProps<"svg">) => (
     <svg
-        width={14}
-        height={14}
         viewBox="0 0 14 14"
-        fill="red"
         xmlns="http://www.w3.org/2000/svg"
         {...props}
     >

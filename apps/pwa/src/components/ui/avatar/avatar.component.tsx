@@ -6,7 +6,7 @@ import styles from "./styles.module.scss";
 
 import avatar from "@/../public/assets/temp/avatar.png";
 
-import cx from "classnames"
+import cx from "classnames";
 
 export namespace Avatar {
 
@@ -58,7 +58,7 @@ export const Avatar = ({
         custom: (
             <div className={cx(
                 styles.avatar__variant,
-                styles[`avatar__variant_${variant}`]
+                styles[`avatar__variant_${variant}`],
             )}>
                 <div
                     className={styles.avatar}

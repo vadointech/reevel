@@ -1,7 +1,6 @@
 import { ComponentProps } from "react";
 import styles from "./styles.module.scss";
 import cx from "classnames";
-import { Badge } from "@/components/ui/badge/badge.component";
 
 export type Size = "default" | "small";
 
@@ -17,7 +16,7 @@ export namespace Section {
 export const Section = ({
     title,
     type,
-    size = 'default',
+    size = "default",
     children,
     cols,
     className,
@@ -26,9 +25,9 @@ export const Section = ({
     return (
         <div className={cx(
             styles.section,
-            className
+            className,
         )}
-            {...props}
+        {...props}
         >
             <div className={cx(
                 styles.section__header,
@@ -36,7 +35,7 @@ export const Section = ({
             >
                 <h2 className={cx(
                     styles.section__header__title,
-                    styles[`section__header__title__size_${size}`]
+                    styles[`section__header__title__size_${size}`],
                 )}
                 >
                     {title}
@@ -54,4 +53,4 @@ export const Section = ({
             </div>
         </div>
     );
-}
+};

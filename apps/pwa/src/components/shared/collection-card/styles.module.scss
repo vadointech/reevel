@@ -5,30 +5,31 @@
 
 
 .card {
+    flex-shrink: 0;
     position: relative;
     overflow: hidden;
 
-    height: mixins.rem(148);
-    width: mixins.rem(254);
+    height: mixins.rem(154);
+    width: mixins.rem(268);
 
-    border-radius:0.5rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+
+    border-radius: mixins.rem(17);
+    padding: mixins.rem(20) mixins.rem(12) 1rem;
+
+    color: colors.$foreground;
 
     &__info {
-        
-        padding: mixins.rem(6) mixins.rem(12) mixins.rem(0);
         &__title {
-            height: mixins.rem(52);
-
-            @include fonts.font-creata();
+            @include fonts.font-creata("base", 500, 1);
             font-size: mixins.rem(42);
-            color: colors.$white;
-            font-weight:500;
+            line-height: 1;
+            font-weight: 500;
         }
 
         &__city {
-            height: mixins.rem(18);
-            @include fonts.font-creata('base');
-            color: colors.$white;
             opacity: 0.6;
         }
     }
@@ -36,9 +37,10 @@
 
     &__foreground {
         position: absolute;
-        bottom: -15%;
-        right: -5%;
-        font-size: 134px;
+        z-index: 2;
+        right: -10%;
+        bottom: -25%;
+        font-size: mixins.rem(134);
     }
 
     &__detailed {
@@ -48,29 +50,26 @@
         align-items: center;
         gap: mixins.rem(4);
 
-        padding: mixins.rem(42) mixins.rem(12);
-
         &__icon {
             width: 1rem;
             height: 1rem;
-            background-color: colors.$white;
+            background: colors.$foreground;
             border-radius: mixins.rem(24);
 
             display: flex;
             align-items: center;
             justify-content: center;
+
             svg {
                 transform: rotate(-45deg);
-            }
-            svg path {
-                fill: #212629
+                path {
+                    fill: colors.$primary;
+                }
             }
         }
-        p {
-            @include fonts.font-creata();
+        span {
             text-transform: uppercase;
-            font-size: mixins.rem(9);
-            color: colors.$white
+            color: colors.$foreground;
         }
     }
 
@@ -86,8 +85,8 @@
         transform: rotateZ(-26deg);
 
         @include fonts.font-creata();
-        font-size:mixins.rem(130);
+        font-size: mixins.rem(130);
         font-weight: 500;
-        color: colors.$white;
+        color: colors.$foreground;
     }
 }   

@@ -1,1 +1,1 @@
-export * from "./place.component"
+export * from "./place.component";
