@@ -15,13 +15,13 @@
     }
 
     &__title {
-        @include fonts.font-creata("lg", 500, mixins.rem(26));
         color: colors.$primary;
+        font-weight: 500;
     }
 
     &__cta {
-        @include fonts.font-creata("sm", 500, mixins.rem(26));
         color: colors.$accent;
+        font-weight: 500;
     }
 
     &__content {

@@ -13,16 +13,6 @@
     justify-content: center;
     column-gap: .5rem;
 
-    &__icon {
-        width: mixins.rem(14);
-        height: mixins.rem(14);
-        @include fonts.font-creata("sm", 400, 1, mixins.rem(-4))
-    }
-
-    &_text {
-        @include fonts.font-creata("sm", 400, 1, mixins.rem(-2));
-    }
-
     &_default {
         background: colors.$foreground;
     }

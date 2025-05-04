@@ -1,7 +1,7 @@
 import { ComponentProps, ReactNode } from "react";
 import Image from "next/image";
 
-import { Badge } from "@/components/ui";
+import { Badge, Typography } from "@/components/ui";
 import { IconLock, IconNavigation, IconWorld } from "@/components/icons";
 import { AttendersSection } from "../attenders";
 
@@ -114,16 +114,19 @@ export const EventCard = ({
                     )}
                 >
                     <IconNavigation />
-                    <span>{ location }</span>
+                    <Typography.span size={"xs"}>
+                        { location }
+                    </Typography.span>
                 </div>
-                <h3
+                <Typography.h3
+                    size={"base"}
                     className={cx(
                         styles.card__title,
                         styles[`card__title_size_${size}`],
                     )}
                 >
                     { title }
-                </h3>
+                </Typography.h3>
                 <AttendersSection
                     size={size}
                     users={defaultAttendees}

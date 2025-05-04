@@ -18,8 +18,13 @@
     }
 
     &__variant {
-        &_outline {
+        &_bordered {
             border: mixins.rem(1) colors.$foreground solid;
+        }
+
+        &_outline {
+            outline: mixins.rem(1.5) colors.$foreground solid;
+            outline-offset: mixins.rem(3);
         }
     }
 }

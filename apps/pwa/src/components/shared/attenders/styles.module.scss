@@ -17,7 +17,7 @@
         }
 
         &_default {
-            height: mixins.rem(25);
+            height: mixins.rem(26);
         }
     }
 
@@ -34,19 +34,15 @@
         border-radius: mixins.rem(50);
 
         color: colors.$primary;
+        font-weight: 400;
 
         &_size {
             &_default {
                 padding-inline: .5rem;
-
-                span {
-                    @include fonts.font-creata("xxs", 400, 1, mixins.rem(-2));
-                }
             }
             &_small {
                 padding-inline: mixins.rem(7);
                 span {
-                    @include fonts.font-creata("xxs", 400, 1, mixins.rem(-2));
                     font-size: mixins.rem(9);
                 }
             }

@@ -1,4 +1,5 @@
 import { ComponentProps, ReactNode } from "react";
+import { Typography } from "@/components/ui";
 
 import styles from "./styles.module.scss";
 import cx from "classnames";
@@ -31,12 +32,14 @@ export const InterestButton = ({
         >
             {
                 icon ? (
-                    <div className={styles.button__icon}>
+                    <Typography.div size={"sm"} className={styles.button__icon}>
                         { icon }
-                    </div>
+                    </Typography.div>
                 ) : null
             }
-            <span className={styles.button_text}>{ children }</span>
+            <Typography.span size={"sm"}>
+                { children }
+            </Typography.span>
         </div>
     );
 };

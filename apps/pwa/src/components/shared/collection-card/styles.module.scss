@@ -9,29 +9,27 @@
     position: relative;
     overflow: hidden;
 
-    height: mixins.rem(148);
-    width: mixins.rem(254);
+    height: mixins.rem(154);
+    width: mixins.rem(268);
 
     display: flex;
     flex-direction: column;
     justify-content: space-between;
 
-    border-radius: .5rem;
+    border-radius: mixins.rem(17);
     padding: mixins.rem(20) mixins.rem(12) 1rem;
+
+    color: colors.$foreground;
 
     &__info {
         &__title {
-            @include fonts.font-creata();
+            @include fonts.font-creata("base", 500, 1);
             font-size: mixins.rem(42);
-            color: colors.$foreground;
             line-height: 1;
             font-weight: 500;
         }
 
         &__city {
-            height: mixins.rem(18);
-            @include fonts.font-creata('base');
-            color: colors.$foreground;
             opacity: 0.6;
         }
     }
@@ -52,8 +50,6 @@
         align-items: center;
         gap: mixins.rem(4);
 
-        //padding: mixins.rem(42) mixins.rem(12);
-
         &__icon {
             width: 1rem;
             height: 1rem;
@@ -63,17 +59,16 @@
             display: flex;
             align-items: center;
             justify-content: center;
+
             svg {
                 transform: rotate(-45deg);
-            }
-            svg path {
-                fill: #212629
+                path {
+                    fill: colors.$primary;
+                }
             }
         }
-        p {
-            @include fonts.font-creata();
+        span {
             text-transform: uppercase;
-            font-size: mixins.rem(9);
             color: colors.$foreground;
         }
     }

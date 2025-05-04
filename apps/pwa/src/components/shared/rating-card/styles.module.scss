@@ -1,6 +1,5 @@
 @use "@/theme/mixins";
 @use "@/theme/colors";
-@use "@/theme/fonts";
 
 .card {
     flex-shrink: 0;
@@ -10,16 +9,14 @@
 
     background: colors.$foreground;
 
-    border-radius: mixins.rem(12);
+    border-radius: mixins.rem(17);
     padding: 1rem;
 
     display: flex;
     flex-direction: column;
     justify-content: space-between;
 
-
     &__feedback {
-        @include fonts.font-creata("sm", 400, mixins.rem(20));
         @include mixins.textEllipsis(4);
     }
 
@@ -31,8 +28,7 @@
     }
 
     &__author {
-        margin-top: mixins.rem(4);
-        @include fonts.font-creata("xs", 400, 1);
+        margin-top: mixins.rem(2);
         color: colors.$primary;
         span {
             color: colors.$secondary;

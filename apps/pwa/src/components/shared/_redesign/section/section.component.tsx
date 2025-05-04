@@ -1,4 +1,5 @@
 import { ComponentProps, ReactNode } from "react";
+import { Typography } from "@/components/ui";
 
 import styles from "./styles.module.scss";
 import cx from "classnames";
@@ -32,15 +33,15 @@ export const Section = ({
             {
                 title ? (
                     <div className={styles.section__head}>
-                        <h2 className={styles.section__title}>
+                        <Typography.h2 size={"lg"} className={styles.section__title}>
                             { title }
-                        </h2>
+                        </Typography.h2>
                         {
                             cta ? (
                                 // TODO: Button component here
-                                <span className={styles.section__cta}>
+                                <Typography.span size={"sm"} className={styles.section__cta}>
                                     { cta }
-                                </span>
+                                </Typography.span>
                             ) : null
                         }
                     </div>

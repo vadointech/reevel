@@ -1,5 +1,8 @@
+"use client";
+
 import { ComponentProps } from "react";
 
+import useEmblaCarousel from "embla-carousel-react";
 import { UISize } from "@/types/common";
 
 import styles from "./styles.module.scss";
@@ -20,17 +23,26 @@ export const Scroll = ({
     children,
     ...props
 }: Scroll.Props) => {
+
+    const [ref] = useEmblaCarousel({
+        dragFree: true,
+    });
+
     return (
         <div
-            className={cx(
-                styles.scroll,
-                styles[`scroll_variant_${variant}`],
-                styles[`scroll_size_${size}`],
-                className,
-            )}
-            {...props}
+            ref={ref}
+            className={styles.scroll}
         >
-            { children }
+            <div
+                className={cx(
+                    styles[`scroll_variant_${variant}`],
+                    styles[`scroll_size_${size}`],
+                    className,
+                )}
+                {...props}
+            >
+                { children }
+            </div>
         </div>
     );
 };

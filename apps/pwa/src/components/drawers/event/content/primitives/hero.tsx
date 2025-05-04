@@ -10,11 +10,12 @@ import { HERO_SECTION_OFFSET } from "../../config/snap-points";
 
 import { EventDrawerContentDescription } from "./description";
 import { IconCalendar, IconEllipsisHorizontal, IconLocation, IconShare, IconTicket } from "@/components/icons";
+import { AttendersSection } from "@/components/shared/attenders";
+import { Typography } from "@/components/ui";
 import { UserProfileEntity } from "@/entities/profile";
 
-import cx from "classnames";
 import styles from "../styles.module.scss";
-import { AttendersSection } from "@/components/shared/attenders";
+import cx from "classnames";
 
 export namespace EventDrawerContentHero {
     export type Data = {
@@ -101,28 +102,31 @@ export const EventDrawerContentHero = ({
                     style={{ background: primaryColor }}
                 />
             </div>
-            <motion.h1
-                className={styles.hero__title}
-                style={{ opacity: titleOpacity }}
-            >
-                { title }
-            </motion.h1>
+            <motion.div style={{ opacity: titleOpacity }}>
+                <Typography.h1 size={"2xl"} className={styles.hero__title}>
+                    { title }
+                </Typography.h1>
+            </motion.div>
 
             <div className={styles.hero__date}>
                 <div className={styles.hero__date_item}>
                     <IconLocation />
-                    { location }
+                    <Typography.span size={"xs"}>
+                        { location }
+                    </Typography.span>
                 </div>
                 <div className={styles.hero__date_item}>
                     <IconCalendar />
-                    { formattedDate }
+                    <Typography.span size={"xs"}>
+                        { formattedDate }
+                    </Typography.span>
                 </div>
             </div>
 
             <div className={styles.hero__price}>
-                <span>
+                <Typography.span size={"2xl"}>
                     { price } { currency }
-                </span>
+                </Typography.span>
                 <AttendersSection users={attendees} />
             </div>
 
@@ -135,7 +139,9 @@ export const EventDrawerContentHero = ({
                     )}
                 >
                     <IconTicket />
-                    <span>Join</span>
+                    <Typography.span size={"xs"}>
+                        Join
+                    </Typography.span>
                 </button>
 
                 <button
@@ -145,7 +151,9 @@ export const EventDrawerContentHero = ({
                     )}
                 >
                     <IconShare />
-                    <span>Share</span>
+                    <Typography.span size={"xs"}>
+                        Share
+                    </Typography.span>
                 </button>
 
                 <button
@@ -155,27 +163,15 @@ export const EventDrawerContentHero = ({
                     )}
                 >
                     <IconEllipsisHorizontal />
-                    <span>More</span>
+                    <Typography.span size={"xs"}>
+                        More
+                    </Typography.span>
                 </button>
             </div>
 
             <EventDrawerContentDescription>
                 { description }
             </EventDrawerContentDescription>
-        </div>
-    );
-};
-
-const Avatar = ({ src }: { src: string }) => {
-    return (
-        <div
-            className={styles.hero__avatar}
-        >
-            <Image
-                fill
-                src={src}
-                alt={"avatar"}
-            />
         </div>
     );
 };

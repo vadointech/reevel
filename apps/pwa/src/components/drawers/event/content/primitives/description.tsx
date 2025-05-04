@@ -1,5 +1,7 @@
 import { motion, useAnimation } from "motion/react";
 import { useTruncatedText } from "../../hooks/use-truncate-text.hook";
+import { Typography } from "@/components/ui";
+
 import styles from "../styles.module.scss";
 
 export namespace EventDrawerContentDescription {
@@ -18,14 +20,16 @@ export const EventDrawerContentDescription = ({ children }: EventDrawerContentDe
     });
 
     return (
-        <motion.p
-            ref={ref}
-            className={styles.hero__description}
-            animate={animate}
-            initial={{ height: 61, overflowY: "hidden" }}
-            onClick={handleToggle}
-        >
-            { children }
-        </motion.p>
+        <Typography.div size={"sm"}>
+            <motion.p
+                ref={ref}
+                className={styles.hero__description}
+                animate={animate}
+                initial={{ height: 61, overflowY: "hidden" }}
+                onClick={handleToggle}
+            >
+                { children }
+            </motion.p>
+        </Typography.div>
     );
 };

@@ -1,5 +1,6 @@
 @use "@/theme/mixins";
 @use "@/theme/fonts";
+@use "@/theme/typography";
 @use "@/theme/colors";
 
 .card {
@@ -45,15 +46,14 @@
         object-fit: cover;
     }
 
-
     &__title {
         &_size {
             &_default {
-                @include fonts.font-creata("lg", 700, mixins.rem(26));
+                @include typography.font-creata("lg", 700);
                 margin-bottom: .5rem;
             }
             &_small {
-                @include fonts.font-creata("base", 700, mixins.rem(24));
+                @include typography.font-creata("base", 700);
                 margin-bottom: mixins.rem(6);
             }
         }
@@ -70,24 +70,22 @@
         &_size {
             &_default {
                 column-gap: mixins.rem(8);
-                margin-bottom: mixins.rem(8);
                 svg {
                     width: mixins.rem(12);
                     height: mixins.rem(12);
                 }
                 span {
-                    @include fonts.font-creata("xs", 400, 1, mixins.rem(-2));
+                    @include typography.font-creata("xs", 400);
                 }
             }
             &_small {
                 column-gap: mixins.rem(6);
-                margin-bottom: mixins.rem(6);
                 svg {
                     width: mixins.rem(10);
                     height: mixins.rem(10);
                 }
                 span {
-                    @include fonts.font-creata("xxs", 400, 1, mixins.rem(-1));
+                    @include typography.font-creata("xxs", 400);
                 }
             }
         }

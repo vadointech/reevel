@@ -2,6 +2,7 @@
 import { ScrollSection } from "../scroll";
 import { RatingCard } from "@/components/shared/rating-card";
 import { Section, Stars } from "@/components/shared/_redesign";
+import { Typography } from "@/components/ui";
 
 import styles from "./styles.module.scss";
 
@@ -25,12 +26,12 @@ export const ReviewsSection = ({
             <div className={styles.reviews}>
                 <Stars count={rating} />
                 <div className={styles.reviews__content}>
-                    <div className={styles.reviews__rating}>
+                    <Typography.div size={"xl"} className={styles.reviews__rating}>
                         { rating }
-                    </div>
-                    <div className={styles.reviews__count}>
+                    </Typography.div>
+                    <Typography.div size={"xs"} className={styles.reviews__count}>
                         ({ count })
-                    </div>
+                    </Typography.div>
                 </div>
             </div>
             <RatingCard rating={rating} />

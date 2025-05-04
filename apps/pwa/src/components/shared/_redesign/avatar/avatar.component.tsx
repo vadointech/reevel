@@ -5,7 +5,7 @@ import styles from "./styles.module.scss";
 import cx from "classnames";
 
 export namespace Avatar {
-    export type Variant = "default" | "outline";
+    export type Variant = "default" | "outline" | "bordered";
     export type Props = ComponentProps<"div"> & {
         image?: string;
         variant?: Variant;

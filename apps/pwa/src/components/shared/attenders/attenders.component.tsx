@@ -1,13 +1,13 @@
 import { ComponentProps } from "react";
 
 import { Avatar } from "@/components/shared/_redesign";
+import { Typography } from "@/components/ui";
 
 import { UserProfileEntity } from "@/entities/profile";
 import { UISize } from "@/types/common";
 
 import cx from "classnames";
 import styles from "./styles.module.scss";
-
 
 export namespace AttendersSection {
     export type Props = ComponentProps<"div"> & {
@@ -39,7 +39,7 @@ export const AttendersSection = ({
                     <Avatar
                         key={user.id}
                         image={user.picture}
-                        variant={"outline"}
+                        variant={"bordered"}
                     />
                 ))
             }
@@ -51,9 +51,9 @@ export const AttendersSection = ({
                             styles[`section__more_size_${size}`],
                         )}
                     >
-                        <span>
+                        <Typography.span size={"xxs"}>
                             +{remainingCount} more going
-                        </span>
+                        </Typography.span>
                     </div>
                 )
             }

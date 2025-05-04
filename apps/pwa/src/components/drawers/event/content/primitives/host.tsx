@@ -3,11 +3,11 @@ import { motion, useTransform } from "motion/react";
 
 import { hexToRgba } from "@/utils/hex-to-rgba";
 import { useDrawerContentDragYProgress, useDrawerDragYProgress } from "../../config/motion-values";
+import { HERO_SECTION_OFFSET } from "@/components/drawers/event/config/snap-points";
 
 import { HostedBy } from "@/components/shared/hosted-by";
 
 import styles from "../styles.module.scss";
-import { HERO_SECTION_OFFSET } from "@/components/drawers/event/config/snap-points";
 
 export namespace EventDrawerContentHost {
     export type Props = ComponentProps<"div"> & {
@@ -39,7 +39,6 @@ export const EventDrawerContentHost = ({
             return (drawerY - 0.1) / (0.4 - 0.1);
         },
     );
-
 
     return (
         <motion.div

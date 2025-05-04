@@ -4,17 +4,18 @@
 
 
 .container {
-    display: flex;
+    display: grid;
+    grid-template-columns: 2rem 1fr;
+    grid-template-rows: 2rem;
     align-items: center;
-    gap: mixins.rem(12);
+    column-gap: mixins.rem(12);
+
+    color: colors.$foreground;
 
     &__text {
-        @include fonts.font-creata("sm",300,20px);
-        color: colors.$foreground;
+        font-weight: 300;
         span {
             font-weight: 400;
-            color: colors.$foreground;
-            height: mixins.rem(20);
         }
     }
 }

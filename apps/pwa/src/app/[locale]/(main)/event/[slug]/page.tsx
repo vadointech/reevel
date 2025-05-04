@@ -63,27 +63,24 @@ export default function Page() {
                     >
                         <CollectionCard
                             title="Astronomy"
-                            city="Vinnitsa"
+                            location="Vinnitsa"
                             emoji="🔭"
-                            backgroundText="Astronomy"
-                            colorFrom="#0A192F"
-                            colorTo="#23395D"
+                            primaryColor="#0A192F"
+                            secondaryColor="#23395D"
                         />
                         <CollectionCard
                             title="Bouling"
-                            city="Vinnitsa"
+                            location="Vinnitsa"
                             emoji="🎳"
-                            backgroundText="Bouling"
-                            colorFrom="#A54F4F"
-                            colorTo="#6A3232"
+                            primaryColor="#A54F4F"
+                            secondaryColor="#6A3232"
                         />
                         <CollectionCard
                             title="Farming"
-                            city="Vinnitsa"
+                            location="Vinnitsa"
                             emoji="🚜"
-                            backgroundText="Farming"
-                            colorFrom="#7D9A5D"
-                            colorTo="#4F6F3A"
+                            primaryColor="#7D9A5D"
+                            secondaryColor="#4F6F3A"
                         />
                     </ScrollSection>
 

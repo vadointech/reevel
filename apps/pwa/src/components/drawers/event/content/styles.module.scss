@@ -103,7 +103,7 @@
 
     &__title {
         max-width: calc(100% - 40px);
-        @include fonts.font-creata("2xl", 700, mixins.rem(36));
+        font-weight: 700;
     }
 
     &__date {
@@ -117,10 +117,8 @@
             display: flex;
             align-items: center;
             column-gap: .5rem;
-            @include fonts.font-creata("sm");
 
             svg {
-                margin-top: mixins.rem(-2);
                 width: mixins.rem(14);
                 height: mixins.rem(14);
                 path {
@@ -132,44 +130,11 @@
 
     &__price {
         margin-top: mixins.rem(22);
-
-        span {
-            margin-bottom: mixins.rem(-4);
-            @include fonts.font-creata("2xl", 500, mixins.rem(36));
-        }
+        font-weight: 500;
 
         display: flex;
         align-items: center;
         justify-content: space-between;
-    }
-
-    &__attendees {
-        display: flex;
-        align-items: center;
-        > * {
-            margin-left: -0.5rem;
-        }
-
-        &_more {
-            position: relative;
-            z-index: 1;
-            height: mixins.rem(25);
-            padding-inline: .5rem;
-            padding-top: mixins.rem(2);
-
-            display: flex;
-            align-items: center;
-            justify-content: center;
-
-            border-radius: mixins.rem(34);
-
-            font-family: fonts.$font-creata;
-            line-height: 1;
-            font-weight: 400;
-            font-size: mixins.rem(10);
-            color: colors.$primary;
-            background: colors.$foreground;
-        }
     }
 
     &__buttons {
@@ -190,16 +155,10 @@
         flex-direction: column;
         align-items: center;
         justify-content: center;
-        row-gap: mixins.rem(6);
+        row-gap: mixins.rem(4);
 
         border-radius: .5rem;
         border: mixins.rem(1) colors.$foreground solid;
-
-
-        span {
-            @include fonts.font-creata("xs", 400, 1);
-            margin-bottom: mixins.rem(-2);
-        }
 
         &_primary {
             background: colors.$foreground;
@@ -212,7 +171,7 @@
 
         &_join {
             svg {
-                margin-top: mixins.rem(2);
+                margin-top: mixins.rem(4);
                 height: mixins.rem(14);
             }
         }
@@ -226,7 +185,7 @@
         }
         &_more {
             svg {
-                margin-top: mixins.rem(2);
+                margin-top: mixins.rem(6);
                 height: mixins.rem(4);
                 path {
                     fill: colors.$foreground;
@@ -238,8 +197,6 @@
     &__description {
         position: relative;
         margin-top: 1rem;
-
-        @include fonts.font-creata("sm", 400, mixins.rem(20));
 
         span {
             @include fonts.font-creata("sm", 700, mixins.rem(20));

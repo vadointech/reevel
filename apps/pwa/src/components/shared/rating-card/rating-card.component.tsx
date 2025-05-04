@@ -1,5 +1,6 @@
 import { ComponentProps } from "react";
 import { Avatar, Stars } from "@/components/shared/_redesign";
+import { Typography } from "@/components/ui";
 
 import styles from "./styles.module.scss";
 import cx from "classnames";
@@ -24,18 +25,18 @@ export const RatingCard = ({
             )}
             {...props}
         >
-            <div className={styles.card__feedback}>
+            <Typography.p size={"sm"} className={styles.card__feedback}>
                 Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of
                 classical Latin literature from 45 BC, making it It has roots in a piece of classical Latin
                 literature from 45 BC, making it ov
-            </div>
+            </Typography.p>
             <div className={styles.card__details}>
                 <Avatar image={"/assets/temp/avatar.png"} />
                 <div>
                     <Stars size={"small"} count={rating} />
-                    <div className={styles.card__author}>
-                        Judit S. <span>• 2 days ago</span>
-                    </div>
+                    <Typography.div size={"xs"} className={styles.card__author}>
+                        Judit S. <Typography.span size={"xs"}>• 2 days ago</Typography.span>
+                    </Typography.div>
                 </div>
             </div>
         </div>

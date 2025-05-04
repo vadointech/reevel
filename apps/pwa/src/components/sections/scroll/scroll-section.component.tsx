@@ -15,7 +15,7 @@ export const ScrollSection = ({
     ...props
 }: ScrollSection.Props) => {
     return (
-        <Section {...props}>
+        <Section {...props} container>
             <Scroll size={size}>
                 { children }
             </Scroll>

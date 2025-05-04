@@ -1,6 +1,6 @@
 @use "@/theme/mixins";
 @use "@/theme/colors";
-@use "@/theme/fonts";
+@use "@/theme/typography";
 
 
 
@@ -23,10 +23,6 @@
                 width: mixins.rem(10);
                 height: mixins.rem(10);
             }
-
-            span {
-                @include fonts.font-creata("xs", 400, 1, mixins.rem(-2));
-            }
         }
 
         &_small {
@@ -40,7 +36,7 @@
             }
 
             span {
-                @include fonts.font-creata("xxs", 400, 1, mixins.rem(-1));
+                @include typography.font-creata("xxs", 400);
             }
         }
     }
