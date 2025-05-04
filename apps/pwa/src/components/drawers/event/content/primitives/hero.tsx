@@ -111,13 +111,13 @@ export const EventDrawerContentHero = ({
             <div className={styles.hero__date}>
                 <div className={styles.hero__date_item}>
                     <IconLocation />
-                    <Typography.span size={"xs"}>
+                    <Typography.span size={"sm"}>
                         { location }
                     </Typography.span>
                 </div>
                 <div className={styles.hero__date_item}>
                     <IconCalendar />
-                    <Typography.span size={"xs"}>
+                    <Typography.span size={"sm"}>
                         { formattedDate }
                     </Typography.span>
                 </div>

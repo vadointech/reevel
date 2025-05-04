@@ -13,10 +13,8 @@ export namespace EventDrawerContentDescription {
 export const EventDrawerContentDescription = ({ children }: EventDrawerContentDescription.Props) => {
     const animate = useAnimation();
 
-    const [ref, handleToggle] = useTruncatedText(animate, {
-        text: children,
+    const [ref] = useTruncatedText(animate, {
         textHeight: 61,
-        closeSuffix: ["...", " <span>More</span>"],
     });
 
     return (
@@ -26,7 +24,6 @@ export const EventDrawerContentDescription = ({ children }: EventDrawerContentDe
                 className={styles.hero__description}
                 animate={animate}
                 initial={{ height: 61, overflowY: "hidden" }}
-                onClick={handleToggle}
             >
                 { children }
             </motion.p>
