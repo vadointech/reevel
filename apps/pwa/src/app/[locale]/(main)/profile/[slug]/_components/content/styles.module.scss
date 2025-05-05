@@ -1,0 +1,21 @@
+@use "@/theme/mixins";
+@use "@/theme/colors";
+
+.profile {
+    width: 100%;
+    height: 100%;
+
+    position: relative;
+
+    overflow: scroll;
+    @include mixins.no-scrollbar;
+    scroll-snap-type: y proximity;
+    -webkit-scroll-snap-type: y proximity;
+    -webkit-overflow-scrolling: touch;
+    overscroll-behavior-y: none;
+}
+
+.content {
+    scroll-snap-align: start;
+    height: 1000px;
+}

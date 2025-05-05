@@ -2,10 +2,13 @@ import { Link } from "@/i18n/routing";
 
 export default function Home() {
     return (
-        <>
-            <Link href={"/event/slug"} style={{ position: "fixed", top: 0, left: 0, zIndex: 100 }}>
+        <div>
+            <Link href={"/event/slug"}>
                 To event
             </Link>
-        </>
+            <Link href={"/profile/slug"}>
+                To profile
+            </Link>
+        </div>
     );
 }

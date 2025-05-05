@@ -1,0 +1,54 @@
+@use "@/theme/mixins";
+@use "@/theme/colors";
+
+.header {
+    position: fixed;
+    z-index: 2;
+    top: 0;
+    left: 0;
+    right: 0;
+
+    &__navigation {
+        position: relative;
+        display: grid;
+        align-items: center;
+        grid-template-rows: 2rem;
+        column-gap: mixins.rem(18);
+        grid-template-columns: mixins.rem(10) 1fr mixins.rem(4);
+
+        padding: mixins.rem(22) 1rem;
+        background: colors.$background;
+
+        svg {
+            height: mixins.rem(18);
+        }
+
+        &_overlay {
+            position: absolute;
+            inset: 0;
+
+            background: none;
+
+            svg path {
+                fill: colors.$foreground;
+            }
+        }
+    }
+
+    &__info {
+        height: 100%;
+        display: flex;
+        align-items: center;
+        column-gap: 1rem;
+    }
+
+    &__user {
+        display: flex;
+        align-items: center;
+        column-gap: .5rem;
+    }
+
+    &__name {
+        font-weight: 500;
+    }
+}

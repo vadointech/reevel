@@ -1,0 +1,97 @@
+@use "@/theme/mixins";
+@use "@/theme/colors";
+
+.hero {
+    position: relative;
+    z-index: 0;
+    width: 100%;
+    height: mixins.rem(260);
+
+
+    &__snaps {
+        position: absolute;
+        inset: 0;
+
+        display: flex;
+        flex-direction: column;
+    }
+
+    &__snap {
+        flex: 1;
+        scroll-snap-align: start;
+        scroll-snap-stop: always;
+    }
+
+    &__cover {
+        position: absolute;
+        inset: 0;
+        object-fit: cover;
+        z-index: -1;
+    }
+
+    &__overlay {
+        position: absolute;
+        inset: 0;
+    }
+
+    &__info {
+        position: absolute;
+        left: 0;
+        right: 0;
+        bottom: 0;
+
+        transform: translateY(50%);
+
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+
+        padding-inline: 1rem;
+    }
+
+    &__avatar {
+        height: mixins.rem(126);
+        border: mixins.rem(5.5) colors.$background solid;
+        border-radius: 50%;
+        transform-origin: left center;
+    }
+
+    &__links {
+        display: flex;
+        align-items: center;
+        column-gap: mixins.rem(12);
+    }
+
+    &__link {
+        width: mixins.rem(42);
+        aspect-ratio: 1;
+        background: colors.$background;
+        border-radius: 50%;
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        svg {
+            aspect-ratio: 1;
+        }
+
+        &_inst {
+            svg {
+                height: mixins.rem(24);
+            }
+        }
+
+        &_twitch {
+            svg {
+                height: mixins.rem(21);
+            }
+        }
+
+        &_telegram {
+            svg {
+                height: mixins.rem(26);
+            }
+        }
+    }
+}
