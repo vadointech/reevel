@@ -7,15 +7,39 @@
 
     position: relative;
 
-    overflow: scroll;
+    overflow-x: hidden;
+
+    overflow-y: scroll;
     @include mixins.no-scrollbar;
     scroll-snap-type: y proximity;
     -webkit-scroll-snap-type: y proximity;
     -webkit-overflow-scrolling: touch;
     overscroll-behavior-y: none;
+
+    padding-bottom: 2rem;
 }
 
 .content {
     scroll-snap-align: start;
-    height: 1000px;
+
+    margin-top: mixins.rem(12);
+
+    &__gap {
+        margin-bottom: mixins.rem(22);
+    }
+
+    &__description {
+        background: colors.$foreground;
+        padding: mixins.rem(18) 1rem;
+
+        border-radius: mixins.rem(17);
+
+        display: flex;
+        flex-direction: column;
+        row-gap: .5rem;
+
+        &_more {
+            font-weight: 500;
+        }
+    }
 }
