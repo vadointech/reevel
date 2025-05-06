@@ -10,7 +10,7 @@ import styles from "./styles.module.scss";
 export default function PrivateProfilePage() {
     return (
         <ProfilePageLayout>
-            <ProfilePageHeader variant={"private"} />
+            <ProfilePageHeader overlayVariant={"light"} variant={"private"} />
             <ProfilePageContent>
                 <ProfileHero />
                 <div className={styles.content}>

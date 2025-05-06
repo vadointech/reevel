@@ -16,13 +16,16 @@ import cx from "classnames";
 
 export namespace ProfilePageHeader {
     export type Variant = "public" | "private";
+    export type OverlayVariant = "light" | "dark";
     export type Props = {
         variant: Variant;
+        overlayVariant?: OverlayVariant;
     };
 }
 
 export const ProfilePageHeader = ({
     variant,
+    overlayVariant = "light",
 }: ProfilePageHeader.Props) => {
 
     const profileContentDragYPx = useProfileContentDragYProgress();
@@ -46,7 +49,13 @@ export const ProfilePageHeader = ({
   
     return (
         <motion.div className={styles.header}>
-            <div className={cx(styles.header__navigation, styles.header__navigation_overlay)}>
+            <div
+                className={cx(
+                    styles.header__navigation,
+                    styles.header__navigation_overlay,
+                    styles[`header__navigation_overlay_${overlayVariant}`],
+                )}
+            >
                 <IconArrowLeft />
                 <div />
                 { IconControls[variant] }

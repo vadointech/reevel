@@ -6,6 +6,8 @@
     z-index: 0;
     width: 100%;
 
+    background-color: colors.$secondary-highlight;
+
     &__cover {
         position: absolute;
         inset: 0;

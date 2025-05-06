@@ -53,7 +53,7 @@ export const ProfileHero = ({ ...props }: ProfileHero.Props) => {
                 }}
                 className={styles.hero}
             >
-                <ProfileHeroCover />
+                <ProfileHeroCover image={"/assets/temp/amazon_bg.jpg"} />
 
                 <ProfileHeroLinks />
 

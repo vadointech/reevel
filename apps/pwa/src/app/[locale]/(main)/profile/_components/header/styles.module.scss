@@ -36,8 +36,16 @@
 
             background: none;
 
-            svg path {
-                fill: colors.$foreground;
+            &_light {
+                svg path {
+                    fill: colors.$foreground;
+                }
+            }
+
+            &_dark {
+                svg path {
+                    fill: colors.$primary;
+                }
             }
         }
     }

@@ -1,4 +1,3 @@
-import { ComponentProps } from "react";
 import Image from "next/image";
 
 import { hexToRgba } from "@/utils/hex-to-rgba";
@@ -6,15 +5,20 @@ import { hexToRgba } from "@/utils/hex-to-rgba";
 import styles from "../styles.module.scss";
 
 export namespace ProfileHeroCover {
-    export type Props = ComponentProps<"div">;
+    export type Data ={
+        image: string
+    };
+    export type Props = Data;
 }
 
-export const ProfileHeroCover = ({ ...props }: ProfileHeroCover.Props) => {
+export const ProfileHeroCover = ({
+    image,
+}: ProfileHeroCover.Props) => {
     return (
         <>
             <Image
                 fill
-                src={"/assets/temp/amazon_bg.jpg"}
+                src={image}
                 alt={"Profile Cover"}
                 className={styles.hero__cover}
             />
