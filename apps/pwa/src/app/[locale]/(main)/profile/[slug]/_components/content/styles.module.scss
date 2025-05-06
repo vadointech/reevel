@@ -7,21 +7,10 @@
 
     position: relative;
 
-    overflow-x: hidden;
-
-    overflow-y: scroll;
-    @include mixins.no-scrollbar;
-    scroll-snap-type: y proximity;
-    -webkit-scroll-snap-type: y proximity;
-    -webkit-overflow-scrolling: touch;
-    overscroll-behavior-y: none;
-
-    padding-bottom: 2rem;
+    overflow: hidden;
 }
 
 .content {
-    scroll-snap-align: start;
-
     margin-top: mixins.rem(12);
 
     &__gap {

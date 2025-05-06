@@ -5,7 +5,6 @@ import Image from "next/image";
 
 import { motion, useTransform } from "motion/react";
 
-import { useScrollYPx } from "../observables";
 import { hexToRgba } from "@/utils/hex-to-rgba";
 import { PROFILE_PAGE_COVER_HEIGHT, PROFILE_PAGE_HEADER_HEIGHT } from "../config";
 
@@ -15,16 +14,45 @@ import { Avatar } from "@/components/shared/_redesign";
 
 import styles from "./styles.module.scss";
 import cx from "classnames";
+import {
+    useProfileContentDragYProgress,
+} from "@/app/[locale]/(main)/profile/[slug]/_components/motion-values";
 
 export namespace ProfileHero {
     export type Props = ComponentProps<"div">;
 }
 
 export const ProfileHero = ({ ...props }: ProfileHero.Props) => {
-    const scrollYPx = useScrollYPx();
+    const profileContentDragYPx = useProfileContentDragYProgress();
+
+    const contentHeight = useTransform(
+        profileContentDragYPx,
+        [
+            0,
+            PROFILE_PAGE_COVER_HEIGHT / 2,
+            PROFILE_PAGE_COVER_HEIGHT,
+        ],
+        [
+            126,
+            84,
+            PROFILE_PAGE_HEADER_HEIGHT,
+        ],
+    );
+
+    const heroOpacity = useTransform(
+        profileContentDragYPx,
+        [
+            PROFILE_PAGE_COVER_HEIGHT / 2,
+            PROFILE_PAGE_COVER_HEIGHT - PROFILE_PAGE_HEADER_HEIGHT,
+        ],
+        [
+            1,
+            0,
+        ],
+    );
 
     const avatarScale = useTransform(
-        scrollYPx,
+        profileContentDragYPx,
         [
             0,
             PROFILE_PAGE_COVER_HEIGHT / 2,
@@ -36,9 +64,8 @@ export const ProfileHero = ({ ...props }: ProfileHero.Props) => {
             .3,
         ],
     );
-
     const avatarScaleY = useTransform(
-        scrollYPx,
+        profileContentDragYPx,
         [
             PROFILE_PAGE_COVER_HEIGHT / 2,
             PROFILE_PAGE_COVER_HEIGHT - PROFILE_PAGE_HEADER_HEIGHT,
@@ -48,9 +75,8 @@ export const ProfileHero = ({ ...props }: ProfileHero.Props) => {
             1.1,
         ],
     );
-
     const avatarTranslateX = useTransform(
-        scrollYPx,
+        profileContentDragYPx,
         [
             PROFILE_PAGE_COVER_HEIGHT / 2,
             PROFILE_PAGE_COVER_HEIGHT - PROFILE_PAGE_HEADER_HEIGHT,
@@ -61,33 +87,8 @@ export const ProfileHero = ({ ...props }: ProfileHero.Props) => {
         ],
     );
 
-    const avatarOpacity = useTransform(
-        scrollYPx,
-        [
-            PROFILE_PAGE_COVER_HEIGHT / 2,
-            PROFILE_PAGE_COVER_HEIGHT - PROFILE_PAGE_HEADER_HEIGHT,
-        ],
-        [
-            1,
-            0,
-        ],
-    );
-
-
-    const contentHeight = useTransform(
-        scrollYPx,
-        [
-            0,
-            PROFILE_PAGE_COVER_HEIGHT / 2,
-        ],
-        [
-            126,
-            84,
-        ],
-    );
-
     const userScale = useTransform(
-        scrollYPx,
+        profileContentDragYPx,
         [
             0,
             PROFILE_PAGE_COVER_HEIGHT / 2,
@@ -97,9 +98,9 @@ export const ProfileHero = ({ ...props }: ProfileHero.Props) => {
             .9,
         ],
     );
-
+    //
     const userTranslateY = useTransform(
-        scrollYPx,
+        profileContentDragYPx,
         [
             PROFILE_PAGE_COVER_HEIGHT / 2,
             PROFILE_PAGE_COVER_HEIGHT - 74,
@@ -109,9 +110,8 @@ export const ProfileHero = ({ ...props }: ProfileHero.Props) => {
             -50,
         ],
     );
-
     const userPaddingTop = useTransform(
-        scrollYPx,
+        profileContentDragYPx,
         [
             0,
             PROFILE_PAGE_COVER_HEIGHT / 2,
@@ -127,7 +127,7 @@ export const ProfileHero = ({ ...props }: ProfileHero.Props) => {
     return (
         <>
             <motion.div
-                style={{ opacity: avatarOpacity }}
+                style={{ opacity: heroOpacity }}
                 className={styles.hero}
             >
 
@@ -189,7 +189,7 @@ export const ProfileHero = ({ ...props }: ProfileHero.Props) => {
                         style={{
                             translateY: "100%",
                             scale: userScale,
-                            opacity: avatarOpacity,
+                            // opacity: avatarOpacity,
                             paddingTop: userPaddingTop,
                         }}
                         className={styles.hero__info}

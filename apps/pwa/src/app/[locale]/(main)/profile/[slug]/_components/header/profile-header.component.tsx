@@ -4,7 +4,6 @@ import { ComponentProps } from "react";
 
 import { motion, useTransform } from "motion/react";
 
-import { useScrollYPx } from "../observables";
 import { PROFILE_PAGE_COVER_HEIGHT, PROFILE_PAGE_HEADER_HEIGHT } from "../config";
 
 import { Typography } from "@/components/ui";
@@ -13,16 +12,18 @@ import { IconArrowLeft, IconEllipsisVertical, IconVerified } from "@/components/
 
 import styles from "./styles.module.scss";
 import cx from "classnames";
+import { useProfileContentDragYProgress } from "@/app/[locale]/(main)/profile/[slug]/_components/motion-values";
 
 export namespace ProfileHeader {
     export type Props = ComponentProps<"div">;
 }
 
 export const ProfileHeader = ({ ...props }: ProfileHeader.Props) => {
-    const scrollYPx = useScrollYPx();
+
+    const profileContentDragYPx = useProfileContentDragYProgress();
 
     const headerOpacity = useTransform(
-        scrollYPx,
+        profileContentDragYPx,
         [
             PROFILE_PAGE_COVER_HEIGHT / 2,
             PROFILE_PAGE_COVER_HEIGHT - PROFILE_PAGE_HEADER_HEIGHT,
