@@ -14,13 +14,20 @@
         align-items: center;
         grid-template-rows: 2rem;
         column-gap: mixins.rem(18);
-        grid-template-columns: mixins.rem(10) 1fr mixins.rem(4);
+        grid-template-columns: mixins.rem(18) 1fr mixins.rem(18);
 
         padding: mixins.rem(22) 1rem;
         background: colors.$background;
 
         svg {
             height: mixins.rem(18);
+        }
+
+        &_back {
+        }
+
+        &_control {
+            justify-self: flex-end;
         }
 
         &_overlay {

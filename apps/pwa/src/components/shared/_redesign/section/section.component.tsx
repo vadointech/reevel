@@ -5,12 +5,14 @@ import styles from "./styles.module.scss";
 import cx from "classnames";
 
 export namespace Section {
+    export type Variant = "default" | "accent";
     export type Data = {
         title?: string;
         cta?: string | ReactNode
     };
     export type Props = ComponentProps<"div"> & Data & {
         container?: boolean;
+        variant?: Variant;
     };
 }
 
@@ -19,6 +21,7 @@ export const Section = ({
     children,
     title,
     cta,
+    variant = "default",
     container = false,
     ...props
 }: Section.Props) => {
@@ -39,7 +42,13 @@ export const Section = ({
                         {
                             cta ? (
                                 // TODO: Button component here
-                                <Typography.span size={"sm"} className={styles.section__cta}>
+                                <Typography.span
+                                    size={"sm"}
+                                    className={cx(
+                                        styles.section__cta,
+                                        styles[`section__cta_${variant}`],
+                                    )}
+                                >
                                     { cta }
                                 </Typography.span>
                             ) : null

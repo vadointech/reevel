@@ -12,7 +12,7 @@ const TRANSITION_PARAMS: Transition = {
     ease: "easeOut",
 };
 
-export function useProfileScrollerSnap(animate: AnimationControls) {
+export function useProfileContentSnap(animate: AnimationControls) {
     const hasSnapped = useRef(false);
     const direction = useRef<"top" | "bottom">("top");
 

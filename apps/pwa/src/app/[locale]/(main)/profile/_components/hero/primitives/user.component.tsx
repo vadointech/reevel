@@ -10,8 +10,8 @@ import { IconLocation, IconVerified } from "@/components/icons";
 import {
     PROFILE_PAGE_COVER_HEIGHT,
     PROFILE_PAGE_HEADER_HEIGHT,
-} from "@/app/[locale]/(main)/profile/[slug]/_components/config";
-import { useProfileContentDragYProgress } from "@/app/[locale]/(main)/profile/[slug]/_components/motion-values";
+} from "@/app/[locale]/(main)/profile/_components/config";
+import { useProfileContentDragYProgress } from "@/app/[locale]/(main)/profile/_components/motion-values";
 
 export namespace ProfileHeroUser {
     export type Props = ComponentProps<"div">;

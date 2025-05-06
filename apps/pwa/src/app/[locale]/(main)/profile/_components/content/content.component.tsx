@@ -1,27 +1,24 @@
 "use client";
 
-import { ComponentProps, useRef } from "react";
+import { PropsWithChildren, useRef } from "react";
 import { motion, useAnimation } from "motion/react";
 
-import { useProfileScrollerSnap } from "./use-scroller-snap";
+import { useProfileContentSnap } from "./use-content-snap";
 import { profileContentDragYPx } from "../motion-values";
 
-import styles from "./styles.module.scss";
-
-export namespace ProfileContentScroller {
-    export type Props = ComponentProps<"div">;
+export namespace ProfilePageContent {
+    export type Props = PropsWithChildren;
 }
 
-export const ProfileContentScroller = ({ children, ...props }: ProfileContentScroller.Props) => {
+export const ProfilePageContent = ({ children }: ProfilePageContent.Props) => {
     const scrollerRef = useRef<HTMLDivElement | null>(null);
     const animate = useAnimation();
 
-    const { handleDragEnd } = useProfileScrollerSnap(animate);
+    const { handleDragEnd } = useProfileContentSnap(animate);
 
     return (
-        <div ref={scrollerRef} className={styles.scroller}>
+        <div ref={scrollerRef} style={{ width: "100%", height: "100%" }}>
             <motion.div
-
                 drag={"y"}
                 style={{ y: profileContentDragYPx }}
                 animate={animate}

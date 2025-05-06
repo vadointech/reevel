@@ -20,8 +20,14 @@
     }
 
     &__cta {
-        color: colors.$accent;
         font-weight: 500;
+
+        &_default {
+            color: colors.$primary
+        }
+        &_accent {
+            color: colors.$accent;
+        }
     }
 
     &__content {

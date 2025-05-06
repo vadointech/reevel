@@ -1,8 +1,5 @@
-"use client";
+import { ProfileHero, ProfilePageContent, ProfilePageHeader, ProfilePageLayout } from "./_components";
 
-import { ComponentProps } from "react";
-
-import { ProfileHeader, ProfileHero, ProfileContentScroller } from "..";
 import { Container, Typography } from "@/components/ui";
 import { ReviewsSection, ScrollSection } from "@/components/sections";
 import { InterestButton } from "@/components/shared/_redesign";
@@ -10,15 +7,11 @@ import { EventCard } from "@/components/shared/event-card";
 
 import styles from "./styles.module.scss";
 
-export namespace ProfilePageContent {
-    export type Props = ComponentProps<"div">;
-}
-
-export const ProfilePageContent = ({ ...props }: ProfilePageContent.Props) => {
+export default function PrivateProfilePage() {
     return (
-        <>
-            <ProfileHeader />
-            <ProfileContentScroller>
+        <ProfilePageLayout>
+            <ProfilePageHeader variant={"private"} />
+            <ProfilePageContent>
                 <ProfileHero />
                 <div className={styles.content}>
                     <Container className={styles.content__gap}>
@@ -34,7 +27,7 @@ export const ProfilePageContent = ({ ...props }: ProfilePageContent.Props) => {
 
                     <ScrollSection
                         size={"small"}
-                        title={"Common Interests"}
+                        title={"My Interests"}
                         cta={"See all"}
                         className={styles.content__gap}
                     >
@@ -51,7 +44,7 @@ export const ProfilePageContent = ({ ...props }: ProfilePageContent.Props) => {
                     </ScrollSection>
 
                     <ScrollSection
-                        title={"Top Events"}
+                        title={"My Events"}
                         cta={"See all"}
                         className={styles.content__gap}
                     >
@@ -88,7 +81,7 @@ export const ProfilePageContent = ({ ...props }: ProfilePageContent.Props) => {
                         count={578}
                     />
                 </div>
-            </ProfileContentScroller>
-        </>
+            </ProfilePageContent>
+        </ProfilePageLayout>
     );
-};
+}
