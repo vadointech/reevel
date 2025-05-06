@@ -3,16 +3,17 @@ import { Typography } from "@/components/ui";
 
 import styles from "./styles.module.scss";
 import cx from "classnames";
+import { Button } from "@/components/shared/_redesign";
 
 export namespace Section {
-    export type Variant = "default" | "accent";
+    export type Variant = Button.Variant;
     export type Data = {
         title?: string;
         cta?: string | ReactNode
     };
     export type Props = ComponentProps<"div"> & Data & {
         container?: boolean;
-        variant?: Variant;
+        variant?: Button.Variant;
     };
 }
 
@@ -21,7 +22,7 @@ export const Section = ({
     children,
     title,
     cta,
-    variant = "default",
+    variant = "text-primary",
     container = false,
     ...props
 }: Section.Props) => {
@@ -41,16 +42,17 @@ export const Section = ({
                         </Typography.h2>
                         {
                             cta ? (
-                                // TODO: Button component here
-                                <Typography.span
-                                    size={"sm"}
-                                    className={cx(
-                                        styles.section__cta,
-                                        styles[`section__cta_${variant}`],
-                                    )}
+                                <Button
+                                    size={"small"}
+                                    variant={variant}
+                                    className={styles.section__cta}
+                                    style={{
+                                        width: "fit-content",
+                                        padding: 0,
+                                    }}
                                 >
                                     { cta }
-                                </Typography.span>
+                                </Button>
                             ) : null
                         }
                     </div>

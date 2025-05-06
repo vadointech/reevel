@@ -46,7 +46,9 @@ export const Button = ({
             {...props}
         >
             { iconBefore }
-            { children  }
+            <span>
+                { children }
+            </span>
             { iconAfter }
             {
                 arrowAfter ? (

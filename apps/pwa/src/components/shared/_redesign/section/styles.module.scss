@@ -17,16 +17,12 @@
     &__title {
         color: colors.$primary;
         font-weight: 500;
+        flex-grow: 1;
     }
 
     &__cta {
-        font-weight: 500;
-
-        &_default {
-            color: colors.$primary
-        }
-        &_accent {
-            color: colors.$accent;
+        span {
+            font-weight: 500 !important;
         }
     }
 

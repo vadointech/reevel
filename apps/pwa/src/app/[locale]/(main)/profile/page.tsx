@@ -2,10 +2,12 @@ import { ProfileHero, ProfilePageContent, ProfilePageHeader, ProfilePageLayout }
 
 import { Container, Typography } from "@/components/ui";
 import { ReviewsSection, ScrollSection } from "@/components/sections";
-import { InterestButton } from "@/components/shared/_redesign";
+import { Button, InterestButton } from "@/components/shared/_redesign";
 import { EventCard } from "@/components/shared/event-card";
 
 import styles from "./styles.module.scss";
+import cx from "classnames";
+import { IconGoogle } from "@/components/icons";
 
 export default function PrivateProfilePage() {
     return (
@@ -14,7 +16,7 @@ export default function PrivateProfilePage() {
             <ProfilePageContent>
                 <ProfileHero />
                 <div className={styles.content}>
-                    <Container className={styles.content__gap}>
+                    <Container className={styles.content__gap_sm}>
                         <div className={styles.content__description}>
                             <Typography.p size={"sm"}>
                                 Pick the things you’re passionate about so we can show events that match your passionate interests.
@@ -23,6 +25,20 @@ export default function PrivateProfilePage() {
                                 More
                             </Typography.span>
                         </div>
+                    </Container>
+
+                    <Container
+                        className={cx(
+                            styles.content__controls,
+                            styles.content__gap,
+                        )}
+                    >
+                        <Button variant={"secondary-muted"} size={"small"}>
+                            Edit profile
+                        </Button>
+                        <Button variant={"secondary-muted"} size={"small"}>
+                            Share profile
+                        </Button>
                     </Container>
 
                     <ScrollSection

@@ -6,6 +6,10 @@
 
     &__gap {
         margin-bottom: mixins.rem(22);
+
+        &_sm {
+            margin-bottom: 1rem;
+        }
     }
 
     &__description {
@@ -21,5 +25,10 @@
         &_more {
             font-weight: 500;
         }
+    }
+
+    &__controls {
+        display: flex;
+        column-gap: mixins.rem(12);
     }
 }

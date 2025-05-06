@@ -29,7 +29,7 @@ export default function ProfilePage() {
                         size={"small"}
                         title={"Common Interests"}
                         cta={"See all"}
-                        variant={"accent"}
+                        variant={"text-accent"}
                         className={styles.content__gap}
                     >
                         {
@@ -47,7 +47,7 @@ export default function ProfilePage() {
                     <ScrollSection
                         title={"Top Events"}
                         cta={"See all"}
-                        variant={"accent"}
+                        variant={"text-accent"}
                         className={styles.content__gap}
                     >
                         <EventCard
@@ -79,7 +79,7 @@ export default function ProfilePage() {
                     <ReviewsSection
                         title={"Rating & reviews"}
                         cta={"See all"}
-                        variant={"accent"}
+                        variant={"text-accent"}
                         rating={4.5}
                         count={578}
                     />
