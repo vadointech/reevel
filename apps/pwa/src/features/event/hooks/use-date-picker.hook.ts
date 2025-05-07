@@ -30,51 +30,8 @@ export function useDatePicker(defaultAvatars: string[] = []) {
         });
     }, [currentMonth, currentYear, daysInMonth]);
 
-    const handleMonth = (month: number) => {
-        const selectedMonthName = data[month];
 
-        const selectedMonthIndex = monthMap[selectedMonthName];
 
-        if (selectedMonthIndex < currentDate.getMonth()) {
-            eventStore.dateStore.setError("This month is unavailable");
-        } else {
-            eventStore.dateStore.setError("");
-        }
-
-        if (eventStore.dateStore.toggle) {
-            eventStore.dateStore.setStartMonth(selectedMonthName);
-        } else {
-            eventStore.dateStore.setEndMonth(selectedMonthName);
-        }
-    };
-
-    const handleDate = (date: string) => {
-        const selectedMonth = eventStore.dateStore.toggle
-            ? eventStore.dateStore.startMonth
-            : eventStore.dateStore.endMonth;
-
-        if (monthMap[selectedMonth] === currentDate.getMonth()) {
-            if (+date < currentDate.getDate()) {
-                eventStore.dateStore.setError("This date is unavailable");
-                return;
-            } else {
-                eventStore.dateStore.setError("");
-            }
-        }
-        else if (monthMap[selectedMonth] < currentDate.getMonth()) {
-            eventStore.dateStore.setError("This month is in the past");
-            return;
-        }
-        else {
-            eventStore.dateStore.setError("");
-        }
-
-        if (eventStore.dateStore.toggle) {
-            eventStore.dateStore.setStartDate(date);
-        } else {
-            eventStore.dateStore.setEndDate(date);
-        }
-    };
 
     const handleHour = (hour: number) => {
         if (eventStore.dateStore.toggle) {
@@ -98,8 +55,7 @@ export function useDatePicker(defaultAvatars: string[] = []) {
         daySlides,
         currentMonth,
         daysInMonth,
-        handleMonth,
-        handleDate,
+
         handleHour,
         handleMinute,
     };

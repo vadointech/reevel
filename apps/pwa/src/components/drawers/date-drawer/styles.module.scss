@@ -1,0 +1,154 @@
+@use "@/theme/colors";
+@use "@/theme/mixins";
+@use "@/theme/fonts";
+
+
+
+.drawer {
+    &__picker {
+        margin-top: 1rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    h2 {
+      text-align: center;
+      @include fonts.font-creata('lg',500,26px)
+    }
+}
+
+.rdp {
+  position: relative;
+  box-sizing: border-box;
+
+  font-size: 1.25rem;
+
+  background-color: colors.$foreground;
+  border-radius:mixins.rem(17);
+
+  padding: 1.5rem 1.5rem 0px 1.5rem;
+  --rdp-accent-color: colors.$secondary;
+  --rdp-accent-background-color: #f0f0ff;
+  --rdp-day-height: 30px;
+  --rdp-day-width: 30px;
+  --rdp-day_button-border-radius: 100%;
+  --rdp-day_button-border: 2px solid transparent;
+  --rdp-day_button-height: 30px;
+  --rdp-day_button-width: 30px;
+  --rdp-disabled-opacity: .5;
+  --rdp-outside-opacity: 1;
+  --rdp-today-color: var(--rdp-accent-color);
+  --rdp-nav_button-disabled-opacity: .5;
+  --rdp-nav_button-height: 1.5rem;
+  --rdp-nav_button-width: 2.25rem;
+  --rdp-range_middle-background-color: var(--rdp-accent-background-color);
+  --rdp-range_middle-color: inherit;
+  --rdp-range_start-color: white;
+  --rdp-range_start-background: linear-gradient(var(--rdp-gradient-direction), transparent 50%, var(--rdp-range_middle-background-color) 50%);
+  --rdp-range_start-date-background-color: var(--rdp-accent-color);
+  --rdp-range_end-background: linear-gradient(var(--rdp-gradient-direction), var(--rdp-range_middle-background-color) 50%, transparent 50%);
+  --rdp-range_end-color: white;
+  --rdp-range_end-date-background-color: var(--rdp-accent-color);
+  --rdp-week_number-border-radius: 100%;
+  --rdp-week_number-border: 2px solid transparent;
+  --rdp-week_number-height: var(--rdp-day-height);
+  --rdp-week_number-opacity: .75;
+  --rdp-week_number-width: var(--rdp-day-width);
+  --rdp-weeknumber-text-align: center;
+  --rdp-weekday-opacity: 1;
+  --rdp-weekday-padding: 26px 0px 26px 0px;
+  --rdp-weekday-text-align: center;
+  --rdp-gradient-direction: 90deg;
+  --rdp-animation_duration: .3s;
+  --rdp-animation_timing: cubic-bezier(.4, 0, .2, 1);
+}
+
+.nav {
+  position: absolute;
+  inset-block-start: 0;
+  inset-block-end: 0;
+  display: flex;
+  align-items: start;
+  height: fit-content;
+  justify-content: space-between;
+  width: 100%;
+
+  svg  {
+    height: 14px;
+  }
+}
+
+.caption_label {
+  align-items: center;
+  display: flex;
+  width: 100%;
+  justify-content: space-evenly;
+  margin-bottom: mixins.rem(26);
+
+  @include fonts.font-creata('base',500,1.5rem)
+}
+
+.month {
+  &_caption {
+    height: 1.5rem;
+  }
+  &_grid {
+    height: fit-content;
+    border-collapse: collapse;
+    border-spacing: 1rem mixins.rem(28);
+  }
+}
+
+.day {
+  @include fonts.font-creata('base', 400, 1.5rem);
+  padding: 0px 0.5rem 26px;
+
+  &:first-child {
+    padding-left: 0;
+  }
+
+  &:last-child {
+    padding-right: 0;
+  }
+  &_outside {
+    @include fonts.font-creata('base', 400, 1.5rem);
+    color:colors.$secondary-highlight
+  }
+
+  &_today {
+    background-color: colors.$foreground;
+  }
+
+  &_selected{
+    position: relative;
+    &::after {
+      content: '';
+      position: absolute;
+      height: 30px;
+      width: 30px;
+      top: 0;
+      z-index: -1;
+      background-color: colors.$primary;
+      border-radius:mixins.rem(29);
+    }
+    color:colors.$foreground;
+    z-index: 1;
+  }
+}
+
+.hasEvent {
+  position: relative;
+
+  &::before {
+    content: "";
+    position: absolute;
+    bottom: 1rem;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background-color: colors.$secondary; 
+  }
+}
+

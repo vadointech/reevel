@@ -6,7 +6,7 @@ import styles from "./styles.module.scss";
 import { getSnapPointName, snapPointsMap } from "./plugins";
 
 export namespace Drawer {
-    export type SnapPoints = "low" | "middle" | "full";
+    export type SnapPoints = "low" | "middle" | "hight" | "full";
 
     export type Props = DialogProps & {
         overlay?: boolean;

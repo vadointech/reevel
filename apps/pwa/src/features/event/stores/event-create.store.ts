@@ -7,13 +7,11 @@ import { action, makeObservable, observable } from "mobx";
 const monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
 
 export interface IDateEventStore {
-    startDate: string;
-    startMonth: string;
+    startDate: Date;
     startHour: string;
     startMinute: string;
 
     endDate: string;
-    endMonth: string;
     endHour: string;
     endMinute: string;
 
@@ -22,13 +20,11 @@ export interface IDateEventStore {
 }
 
 class DateEventStore implements IDateEventStore {
-    startMonth = monthNames[new Date().getMonth()];
-    startDate: string = new Date().getDate().toString();
+    startDate: Date = new Date()
     startHour: string = "";
     startMinute: string = "00";
 
     endDate: string = "";
-    endMonth: string = "";
     endHour: string = "";
     endMinute: string = "00";
 
@@ -36,22 +32,18 @@ class DateEventStore implements IDateEventStore {
     error: string = ""
     constructor() {
         makeObservable(this, {
-            startMonth: observable,
             startDate: observable,
             startHour: observable,
             startMinute: observable,
             endDate: observable,
-            endMonth: observable,
             endHour: observable,
             endMinute: observable,
             toggle: observable,
             error: observable,
             setError: action,
-            setStartMonth: action,
             setStartDate: action,
             setStartHour: action,
             setStartMinute: action,
-            setEndMonth: action,
             setEndDate: action,
             setEndHour: action,
             setEndMinute: action,
@@ -65,11 +57,7 @@ class DateEventStore implements IDateEventStore {
         this.error = error
     }
 
-    setStartMonth(moth: string) {
-        this.startMonth = moth;
-    }
-
-    setStartDate(date: string) {
+    setStartDate(date: Date) {
         this.startDate = date;
     }
 
@@ -79,10 +67,6 @@ class DateEventStore implements IDateEventStore {
 
     setStartMinute(minute: string) {
         this.startMinute = minute
-    }
-
-    setEndMonth(moth: string) {
-        this.endMonth = moth;
     }
 
     setEndDate(date: string) {
@@ -146,7 +130,6 @@ class CreateEventStore implements ICreateEventStore {
             setTitle: action,
             setTickets: action,
             setPrice: action,
-            setPrice: action,
             setPoster: action,
             setDescription: action,
             addInterest: action,
@@ -154,7 +137,6 @@ class CreateEventStore implements ICreateEventStore {
             setLocationQuery: action,
             setInterestQuery: action,
             setLocation: action,
-            setDate: action,
         });
 
         initStore(this, init);
@@ -179,10 +161,6 @@ class CreateEventStore implements ICreateEventStore {
 
     setDescription(description: string) {
         this.description = description;
-    }
-
-    setDate(date: number) {
-        this.date = date
     }
 
     addInterest(interest: InterestEntity): void {

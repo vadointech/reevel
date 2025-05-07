@@ -8,12 +8,21 @@ import styles from "./styles.module.scss"
 
 import { observer } from "mobx-react-lite";
 import { useDatePicker } from "@/features/event/hooks/use-date-picker.hook";
+import { useEventStore } from "@/features/event";
 
-type PropType = {
-    loop?: EmblaOptionsType["loop"]
-};
+export namespace EventTimePicker {
+    export type Props = {
+        onHourChange: (hour: string) => void;
+        onMinuteChange: (minute: string) => void;
+    }
+}
 
-const EventTimePicker: React.FC<PropType> = observer(() => {
+const EventTimePicker = observer(({
+    onHourChange,
+    onMinuteChange
+}: EventTimePicker.Props) => {
+
+    const eventStore = useEventStore()
 
     const controlsLeft = useTimePicker({
         slideCount: 24,
@@ -25,7 +34,7 @@ const EventTimePicker: React.FC<PropType> = observer(() => {
         handlers: {
             onChange: ({ api }) => {
                 const { index } = api.internalEngine();
-                handleHour(index.get())
+                onHourChange(index.get().toString())
             }
         },
     });
@@ -39,7 +48,7 @@ const EventTimePicker: React.FC<PropType> = observer(() => {
         handlers: {
             onChange: ({ api }) => {
                 const { index } = api.internalEngine();
-                handleMinute(index.get())
+                onMinuteChange(index.get().toString())
             }
         },
     });
@@ -51,9 +60,6 @@ const EventTimePicker: React.FC<PropType> = observer(() => {
     const rightDefaultVariables = controlsRight.wheel.slides
         .filter((num): num is number => num !== null && num !== undefined)
         .map(num => num.toString());
-
-    const { handleHour } = useDatePicker(leftDefaultVariables)
-    const { handleMinute } = useDatePicker(rightDefaultVariables)
 
     return (
         <div className={styles.embla}>

@@ -22,7 +22,7 @@ export const TicketsDrawer = observer(({ open, onClose }: TicketsDrawer.Props) =
     const eventStore = useEventStore()
 
     return (
-        <Drawer open={open} defaultPoint={"middle"} staticPoint={"middle"}>
+        <Drawer open={open} defaultPoint={"middle"} >
             <DrawerBody>
                 <DrawerContent className={styles.drawer}>
                     <OnboardingTextBlock

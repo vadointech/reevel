@@ -23,29 +23,6 @@
     }
   }
 
-  &__placeholder {
-    position: absolute;
-    margin-left: 1rem;
-    margin-top: 0.75rem;
-    box-sizing:border-box;
-    @include fonts.font-creata("", 400,mixins.rem(24));
-    pointer-events: none;
-
-    transition: color motions.$motion-duration-mid motions.$motion-ease-in-out,
-    opacity motions.$motion-duration-mid motions.$motion-ease-in-out;
-
-    &_textarea {
-      top: 1rem;
-    }
-
-    &_withIcon {
-      position: absolute;
-      margin: 0rem;
-      margin-left: mixins.rem(40);
-    }
-
-  }
-
   &__input {
     height: mixins.rem(70);
     width: 100%;
@@ -54,41 +31,41 @@
     padding-top: 1.5rem;
 
     @include fonts.font-creata("base", 400);
-    border:none;
+    border: none;
     transition: background-color motions.$motion-duration-mid motions.$motion-ease-in-out,
     border-color motions.$motion-duration-mid motions.$motion-ease-in-out,
     color motions.$motion-duration-mid motions.$motion-ease-in-out;
 
-    &:focus + .container__placeholder {
-      color: colors.$primary;
-    }
-    &:not(:placeholder-shown) + .container__placeholder {
-      opacity: 0;
+    &::placeholder {
+      color: colors.$secondary;
+      opacity: 1;
     }
 
-    &:focus,&:not(:placeholder-shown) {
+    &:focus {
       border-color: colors.$background-muted;
       outline: none;
       background-color: colors.$secondary-highlight;
       color: colors.$primary;
+
+      &::placeholder {
+        color: colors.$primary;
+      }
     }
 
     &:disabled {
       opacity: 0.3;
       cursor: not-allowed;
     }
-    
 
     &__wrapper {
-        position: relative;
-        display: flex;
-        align-items: center;
+      position: relative;
+      display: flex;
+      align-items: center;
     }
 
     &__withIcon {
       padding: mixins.rem(14) 2.5rem;
       height: mixins.rem(40);
-      
     }
 
     &__icon {
@@ -118,35 +95,25 @@
 
         &::placeholder {
           width: 100%;
-          
           @include fonts.font-creata("", 600);
           font-size: 3.5rem;
           margin-left: mixins.rem(20);
-          color:colors.$secondary-highlight;
+          color: colors.$secondary-highlight;
         }
 
-        &:focus,&:not(:placeholder-shown) {
+        &:focus {
           border-color: colors.$background-muted;
           outline: none;
           background-color: transparent;
           color: colors.$primary;
-        }
 
-        &:focus {
-          color:colors.$primary;
-        }
-
-        &:not(:placeholder-shown) {
-          color:colors.$primary;
-        }
-
-        &:active {
-          color:colors.$primary;
+          &::placeholder {
+            color: colors.$primary;
+          }
         }
       }
     }
 
-    
     &__size {
       &_large {
         height: mixins.rem(140);

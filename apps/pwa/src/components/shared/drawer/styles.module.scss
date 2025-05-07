@@ -43,7 +43,7 @@
         width: mixins.rem(36);
         height: mixins.rem(5);
         border-radius: mixins.rem(30);
-        background-color: colors.$foreground;
+        background-color: colors.$border;
 
         z-index: 999;
     }

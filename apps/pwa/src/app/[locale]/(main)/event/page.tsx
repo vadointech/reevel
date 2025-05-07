@@ -7,7 +7,8 @@ import { EventInterestsPicker, TicketsPicker } from "./interests/_components";
 
 import styles from "./styles.module.scss"
 import { OptionItem } from "@/components/shared/options";
-import { IconApple, IconNavigation } from "@/components/icons";
+import { IconNavigation } from "@/components/icons";
+import { DatePicker } from "./_components/date-picker";
 
 
 
@@ -36,6 +37,8 @@ export default async function Home() {
                 />
 
                 <TicketsPicker />
+
+                <DatePicker />
             </Container>
         </div>
     )

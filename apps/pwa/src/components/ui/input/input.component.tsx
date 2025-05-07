@@ -9,7 +9,7 @@ export namespace Input {
     export type BaseProps = {
         variant: Variant;
         label?: string;
-        placeholderr?: string;
+        placeholder?: string;
         hint?: string;
         error?: string;
         icon?: ReactNode
@@ -27,33 +27,20 @@ const InputBase = memo(({
     hint,
     error,
     icon,
-    placeholderr,
     type,
     children,
 }: Input.BaseProps) => {
     const id = useId();
     return (
         <div className={styles.container}>
-
-
             <div className={styles.container__input__wrapper}>
                 {children}
 
-                {placeholderr &&
-                    <span className={cx(
-                        styles.container__placeholder,
-                        styles[`container__placeholder_${type}`],
-                        icon ? styles.container__placeholder_withIcon : false,
-                    )}>{placeholderr}</span>
-                }
-
-                {
-                    icon ? (
-                        <div className={styles.container__input__icon}>
-                            {icon}
-                        </div>
-                    ) : null
-                }
+                {icon ? (
+                    <div className={styles.container__input__icon}>
+                        {icon}
+                    </div>
+                ) : null}
 
                 {
                     !icon && label ? (
@@ -76,18 +63,16 @@ const InputBase = memo(({
                 ) : null
             }
 
-            {
-                (error || hint) ? (
-                    <span
-                        className={cx(
-                            styles.container__hint,
-                            error && styles.container__error,
-                        )}
-                    >
-                        {error || hint}
-                    </span>
-                ) : null
-            }
+            {(error || hint) ? (
+                <span
+                    className={cx(
+                        styles.container__hint,
+                        error && styles.container__error,
+                    )}
+                >
+                    {error || hint}
+                </span>
+            ) : null}
         </div>
     );
 });
@@ -98,7 +83,7 @@ export const Input = memo(({
     error,
     icon,
     variant,
-    placeholderr,
+    placeholder,
     className,
     ...props
 }: Input.InputProps) => {
@@ -109,7 +94,7 @@ export const Input = memo(({
             error={error}
             icon={icon}
             variant={variant}
-            placeholderr={placeholderr}
+            placeholder={placeholder}
             type="input"
         >
             <input
@@ -119,13 +104,12 @@ export const Input = memo(({
                     icon ? styles.container__input__withIcon : false,
                     className,
                 )}
-                placeholder=""
+                placeholder={placeholder}
                 {...props}
             />
         </InputBase>
     );
 });
-
 
 export const TextArea = memo(({
     label,
@@ -133,7 +117,7 @@ export const TextArea = memo(({
     error,
     icon,
     variant,
-    placeholderr,
+    placeholder,
     className,
     ...props
 }: Input.TextAreaProps) => {
@@ -144,7 +128,7 @@ export const TextArea = memo(({
             hint={hint}
             error={error}
             icon={icon}
-            placeholderr={placeholderr}
+            placeholder={placeholder}
             type="textarea"
         >
             <textarea
@@ -155,7 +139,7 @@ export const TextArea = memo(({
                     icon ? styles.container__input__withIcon : false,
                     className,
                 )}
-                placeholder=""
+                placeholder={placeholder}
                 {...props}
             />
         </InputBase>

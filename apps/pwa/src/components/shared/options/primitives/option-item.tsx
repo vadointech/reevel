@@ -37,8 +37,7 @@ export const OptionItem = ({
                     styles.option__text,
                     warn && styles.option__text__warn
                 )}>
-                    <div>                    {icon && icon}
-                    </div>
+                    {icon && icon}
                     <div className={styles.option__text__meta}>
                         {label}
                         <span>

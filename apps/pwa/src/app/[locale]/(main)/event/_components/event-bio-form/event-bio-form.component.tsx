@@ -31,7 +31,7 @@ const Title = observer(() => {
         <Input
             onChange={(e) => eventStore.setTitle(e.target.value)}
             label={"Title"}
-            placeholderr={"Enter title"}
+            placeholder={"Enter title"}
             variant={"default"}
         />
     );
@@ -43,7 +43,7 @@ export const Description = observer(() => {
         <TextArea
             onChange={(e) => eventStore.setDescription(e.target.value)}
             label={"Description"}
-            placeholderr={"Enter description"}
+            placeholder={"Enter description"}
             variant={"default"}
         />
     );

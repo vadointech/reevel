@@ -39,7 +39,7 @@ export const InterestsSearch = observer(({
                 className={styles.page__header}
             >
                 <Input
-                    placeholderr={"Search"}
+                    placeholder={"Search"}
                     variant={"rounded"}
                     type="input"
                     icon={<IconSearch />}
