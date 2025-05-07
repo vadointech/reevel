@@ -1,0 +1,9 @@
+@use "@/theme/typography";
+
+.typography {
+    @each $key, $_ in typography.$font-size {
+        &_#{$key} {
+            @include typography.font($key);
+        }
+    }
+}

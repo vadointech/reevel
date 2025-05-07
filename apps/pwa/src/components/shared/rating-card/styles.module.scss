@@ -1,50 +1,37 @@
 @use "@/theme/mixins";
 @use "@/theme/colors";
-@use "@/theme/fonts";
-
-
 
 .card {
+    flex-shrink: 0;
+
     width: mixins.rem(292);
     height: mixins.rem(154);
 
-    display: flex;
-    flex-direction:column;
-    gap: 0.5rem;
+    background: colors.$foreground;
 
-
-    background-color: colors.$background;
-
-    border-radius: 0.75rem;
+    border-radius: mixins.rem(17);
     padding: 1rem;
 
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
 
     &__feedback {
-        @include fonts.font-creata("sm",400,mixins.rem(20))
+        @include mixins.textEllipsis(4);
     }
 
     &__details {
-        display: flex;
-        align-items: center;
-        gap: 0.5rem;
+        display: grid;
+        grid-template-columns: mixins.rem(34) 1fr;
+        grid-template-rows: mixins.rem(34);
+        gap: .5rem;
+    }
 
-        &__wrapper {
-
-            &__stars {
-                display: flex;
-                gap: 0.25rem;
-            }
-
-            &__author {
-                @include fonts.font-creata("xs");
-                display: flex;
-                align-items: start;
-                gap: 0.25rem;
-                
-                span {
-                    color:colors.$secondary;
-                }
-            }
+    &__author {
+        margin-top: mixins.rem(2);
+        color: colors.$primary;
+        span {
+            color: colors.$secondary;
         }
     }
 

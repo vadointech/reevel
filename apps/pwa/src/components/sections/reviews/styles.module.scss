@@ -1,0 +1,32 @@
+@use "@/theme/mixins";
+@use "@/theme/colors";
+@use "@/theme/fonts";
+
+.reviews {
+    height: mixins.rem(154);
+    border-radius: mixins.rem(17);
+    padding: 1rem;
+
+    background: colors.$foreground;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: end;
+    row-gap: mixins.rem(6);
+
+    &__content {
+        display: flex;
+        align-items: flex-end;
+        column-gap: mixins.rem(6);
+    }
+
+    &__rating {
+        font-weight: 700;
+        line-height: 1;
+        color: colors.$primary;
+    }
+
+    &__count {
+        color: colors.$secondary;
+    }
+}

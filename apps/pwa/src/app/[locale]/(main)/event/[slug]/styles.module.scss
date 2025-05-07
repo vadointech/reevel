@@ -1,0 +1,14 @@
+@use "@/theme/mixins";
+@use "@/theme/colors";
+@use "@/theme/fonts";
+
+.page {
+    &__interests {
+        padding: mixins.rem(22) 0;
+        border-bottom: 1px colors.$secondary-muted solid;
+    }
+
+    &__gap {
+        margin-bottom: mixins.rem(32);
+    }
+}

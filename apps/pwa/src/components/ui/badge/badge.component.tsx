@@ -1,37 +1,40 @@
 import { ComponentProps, ReactNode } from "react";
 import styles from "./styles.module.scss";
 import cx from "classnames";
-
-export type Variant = 'default' | 'primary' | 'ghost' | 'date' | 'fire';
-
+import { Typography } from "@/components/ui";
 
 export namespace Badge {
+    export type Variant = "default" | "primary" | "ghost" | "date" | "fire";
+    export type Size = "default" | "small";
     export type Props = ComponentProps<"div"> & {
         variant?: Variant;
-        title: string;
+        size?: Size;
         icon?: ReactNode;
     };
 }
 
 export const Badge = ({
-    variant = 'default',
-    title,
+    variant = "default",
+    size = "default",
     icon,
-    children,
     className,
+    children,
     ...props
 }: Badge.Props) => {
     return (
-        <div className={cx(
-            styles.badge,
-            styles[`badge__variant_${variant}`],
-            className
-        )}
+        <div
+            className={cx(
+                styles.badge,
+                styles[`badge__variant_${variant}`],
+                styles[`badge__size_${size}`],
+                className,
+            )}
             {...props}
         >
-            {icon && icon}
-
-            <span>{title}</span>
+            { icon ? icon : null }
+            <Typography.span size={"xs"}>
+                { children }
+            </Typography.span>
         </div>
-    )
-}
+    );
+};

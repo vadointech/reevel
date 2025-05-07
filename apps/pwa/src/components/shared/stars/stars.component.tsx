@@ -1,3 +1,5 @@
+"use client";
+
 import { ComponentProps, useState } from "react";
 import styles from "./styles.module.scss";
 
@@ -9,7 +11,7 @@ export namespace Stars {
         color?: string,
         iconSize?: number,
         readonly?: boolean,
-    }
+    };
 }
 
 const DEFAULT_UNSELECTED_COLOR = "#E8E9EA";
@@ -26,7 +28,7 @@ export const Stars = ({
     const [rating, setRating] = useState(defaultRating);
     const [temporaryRating, setTemporaryRating] = useState(0);
 
-    let stars = Array(count).fill(icon);
+    const stars = Array(count).fill(icon);
 
     const handleClick = (rating: number) => {
         if (readonly) return;

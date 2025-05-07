@@ -26,11 +26,12 @@
         flex-direction: column;
         overflow: hidden;
 
-        padding-top: mixins.rem(24);
-        padding-inline: 1rem;
+        //padding-top: mixins.rem(24);
+        //padding-inline: 1rem;
 
         background-color: colors.$background-muted;
         border-radius: mixins.rem(20) mixins.rem(20) 0 0;
+        overflow: hidden;
     }
 
     &__icon {
@@ -38,6 +39,7 @@
         top: .5rem;
         left: 0;
         right: 0;
+        z-index: 1;
 
         margin: 0 auto;
         width: mixins.rem(36);
@@ -54,7 +56,6 @@
         right: 0;
         bottom: 0;
         left: 0;
-        background-color: rgba(0, 0, 0, 0.4);
-        
+        background-color: rgba(255, 0, 0, .4);
     }
 }

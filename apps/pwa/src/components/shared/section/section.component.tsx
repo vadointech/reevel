@@ -23,6 +23,7 @@ export const Section = ({
     size = 'default',
     href,
     onClick,
+    size = "default",
     children,
     className,
     ...props
@@ -30,7 +31,7 @@ export const Section = ({
     return (
         <div className={cx(
             styles.section,
-            className
+            className,
         )}
             {...props}
         >
@@ -40,7 +41,7 @@ export const Section = ({
             >
                 <h2 className={cx(
                     styles.section__header__title,
-                    styles[`section__header__title__size_${size}`]
+                    styles[`section__header__title__size_${size}`],
                 )}
                 >
                     {title}

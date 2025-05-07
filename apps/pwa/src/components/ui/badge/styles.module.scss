@@ -1,58 +1,82 @@
 @use "@/theme/mixins";
 @use "@/theme/colors";
-@use "@/theme/fonts";
+@use "@/theme/typography";
 
 
 
 .badge {
-    width: fit-content;
-    height: mixins.rem(24);
-    padding: mixins.rem(0) mixins.rem(10);
-
-
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: mixins.rem(4);
 
-    border: 1px solid transparent;
-    border-radius:100;
+    width: fit-content;
+    border-radius: 1rem;
+    border: mixins.rem(1) transparent solid;
 
-    @include fonts.font-creata("xs", 400, mixins.rem(18));
+    &__size {
+        &_default {
+            height: mixins.rem(26);
+            padding-inline: mixins.rem(10);
+            gap: mixins.rem(4);
+
+            svg {
+                width: mixins.rem(10);
+                height: mixins.rem(10);
+            }
+        }
+
+        &_small {
+            height: mixins.rem(22);
+            padding-inline: mixins.rem(6);
+            gap: mixins.rem(4);
+
+            svg {
+                width: mixins.rem(10);
+                height: mixins.rem(10);
+            }
+
+            span {
+                @include typography.font-creata("xxs", 400);
+            }
+        }
+    }
+
     &__variant {
+        &_ghost {
+            background-color: rgba(#FFFFFF, .4);
+            border-color: rgba(#FFFFFF, .4);
+            color: colors.$foreground;
+            svg path {
+                fill: colors.$foreground;
+            }
+        }
+
+
+
         &_default {
             background-color: colors.$background;
-            color:colors.$secondary;
+            color: colors.$secondary;
             border-color: colors.$border;
             svg path {
-                fill:colors.$secondary;
+                fill: colors.$secondary;
             }
         }
 
         &_primary {
             background-color: colors.$primary;
-            color:colors.$white;
+            color: colors.$foreground;
             border-color: colors.$border;
             svg path {
-                fill:colors.$white;
-            }
-        }
-
-        &_ghost {
-            background-color: rgba(colors.$background-muted, 0.4);
-            border-color: rgba(colors.$background-muted, 0.4);
-            color: colors.$white;
-            svg path {
-                fill: colors.$white;
+                fill: colors.$foreground;
             }
         }
 
         &_fire {
-            background-color: colors.$orange;
-            border-color:none;
-            color: colors.$white;
+            background-color: #FFAE00;
+            border-color: unset;
+            color: colors.$foreground;
             svg path {
-                fill: colors.$white;
+                fill: colors.$foreground
             }
         }
     }

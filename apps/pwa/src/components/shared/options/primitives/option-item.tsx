@@ -1,8 +1,10 @@
-import { Children, ComponentProps, ReactNode } from "react";
-import styles from "../styles.module.scss";
-import cx from "classnames";
+import { ComponentProps, ReactNode } from "react";
+
 import { Back } from "@/components/icons";
 import { Link } from "@/i18n/routing";
+
+import styles from "../styles.module.scss";
+import cx from "classnames";
 
 export namespace OptionItem {
     export type Props = ComponentProps<"div"> & {
@@ -11,9 +13,8 @@ export namespace OptionItem {
         icon?: ReactNode;
         value?: string | number;
         backIcon?: boolean;
-        warn?: boolean;
+        danger?: boolean;
         href?: string
-        onClick?: () => void;
     };
 }
 
@@ -23,21 +24,28 @@ export const OptionItem = ({
     icon,
     value,
     backIcon = false,
-    warn,
+    danger = false,
     href,
-    onClick,
     className,
     ...props
 }: OptionItem.Props) => {
 
     const ItemComponent = () => {
         return (
-            <div className={cx(styles.option, className)} onClick={onClick} {...props}>
-                <div className={cx(
-                    styles.option__text,
-                    warn && styles.option__text__warn
-                )}>
-                    {icon && icon}
+            <div
+                className={cx(
+                    styles.option,
+                    className,
+                )}
+                {...props}
+            >
+                <div
+                    className={cx(
+                        styles.option__text,
+                        danger && styles.option__text_danger,
+                    )}
+                >
+                    {icon ? icon : null }
                     <div className={styles.option__text__meta}>
                         {label}
                         <span>
@@ -51,7 +59,7 @@ export const OptionItem = ({
                 </div>
             </div>
         );
-    }
+    };
 
     if (href) {
         return (
@@ -61,7 +69,7 @@ export const OptionItem = ({
         );
     }
 
-    return <ItemComponent />
-}
+    return <ItemComponent />;
+};
 
 

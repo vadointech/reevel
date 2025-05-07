@@ -1,0 +1,61 @@
+@use "sass:map";
+
+$base-font-size: 16px;
+$font-creata: var(--font-creata);
+
+$font-size: (
+    "xxs": (
+        "size": 0.625rem, // 10px
+        "height": 0.963rem, // 15.4px
+        "offset": -0.094rem, // 1.5px
+    ),
+    "xs": (
+        "size": 0.75rem, // 12px
+        "height": 1.125rem, // 18px
+        "offset": -0.094rem, // 1.5px
+    ),
+    "sm": (
+        "size": 0.875rem, // 14px
+        "height": 1.25rem, // 20px
+        "offset": -0.094rem, // 1.5px
+    ),
+    "base": (
+        "size": 1rem, // 16px
+        "height": 1.5rem, // 24px
+        "offset": -0.188rem, // 3px
+    ),
+    "lg": (
+        "size": 1.25rem, // 20px
+        "height": 1.625rem, // 26px
+        "offset": -0.25rem, // 4px
+    ),
+    "xl": (
+        "size": 1.5rem, // 24px
+        "height": 2rem, // 32px
+        "offset": -0.125rem, // 2px
+    ),
+    "2xl": (
+        "size": 1.75rem, // 28px
+        "height": 2.25rem, // 36px
+        "offset": -0.125rem, // 2px
+    ),
+    "3xl": (
+        "size": 2rem, // 32px
+        "height": 2.25rem, // 36px
+        "offset": -0,
+    ),
+);
+
+@mixin font($font-size-key) {
+    $font-data: map.get($font-size, $font-size-key);
+
+    font-family: $font-creata;
+    font-size: map.get($font-data, "size");
+    line-height: map.get($font-data, "height");
+    margin-bottom: map.get($font-data, "offset");
+}
+
+@mixin font-creata($font-size-key: "base", $font-weight: normal) {
+    @include font($font-size-key);
+    font-weight: $font-weight;
+}

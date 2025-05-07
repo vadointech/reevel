@@ -1,0 +1,27 @@
+@use "@/theme/mixins";
+@use "@/theme/colors";
+@use "@/theme/fonts";
+
+.button {
+    height: mixins.rem(38);
+    width: fit-content;
+    border-radius: mixins.rem(100);
+    padding-inline: mixins.rem(18);
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    column-gap: .5rem;
+
+    &_default {
+        background: colors.$foreground;
+    }
+
+    &_text {
+
+    }
+
+    &_primary {
+
+    }
+}

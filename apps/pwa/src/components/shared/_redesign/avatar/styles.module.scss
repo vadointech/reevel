@@ -1,0 +1,30 @@
+@use "@/theme/mixins";
+@use "@/theme/colors";
+
+.avatar {
+    height: 100%;
+    aspect-ratio: 1;
+    flex-shrink: 0;
+
+    position: relative;
+
+    border-radius: 50%;
+    overflow: hidden;
+
+    img {
+        position: absolute;
+        inset: 0;
+        object-fit: cover;
+    }
+
+    &__variant {
+        &_bordered {
+            border: mixins.rem(1) colors.$foreground solid;
+        }
+
+        &_outline {
+            outline: mixins.rem(1.5) colors.$foreground solid;
+            outline-offset: mixins.rem(3);
+        }
+    }
+}

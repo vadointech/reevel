@@ -1,24 +1,26 @@
-import { Children, ComponentProps, ReactNode } from "react";
+import { ComponentProps } from "react";
+
 import styles from "./styles.module.scss";
 import cx from "classnames";
 
-export type Size = "default" | "small"
-
 export namespace Options {
-    export type Props = ComponentProps<"div"> & {
-        children: ReactNode;
-    };
+    export type Props = ComponentProps<"div">;
 }
 
 export const Options = ({
-
     className,
     children,
     ...props
 }: Options.Props) => {
     return (
-        <div className={styles.options} {...props}>
-            {children}
+        <div
+            className={cx(
+                styles.options,
+                className,
+            )}
+            {...props}
+        >
+            { children }
         </div>
     );
-}
+};
