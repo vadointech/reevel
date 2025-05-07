@@ -1,7 +1,5 @@
-import { Transition } from "motion";
-import { AnimationControls } from "motion/react";
 import { useCallback, useRef } from "react";
-import { createRoot } from "react-dom/client";
+import { createRoot, Root } from "react-dom/client";
 
 type TruncateTextParams = {
     textHeight: number;
@@ -10,13 +8,7 @@ type TruncateTextParams = {
     ellipsisChar?: string;
 };
 
-const TRANSITION_PARAMS: Transition = {
-    type: "tween",
-    duration: 0.15,
-    ease: "easeOut",
-};
-
-export function useTruncatedText(animate: AnimationControls, {
+export function useTruncatedText({
     textHeight,
     ...params
 }: TruncateTextParams) {
@@ -32,6 +24,7 @@ export function useTruncatedText(animate: AnimationControls, {
     const initialScrollHeight = useRef(0);
 
     const ref = useRef<HTMLDivElement | null>(null);
+    const rootRef = useRef<Root | null>(null);
     const refHandler = useCallback((element: HTMLDivElement | null) => {
         if(!element) return;
         ref.current = element;
@@ -50,10 +43,14 @@ export function useTruncatedText(animate: AnimationControls, {
     }, []);
 
     const renderSuffix = (text: string, suffix: string) => {
-        if(!ref.current) return;
-        createRoot(ref.current).render(
+        if (!ref.current) return;
+
+        if (!rootRef.current) {
+            rootRef.current = createRoot(ref.current);
+        }
+        rootRef.current.render(
             <>
-                { text } <span onClick={handleToggleOpen}>{ suffix }</span>
+                { text } <span>{ suffix }</span>
             </>,
         );
     };
@@ -61,7 +58,7 @@ export function useTruncatedText(animate: AnimationControls, {
     const setTruncatedText = () => {
         const text = truncatedText.current.slice(
             0,
-            -(OPEN_SUFFIX.length + ELLIPSIS_CHAR.length),
+            -(OPEN_SUFFIX.length + ELLIPSIS_CHAR.length + 2),
         ).trim();
 
         renderSuffix(
@@ -80,7 +77,11 @@ export function useTruncatedText(animate: AnimationControls, {
 
         isOpen.current = true;
         setFullText();
-        animate.start({ height: initialScrollHeight.current }, TRANSITION_PARAMS);
+        requestAnimationFrame(() => {
+            if (ref.current) {
+                ref.current.style.maxHeight = "fit-content";
+            }
+        });
     };
 
     const handleClose = () => {
@@ -88,7 +89,11 @@ export function useTruncatedText(animate: AnimationControls, {
 
         isOpen.current = false;
         setTruncatedText();
-        animate.start({ height: textHeight }, TRANSITION_PARAMS);
+        requestAnimationFrame(() => {
+            if (ref.current) {
+                ref.current.style.maxHeight = textHeight + "px";
+            }
+        });
     };
 
     const handleToggleOpen = useCallback(() => {

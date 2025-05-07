@@ -1,6 +1,7 @@
 @use "@/theme/mixins";
 @use "@/theme/fonts";
 @use "@/theme/colors";
+@use "@/theme/motions";
 
 .content {
     position: absolute;
@@ -197,6 +198,8 @@
     &__description {
         position: relative;
         margin-top: 1rem;
+
+        transition: max-height motions.$motion-duration-mid motions.$motion-ease-in-out;
 
         span {
             @include fonts.font-creata("sm", 700, mixins.rem(20));

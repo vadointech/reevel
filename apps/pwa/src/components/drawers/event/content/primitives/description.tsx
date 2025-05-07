@@ -1,4 +1,3 @@
-import { motion, useAnimation } from "motion/react";
 import { useTruncatedText } from "../../hooks/use-truncate-text.hook";
 import { Typography } from "@/components/ui";
 
@@ -11,22 +10,20 @@ export namespace EventDrawerContentDescription {
 }
 
 export const EventDrawerContentDescription = ({ children }: EventDrawerContentDescription.Props) => {
-    const animate = useAnimation();
-
-    const [ref] = useTruncatedText(animate, {
+    const [ref, handleToggle] = useTruncatedText({
         textHeight: 61,
     });
 
     return (
         <Typography.div size={"sm"}>
-            <motion.p
+            <p
                 ref={ref}
                 className={styles.hero__description}
-                animate={animate}
-                initial={{ height: 61, overflowY: "hidden" }}
+                style={{ maxHeight: 61 }}
+                onClick={handleToggle}
             >
                 { children }
-            </motion.p>
+            </p>
         </Typography.div>
     );
 };
