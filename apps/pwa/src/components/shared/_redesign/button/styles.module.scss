@@ -52,7 +52,7 @@
             height: mixins.rem(52);
 
             span {
-                @include typography.font-creata("base", 400);
+                @include typography.font("base", 400);
             }
 
             svg {
@@ -63,7 +63,7 @@
             height: mixins.rem(44);
 
             span {
-                @include typography.font-creata("sm", 400);
+                @include typography.font("sm", 400);
             }
 
             svg {

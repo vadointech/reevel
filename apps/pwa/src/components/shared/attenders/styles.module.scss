@@ -1,5 +1,5 @@
 @use "@/theme/colors";
-@use "@/theme/fonts";
+@use "@/theme/typography";
 @use "@/theme/mixins";
 
 .section {
@@ -34,7 +34,8 @@
         border-radius: mixins.rem(50);
 
         color: colors.$primary;
-        font-weight: 400;
+
+        @include typography.font("xxs");
 
         &_size {
             &_default {

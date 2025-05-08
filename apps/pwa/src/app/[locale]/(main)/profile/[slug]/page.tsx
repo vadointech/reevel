@@ -1,6 +1,6 @@
 import { ProfileHero, ProfilePageContent, ProfilePageHeader, ProfilePageLayout } from "../_components";
 
-import { Container, Typography } from "@/components/ui";
+import { Container } from "@/components/ui";
 import { ReviewsSection, ScrollSection } from "@/components/sections";
 import { InterestButton } from "@/components/shared/_redesign";
 import { EventCard } from "@/components/shared/event-card";
@@ -16,12 +16,10 @@ export default function ProfilePage() {
                 <div className={styles.content}>
                     <Container className={styles.content__gap}>
                         <div className={styles.content__description}>
-                            <Typography.p size={"sm"}>
-                                Pick the things you’re passionate about so we can show events that match your passionate interests.
-                            </Typography.p>
-                            <Typography.span size={"sm"} className={styles.content__description_more}>
+                            Pick the things you’re passionate about so we can show events that match your passionate interests.
+                            <span className={styles.content__description_more}>
                                 More
-                            </Typography.span>
+                            </span>
                         </div>
                     </Container>
 

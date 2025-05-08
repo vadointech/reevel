@@ -7,7 +7,6 @@ import { motion, useTransform } from "motion/react";
 import { PROFILE_PAGE_COVER_HEIGHT, PROFILE_PAGE_HEADER_HEIGHT } from "../config";
 import { useProfileContentDragYProgress } from "../motion-values";
 
-import { Typography } from "@/components/ui";
 import { Avatar } from "@/components/shared/_redesign";
 import { IconArrowLeft, IconEllipsisVertical, IconSettings, IconVerified } from "@/components/icons";
 
@@ -70,9 +69,9 @@ export const ProfilePageHeader = ({
                         image={"/assets/temp/avatar.png"}
                     />
                     <div className={styles.header__user}>
-                        <Typography.h2 className={styles.header__name} size={"lg"}>
+                        <h2 className={styles.header__name}>
                             Jimmy Smith
-                        </Typography.h2>
+                        </h2>
                         <IconVerified />
                     </div>
                 </div>

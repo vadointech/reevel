@@ -1,9 +1,8 @@
 import { ComponentProps, ReactNode } from "react";
-import { Typography } from "@/components/ui";
+import { Button } from "@/components/shared/_redesign";
 
 import styles from "./styles.module.scss";
 import cx from "classnames";
-import { Button } from "@/components/shared/_redesign";
 
 export namespace Section {
     export type Variant = Button.Variant;
@@ -37,9 +36,9 @@ export const Section = ({
             {
                 title ? (
                     <div className={styles.section__head}>
-                        <Typography.h2 size={"lg"} className={styles.section__title}>
+                        <h2 className={styles.section__title}>
                             { title }
-                        </Typography.h2>
+                        </h2>
                         {
                             cta ? (
                                 <Button

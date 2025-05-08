@@ -1,5 +1,6 @@
 @use "@/theme/mixins";
 @use "@/theme/colors";
+@use "@/theme/typography";
 
 .card {
     flex-shrink: 0;
@@ -17,6 +18,7 @@
     justify-content: space-between;
 
     &__feedback {
+        @include typography.font("sm");
         @include mixins.textEllipsis(4);
     }
 
@@ -27,9 +29,14 @@
         gap: .5rem;
     }
 
+    &__stars {
+        margin-top: mixins.rem(-2);
+    }
+
     &__author {
-        margin-top: mixins.rem(2);
+        margin-top: mixins.rem(-4);
         color: colors.$primary;
+        @include typography.font("xs");
         span {
             color: colors.$secondary;
         }

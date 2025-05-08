@@ -1,5 +1,6 @@
 @use "@/theme/mixins";
 @use "@/theme/colors";
+@use "@/theme/typography";
 
 .header {
     position: fixed;
@@ -64,6 +65,6 @@
     }
 
     &__name {
-        font-weight: 500;
+        @include typography.font("lg", 500);
     }
 }

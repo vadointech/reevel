@@ -1,6 +1,5 @@
 "use client";
 
-import Image from "next/image";
 import { motion, useTransform } from "motion/react";
 
 import { hexToRgba } from "@/utils/hex-to-rgba";
@@ -11,7 +10,6 @@ import { HERO_SECTION_OFFSET } from "../../config/snap-points";
 import { EventDrawerContentDescription } from "./description";
 import { IconCalendar, IconEllipsisHorizontal, IconLocation, IconShare, IconTicket } from "@/components/icons";
 import { AttendersSection } from "@/components/shared/attenders";
-import { Typography } from "@/components/ui";
 import { UserProfileEntity } from "@/entities/profile";
 
 import styles from "../styles.module.scss";
@@ -103,30 +101,24 @@ export const EventDrawerContentHero = ({
                 />
             </div>
             <motion.div style={{ opacity: titleOpacity }}>
-                <Typography.h1 size={"2xl"} className={styles.hero__title}>
+                <h1 className={styles.hero__title}>
                     { title }
-                </Typography.h1>
+                </h1>
             </motion.div>
 
             <div className={styles.hero__date}>
                 <div className={styles.hero__date_item}>
                     <IconLocation />
-                    <Typography.span size={"sm"}>
-                        { location }
-                    </Typography.span>
+                    { location }
                 </div>
                 <div className={styles.hero__date_item}>
                     <IconCalendar />
-                    <Typography.span size={"sm"}>
-                        { formattedDate }
-                    </Typography.span>
+                    { formattedDate }
                 </div>
             </div>
 
             <div className={styles.hero__price}>
-                <Typography.span size={"2xl"}>
-                    { price } { currency }
-                </Typography.span>
+                { price } { currency }
                 <AttendersSection users={attendees} />
             </div>
 
@@ -139,9 +131,7 @@ export const EventDrawerContentHero = ({
                     )}
                 >
                     <IconTicket />
-                    <Typography.span size={"xs"}>
-                        Join
-                    </Typography.span>
+                    Join
                 </button>
 
                 <button
@@ -151,9 +141,7 @@ export const EventDrawerContentHero = ({
                     )}
                 >
                     <IconShare />
-                    <Typography.span size={"xs"}>
-                        Share
-                    </Typography.span>
+                    Share
                 </button>
 
                 <button
@@ -163,9 +151,7 @@ export const EventDrawerContentHero = ({
                     )}
                 >
                     <IconEllipsisHorizontal />
-                    <Typography.span size={"xs"}>
-                        More
-                    </Typography.span>
+                    More
                 </button>
             </div>
 

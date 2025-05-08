@@ -1,5 +1,6 @@
 @use "@/theme/mixins";
 @use "@/theme/colors";
+@use "@/theme/typography";
 
 .hero {
     position: relative;
@@ -64,8 +65,8 @@
     }
 
     &__name {
-        font-weight: 700;
         color: colors.$primary;
+        @include typography.font("2xl", 700);
     }
 
     &__location {
@@ -74,6 +75,7 @@
         column-gap: .5rem;
 
         color: colors.$secondary;
+        @include typography.font("sm");
 
         svg {
             width: mixins.rem(12);

@@ -5,7 +5,6 @@ import { motion, useTransform } from "motion/react";
 
 import { useDrawerContentDragYProgress } from "../../config/motion-values";
 import { HERO_SECTION_OFFSET } from "../../config/snap-points";
-import { Typography } from "@/components/ui";
 
 import styles from "../styles.module.scss";
 
@@ -60,9 +59,9 @@ export const EventDrawerContentHeader = ({
             }}
         >
             <motion.div style={{ opacity: headerTitleOpacity }}>
-                <Typography.h2 size={"2xl"} className={styles.hero__title}>
+                <h2 className={styles.hero__title}>
                     { title }
-                </Typography.h2>
+                </h2>
             </motion.div>
         </motion.div>
     );

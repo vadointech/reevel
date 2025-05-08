@@ -1,5 +1,6 @@
 @use "@/theme/mixins";
 @use "@/theme/colors";
+@use "@/theme/typography";
 
 .content {
     margin-top: mixins.rem(12);
@@ -21,6 +22,8 @@
         display: flex;
         flex-direction: column;
         row-gap: .5rem;
+
+        @include typography.font("sm");
 
         &_more {
             font-weight: 500;

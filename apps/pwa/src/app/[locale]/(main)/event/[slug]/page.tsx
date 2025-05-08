@@ -59,6 +59,7 @@ export default function Page() {
                     <ScrollSection
                         title={"Similar interests"}
                         cta={"See all"}
+                        variant={"text-accent"}
                         className={styles.page__gap}
                     >
                         <CollectionCard
@@ -87,6 +88,7 @@ export default function Page() {
                     <ScrollSection
                         title={"More from Jimmy Smith"}
                         cta={"See all"}
+                        variant={"text-accent"}
                         className={styles.page__gap}
                     >
                         <EventCard
@@ -121,6 +123,7 @@ export default function Page() {
                         cta={"See all"}
                         rating={4.5}
                         count={578}
+                        variant={"text-accent"}
                         className={styles.page__gap}
                     />
 

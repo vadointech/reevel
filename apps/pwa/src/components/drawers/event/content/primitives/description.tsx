@@ -1,5 +1,4 @@
 import { useTruncatedText } from "../../hooks/use-truncate-text.hook";
-import { Typography } from "@/components/ui";
 
 import styles from "../styles.module.scss";
 
@@ -15,7 +14,7 @@ export const EventDrawerContentDescription = ({ children }: EventDrawerContentDe
     });
 
     return (
-        <Typography.div size={"sm"}>
+        <div>
             <p
                 ref={ref}
                 className={styles.hero__description}
@@ -24,6 +23,6 @@ export const EventDrawerContentDescription = ({ children }: EventDrawerContentDe
             >
                 { children }
             </p>
-        </Typography.div>
+        </div>
     );
 };

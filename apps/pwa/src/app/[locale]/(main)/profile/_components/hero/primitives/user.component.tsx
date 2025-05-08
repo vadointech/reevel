@@ -5,7 +5,6 @@ import { ComponentProps } from "react";
 import styles from "../styles.module.scss";
 import { motion, useTransform } from "motion/react";
 import { Avatar } from "@/components/shared/_redesign";
-import { Typography } from "@/components/ui";
 import { IconLocation, IconVerified } from "@/components/icons";
 import {
     PROFILE_PAGE_COVER_HEIGHT,
@@ -121,17 +120,15 @@ export const ProfileHeroUser = ({ ...props }: ProfileHeroUser.Props) => {
                     }}
                 >
                     <div className={styles.hero__user}>
-                        <Typography.h1 size={"2xl"} className={styles.hero__name}>
+                        <h1 className={styles.hero__name}>
                             Jimmy Smith
-                        </Typography.h1>
+                        </h1>
                         <IconVerified />
                     </div>
 
                     <div className={styles.hero__location}>
                         <IconLocation />
-                        <Typography.span size={"sm"}>
-                            Vinnitsa
-                        </Typography.span>
+                        Vinnitsa
                     </div>
                 </motion.div>
             </motion.div>
