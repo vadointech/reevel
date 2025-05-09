@@ -19,6 +19,9 @@
     &_default {
         background: colors.$foreground;
     }
+    &_outline {
+        border: 0.75px solid colors.$foreground;
+    }
 
     &_text {
 

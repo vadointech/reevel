@@ -8,6 +8,7 @@ export namespace EventDrawerContentDescription {
     };
 }
 
+// Винести в загальний компонент
 export const EventDrawerContentDescription = ({ children }: EventDrawerContentDescription.Props) => {
     const [ref, handleToggle] = useTruncatedText({
         textHeight: 61,

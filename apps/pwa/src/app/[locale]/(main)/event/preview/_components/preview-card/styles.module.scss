@@ -35,6 +35,9 @@
 
     &__section {
         &_size {
+            &_large {
+                padding: 1rem mixins.rem(12) ;
+            }
             &_default {
                 padding: 1rem;
             }
@@ -45,54 +48,45 @@
     }
 
     &__background {
+        height: mixins.rem(365);
+        width: 100%;
         position: absolute;
         z-index: -1;
         inset: 0;
         object-fit: cover;
     }
+}
 
+.test {
+    font-size: 10px !important;
+    font-weight: 300 !important;
+
+}
+
+
+.info {
     &__title {
-        &_size {
-            &_default {
-                @include typography.font-creata("lg", 700);
-                margin-bottom: .5rem;
-            }
-            &_small {
-                @include typography.font-creata("base", 700);
-                margin-bottom: mixins.rem(6);
-            }
-        }
+        @include fonts.font-creata('xl',600)
     }
 
-    &__location {
+    &__date {
         display: flex;
-        align-items: center;
+        gap: 0.5rem;
+
+        margin-top: 0.75rem;
 
         svg path {
             fill: colors.$foreground;
         }
+        span {
+            @include fonts.font-creata('xs',300)
+        }
+    }
 
-        &_size {
-            &_default {
-                column-gap: mixins.rem(8);
-                svg {
-                    width: mixins.rem(12);
-                    height: mixins.rem(12);
-                }
-                span {
-                    @include typography.font-creata("xs", 400);
-                }
-            }
-            &_small {
-                column-gap: mixins.rem(6);
-                svg {
-                    width: mixins.rem(10);
-                    height: mixins.rem(10);
-                }
-                span {
-                    @include typography.font-creata("xxs", 400);
-                }
-            }
+    &__price {
+        padding: 1rem 0rem;
+        span {
+            @include fonts.font-creata('lg',500)
         }
     }
 }

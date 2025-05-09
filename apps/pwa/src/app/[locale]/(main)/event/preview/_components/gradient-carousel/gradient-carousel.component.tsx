@@ -6,7 +6,7 @@ import { observer } from "mobx-react-lite"
 import { useEventStore } from '@/features/event';
 
 const gradients = [
-    '#5695C8',
+    '#274462',
     '#559715',
     '#172B0F',
     '#AB002F',
@@ -49,8 +49,13 @@ export const GradientCarousel = observer(() => {
                     {gradients.map((gradient, index) => (
                         <div className={styles.embla__slide} key={index}>
                             <PreviewCard
+                                description='Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature from 45 BC, making...'
+                                currency='$'
+                                price='14'
+                                date={new Date()}
+                                location='Mall Sky Park'
                                 size={"large"}
-                                poster={"/assets/temp/poster5.png"}
+                                poster={"/assets/temp/carousel2.jpg"}
                                 primaryColor={gradient}
                                 title={"Happy Valentine's Day Party"}
                             />

@@ -1,8 +1,8 @@
 import { ComponentProps, ReactNode } from "react";
 import Image from "next/image";
 
-import { Badge, Typography } from "@/components/ui";
-import { IconLock, IconNavigation, IconWorld } from "@/components/icons";
+import { Badge, Container, Typography } from "@/components/ui";
+import { IconCalendar, IconEllipsisHorizontal, IconLocation, IconLock, IconNavigation, IconShare, IconTicket, IconWorld } from "@/components/icons";
 
 import { hexToRgba } from "@/utils/hex-to-rgba";
 
@@ -12,6 +12,12 @@ import { UISize } from "@/types/common";
 import styles from "./styles.module.scss";
 import cx from "classnames";
 import { AttendersSection } from "@/components/shared/attenders";
+import { HostedBy } from "@/components/shared/hosted-by";
+import { formatDate } from "@/utils/time";
+import { useLocale } from "next-intl";
+import { EventDrawerContentDescription } from "@/components/drawers/event/content/primitives/description";
+import { ScrollSection } from "@/components/sections";
+import { InterestButton } from "@/components/shared/_redesign";
 
 const defaultAttendees: UserProfileEntity[] = [
     { id: "1", userId: "", completed: "true", picture: "http://localhost:3000/assets/temp/valentine.png" },
@@ -27,7 +33,11 @@ export namespace PreviewCard {
         poster: string;
         primaryColor: string;
         title: string;
-        // location: string;
+        location: string;
+        price: string;
+        currency: string,
+        date: Date
+        description: string,
         // type: EventType;
         size?: UISize;
     };
@@ -41,8 +51,12 @@ export const PreviewCard = ({
     size = "default",
     primaryColor,
     poster,
+    date,
+    description,
+    currency,
+    price,
     // type,
-    // location,
+    location,
     className,
     ...props
 }: PreviewCard.Props) => {
@@ -50,6 +64,10 @@ export const PreviewCard = ({
         Public: <IconWorld />,
         Private: <IconLock />,
     };
+
+    const locale = useLocale();
+
+    const formattedDate = formatDate(date, locale)
 
     return (
         <div
@@ -60,12 +78,13 @@ export const PreviewCard = ({
             )}
             {...props}
         >
-            <Image
-                fill
-                src={poster}
-                alt={title}
-                className={styles.card__background}
-            />
+            <div className={styles.card__background}>
+                <Image
+                    fill
+                    src={poster}
+                    alt={title}
+                />
+            </div>
 
             <div
                 className={cx(
@@ -83,7 +102,10 @@ export const PreviewCard = ({
                     )`,
                 }}
             >
-                <h1>test</h1>
+                <HostedBy
+                    avatar={"/assets/temp/avatar.png"}
+                    name={"Jimmy Smith"}
+                />
             </div>
 
             <div
@@ -94,14 +116,51 @@ export const PreviewCard = ({
                 style={{
                     background: `linear-gradient(
                         to top,
-                        ${hexToRgba(primaryColor, 1)} 44%,
-                        ${hexToRgba(primaryColor, 0.2)} 80%,
-                        ${hexToRgba(primaryColor, 0.05)} 92%,
+                        ${hexToRgba(primaryColor, 1)} 70%,
+
                         ${hexToRgba(primaryColor, 0)} 100%
                     )`,
                 }}
             >
-                <h1>test</h1>
+                <div
+                    className={styles.info}
+                >
+                </div>
+                <h1 className={styles.info__title}>
+                    {title}
+                </h1>
+
+                <div className={styles.info__date}>
+                    <IconCalendar />
+                    <span>
+                        {formattedDate}
+                    </span>
+                </div>
+
+                <div className={styles.info__price}>
+                    <span>
+                        {price} {currency}
+                    </span>
+                </div>
+
+                <ScrollSection container={false} size={"small"}>
+                    {
+                        Array.from({ length: 8 }).map((_, index) => (
+                            <InterestButton
+                                variant="outline"
+                                key={index}
+                                icon={"🥊"}
+                            >
+                                Boxing
+                            </InterestButton>
+                        ))
+                    }
+                </ScrollSection>
+
+                {/* <EventDrawerContentDescription>
+                    <span className={styles.test}>{description}</span>
+                </EventDrawerContentDescription> */}
+
             </div>
         </div>
     );

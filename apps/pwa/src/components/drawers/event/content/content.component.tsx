@@ -79,7 +79,7 @@ export const EventDrawerContent = ({
                         {...data}
                     />
                     <div className={styles.content__content}>
-                        { children }
+                        {children}
                     </div>
                 </EventDrawerContentScroller>
             </motion.div>

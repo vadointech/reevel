@@ -5,7 +5,7 @@ import cx from "classnames";
 
 export namespace InterestButton {
 
-    export type Variant = "default" | "text" | "primary";
+    export type Variant = "default" | "text" | "primary" | "outline";
 
     export type Props = ComponentProps<"div"> & {
         variant?: Variant;
@@ -32,12 +32,12 @@ export const InterestButton = ({
             {
                 icon ? (
                     <div>
-                        { icon }
+                        {icon}
                     </div>
                 ) : null
             }
             <span>
-                { children }
+                {children}
             </span>
         </div>
     );
