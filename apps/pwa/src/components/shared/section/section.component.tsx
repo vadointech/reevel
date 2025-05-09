@@ -23,7 +23,6 @@ export const Section = ({
     size = 'default',
     href,
     onClick,
-    size = "default",
     children,
     className,
     ...props

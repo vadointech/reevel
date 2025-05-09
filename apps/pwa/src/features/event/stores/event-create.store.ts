@@ -4,8 +4,6 @@ import { InterestEntity } from "@/entities/interests";
 import { createMobxStoreProvider, initStore } from "@/lib/mobx";
 import { action, makeObservable, observable } from "mobx";
 
-const monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
-
 export interface IDateEventStore {
     startDate: Date;
     startHour: string;
@@ -87,6 +85,7 @@ export interface ICreateEventStore {
     description: string;
     interests: InterestEntity[];
     poster: string;
+    gradient: string;
     date: number;
     tickets: number;
     price: number;
@@ -101,6 +100,7 @@ class CreateEventStore implements ICreateEventStore {
     title: string = "";
     description: string = "";
     poster: string = "";
+    gradient: string = ""
     interests: InterestEntity[] = [];
     date: number = 0;
     tickets: number = 0
@@ -119,6 +119,7 @@ class CreateEventStore implements ICreateEventStore {
             title: observable,
             description: observable,
             poster: observable,
+            gradient: observable,
             date: observable,
             tickets: observable,
             price: observable,
@@ -131,6 +132,7 @@ class CreateEventStore implements ICreateEventStore {
             setTickets: action,
             setPrice: action,
             setPoster: action,
+            setGradient: action,
             setDescription: action,
             addInterest: action,
             removeInterest: action,
@@ -157,6 +159,10 @@ class CreateEventStore implements ICreateEventStore {
 
     setPoster(poster: string) {
         this.poster = poster;
+    }
+
+    setGradient(gradient: string) {
+        this.gradient = gradient;
     }
 
     setDescription(description: string) {
