@@ -4,11 +4,10 @@ import styles from "../styles.module.scss";
 
 export namespace EventDrawerContentDescription {
     export type Props = {
-        children: string;
+        children: string ;
     };
 }
 
-// Винести в загальний компонент
 export const EventDrawerContentDescription = ({ children }: EventDrawerContentDescription.Props) => {
     const [ref, handleToggle] = useTruncatedText({
         textHeight: 61,

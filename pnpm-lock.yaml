@@ -123,6 +123,9 @@ importers:
       classnames:
         specifier: ^2.5.1
         version: 2.5.1
+      color.js:
+        specifier: ^1.2.0
+        version: 1.2.0
       date-fns:
         specifier: ^4.1.0
         version: 4.1.0
@@ -135,9 +138,6 @@ importers:
       esbuild:
         specifier: ^0.25.0
         version: 0.25.0
-      framer-motion:
-        specifier: ^12.6.5
-        version: 12.9.2(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
       mapbox-gl:
         specifier: ^3.10.0
         version: 3.10.0
@@ -1634,6 +1634,9 @@ packages:
   color-string@1.9.1:
     resolution: {integrity: sha512-shrVawQFojnZv6xM40anx4CkoDP+fZsw/ZerEMsW/pyzsRbElpsL/DBVW7q3ExxwusdNXI3lXpuhEZkzs8p5Eg==}
 
+  color.js@1.2.0:
+    resolution: {integrity: sha512-0ajlNgWWOR7EK9N6l2h0YKsZPzMCLQG5bheCoTGpGfhkR8tB5eQNItdua1oFHDTeq9JKgSzQJqo+Gp3V/xW+Lw==}
+
   color@4.2.3:
     resolution: {integrity: sha512-1rXeuUUiGGrykh+CeBdu5Ie7OJwinCgQY0bc7GCRxy5xVHy+moaqkpL/jqQq0MtQOeYcrqEz4abc5f0KtU7W4A==}
     engines: {node: '>=12.5.0'}
@@ -1714,6 +1717,9 @@ packages:
   data-view-byte-offset@1.0.1:
     resolution: {integrity: sha512-BS8PfmtDGnrgYdOonGZQdLZslWIeCGFP9tpan0hi1Co2Zr2NKADsvGYA8XxuG/4UWgJ6Cjtv+YJnB6MM69QGlQ==}
     engines: {node: '>= 0.4'}
+
+  date-fns-jalali@4.1.0-0:
+    resolution: {integrity: sha512-hTIP/z+t+qKwBDcmmsnmjWTduxCg+5KfdqWQvb2X/8C9+knYY6epN/pfxdDuyVlSVeFz0sM5eEfwIUQ70U4ckg==}
 
   date-fns@4.1.0:
     resolution: {integrity: sha512-Ukq0owbQXxa/U3EGtsdVBkR1w7KOQ5gIBqdH2hkvknzZPYvBxb/aa6E8L7tmjFtkwZBu3UXBbjIgPo/Ez4xaNg==}
@@ -5262,6 +5268,8 @@ snapshots:
       simple-swizzle: 0.2.2
     optional: true
 
+  color.js@1.2.0: {}
+
   color@4.2.3:
     dependencies:
       color-convert: 2.0.1
@@ -5346,6 +5354,10 @@ snapshots:
       call-bound: 1.0.3
       es-errors: 1.3.0
       is-data-view: 1.0.2
+
+  date-fns-jalali@4.1.0-0: {}
+
+  date-fns@4.1.0: {}
 
   dayjs@1.11.13: {}
 

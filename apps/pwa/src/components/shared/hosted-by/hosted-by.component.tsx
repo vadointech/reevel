@@ -30,7 +30,7 @@ export const HostedBy = ({
                 <h3 className={styles.container__text}>
                     Hosted by
                 </h3>
-                <span>{ name }</span>
+                <span>{name}</span>
             </div>
         </div>
     );

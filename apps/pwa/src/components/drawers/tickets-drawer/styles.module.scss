@@ -3,7 +3,7 @@
 
 
 .input {
-    background-color: colors.$background-muted;
+    background-color: colors.$background ;
 }
 
 .buttons {
@@ -11,7 +11,7 @@
 }
 
 .drawer {
-    background-color: colors.$background-muted;
+    background-color: colors.$background;
     &__text {
         margin-bottom: 1.5rem;
         h1 {

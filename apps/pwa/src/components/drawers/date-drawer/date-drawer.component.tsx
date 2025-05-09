@@ -22,7 +22,7 @@ export namespace DateDrawer {
 export const DateDrawer = observer(({ open, onClose }: DateDrawer.Props) => {
     const eventStore = useEventStore()
 
-    const [selected, setSelected] = useState<Date>();
+    const [selected, setSelected] = useState<Date>(new Date());
 
     const customClassNames = {
         root: styles.rdp,
@@ -47,7 +47,6 @@ export const DateDrawer = observer(({ open, onClose }: DateDrawer.Props) => {
     };
     const eventDates = [new Date(2025, 4, 20), new Date(2025, 4, 15)];
 
-    console.log(selected)
     return (
         <Drawer open={open} staticPoint={"hight"}>
             <DrawerBody>

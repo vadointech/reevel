@@ -80,6 +80,8 @@ class DateEventStore implements IDateEventStore {
     }
 }
 
+export type Type = "Private" | "Public"
+
 export interface ICreateEventStore {
     title: string;
     description: string;
@@ -89,6 +91,7 @@ export interface ICreateEventStore {
     date: number;
     tickets: number;
     price: number;
+    type: Type
 
     location?: [number, number];
     locationQuery: string;
@@ -103,8 +106,9 @@ class CreateEventStore implements ICreateEventStore {
     gradient: string = ""
     interests: InterestEntity[] = [];
     date: number = 0;
-    tickets: number = 0
+    tickets: number = 0;
     price: number = 0;
+    type: Type = "Public"
 
     interestQuery: string = "";
     locationQuery: string = "";
@@ -123,6 +127,7 @@ class CreateEventStore implements ICreateEventStore {
             date: observable,
             tickets: observable,
             price: observable,
+            type: observable,
             interests: observable.shallow,
             interestQuery: observable,
             locationQuery: observable,
@@ -134,6 +139,7 @@ class CreateEventStore implements ICreateEventStore {
             setPoster: action,
             setGradient: action,
             setDescription: action,
+            setType: action,
             addInterest: action,
             removeInterest: action,
             setLocationQuery: action,
@@ -169,6 +175,9 @@ class CreateEventStore implements ICreateEventStore {
         this.description = description;
     }
 
+    setType(type: Type) {
+        this.type = type;
+    }
     addInterest(interest: InterestEntity): void {
         this.interests.push(interest);
     }

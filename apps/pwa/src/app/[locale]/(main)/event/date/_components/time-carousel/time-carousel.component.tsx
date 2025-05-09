@@ -38,6 +38,7 @@ const EventTimePicker = observer(({
             }
         },
     });
+
     const controlsRight = useTimePicker({
         slideCount: 60,
         itemSize: 50,

@@ -13,6 +13,9 @@
     justify-content: center;
     column-gap: .5rem;
 
+    span {
+        @include mixins.textEllipsis(1);
+    }
     @include typography.font("sm");
     line-height: 1;
 

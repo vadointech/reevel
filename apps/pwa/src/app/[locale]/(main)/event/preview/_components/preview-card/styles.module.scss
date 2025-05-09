@@ -34,6 +34,9 @@
     }
 
     &__section {
+        &_bottom {
+        min-height: mixins.rem(240);
+        }
         &_size {
             &_large {
                 padding: 1rem mixins.rem(12) ;
@@ -56,14 +59,6 @@
         object-fit: cover;
     }
 }
-
-.test {
-    font-size: 10px !important;
-    font-weight: 300 !important;
-
-}
-
-
 .info {
     &__title {
         @include fonts.font-creata('xl',600)
@@ -83,10 +78,39 @@
         }
     }
 
-    &__price {
+    &__meta {
+        display: flex;
+        justify-content: space-between;
         padding: 1rem 0rem;
+        
         span {
-            @include fonts.font-creata('lg',500)
+            @include fonts.font-creata('lg',500,110%)
         }
+
+        &__tickets{
+            color:colors.$primary;
+            padding: 0.375rem;
+            background-color: colors.$foreground;
+            border-radius:mixins.rem(26);
+
+            @include fonts.font-creata('',400,120%);
+            font-size: 0.5rem;
+
+        }
+    }
+
+    &__interests {
+        display: flex;
+        align-items: center;
+        gap: mixins.rem(6)
+    }
+
+    &__description {
+        padding-top:mixins.rem(18); 
+        @include fonts.font-creata('',300,140%);
+        font-size: mixins.rem(10);
+
+        @include mixins.textEllipsis(3);
+
     }
 }

@@ -8,6 +8,7 @@ import { Container } from "@/components/ui"
 import { GradientCarousel } from "../gradient-carousel"
 
 import styles from "./styles.module.scss"
+import { observer } from "mobx-react-lite"
 export namespace EventPreview {
     export type Props = {
 
@@ -15,13 +16,11 @@ export namespace EventPreview {
 }
 
 
-export const EventPreview = ({
-
-}: EventPreview.Props) => {
-    const eventStore = useEventStore()
+export const EventPreview = observer(({ }: EventPreview.Props) => {
     const router = useRouter()
 
     return (
+
         <>
             <Container>
                 <Header
@@ -35,4 +34,4 @@ export const EventPreview = ({
         </>
 
     )
-}
+})

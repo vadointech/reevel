@@ -34,6 +34,7 @@ export const TimeDrawer = ({
     const handleEndMinute = (minute: string) => { eventStore.dateStore.setEndMinute(minute) }
 
 
+
     return (
         <Drawer open={open} staticPoint={"middle"}>
             <DrawerBody>
