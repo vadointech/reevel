@@ -1,0 +1,167 @@
+@use "@/theme/mixins";
+@use "@/theme/colors";
+@use "@/theme/motions";
+@use "@/theme/typography";
+
+@mixin active($color) {
+    &:active {
+        background-color: $color;
+        @content;
+    }
+}
+
+@mixin disabled() {
+    &:disabled {
+        opacity: .6;
+        box-shadow: none;
+        pointer-events: none;
+        @content;
+    }
+}
+
+.button {
+    all: unset;
+    cursor: pointer;
+
+    padding-inline: 1rem;
+    box-sizing: border-box;
+    border-radius: mixins.rem(28);
+
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    column-gap: .5rem;
+
+    color: colors.$foreground;
+
+    transition:
+            background-color motions.$motion-duration-mid motions.$motion-ease-in-out,
+            color motions.$motion-duration-mid motions.$motion-ease-in-out;
+    -webkit-tap-highlight-color: rgba(0,0,0,0);
+
+    &__arrow-after {
+        display: flex;
+        svg path {
+            fill: colors.$foreground
+        }
+    }
+
+    &_size {
+        &_default {
+            height: mixins.rem(52);
+
+            span {
+                @include typography.font("base", 400);
+            }
+
+            svg {
+                width: mixins.rem(20);
+            }
+        }
+        &_small {
+            height: mixins.rem(44);
+
+            span {
+                @include typography.font("sm", 400);
+            }
+
+            svg {
+                width: mixins.rem(18);
+            }
+        }
+    }
+
+    &_variant {
+        &_default {
+            background-color: colors.$foreground;
+            color: colors.$primary;
+
+            .button__arrow-after {
+                svg path {
+                    fill: colors.$primary
+                }
+            }
+
+            @include active(colors.$foreground-highlight);
+            @include disabled;
+        }
+        &_primary {
+            background-color: colors.$primary;
+
+            @include active(colors.$primary-highlight);
+            @include disabled;
+        }
+        &_secondary-muted {
+            background-color: colors.$secondary-muted;
+            color: colors.$primary;
+
+            .button__arrow-after {
+                svg path {
+                    fill: colors.$primary
+                }
+            }
+
+            @include active(colors.$secondary-muted-highlight);
+            @include disabled;
+        }
+        &_outline {
+            background-color: transparent;
+            border: mixins.rem(1) colors.$foreground, solid;
+            color: colors.$foreground;
+
+            &:active {
+                color: colors.$foreground-highlight;
+                border-color: colors.$foreground-highlight;
+            }
+            @include disabled;
+        }
+        &_accent {
+            background-color: colors.$accent;
+            @include active(colors.$accent-highlight);
+            @include disabled;
+        }
+        &_accent-muted {
+            background-color: colors.$accent-muted;
+            color: colors.$accent;
+            .button__arrow-after {
+                svg path {
+                    fill: colors.$accent
+                }
+            }
+            @include active(colors.$accent-muted-highlight);
+            @include disabled;
+        }
+        &_text-primary {
+            background-color: transparent;
+            height: fit-content;
+            color: colors.$primary;
+            .button__arrow-after {
+                svg path {
+                    fill: colors.$primary
+                }
+            }
+
+            &:active {
+                color: colors.$primary-highlight;
+            }
+            @include disabled;
+        }
+
+        &_text-accent {
+            background-color: transparent;
+            height: fit-content;
+            color: colors.$accent;
+            .button__arrow-after {
+                svg path {
+                    fill: colors.$accent
+                }
+            }
+
+            &:active {
+                color: colors.$accent-highlight;
+            }
+            @include disabled;
+        }
+    }
+}

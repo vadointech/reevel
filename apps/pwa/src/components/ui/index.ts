@@ -7,4 +7,3 @@ export * from "./input";
 export * from "./scroll";
 export * from "./badge";
 export * from "./place";
-export * from "./typography";

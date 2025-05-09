@@ -1,4 +1,4 @@
-@use "@/theme/fonts";
+@use "@/theme/typography";
 @use "@/theme/colors";
 @use "@/theme/mixins";
 
@@ -16,12 +16,14 @@
 
     &__title {
         color: colors.$primary;
-        font-weight: 500;
+        flex-grow: 1;
+        @include typography.font("lg", 500)
     }
 
     &__cta {
-        color: colors.$accent;
-        font-weight: 500;
+        span {
+            font-weight: 500 !important;
+        }
     }
 
     &__content {

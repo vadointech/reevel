@@ -5,7 +5,8 @@ import { UISize } from "@/types/common";
 
 export namespace ScrollSection {
     export type Props = ComponentProps<"div"> & Section.Data & {
-        size?: UISize
+        size?: UISize;
+        variant?: Section.Variant;
     };
 }
 

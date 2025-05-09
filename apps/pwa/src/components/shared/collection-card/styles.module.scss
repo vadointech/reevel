@@ -1,8 +1,6 @@
 @use "@/theme/mixins";
-@use "@/theme/fonts";
+@use "@/theme/typography";
 @use "@/theme/colors";
-
-
 
 .card {
     flex-shrink: 0;
@@ -23,14 +21,14 @@
 
     &__info {
         &__title {
-            @include fonts.font-creata("base", 500, 1);
+            @include typography.font("base", 500);
             font-size: mixins.rem(42);
             line-height: 1;
-            font-weight: 500;
         }
 
         &__city {
             opacity: 0.6;
+            @include typography.font;
         }
     }
 
@@ -38,9 +36,10 @@
     &__foreground {
         position: absolute;
         z-index: 2;
-        right: -10%;
-        bottom: -25%;
+        right: -7%;
+        bottom: -15%;
         font-size: mixins.rem(134);
+        line-height: 1;
     }
 
     &__detailed {
@@ -70,6 +69,7 @@
         span {
             text-transform: uppercase;
             color: colors.$foreground;
+            @include typography.font("xxs");
         }
     }
 
@@ -84,7 +84,7 @@
         left: -24%;
         transform: rotateZ(-26deg);
 
-        @include fonts.font-creata();
+        @include typography.font;
         font-size: mixins.rem(130);
         font-weight: 500;
         color: colors.$foreground;

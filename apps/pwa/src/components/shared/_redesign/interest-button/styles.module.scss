@@ -1,6 +1,6 @@
 @use "@/theme/mixins";
 @use "@/theme/colors";
-@use "@/theme/fonts";
+@use "@/theme/typography";
 
 .button {
     height: mixins.rem(38);
@@ -12,6 +12,9 @@
     align-items: center;
     justify-content: center;
     column-gap: .5rem;
+
+    @include typography.font("sm");
+    line-height: 1;
 
     &_default {
         background: colors.$foreground;
