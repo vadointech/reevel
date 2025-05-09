@@ -49,11 +49,11 @@
     &__title {
         &_size {
             &_default {
-                @include typography.font-creata("lg", 700);
+                @include typography.font("lg", 700);
                 margin-bottom: .5rem;
             }
             &_small {
-                @include typography.font-creata("base", 700);
+                @include typography.font("base", 700);
                 margin-bottom: mixins.rem(6);
             }
         }
@@ -70,22 +70,18 @@
         &_size {
             &_default {
                 column-gap: mixins.rem(8);
+                @include typography.font("xs", 400);
                 svg {
                     width: mixins.rem(12);
                     height: mixins.rem(12);
                 }
-                span {
-                    @include typography.font-creata("xs", 400);
-                }
             }
             &_small {
                 column-gap: mixins.rem(6);
+                @include typography.font("xxs", 400);
                 svg {
                     width: mixins.rem(10);
                     height: mixins.rem(10);
-                }
-                span {
-                    @include typography.font-creata("xxs", 400);
                 }
             }
         }

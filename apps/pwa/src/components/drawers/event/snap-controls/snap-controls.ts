@@ -2,7 +2,7 @@
 
 import { snapPoints, SnapPoints } from "../config/snap-points";
 
-class SnapPointControl {
+export class SnapPointControl {
     readonly clientHeight: number;
     readonly snapPointsArray: number[];
     readonly snapPointsCount: number;

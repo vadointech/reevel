@@ -1,6 +1,5 @@
 import { ComponentProps } from "react";
 import { ArrowBack } from "@/components/icons";
-import { Typography } from "@/components/ui";
 
 import styles from "./styles.module.scss";
 import cx from "classnames";
@@ -37,12 +36,12 @@ export const CollectionCard = ({
             {...props}
         >
             <div className={styles.card__info}>
-                <Typography.h2 className={styles.card__info__title}>
+                <h2 className={styles.card__info__title}>
                     { title }
-                </Typography.h2>
-                <Typography.span className={styles.card__info__city}>
+                </h2>
+                <span className={styles.card__info__city}>
                     in { location }
-                </Typography.span>
+                </span>
             </div>
 
             <div className={styles.card__foreground}>
@@ -53,9 +52,9 @@ export const CollectionCard = ({
                 <div className={styles.card__detailed__icon}>
                     <ArrowBack width={7} height={6} strokeWidth={0.3} />
                 </div>
-                <Typography.span size={"xxs"}>
+                <span>
                     SHOW ME
-                </Typography.span>
+                </span>
             </div>
 
             <div className={styles.card__background}>

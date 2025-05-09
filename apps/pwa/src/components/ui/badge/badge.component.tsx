@@ -1,7 +1,6 @@
 import { ComponentProps, ReactNode } from "react";
 import styles from "./styles.module.scss";
 import cx from "classnames";
-import { Typography } from "@/components/ui";
 
 export namespace Badge {
     export type Variant = "default" | "primary" | "ghost" | "date" | "fire";
@@ -32,9 +31,7 @@ export const Badge = ({
             {...props}
         >
             { icon ? icon : null }
-            <Typography.span size={"xs"}>
-                { children }
-            </Typography.span>
+            { children }
         </div>
     );
 };

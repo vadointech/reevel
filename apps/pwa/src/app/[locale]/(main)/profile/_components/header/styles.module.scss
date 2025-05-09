@@ -1,0 +1,70 @@
+@use "@/theme/mixins";
+@use "@/theme/colors";
+@use "@/theme/typography";
+
+.header {
+    position: fixed;
+    z-index: 2;
+    top: 0;
+    left: 0;
+    right: 0;
+
+    &__navigation {
+        position: relative;
+        display: grid;
+        align-items: center;
+        grid-template-rows: 2rem;
+        column-gap: mixins.rem(18);
+        grid-template-columns: mixins.rem(18) 1fr mixins.rem(18);
+
+        padding: mixins.rem(22) 1rem;
+        background: colors.$background;
+
+        svg {
+            height: mixins.rem(18);
+        }
+
+        &_back {
+        }
+
+        &_control {
+            justify-self: flex-end;
+        }
+
+        &_overlay {
+            position: absolute;
+            inset: 0;
+
+            background: none;
+
+            &_light {
+                svg path {
+                    fill: colors.$foreground;
+                }
+            }
+
+            &_dark {
+                svg path {
+                    fill: colors.$primary;
+                }
+            }
+        }
+    }
+
+    &__info {
+        height: 100%;
+        display: flex;
+        align-items: center;
+        column-gap: 1rem;
+    }
+
+    &__user {
+        display: flex;
+        align-items: center;
+        column-gap: .5rem;
+    }
+
+    &__name {
+        @include typography.font("lg", 500);
+    }
+}

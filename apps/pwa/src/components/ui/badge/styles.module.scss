@@ -18,6 +18,8 @@
             height: mixins.rem(26);
             padding-inline: mixins.rem(10);
             gap: mixins.rem(4);
+            @include typography.font("xs");
+            line-height: 1;
 
             svg {
                 width: mixins.rem(10);
@@ -29,14 +31,12 @@
             height: mixins.rem(22);
             padding-inline: mixins.rem(6);
             gap: mixins.rem(4);
+            @include typography.font("xxs");
+            line-height: 1;
 
             svg {
                 width: mixins.rem(10);
                 height: mixins.rem(10);
-            }
-
-            span {
-                @include typography.font-creata("xxs", 400);
             }
         }
     }

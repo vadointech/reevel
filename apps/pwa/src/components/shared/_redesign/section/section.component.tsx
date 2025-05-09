@@ -1,16 +1,18 @@
 import { ComponentProps, ReactNode } from "react";
-import { Typography } from "@/components/ui";
+import { Button } from "@/components/shared/_redesign";
 
 import styles from "./styles.module.scss";
 import cx from "classnames";
 
 export namespace Section {
+    export type Variant = Button.Variant;
     export type Data = {
         title?: string;
         cta?: string | ReactNode
     };
     export type Props = ComponentProps<"div"> & Data & {
         container?: boolean;
+        variant?: Button.Variant;
     };
 }
 
@@ -19,6 +21,7 @@ export const Section = ({
     children,
     title,
     cta,
+    variant = "text-primary",
     container = false,
     ...props
 }: Section.Props) => {
@@ -33,15 +36,22 @@ export const Section = ({
             {
                 title ? (
                     <div className={styles.section__head}>
-                        <Typography.h2 size={"lg"} className={styles.section__title}>
+                        <h2 className={styles.section__title}>
                             { title }
-                        </Typography.h2>
+                        </h2>
                         {
                             cta ? (
-                                // TODO: Button component here
-                                <Typography.span size={"sm"} className={styles.section__cta}>
+                                <Button
+                                    size={"small"}
+                                    variant={variant}
+                                    className={styles.section__cta}
+                                    style={{
+                                        width: "fit-content",
+                                        padding: 0,
+                                    }}
+                                >
                                     { cta }
-                                </Typography.span>
+                                </Button>
                             ) : null
                         }
                     </div>

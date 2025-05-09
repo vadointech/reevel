@@ -19,3 +19,12 @@ export * from "./fire";
 export * from "./lock";
 export * from "./star";
 export * from "./report";
+
+export * from "./instagram";
+export * from "./twitch";
+export * from "./telegram";
+
+export * from "./arrow";
+export * from "./settings";
+
+export * from "./verified";

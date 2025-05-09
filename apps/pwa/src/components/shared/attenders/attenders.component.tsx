@@ -1,7 +1,6 @@
 import { ComponentProps } from "react";
 
 import { Avatar } from "@/components/shared/_redesign";
-import { Typography } from "@/components/ui";
 
 import { UserProfileEntity } from "@/entities/profile";
 import { UISize } from "@/types/common";
@@ -51,9 +50,7 @@ export const AttendersSection = ({
                             styles[`section__more_size_${size}`],
                         )}
                     >
-                        <Typography.span size={"xxs"}>
-                            +{remainingCount} more going
-                        </Typography.span>
+                        +{remainingCount} more going
                     </div>
                 )
             }

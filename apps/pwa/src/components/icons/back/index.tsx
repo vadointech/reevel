@@ -2,10 +2,7 @@ import { ComponentProps } from "react";
 
 export const Back = (props: ComponentProps<"svg">) => (
     <svg
-        width={10}
-        height={19}
         viewBox="0 0 10 19"
-        fill="none"
         xmlns="http://www.w3.org/2000/svg"
         {...props}
     >

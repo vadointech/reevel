@@ -1,6 +1,5 @@
 import { ComponentProps } from "react";
 import { Avatar } from "@/components/shared/_redesign";
-import { Typography } from "@/components/ui";
 
 import styles from "./styles.module.scss";
 import cx from "classnames";
@@ -28,10 +27,10 @@ export const HostedBy = ({
         >
             <Avatar image={avatar} variant={"outline"} />
             <div>
-                <Typography.h3 size={"sm"} className={styles.container__text}>
+                <h3 className={styles.container__text}>
                     Hosted by
-                </Typography.h3>
-                <Typography.span size={"sm"}>{ name }</Typography.span>
+                </h3>
+                <span>{ name }</span>
             </div>
         </div>
     );

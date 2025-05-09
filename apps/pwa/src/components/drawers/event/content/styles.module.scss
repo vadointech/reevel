@@ -1,6 +1,7 @@
 @use "@/theme/mixins";
-@use "@/theme/fonts";
+@use "@/theme/typography";
 @use "@/theme/colors";
+@use "@/theme/motions";
 
 .content {
     position: absolute;
@@ -102,8 +103,8 @@
     }
 
     &__title {
+        @include typography.font("2xl", 700);
         max-width: calc(100% - 40px);
-        font-weight: 700;
     }
 
     &__date {
@@ -117,6 +118,7 @@
             display: flex;
             align-items: center;
             column-gap: .5rem;
+            @include typography.font("sm");
 
             svg {
                 width: mixins.rem(14);
@@ -130,7 +132,7 @@
 
     &__price {
         margin-top: mixins.rem(22);
-        font-weight: 500;
+        @include typography.font("2xl", 500);
 
         display: flex;
         align-items: center;
@@ -156,6 +158,7 @@
         align-items: center;
         justify-content: center;
         row-gap: mixins.rem(4);
+        @include typography.font("xs");
 
         border-radius: .5rem;
         border: mixins.rem(1) colors.$foreground solid;
@@ -197,9 +200,12 @@
     &__description {
         position: relative;
         margin-top: 1rem;
+        @include typography.font("sm");
+
+        transition: max-height motions.$motion-duration-mid motions.$motion-ease-in-out;
 
         span {
-            @include fonts.font-creata("sm", 700, mixins.rem(20));
+            @include typography.font("sm", 700);
         }
     }
 
