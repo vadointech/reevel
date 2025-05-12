@@ -59,7 +59,8 @@ export default async function RootLayout({ children, params }: PropsWithChildren
                                 }]}
                             >
                                 <StandaloneProvider>
-                                    {children}
+                                    { children }
+                                    <div id="bottom-sheet-root" />
                                 </StandaloneProvider>
                             </SessionStoreProvider>
                         </ReactQueryClientProvider>

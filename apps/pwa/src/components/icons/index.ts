@@ -27,5 +27,6 @@ export * from "./telegram";
 
 export * from "./arrow";
 export * from "./settings";
+export * from "./picture";
 
 export * from "./verified";
