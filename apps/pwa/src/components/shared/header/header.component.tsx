@@ -85,7 +85,7 @@ export const Header = ({
                         {ControlRightView[controlRightType]}
                     </div>
 
-                    : <div />
+                    : children ? null : <div />
             }
         </div>
     );

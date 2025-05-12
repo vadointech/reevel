@@ -15,27 +15,28 @@ import { useRouter } from "next/navigation";
 import { observer } from "mobx-react-lite";
 import { ComponentProps } from "react";
 
-import styles from "./styles.module.scss";
+import styles from "./styles.module.scss"
 import cx from "classnames"
 
 export namespace InterestsSearch {
     export type Props = ComponentProps<"div"> & {
         initialInterests: InterestEntity[]
+        onClose: () => void;
     }
 }
 
 export const InterestsSearch = observer(({
-    initialInterests
+    initialInterests,
+    onClose
 }: InterestsSearch.Props) => {
     const eventStore = useEventStore()
-    const router = useRouter()
 
     const { interests, searchValue, handlePickInterest, onSearchValueChange } = useInterestSearch(initialInterests);
 
     return (
         <Container className={styles.page}>
             <Header
-                onControlLeftClick={() => router.back()}
+                onControlLeftClick={() => onClose()}
                 className={styles.page__header}
             >
                 <Input
@@ -75,10 +76,15 @@ export const InterestsSearch = observer(({
                 )}>
                     <SectionItems variant={"flex"} className={styles.page__selected__items}>
                         {
-                            interests && interests.length > 0
+                            interests && interests.length >= 0
                                 ? interests?.map((interest) => (
                                     eventStore.interests.some((item) => item.slug === interest.slug) ?
-                                        false
+                                        searchValue.length > 0 ? <InterestItem
+                                            interest={interest}
+                                            key={interest.slug}
+                                            selected={true}
+                                            handlePickInterest={handlePickInterest}
+                                        /> : false
                                         : <InterestItem
                                             interest={interest}
                                             key={interest.slug}

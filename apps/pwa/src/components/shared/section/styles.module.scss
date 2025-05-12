@@ -24,6 +24,8 @@
         &__more {
             @include fonts.font-creata('sm', 500);
             color: colors.$accent;
+            background: none;
+            border: none;
         }
     }
 

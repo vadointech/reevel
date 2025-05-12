@@ -36,7 +36,8 @@ export const TicketsPicker = observer(({ }: TicketsPicker.Props) => {
                     label="Tickets"
                     description={formatTicketsValue(eventStore.tickets)}
 
-                    icon={<IconTicket />}
+                    icon={<IconTicket height={22} width={22} style={{ transform: 'rotate(-45deg)' }} />}
+
                     onClick={() => setIsTicketsDrawerOpen(true)}
                     backIcon
                 />
@@ -45,7 +46,7 @@ export const TicketsPicker = observer(({ }: TicketsPicker.Props) => {
                     label="Pricing"
                     description={formatPriceValue(eventStore.price) + ` ₴`}
 
-                    icon={<IconDollar />}
+                    icon={<IconDollar width={24} height={24} />}
                     onClick={() => setIsPricingDrawerOpen(true)}
                     backIcon
                 />

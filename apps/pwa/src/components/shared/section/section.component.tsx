@@ -46,8 +46,10 @@ export const Section = ({
                     {title}
                 </h2>
 
-                {href && <Link href={href}>{type && <div onClick={onClick} className={styles.section__header__more}>{type}</div>}</Link>}
-
+                {type &&
+                    <button onClick={onClick} className={styles.section__header__more}>
+                        {type}
+                    </button>}
 
             </div>
             {children}

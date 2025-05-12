@@ -3,9 +3,7 @@
 import { observer } from "mobx-react-lite";
 import { useState } from "react";
 import { OptionItem } from "@/components/shared/options";
-import { IconDollar, IconTicket } from "@/components/icons";
-import { TicketsDrawer } from "@/components/drawers/tickets-drawer";
-import { PricingDrawer } from "@/components/drawers/pricing-drawer";
+import { IconCalendar, IconClock } from "@/components/icons";
 import { useEventStore } from "@/features/event";
 import { Section, SectionItems } from "@/components/shared/section";
 
@@ -41,7 +39,7 @@ export const DatePicker = observer(({ }: DatePicker.Props) => {
                     label="Date"
                     description={`${formatDayMonth(eventStore.dateStore.startDate)} `}
 
-                    icon={<IconTicket />}
+                    icon={<IconCalendar width={22} height={22} />}
                     onClick={() => setDateDrawerOpen(true)}
                     backIcon
                 />
@@ -50,7 +48,7 @@ export const DatePicker = observer(({ }: DatePicker.Props) => {
                     label="Start Time"
                     description={`${formatTime(eventStore.dateStore.startHour, eventStore.dateStore.startMinute)}`}
 
-                    icon={<IconDollar />}
+                    icon={<IconClock />}
                     onClick={() => setStartTimeDrawerOpen(true)}
                     backIcon
                 />
@@ -59,7 +57,7 @@ export const DatePicker = observer(({ }: DatePicker.Props) => {
                     label="End Time"
                     description={`${formatTime(eventStore.dateStore.endHour, eventStore.dateStore.endMinute)}`}
 
-                    icon={<IconDollar />}
+                    icon={<IconClock />}
                     onClick={() => setEndTimeDrawerOpen(true)}
                     backIcon
                 />

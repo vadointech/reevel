@@ -8,6 +8,7 @@
   flex-direction: column;
   gap: mixins.rem(8);
   min-width: mixins.rem(302);
+  width: 100%;
 
   &__label {
     position: absolute;
@@ -78,7 +79,7 @@
 
     &__variant {
       &_default {
-        border-radius: mixins.rem(8);
+        border-radius: mixins.rem(17);
       }
       
       &_rounded {

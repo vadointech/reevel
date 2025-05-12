@@ -8,11 +8,12 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
+    gap: 22px;
+    margin-bottom: mixins.rem(22);
 
     &__large {
         height: mixins.rem(45);
     }
-    margin-bottom: mixins.rem(22);
 }
 
 
@@ -57,10 +58,12 @@
 
 .title {
     height: 100%;
+    width: 100%;
     color:colors.$primary;
 
     display: flex;
     align-items: center;
+    justify-content: center;
 
     &_default {
         @include fonts.font-creata("lg",500);
