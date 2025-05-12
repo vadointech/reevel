@@ -1,12 +1,110 @@
-.content {
-    width: 100%;
-    height: 100%;
-    display: flex;
-    flex-wrap: nowrap;
+@use "@/theme/mixins";
+@use "@/theme/colors";
+@use "@/theme/motions";
+@use "@/theme/typography";
 
-    & > * {
-        flex-shrink: 0;
+.content {
+
+}
+
+.upload {
+    &__grid {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        justify-content: space-between;
+        gap: .5rem;
+
+        &_vertical {
+            & > * {
+                width: mixins.rem(168);
+                height: mixins.rem(224);
+                padding: mixins.rem(4);
+                border-radius: mixins.rem(12);
+            }
+        }
+
+        &_horizontal {
+            & > * {
+                width: mixins.rem(168);
+                height: mixins.rem(111);
+                padding: mixins.rem(4);
+                border-radius: mixins.rem(12);
+            }
+        }
+    }
+
+    &__file {
+        position: relative;
+        border: mixins.rem(2) transparent solid;
+
+        &_selected {
+            border-color: colors.$primary;
+        }
+
+        &_wrapper {
+            width: 100%;
+            height: 100%;
+            position: relative;
+
+            border-radius: .5rem;
+            overflow: hidden;
+
+            div {
+                position: absolute;
+                top: .5rem;
+                right: .5rem;
+                z-index: 1;
+            }
+
+            img {
+                z-index: 0;
+                position: absolute;
+                object-fit: cover;
+            }
+        }
+    }
+
+    &__button {
+        all: unset;
+        cursor: pointer;
+
         width: 100%;
-        overflow: hidden;
+        height: 100%;
+
+        padding-inline: 1rem;
+        box-sizing: border-box;
+        border-radius: mixins.rem(12);
+
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        gap: mixins.rem(4);
+
+        text-align: center;
+        @include typography.font("sm");
+
+        color: colors.$accent;
+        background-color: colors.$accent-muted;
+
+        transition: background-color motions.$motion-duration-mid motions.$motion-ease-in-out;
+        -webkit-tap-highlight-color: rgba(0,0,0,0);
+
+        svg {
+            height: mixins.rem(18);
+            path {
+                fill: colors.$accent;
+            }
+        }
+
+        &:active {
+            background-color: colors.$accent-muted-highlight;
+        }
+
+        &:disabled {
+            opacity: .6;
+            box-shadow: none;
+            pointer-events: none;
+        }
     }
 }

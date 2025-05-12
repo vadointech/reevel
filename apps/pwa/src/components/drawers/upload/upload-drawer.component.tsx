@@ -13,6 +13,7 @@ import {
     BottomSheetRoot,
     BottomSheetTrigger,
 } from "@/components/shared/_redesign/bottom-sheet";
+import { UploadFileButton, UploadFileGrid } from "./primitives";
 
 export namespace UploadDrawer {
     export type Props = ComponentProps<"div">;
@@ -38,33 +39,24 @@ export const UploadDrawer = ({ children }: UploadDrawer.Props) => {
                             Event poster
                         </Header>
                         <TabsRoot>
-                            <TabsBody items={[
-                                "Uploaded", "Art", "Marvel", "Anime",
-                                "Uploaded", "Art", "Marvel", "Anime",
-                            ]}>
+                            <TabsBody
+                                items={[
+                                    "Uploaded", "Art", "Marvel", "Anime",
+                                ]}
+                            >
                                 <TabsContent>
-                                    Uploaded
+                                    <UploadFileGrid variant={"vertical"}>
+                                        <UploadFileButton />
+                                    </UploadFileGrid>
                                 </TabsContent>
                                 <TabsContent>
-                                    Art
+                                    <UploadFileGrid variant={"vertical"} />
                                 </TabsContent>
                                 <TabsContent>
-                                    Marvel
+                                    <UploadFileGrid variant={"vertical"} />
                                 </TabsContent>
                                 <TabsContent>
-                                    Anime
-                                </TabsContent>
-                                <TabsContent>
-                                    Uploaded
-                                </TabsContent>
-                                <TabsContent>
-                                    Art
-                                </TabsContent>
-                                <TabsContent>
-                                    Marvel
-                                </TabsContent>
-                                <TabsContent>
-                                    Anime
+                                    <UploadFileGrid variant={"vertical"} />
                                 </TabsContent>
                             </TabsBody>
                         </TabsRoot>
