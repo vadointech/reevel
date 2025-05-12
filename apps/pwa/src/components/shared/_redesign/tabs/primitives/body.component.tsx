@@ -105,6 +105,7 @@ export const TabsBody = ({
                     style={{ x: tabsContainerDragX }}
                     ref={tabsContainerRefHandler}
                     animate={tabsContainerAnimate}
+                    dragDirectionLock
                     dragConstraints={tabsContainerDragBounds}
                     onDragStart={handleTabsContainerDragStart}
                     onDragEnd={handleTabsContainerDragEnd}
@@ -136,6 +137,7 @@ export const TabsBody = ({
                 ref={tabsContentRefHandler}
                 style={{ x: tabsContentDragX }}
                 animate={tabsContentAnimate}
+                dragDirectionLock
                 dragConstraints={tabsContentDragBounds}
                 onDrag={handleDrag}
                 onDragEnd={handleDragEnd}

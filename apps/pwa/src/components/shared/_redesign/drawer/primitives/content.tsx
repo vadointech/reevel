@@ -31,7 +31,7 @@ export const DrawerContent = ({
                 )
             }
 
-            {children}
+            { children }
         </div>
     );
 };

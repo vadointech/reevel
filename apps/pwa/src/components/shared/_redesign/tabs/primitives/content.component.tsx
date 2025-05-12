@@ -12,6 +12,13 @@ export const TabsContent = ({
     ...props
 }: TabsContent.Props) => {
     return (
-        <div className={cx(styles.content, className)} {...props} />
+        <div
+            className={cx(styles.content, className)}
+            onDrag={(event) => {
+                event.preventDefault();
+                event.stopPropagation();
+            }}
+            {...props}
+        />
     );
 };

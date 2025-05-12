@@ -1,7 +1,7 @@
 import { useEffect, useRef } from "react";
 import { useAnimation } from "motion/react";
 
-import { normalize } from "../utils";
+import { normalize } from "@/utils/normalize";
 import { useTabsStore } from "../tabs.store";
 import { useTabsOverlayInterpolate } from "./useOverlayInterpolate";
 

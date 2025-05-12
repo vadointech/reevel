@@ -1,5 +1,5 @@
 import { EstimatedTabRef } from "./useTabButtons";
-import { lerp } from "../utils";
+import { lerp } from "@/utils/normalize";
 
 export function useTabsOverlayInterpolate() {
     return (from: EstimatedTabRef, to: EstimatedTabRef, localProgress: number) => {

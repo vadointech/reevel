@@ -32,7 +32,9 @@ export default function PrivateProfilePage() {
                         )}
                     >
                         <UploadDrawer>
-
+                            <Button variant={"secondary-muted"} size={"small"}>
+                                Edit profile
+                            </Button>
                         </UploadDrawer>
                         <Button variant={"secondary-muted"} size={"small"}>
                             Share profile

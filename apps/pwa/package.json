@@ -12,6 +12,7 @@
   "dependencies": {
     "@tanstack/react-query": "^5.66.9",
     "@uidotdev/usehooks": "^2.4.1",
+    "class-variance-authority": "^0.7.1",
     "classnames": "^2.5.1",
     "date-fns": "^4.1.0",
     "embla-carousel": "^8.5.2",

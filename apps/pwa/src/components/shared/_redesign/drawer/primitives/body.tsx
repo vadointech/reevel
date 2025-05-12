@@ -25,10 +25,7 @@ export const DrawerBody = ({
                 )}
                 {...props}
             >
-                <Vaul.Title />
-
                 { children }
-
             </Vaul.Content>
         </Vaul.Portal>
     );
