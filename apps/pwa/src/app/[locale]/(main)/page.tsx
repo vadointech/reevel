@@ -6,7 +6,7 @@ export default function Home() {
             <Link href={"/event/slug"}>
                 To event
             </Link>
-            <Link href={"/profile/slug"}>
+            <Link href={"/profile"}>
                 To profile
             </Link>
         </div>

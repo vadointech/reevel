@@ -1,0 +1,80 @@
+"use client";
+
+import { ComponentProps } from "react";
+import {
+    Button,
+    Header, TabsBody,
+    TabsContent, TabsRoot,
+} from "@/components/shared/_redesign";
+import {
+    BottomSheetBody,
+    BottomSheetContent,
+    BottomSheetHandle,
+    BottomSheetPortal,
+    BottomSheetRoot,
+    BottomSheetTrigger,
+} from "@/components/shared/_redesign/bottom-sheet";
+import { UploadFileButton, UploadFileGrid } from "./primitives";
+import { ScrollArea } from "@/components/shared/_redesign/scroll-area/scroll-area.component";
+
+export namespace UploadDrawer {
+    export type Props = ComponentProps<"div">;
+}
+
+export const UploadDrawer = ({ children }: UploadDrawer.Props) => {
+    return (
+        <BottomSheetRoot handleOnly>
+            <BottomSheetTrigger>
+                { children }
+            </BottomSheetTrigger>
+            <BottomSheetPortal>
+                <BottomSheetBody>
+                    <BottomSheetContent>
+                        <BottomSheetHandle>
+                            <Header
+                                size={"small"}
+                                controlAfter={
+                                    <Button variant={"text-accent"}>
+                                        Upload
+                                    </Button>
+                                }
+                            >
+                                Event poster
+                            </Header>
+                        </BottomSheetHandle>
+                        <TabsRoot>
+                            <TabsBody
+                                items={[
+                                    "Uploaded", "Art", "Marvel", "Anime",
+                                ]}
+                            >
+                                <TabsContent>
+                                    <ScrollArea>
+                                        <UploadFileGrid variant={"vertical"}>
+                                            <UploadFileButton />
+                                        </UploadFileGrid>
+                                    </ScrollArea>
+                                </TabsContent>
+                                <TabsContent>
+                                    <ScrollArea>
+                                        <UploadFileGrid variant={"vertical"} />
+                                    </ScrollArea>
+                                </TabsContent>
+                                <TabsContent>
+                                    <ScrollArea>
+                                        <UploadFileGrid variant={"vertical"} />
+                                    </ScrollArea>
+                                </TabsContent>
+                                <TabsContent>
+                                    <ScrollArea>
+                                        <UploadFileGrid variant={"vertical"} />
+                                    </ScrollArea>
+                                </TabsContent>
+                            </TabsBody>
+                        </TabsRoot>
+                    </BottomSheetContent>
+                </BottomSheetBody>
+            </BottomSheetPortal>
+        </BottomSheetRoot>
+    );
+};

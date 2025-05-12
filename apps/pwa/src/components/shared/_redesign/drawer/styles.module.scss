@@ -2,19 +2,13 @@
 @use "@/theme/mixins";
 
 .drawer {
-    &__trigger {
-        all: unset;
-    }
-
     &__body {
         position: fixed;
         bottom: 0;
         left: 0;
         right: 0;
-        z-index: 1;
-
+        z-index: 10;
         height: 100%;
-        max-height: 97%;
     }
 
     &__content {
@@ -25,7 +19,6 @@
         flex-direction: column;
 
         padding-top: mixins.rem(24);
-        padding-inline: 1rem;
 
         background-color: colors.$background;
         border-radius: mixins.rem(20) mixins.rem(20) 0 0;
@@ -41,11 +34,12 @@
         width: mixins.rem(36);
         height: mixins.rem(5);
         border-radius: mixins.rem(30);
-        background-color: colors.$foreground;
+        background-color: colors.$secondary-muted;
     }
 
     &__overlay {
         position: fixed;
+        z-index: 9;
         top: 0;
         right: 0;
         bottom: 0;

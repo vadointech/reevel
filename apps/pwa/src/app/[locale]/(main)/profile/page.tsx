@@ -7,6 +7,7 @@ import { EventCard } from "@/components/shared/event-card";
 
 import styles from "./styles.module.scss";
 import cx from "classnames";
+import { UploadDrawer } from "@/components/drawers/upload";
 
 export default function PrivateProfilePage() {
     return (
@@ -30,9 +31,11 @@ export default function PrivateProfilePage() {
                             styles.content__gap,
                         )}
                     >
-                        <Button variant={"secondary-muted"} size={"small"}>
-                            Edit profile
-                        </Button>
+                        <UploadDrawer>
+                            <Button variant={"secondary-muted"} size={"small"}>
+                                Edit profile
+                            </Button>
+                        </UploadDrawer>
                         <Button variant={"secondary-muted"} size={"small"}>
                             Share profile
                         </Button>

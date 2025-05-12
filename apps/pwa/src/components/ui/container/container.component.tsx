@@ -1,8 +1,10 @@
-import cx from "classnames";
+import { ComponentProps } from "react";
+
 import styles from "./styles.module.scss";
+import cx from "classnames";
 
 namespace Container {
-    export type Props = React.ComponentProps<"div"> & {
+    export type Props = ComponentProps<"div"> & {
         center?: boolean;
         subLgCenter?: boolean;
     };
@@ -18,8 +20,8 @@ const Container = ({
         <div
             className={cx(
                 styles.container,
-                className,
                 center && styles.container__center,
+                className,
             )}
             {...props}
         >
