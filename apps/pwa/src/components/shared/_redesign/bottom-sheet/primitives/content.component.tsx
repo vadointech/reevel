@@ -23,7 +23,7 @@ export const BottomSheetContent = ({
     const bottomSheetStore = useBottomSheetStore();
 
     const snapControls = bottomSheetStore.snapControls;
-    
+
     const {
         dragY,
         dragYProgress,
@@ -57,6 +57,8 @@ export const BottomSheetContent = ({
                 drag={"y"}
                 style={{ y: dragY }}
                 ref={bottomSheetRef}
+                dragControls={bottomSheetStore.dragControls}
+                dragListener={!bottomSheetStore.rootConfig.handleOnly}
                 transition={generateBottomSheetExitTransitionParams(
                     snapControls.getSnapPointRatio(snapControls.snapPointsCount - 1),
                 )}
@@ -70,13 +72,17 @@ export const BottomSheetContent = ({
                 }}
                 dragElastic={{
                     top: .07,
-                    bottom: 0,
+                    bottom: snapControls.snapPointsCount === 1 ? .2 : .07,
                 }}
                 onDragEnd={handleDragEnd}
                 className={styles.bottomSheet__body}
             >
                 <motion.div
-                    style={{ opacity: contentOpacity, ...style }}
+                    style={{
+                        opacity: contentOpacity,
+                        paddingBottom: snapControls.Top,
+                        ...style,
+                    }}
                     className={cx(styles.bottomSheet__content, className)}
                     {...props}
                 />

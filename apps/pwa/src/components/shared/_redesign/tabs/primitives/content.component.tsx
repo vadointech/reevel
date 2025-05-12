@@ -14,10 +14,6 @@ export const TabsContent = ({
     return (
         <div
             className={cx(styles.content, className)}
-            onDrag={(event) => {
-                event.preventDefault();
-                event.stopPropagation();
-            }}
             {...props}
         />
     );

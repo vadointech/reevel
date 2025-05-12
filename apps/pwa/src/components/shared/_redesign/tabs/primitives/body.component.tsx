@@ -15,6 +15,7 @@ import { Container } from "@/components/ui";
 import { TabsTabButton } from "./tab-button.component";
 
 import styles from "../styles.module.scss";
+import cx from "classnames";
 
 export namespace TabsBody {
     export type Props = HTMLMotionProps<"div"> & {
@@ -24,6 +25,7 @@ export namespace TabsBody {
 
 export const TabsBody = ({
     items,
+    className,
     ...props
 }: TabsBody.Props) => {
     const tabsStore = useTabsStore();
@@ -132,19 +134,24 @@ export const TabsBody = ({
                     />
                 </motion.div>
             </Container>
-            <motion.div
-                drag={"x"}
-                ref={tabsContentRefHandler}
-                style={{ x: tabsContentDragX }}
-                animate={tabsContentAnimate}
-                dragDirectionLock
-                dragConstraints={tabsContentDragBounds}
-                onDrag={handleDrag}
-                onDragEnd={handleDragEnd}
-                onDragStart={handleDragStart}
-                className={styles.tabs}
-                {...props}
-            />
+            <div style={{ flex: "auto", overflow: "hidden" }}>
+                <motion.div
+                    drag={"x"}
+                    ref={tabsContentRefHandler}
+                    style={{ x: tabsContentDragX }}
+                    animate={tabsContentAnimate}
+                    dragDirectionLock
+                    dragConstraints={tabsContentDragBounds}
+                    onDrag={handleDrag}
+                    onDragEnd={handleDragEnd}
+                    onDragStart={handleDragStart}
+                    className={cx(
+                        styles.tabs,
+                        className,
+                    )}
+                    {...props}
+                />
+            </div>
         </>
     );
 };

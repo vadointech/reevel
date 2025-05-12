@@ -3,7 +3,7 @@ import { lerp } from "@/utils/normalize";
 
 export function generateBottomSheetExitTransitionParams(target: number): Transition {
     const minDuration = 0.15;
-    const maxDuration = .4;
+    const maxDuration = .35;
     const duration = lerp(
         minDuration,
         maxDuration,

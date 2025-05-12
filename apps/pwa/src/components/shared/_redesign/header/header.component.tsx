@@ -44,11 +44,12 @@ export const Header = ({
     iconAfter,
     controlBefore,
     controlAfter,
+    className,
     ...props
 }: Header.Props) => {
     return (
         <header
-            className={header({ size })}
+            className={header({ size, className })}
             {...props}
         >
             <div className={styles.header__left}>

@@ -6,6 +6,7 @@ export interface IBottomSheetRootConfig {
     overlay: boolean;
     fadeThreshold: number;
     dismissible?: boolean;
+    handleOnly?: boolean;
 }
 
 export class BottomSheetRootConfig implements IBottomSheetRootConfig {
@@ -14,6 +15,7 @@ export class BottomSheetRootConfig implements IBottomSheetRootConfig {
     overlay: boolean = true;
     fadeThreshold: number = .5;
     dismissible: boolean = true;
+    handleOnly: boolean = false;
 
     constructor(init: Partial<IBottomSheetRootConfig>) {
         initStore(this, init);

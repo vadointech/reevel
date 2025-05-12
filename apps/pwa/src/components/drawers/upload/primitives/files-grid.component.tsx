@@ -36,6 +36,14 @@ export const UploadFileGrid = ({
             <UploadFileItem image={"/assets/temp/poster6.png"} />
             <UploadFileItem selected image={"/assets/temp/poster6.png"} />
             <UploadFileItem image={"/assets/temp/poster6.png"} />
+            <UploadFileItem image={"/assets/temp/poster6.png"} />
+            <UploadFileItem image={"/assets/temp/poster6.png"} />
+            <UploadFileItem image={"/assets/temp/poster6.png"} />
+            <UploadFileItem image={"/assets/temp/poster6.png"} />
+            <UploadFileItem image={"/assets/temp/poster6.png"} />
+            <UploadFileItem image={"/assets/temp/poster6.png"} />
+            <UploadFileItem image={"/assets/temp/poster6.png"} />
+            <UploadFileItem image={"/assets/temp/poster6.png"} />
         </div>
     );
 };
