@@ -1,4 +1,4 @@
-"use client"
+"use client";
 import { Drawer, DrawerBody, DrawerContent } from "@/components/shared/drawer";
 
 import { OnboardingTextBlock } from "@/app/[locale]/(main)/onboarding/_components";
@@ -6,8 +6,7 @@ import { useEventStore } from "@/features/event";
 
 import { Button, Input } from "@/components/ui";
 
-import styles from "./styles.module.scss"
-import { Check } from "@/components/icons";
+import styles from "./styles.module.scss";
 import { observer } from "mobx-react-lite";
 
 
@@ -19,14 +18,14 @@ export namespace PricingDrawer {
 }
 
 export const PricingDrawer = observer(({ open, onClose }: PricingDrawer.Props) => {
-    const eventStore = useEventStore()
+    const eventStore = useEventStore();
 
     return (
         <Drawer open={open} defaultPoint={"middle"}>
             <DrawerBody>
                 <DrawerContent className={styles.drawer}>
                     <OnboardingTextBlock
-                        title={`How much does it cost?`}
+                        title={"How much does it cost?"}
                         className={styles.drawer__text}
                     />
                     <Input
@@ -49,5 +48,5 @@ export const PricingDrawer = observer(({ open, onClose }: PricingDrawer.Props) =
                 </DrawerContent>
             </DrawerBody>
         </Drawer>
-    )
+    );
 });

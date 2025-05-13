@@ -1,8 +1,10 @@
-import { ComponentProps, ReactNode } from "react";
-import { IconArrowLeft, IconEllipsisVertical } from "@/components/icons";
+import { ComponentProps, ReactNode, MouseEvent } from "react";
+import { IconArrowLeft, IconSearch } from "@/components/icons";
+
+import { cva, VariantProps } from "class-variance-authority";
+import { Input } from "@/components/ui";
 
 import styles from "./styles.module.scss";
-import { cva, VariantProps } from "class-variance-authority";
 
 const header = cva(styles.header, {
     variants: {
@@ -34,13 +36,14 @@ export namespace Header {
     export type SearchProps = ComponentProps<"header"> & VariantProps<typeof header> & {
         iconBefore?: ReactNode;
         controlBefore?: ReactNode;
+        onControlClick?: (event: MouseEvent<HTMLDivElement>) => void;
     };
 }
 
 export const Header = ({
     size,
     children,
-    iconBefore = <IconArrowLeft />,
+    iconBefore,
     iconAfter,
     controlBefore,
     controlAfter,
@@ -71,19 +74,29 @@ const Search = ({
     size,
     iconBefore = <IconArrowLeft />,
     controlBefore,
+    onControlClick,
+    className,
     ...props
 }: Header.SearchProps) => {
     return (
         <header
-            className={header({ size })}
+            className={header({ size, variant: "search" , className })}
             {...props}
         >
-            <div className={styles.header__left}>
+            <div
+                onClick={onControlClick}
+                className={styles.header__left}
+            >
                 { iconBefore }
                 { controlBefore }
             </div>
 
-            <div />
+            <Input
+                placeholder={"Search"}
+                variant={"rounded"}
+                type="input"
+                icon={<IconSearch />}
+            />
         </header>
     );
 };

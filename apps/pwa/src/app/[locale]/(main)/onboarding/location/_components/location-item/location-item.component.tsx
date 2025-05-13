@@ -1,4 +1,4 @@
-import { Check, Navigation } from "@/components/icons";
+import { IconCheck, Navigation } from "@/components/icons";
 import { ComponentProps } from "react";
 import styles from "./styles.module.scss";
 import cx from "classnames";

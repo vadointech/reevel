@@ -1,4 +1,4 @@
-"use client"
+"use client";
 
 import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
@@ -7,7 +7,7 @@ import styles from "./styles.module.scss";
 
 import { Drawer, DrawerBody, DrawerContent } from "@/components/shared/drawer";
 import { Button, Container, Input } from "@/components/ui";
-import { Check, IconSearch } from "@/components/icons";
+import { IconCheck, IconSearch } from "@/components/icons";
 import { InterestsSection } from "@/components/shared/interests-section";
 import { TabButton } from "@/components/ui/tab-button";
 import { useEventStore } from "@/features/event";
@@ -93,7 +93,7 @@ const InterestItem = observer((
         selected: boolean;
         handlePickInterest: (interest: InterestEntity) => void;
         interest: InterestEntity;
-    }
+    },
 ) => {
     return (
         <TabButton

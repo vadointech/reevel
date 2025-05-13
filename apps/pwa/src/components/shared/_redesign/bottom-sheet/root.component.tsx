@@ -12,7 +12,6 @@ export const BottomSheetRoot = ({
     children,
     ...configProps
 }: BottomSheetRoot.Props) => {
-
     const [rootConfig] = useState(() => {
         return new BottomSheetRootConfig(configProps);
     });

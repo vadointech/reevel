@@ -12,7 +12,7 @@
 
   &__label {
     position: absolute;
-    top: 0rem;
+    top: 0;
     margin-top: 0.75rem;
     margin-left: 1rem;
     @include fonts.font-creata("xs", 400);
@@ -28,8 +28,7 @@
     height: mixins.rem(70);
     width: 100%;
     background: colors.$secondary-muted;
-    padding: 0.75rem 1rem;
-    padding-top: 1.5rem;
+    padding: 1.5rem 1rem 0.75rem;
 
     @include fonts.font-creata("base", 400);
     border: none;
@@ -70,11 +69,17 @@
     }
 
     &__icon {
+      display: flex;
       position: absolute;
       left: 0.75rem;
       top: 50%;
       transform: translateY(-50%);
-      font-size: mixins.rem(18);
+
+      svg {
+        path {
+          fill: colors.$secondary;
+        }
+      }
     }
 
     &__variant {
@@ -88,7 +93,7 @@
       
       &_numeric {
         border: none;
-        padding: 0rem;
+        padding: 0;
         text-align: center;
 
         @include fonts.font-creata("", 600);

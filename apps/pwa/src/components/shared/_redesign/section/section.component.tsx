@@ -13,6 +13,7 @@ export namespace Section {
     export type Props = ComponentProps<"div"> & Data & {
         container?: boolean;
         variant?: Button.Variant;
+        onCtaClick?: () => void;
     };
 }
 
@@ -23,6 +24,7 @@ export const Section = ({
     cta,
     variant = "text-primary",
     container = false,
+    onCtaClick,
     ...props
 }: Section.Props) => {
     return (
@@ -49,6 +51,7 @@ export const Section = ({
                                         width: "fit-content",
                                         padding: 0,
                                     }}
+                                    onClick={onCtaClick}
                                 >
                                     { cta }
                                 </Button>

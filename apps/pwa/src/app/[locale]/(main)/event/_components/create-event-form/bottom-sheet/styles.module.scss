@@ -1,0 +1,26 @@
+@use "@/theme/mixins";
+
+.bottomSheet {
+    &__content {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+
+        &_size {
+            &_default {
+                row-gap: 4rem;
+                margin-top: 4rem;
+            }
+
+            &_large {
+                row-gap: mixins.rem(12);
+                margin-top: mixins.rem(12);
+            }
+            &_small {
+                row-gap: mixins.rem(24);
+                margin-top: mixins.rem(24);
+            }
+        }
+
+    }
+}

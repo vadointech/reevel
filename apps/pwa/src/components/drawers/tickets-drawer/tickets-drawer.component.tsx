@@ -1,4 +1,4 @@
-"use client"
+"use client";
 import { Drawer, DrawerBody, DrawerContent } from "@/components/shared/drawer";
 
 import { OnboardingTextBlock } from "@/app/[locale]/(main)/onboarding/_components";
@@ -6,8 +6,8 @@ import { useEventStore } from "@/features/event";
 
 import { Button, Input } from "@/components/ui";
 
-import styles from "./styles.module.scss"
-import { Check } from "@/components/icons";
+import styles from "./styles.module.scss";
+import { Iconheck } from "@/components/icons";
 import { observer } from "mobx-react-lite";
 
 
@@ -19,7 +19,7 @@ export namespace TicketsDrawer {
 }
 
 export const TicketsDrawer = observer(({ open, onClose }: TicketsDrawer.Props) => {
-    const eventStore = useEventStore()
+    const eventStore = useEventStore();
 
     return (
         <Drawer open={open} defaultPoint={"middle"} >
@@ -27,7 +27,7 @@ export const TicketsDrawer = observer(({ open, onClose }: TicketsDrawer.Props) =
                 <DrawerContent className={styles.drawer}>
                     <OnboardingTextBlock
                         className={styles.drawer__text}
-                        title={`How Many Tickets?`}
+                        title={"How Many Tickets?"}
                     />
                     <Input
                         pattern="[0-9]*"
@@ -49,5 +49,5 @@ export const TicketsDrawer = observer(({ open, onClose }: TicketsDrawer.Props) =
                 </DrawerContent>
             </DrawerBody>
         </Drawer>
-    )
+    );
 });

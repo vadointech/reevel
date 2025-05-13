@@ -33,6 +33,7 @@ export const Button = ({
     arrowAfter,
     children,
     className,
+    type = "button",
     ...props
 }: Button.Props) => {
     return (
@@ -43,6 +44,7 @@ export const Button = ({
                 styles[`button_variant_${variant}`],
                 className,
             )}
+            type={type}
             {...props}
         >
             { iconBefore }

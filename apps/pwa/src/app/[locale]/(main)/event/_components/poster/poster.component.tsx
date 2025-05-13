@@ -1,8 +1,8 @@
 import Image, { StaticImageData } from "next/image";
-import styles from "./styles.module.scss"
+import styles from "./styles.module.scss";
 
-import cx from "classnames"
-import { Check } from "@/components/icons";
+import cx from "classnames";
+import { IconCheck } from "@/components/icons";
 import { ComponentProps } from "react";
 
 
@@ -20,7 +20,7 @@ export namespace Poster {
 
 
 export const Poster = ({
-    src = '',
+    src = "",
     size,
     selected,
     className,
@@ -33,10 +33,10 @@ export const Poster = ({
             cx(
                 styles.poster,
                 styles[`poster__size_${size}`],
-                selected && styles.poster__selected
+                selected && styles.poster__selected,
             )}
-            onClick={onClick}
-            {...props}>
+        onClick={onClick}
+        {...props}>
             <Image
                 fill
                 src={src}
@@ -49,6 +49,6 @@ export const Poster = ({
                 </div>
             }
         </div>
-    )
+    );
 };
 

@@ -1,0 +1,68 @@
+@use "@/theme/mixins";
+@use "@/theme/colors";
+@use "@/theme/spacing";
+
+$submit-btn-height: 68;
+
+.form {
+    flex: 1 1 auto;
+    position: relative;
+    overflow: hidden;
+
+    &__content {
+        height: 100%;
+        overflow-y: auto;
+
+        padding: 2rem spacing.$container mixins.rem($submit-btn-height);
+
+        @include mixins.no-scrollbar;
+    }
+
+    &__gap {
+        margin-bottom: mixins.rem(24);
+        &_sm {
+            margin-bottom: mixins.rem(12);
+        }
+    }
+
+    &__interests {
+        display: flex;
+        flex-wrap: wrap;
+        gap: .5rem;
+    }
+
+    &__submit {
+        height: mixins.rem($submit-btn-height);
+        padding: spacing.$container spacing.$container 0;
+
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        right: 0;
+
+        background: linear-gradient(
+            to top,
+            colors.$foreground 20%,
+            transparent 100%
+        );
+    }
+}
+
+
+.searchInterests {
+    position: absolute;
+    background: colors.$background;
+    width: 100%;
+    height: 100%;
+    inset: 0;
+    z-index: 2;
+
+    &__header {
+        padding-bottom: mixins.rem(22);
+    }
+}
+
+.timePicker {
+    width: 100%;
+    display: flex;
+}

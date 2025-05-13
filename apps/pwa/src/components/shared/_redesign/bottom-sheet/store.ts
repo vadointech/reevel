@@ -2,7 +2,7 @@ import { action, makeObservable, observable } from "mobx";
 import { DragControls } from "motion/react";
 import { createMobxStoreProvider } from "@/lib/mobx";
 import { BottomSheetSnapPointControl } from "./snap-controls";
-import { IBottomSheetRootConfig } from "./config/root.config";
+import { BottomSheetRootConfig } from "./config/root.config";
 
 interface IBottomSheetStore {
     open: boolean;
@@ -12,12 +12,13 @@ interface IBottomSheetStore {
 class BottomSheetStore implements IBottomSheetStore {
     open = false;
     activeSnapPoint: number = 0;
+    contentHeight: number;
 
     readonly dragControls: DragControls;
     readonly snapControls: BottomSheetSnapPointControl;
 
     constructor(
-        readonly rootConfig: IBottomSheetRootConfig,
+        readonly rootConfig: BottomSheetRootConfig,
     ) {
         makeObservable(this, {
             open: observable,
@@ -25,11 +26,14 @@ class BottomSheetStore implements IBottomSheetStore {
             setOpen: action,
             setClose: action,
             setActiveSnapPoint: action,
+            setContentHeight: action,
         });
+
+        this.contentHeight = window.innerHeight;
 
         this.snapControls = new BottomSheetSnapPointControl(
             this.rootConfig,
-            window.innerHeight,
+            this.contentHeight,
         );
         this.dragControls = new DragControls();
     }
@@ -45,6 +49,10 @@ class BottomSheetStore implements IBottomSheetStore {
 
     setActiveSnapPoint(snapPoint: number) {
         this.activeSnapPoint = snapPoint;
+    }
+
+    setContentHeight(height: number) {
+        this.contentHeight = height;
     }
 }
 

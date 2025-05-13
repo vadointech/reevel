@@ -9,6 +9,12 @@ body {
   height: 100vh;
   height: 100dvh;
   overflow: hidden;
+
+  -webkit-touch-callout: none; /* iOS Safari */
+  -webkit-user-select: none; /* Safari */
+  -moz-user-select: none; /* Old versions of Firefox */
+  -ms-user-select: none; /* Internet Explorer/Edge */
+  user-select: none; /* Non-prefixed version, currently supported by Chrome, Edge, Opera and Firefox */
 }
 
 body {
@@ -38,4 +44,9 @@ a {
 .standalone {
   height: 100%;
   padding-bottom: 36px;
+}
+
+.bottom-sheet-root {
+  position: absolute;
+  inset: 0;
 }

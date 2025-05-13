@@ -1,0 +1,38 @@
+@use "@/theme/mixins";
+@use "@/theme/colors";
+@use "@/theme/typography";
+
+.input {
+    &__number {
+        display: flex;
+        flex-direction: column;
+
+        input {
+            @include typography.font-creata();
+            font-size: mixins.rem(58);
+            font-weight: 700;
+            line-height: 1;
+
+            background: transparent;
+            border: none;
+            outline: none;
+            width: 100%;
+            text-align: center;
+
+            &::placeholder {
+                @include typography.font("xl", 700);
+                font-size: mixins.rem(58);
+                line-height: 1;
+                color: colors.$secondary-highlight;
+            }
+
+            -moz-appearance: textfield;
+        }
+
+        span {
+            @include typography.font();
+            color: colors.$secondary;
+            text-align: center;
+        }
+    }
+}
