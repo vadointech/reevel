@@ -1,8 +1,8 @@
 import { Header } from "@/components/shared/_redesign";
 import { CreateEventForm } from "../_components";
+import { IconArrowLeft } from "@/components/icons";
 
 import styles from "./styles.module.scss";
-import { IconArrowLeft } from "@/components/icons";
 
 export default function CreateEventPage() {
     return (

@@ -1,1 +1,0 @@
-export * from "./event-bio-form.component"
