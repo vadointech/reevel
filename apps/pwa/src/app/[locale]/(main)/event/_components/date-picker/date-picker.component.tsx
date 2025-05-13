@@ -48,7 +48,7 @@ export const DatePicker = observer(({ }: DatePicker.Props) => {
                     label="Start Time"
                     description={`${formatTime(eventStore.dateStore.startHour, eventStore.dateStore.startMinute)}`}
 
-                    icon={<IconClock />}
+                    icon={<IconClock width={22} height={22} />}
                     onClick={() => setStartTimeDrawerOpen(true)}
                     backIcon
                 />
@@ -57,7 +57,7 @@ export const DatePicker = observer(({ }: DatePicker.Props) => {
                     label="End Time"
                     description={`${formatTime(eventStore.dateStore.endHour, eventStore.dateStore.endMinute)}`}
 
-                    icon={<IconClock />}
+                    icon={<IconClock width={22} height={22} />}
                     onClick={() => setEndTimeDrawerOpen(true)}
                     backIcon
                 />

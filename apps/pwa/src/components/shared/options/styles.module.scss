@@ -5,10 +5,8 @@
 .options {
     background-color: colors.$foreground;
     border-radius: mixins.rem(17);
-    padding: 1rem mixins.rem(18);
     display: flex;
     flex-direction: column;
-    gap: 2rem;
 }
 
 
@@ -26,16 +24,22 @@
 
     @include fonts.font-creata('base', 400, mixins.rem(24));
 
-    svg {
-        margin-top: mixins.rem(6);
-        max-height: mixins.rem(24);
-        // path {
-        //     stroke:colors.$primary;
-        // }
+    &__svg {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        &_mt {
+            svg {
+                margin-top: mixins.rem(6);
+                max-height: mixins.rem(24);
+            }
+        }
     }
+
 
     &__text {
         width: 100%;
+        height: 100%;
 
         display: flex;
         justify-content: flex-start;
@@ -45,6 +49,7 @@
             color: colors.$danger;
         }
         &__meta {
+            width: 100%;
             display: flex;
             flex-direction: column;
             span {
@@ -52,11 +57,24 @@
                 color: colors.$secondary
             }
         }
+        &_center {
+            align-items: center;
+        }
     }
 
     &__value {
         display: flex;
         align-items: center;
         gap: 0.75rem;
+    }
+
+    &__image {
+        height: mixins.rem(48);
+
+        display: flex;
+        flex-direction: column-reverse;
+        img {
+            border-radius:50%;
+        }
     }
 }
