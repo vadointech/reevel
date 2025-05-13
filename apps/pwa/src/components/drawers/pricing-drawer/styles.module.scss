@@ -1,7 +1,20 @@
-.input {
+@use "@/theme/colors";
+@use "@/theme/mixins";
 
+
+.input {
+    background-color: colors.$background;
 }
 
 .buttons {
     margin-top: 4rem;
+}
+
+.drawer {
+    &__text {
+        margin-bottom: 1.5rem;
+        h1 {
+            font-size: 1.25rem;
+        }
+    }
 }

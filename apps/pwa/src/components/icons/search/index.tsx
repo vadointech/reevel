@@ -1,6 +1,6 @@
 import { ComponentProps } from "react";
 
-export const Search = (props: ComponentProps<"svg">) => (
+export const IconSearch = (props: ComponentProps<"svg">) => (
     <svg
         width={18}
         height={18}

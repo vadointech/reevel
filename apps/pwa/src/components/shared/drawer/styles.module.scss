@@ -2,10 +2,6 @@
 @use "@/theme/mixins";
 
 .drawer {
-    &__trigger {
-        all: unset;
-    }
-
     &__body {
         position: fixed;
         bottom: 0;

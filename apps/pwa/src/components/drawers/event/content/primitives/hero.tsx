@@ -14,6 +14,7 @@ import { UserProfileEntity } from "@/entities/profile";
 
 import styles from "../styles.module.scss";
 import cx from "classnames";
+import { formatDate } from "@/utils/time";
 
 export namespace EventDrawerContentHero {
     export type Data = {
@@ -27,22 +28,6 @@ export namespace EventDrawerContentHero {
         description: string;
     };
     export type Props = Data;
-}
-
-function formatDate(date: Date, locale: string) {
-
-    const formattedDate = new Date(date).toLocaleDateString(locale, {
-        weekday: "long",
-        month: "short",
-        day: "numeric",
-    });
-
-    const hours = new Date(date).getHours();
-    const minutes = new Date(date).getMinutes();
-
-    const time = `${hours}:${minutes < 10 ? "0" + minutes : minutes}`;
-
-    return `${formattedDate.trim()} • ${time}`;
 }
 
 export const EventDrawerContentHero = ({
@@ -156,7 +141,7 @@ export const EventDrawerContentHero = ({
             </div>
 
             <EventDrawerContentDescription>
-                { description }
+                {description}
             </EventDrawerContentDescription>
         </div>
     );

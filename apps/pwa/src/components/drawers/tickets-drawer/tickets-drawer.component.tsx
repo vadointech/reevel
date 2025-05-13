@@ -22,15 +22,16 @@ export const TicketsDrawer = observer(({ open, onClose }: TicketsDrawer.Props) =
     const eventStore = useEventStore()
 
     return (
-        <Drawer open={open} defaultPoint={"middle"}>
+        <Drawer open={open} defaultPoint={"middle"} >
             <DrawerBody>
                 <DrawerContent className={styles.drawer}>
                     <OnboardingTextBlock
+                        className={styles.drawer__text}
                         title={`How Many Tickets?`}
                     />
                     <Input
                         pattern="[0-9]*"
-                        type="tel"
+                        type="input"
                         inputMode="numeric"
                         placeholder={eventStore.tickets.toString()}
                         variant="numeric" label="Tickets"
@@ -39,11 +40,10 @@ export const TicketsDrawer = observer(({ open, onClose }: TicketsDrawer.Props) =
                     />
                     <div className={styles.buttons}>
                         <Button
-                            variant="default"
-                            iconBefore={<Check width={16} height={16} />}
+                            variant="primary"
                             onClick={onClose}
                         >
-                            Done
+                            Confirm
                         </Button>
                     </div>
                 </DrawerContent>

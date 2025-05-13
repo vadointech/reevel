@@ -5,7 +5,7 @@ import { Drawer, DrawerBody, DrawerContent, DrawerTrigger } from "@/components/s
 
 import { Avatar, Input } from "@/components/ui";
 import { Section } from "@/components/shared/section";
-import { Search } from "@/components/icons/search";
+import { IconSearch } from "@/components/icons/search";
 import { RecentCard } from "@/components/shared/recent-card/recent-card.component";
 import { CollectionCard } from "@/components/shared/collection-card";
 import { EventCard } from "@/components/shared/event-card";
@@ -26,7 +26,7 @@ export const RecommendationDrawer = ({ open }: RecommendationDrawer.Props) => {
                     <div className={styles.drawer}>
                         <div className={styles.drawer__content}>
                             <div className={styles.drawer__content__input}>
-                                <Input variant="rounded" placeholder="Search events" icon={<Search />} />
+                                <Input variant="rounded" placeholder="Search events" icon={<IconSearch />} />
                                 <Avatar size={40} variant="profile" type="custom" />
                             </div>
 
@@ -45,7 +45,7 @@ export const RecommendationDrawer = ({ open }: RecommendationDrawer.Props) => {
                                     <RecentCard title="Outdoor Movie Night" img={''} />
                                 </Section>
 
-                                <Section title="Discover" size="small"  className={styles.drawer__content__sections}>
+                                <Section title="Discover" size="small" className={styles.drawer__content__sections}>
                                     <CollectionCard
                                         title="Games"
                                         city="Vinn"

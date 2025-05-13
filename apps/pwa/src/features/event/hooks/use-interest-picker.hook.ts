@@ -9,8 +9,16 @@ export function useInterestPicker(initialInterests: InterestEntity[]) {
     const [interests, setInterests] = useState<InterestEntity[]>(initialInterests || []);
 
     useEffect(() => {
-        setInterests(initialInterests || []);
-    }, [initialInterests]);
+        const combinedInterests = [...eventStore.interests];
+
+        initialInterests.forEach(interest => {
+            if (!combinedInterests.some(storeInterest => storeInterest.slug === interest.slug)) {
+                combinedInterests.push(interest);
+            }
+        });
+
+        setInterests(combinedInterests);
+    }, [initialInterests, eventStore.interests]);
 
     const handlePickInterest = (interest: InterestEntity) => {
         const isSelected = eventStore.interests.some((item) => item.slug === interest.slug);

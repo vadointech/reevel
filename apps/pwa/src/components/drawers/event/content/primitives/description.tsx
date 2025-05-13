@@ -4,7 +4,7 @@ import styles from "../styles.module.scss";
 
 export namespace EventDrawerContentDescription {
     export type Props = {
-        children: string;
+        children: string ;
     };
 }
 

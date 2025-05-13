@@ -7,6 +7,7 @@ import { observer } from "mobx-react-lite";
 import cx from "classnames";
 import styles from "./styles.module.scss";
 import { useEventStore } from "@/features/event";
+import { IconApple } from "@/components/icons";
 export namespace CreateEventBioForm {
     export type Props = ComponentProps<"form">;
 }

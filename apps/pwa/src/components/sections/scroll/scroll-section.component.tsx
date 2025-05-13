@@ -12,13 +12,14 @@ export namespace ScrollSection {
 
 export const ScrollSection = ({
     children,
+    container = true,
     size,
     ...props
 }: ScrollSection.Props) => {
     return (
-        <Section {...props} container>
+        <Section {...props} container={container}>
             <Scroll size={size}>
-                { children }
+                {children}
             </Scroll>
         </Section>
     );

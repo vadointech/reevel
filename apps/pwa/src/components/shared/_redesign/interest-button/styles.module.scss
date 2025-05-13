@@ -13,11 +13,17 @@
     justify-content: center;
     column-gap: .5rem;
 
+    span {
+        @include mixins.textEllipsis(1);
+    }
     @include typography.font("sm");
     line-height: 1;
 
     &_default {
         background: colors.$foreground;
+    }
+    &_outline {
+        border: 0.75px solid colors.$foreground;
     }
 
     &_text {

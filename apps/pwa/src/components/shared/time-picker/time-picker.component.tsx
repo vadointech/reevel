@@ -6,6 +6,7 @@ import { useTimePickerCarousel } from "./hooks/use-picker-carousel.hook";
 
 import cx from "classnames";
 import styles from "./styles.module.scss";
+import { observer } from "mobx-react-lite";
 
 export namespace TimePicker {
     export type Props = {
@@ -14,7 +15,7 @@ export namespace TimePicker {
     };
 }
 
-export const TimePicker = ({ controls, label }: TimePicker.Props) => {
+export const TimePicker = observer(({ controls, label }: TimePicker.Props) => {
     const { wheel } = controls;
 
     const [ref] = useTimePickerCarousel(controls);
@@ -50,5 +51,5 @@ export const TimePicker = ({ controls, label }: TimePicker.Props) => {
             </div>
         </div>
     );
-};
+});
 

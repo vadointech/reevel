@@ -4,16 +4,16 @@ import cx from "classnames";
 
 export namespace Input {
     export type Variant = "default" | "rounded" | "numeric";
-    export type Background = "default" | "muted";
+    export type Type = "input" | "textarea"
 
     export type BaseProps = {
-        variant?: Variant;
+        variant: Variant;
         label?: string;
         placeholder?: string;
         hint?: string;
         error?: string;
-        background?: Background;
         icon?: ReactNode
+        type?: Type,
         children?: ReactNode
     };
 
@@ -27,32 +27,30 @@ const InputBase = memo(({
     hint,
     error,
     icon,
+    type,
     children,
 }: Input.BaseProps) => {
     const id = useId();
     return (
         <div className={styles.container}>
-            {
-                label ? (
-                    variant !== "numeric" ?
-                        <label htmlFor={id} className={styles.container__label}>
-                            {label}
-                        </label>
-                        : null
-                ) : null
-            }
-
-
             <div className={styles.container__input__wrapper}>
+                {children}
+
+                {icon ? (
+                    <div className={styles.container__input__icon}>
+                        {icon}
+                    </div>
+                ) : null}
+
                 {
-                    icon ? (
-                        <div className={styles.container__input__icon}>
-                            {icon}
-                        </div>
+                    !icon && label ? (
+                        variant !== "numeric" ?
+                            <label htmlFor={id} className={styles.container__label}>
+                                {label}
+                            </label>
+                            : null
                     ) : null
                 }
-
-                {children}
             </div>
 
             {
@@ -65,18 +63,16 @@ const InputBase = memo(({
                 ) : null
             }
 
-            {
-                (error || hint) ? (
-                    <span
-                        className={cx(
-                            styles.container__hint,
-                            error && styles.container__error,
-                        )}
-                    >
-                        {error || hint}
-                    </span>
-                ) : null
-            }
+            {(error || hint) ? (
+                <span
+                    className={cx(
+                        styles.container__hint,
+                        error && styles.container__error,
+                    )}
+                >
+                    {error || hint}
+                </span>
+            ) : null}
         </div>
     );
 });
@@ -87,7 +83,7 @@ export const Input = memo(({
     error,
     icon,
     variant,
-    background,
+    placeholder,
     className,
     ...props
 }: Input.InputProps) => {
@@ -98,22 +94,22 @@ export const Input = memo(({
             error={error}
             icon={icon}
             variant={variant}
+            placeholder={placeholder}
+            type="input"
         >
             <input
                 className={cx(
                     styles.container__input,
-                    styles.container__input__size_default,
                     styles[`container__input__variant_${variant}`],
-                    styles[`container__input__background_${background}`],
                     icon ? styles.container__input__withIcon : false,
                     className,
                 )}
+                placeholder={placeholder}
                 {...props}
             />
         </InputBase>
     );
 });
-
 
 export const TextArea = memo(({
     label,
@@ -121,26 +117,29 @@ export const TextArea = memo(({
     error,
     icon,
     variant,
-    background,
+    placeholder,
     className,
     ...props
 }: Input.TextAreaProps) => {
     return (
         <InputBase
+            variant={variant}
             label={label}
             hint={hint}
             error={error}
             icon={icon}
+            placeholder={placeholder}
+            type="textarea"
         >
             <textarea
                 className={cx(
                     styles.container__input,
                     styles.container__input__size_large,
                     styles[`container__input__variant_${variant}`],
-                    styles[`container__input__background_${background}`],
                     icon ? styles.container__input__withIcon : false,
                     className,
                 )}
+                placeholder={placeholder}
                 {...props}
             />
         </InputBase>

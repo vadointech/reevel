@@ -4,16 +4,12 @@ import { InterestEntity } from "@/entities/interests";
 import { createMobxStoreProvider, initStore } from "@/lib/mobx";
 import { action, makeObservable, observable } from "mobx";
 
-const monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
-
 export interface IDateEventStore {
-    startDate: string;
-    startMonth: string;
+    startDate: Date;
     startHour: string;
     startMinute: string;
 
     endDate: string;
-    endMonth: string;
     endHour: string;
     endMinute: string;
 
@@ -22,13 +18,11 @@ export interface IDateEventStore {
 }
 
 class DateEventStore implements IDateEventStore {
-    startMonth = monthNames[new Date().getMonth()];
-    startDate: string = new Date().getDate().toString();
+    startDate: Date = new Date()
     startHour: string = "";
     startMinute: string = "00";
 
     endDate: string = "";
-    endMonth: string = "";
     endHour: string = "";
     endMinute: string = "00";
 
@@ -36,22 +30,18 @@ class DateEventStore implements IDateEventStore {
     error: string = ""
     constructor() {
         makeObservable(this, {
-            startMonth: observable,
             startDate: observable,
             startHour: observable,
             startMinute: observable,
             endDate: observable,
-            endMonth: observable,
             endHour: observable,
             endMinute: observable,
             toggle: observable,
             error: observable,
             setError: action,
-            setStartMonth: action,
             setStartDate: action,
             setStartHour: action,
             setStartMinute: action,
-            setEndMonth: action,
             setEndDate: action,
             setEndHour: action,
             setEndMinute: action,
@@ -65,11 +55,7 @@ class DateEventStore implements IDateEventStore {
         this.error = error
     }
 
-    setStartMonth(moth: string) {
-        this.startMonth = moth;
-    }
-
-    setStartDate(date: string) {
+    setStartDate(date: Date) {
         this.startDate = date;
     }
 
@@ -79,10 +65,6 @@ class DateEventStore implements IDateEventStore {
 
     setStartMinute(minute: string) {
         this.startMinute = minute
-    }
-
-    setEndMonth(moth: string) {
-        this.endMonth = moth;
     }
 
     setEndDate(date: string) {
@@ -98,14 +80,18 @@ class DateEventStore implements IDateEventStore {
     }
 }
 
+export type Type = "Private" | "Public"
+
 export interface ICreateEventStore {
     title: string;
     description: string;
     interests: InterestEntity[];
     poster: string;
+    gradient: string;
     date: number;
     tickets: number;
     price: number;
+    type: Type
 
     location?: [number, number];
     locationQuery: string;
@@ -117,10 +103,12 @@ class CreateEventStore implements ICreateEventStore {
     title: string = "";
     description: string = "";
     poster: string = "";
+    gradient: string = ""
     interests: InterestEntity[] = [];
     date: number = 0;
-    tickets: number = 0
+    tickets: number = 0;
     price: number = 0;
+    type: Type = "Public"
 
     interestQuery: string = "";
     locationQuery: string = "";
@@ -135,9 +123,11 @@ class CreateEventStore implements ICreateEventStore {
             title: observable,
             description: observable,
             poster: observable,
+            gradient: observable,
             date: observable,
             tickets: observable,
             price: observable,
+            type: observable,
             interests: observable.shallow,
             interestQuery: observable,
             locationQuery: observable,
@@ -146,15 +136,15 @@ class CreateEventStore implements ICreateEventStore {
             setTitle: action,
             setTickets: action,
             setPrice: action,
-            setPrice: action,
             setPoster: action,
+            setGradient: action,
             setDescription: action,
+            setType: action,
             addInterest: action,
             removeInterest: action,
             setLocationQuery: action,
             setInterestQuery: action,
             setLocation: action,
-            setDate: action,
         });
 
         initStore(this, init);
@@ -177,14 +167,17 @@ class CreateEventStore implements ICreateEventStore {
         this.poster = poster;
     }
 
+    setGradient(gradient: string) {
+        this.gradient = gradient;
+    }
+
     setDescription(description: string) {
         this.description = description;
     }
 
-    setDate(date: number) {
-        this.date = date
+    setType(type: Type) {
+        this.type = type;
     }
-
     addInterest(interest: InterestEntity): void {
         this.interests.push(interest);
     }

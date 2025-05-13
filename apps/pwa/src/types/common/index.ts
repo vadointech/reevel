@@ -8,4 +8,4 @@ export type ParamsWithLocale<P = unknown> = {
     }>
 };
 
-export type UISize = "default" | "small";
+export type UISize = "default" | "small" | "large";

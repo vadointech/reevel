@@ -3,10 +3,13 @@
 import { observer } from "mobx-react-lite";
 import { useState } from "react";
 import { OptionItem } from "@/components/shared/options";
-import { DollarIcon, TicketIcon } from "@/components/icons";
+import { IconDollar, IconTicket } from "@/components/icons";
 import { TicketsDrawer } from "@/components/drawers/tickets-drawer";
 import { PricingDrawer } from "@/components/drawers/pricing-drawer";
 import { useEventStore } from "@/features/event";
+import { Section, SectionItems } from "@/components/shared/section";
+
+import styles from "./styles.module.scss"
 
 export namespace TicketsPicker {
     export type Props = {};
@@ -27,23 +30,28 @@ export const TicketsPicker = observer(({ }: TicketsPicker.Props) => {
     const handlePricingDrawerClose = () => setIsPricingDrawerOpen(false);
 
     return (
-        <div>
-            <OptionItem
-                label="Tickets"
-                icon={<TicketIcon />}
-                onClick={() => setIsTicketsDrawerOpen(true)}
-                value={formatTicketsValue(eventStore.tickets)}
-                backIcon
-            />
+        <Section title="Pricing" className={styles.section}>
+            <SectionItems variant="column" className={styles.section__items}>
+                <OptionItem
+                    label="Tickets"
+                    description={formatTicketsValue(eventStore.tickets)}
 
-            <OptionItem
-                label="Pricing"
-                icon={<DollarIcon />}
-                value={formatPriceValue(eventStore.price)}
-                onClick={() => setIsPricingDrawerOpen(true)}
-                backIcon
-            />
+                    icon={<IconTicket height={22} width={22} style={{ transform: 'rotate(-45deg)' }} />}
 
+                    onClick={() => setIsTicketsDrawerOpen(true)}
+                    backIcon
+                />
+
+                <OptionItem
+                    label="Pricing"
+                    description={formatPriceValue(eventStore.price) + ` ₴`}
+
+                    icon={<IconDollar width={24} height={24} />}
+                    onClick={() => setIsPricingDrawerOpen(true)}
+                    backIcon
+                />
+
+            </SectionItems>
             <TicketsDrawer
                 open={isTicketsDrawerOpen}
                 onClose={handleTicketsDrawerClose}
@@ -53,6 +61,6 @@ export const TicketsPicker = observer(({ }: TicketsPicker.Props) => {
                 open={isPricingDrawerOpen}
                 onClose={handlePricingDrawerClose}
             />
-        </div>
+        </Section>
     );
 });

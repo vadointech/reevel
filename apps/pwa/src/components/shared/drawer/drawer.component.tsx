@@ -6,7 +6,7 @@ import styles from "./styles.module.scss";
 import { getSnapPointName, snapPointsMap } from "./plugins";
 
 export namespace Drawer {
-    export type SnapPoints = "low" | "middle" | "full";
+    export type SnapPoints = "low" | "middle" | "hight" | "full";
 
     export type Props = DialogProps & {
         overlay?: boolean;
@@ -54,8 +54,7 @@ export const Drawer = ({
                 snapPoints={staticPoint ? [snapPointsMap[staticPoint]] : snapPoints}
                 dismissible={dismissible}
                 {...props}
-            // З оцим можеш погратися якщо хочеш і зробити краще дровер для  події
-            // onDrag={(e, percentafeDragged) => console.log(percentafeDragged)}
+
             >
                 {
                     overlay && (
