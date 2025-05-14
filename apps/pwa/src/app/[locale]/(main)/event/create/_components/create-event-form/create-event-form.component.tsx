@@ -80,6 +80,7 @@ export const CreateEventForm = ({ ...props }: CreateEventForm.Props) => {
                 <Button
                     variant={"primary"}
                     iconAfter={<ArrowNext />}
+                    href={"/event/create/preview"}
                 >
                     Next step
                 </Button>

@@ -1,6 +1,6 @@
 import { Header } from "@/components/shared/_redesign";
-import { CreateEventForm } from "../_components";
 import { IconArrowLeft } from "@/components/icons";
+import { CreateEventForm } from "./_components";
 
 import styles from "./styles.module.scss";
 

@@ -16,6 +16,9 @@ import {
 } from "@/components/shared/_redesign/bottom-sheet";
 import { UploadFileButton, UploadFileGrid } from "./primitives";
 import { ScrollArea } from "@/components/shared/_redesign/scroll-area/scroll-area.component";
+import { IconArrowLeft } from "@/components/icons";
+
+import styles from "./styles.module.scss";
 
 export namespace UploadDrawer {
     export type Props = ComponentProps<"div">;
@@ -29,10 +32,11 @@ export const UploadDrawer = ({ children }: UploadDrawer.Props) => {
             </BottomSheetTrigger>
             <BottomSheetPortal>
                 <BottomSheetBody>
-                    <BottomSheetContent>
+                    <BottomSheetContent className={styles.content}>
                         <BottomSheetHandle>
                             <Header
                                 size={"small"}
+                                iconBefore={<IconArrowLeft />}
                                 controlAfter={
                                     <Button variant={"text-accent"}>
                                         Upload

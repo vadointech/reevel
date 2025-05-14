@@ -1,5 +1,6 @@
 export * from "./section";
 export * from "./interest-button";
+export * from "./badge";
 export * from "./avatar";
 export * from "./stars";
 
