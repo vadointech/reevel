@@ -14,6 +14,7 @@ export namespace Section {
         container?: boolean;
         variant?: Button.Variant;
         onCtaClick?: () => void;
+        ctaHref?: string;
     };
 }
 
@@ -25,6 +26,7 @@ export const Section = ({
     variant = "text-primary",
     container = false,
     onCtaClick,
+    ctaHref,
     ...props
 }: Section.Props) => {
     return (
@@ -51,6 +53,7 @@ export const Section = ({
                                         width: "fit-content",
                                         padding: 0,
                                     }}
+                                    href={ctaHref}
                                     onClick={onCtaClick}
                                 >
                                     { cta }

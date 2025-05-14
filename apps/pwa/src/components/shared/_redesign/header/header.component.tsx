@@ -4,6 +4,9 @@ import { Input } from "@/components/shared/_redesign";
 
 import { cva, VariantProps } from "class-variance-authority";
 
+import { Link } from "@/i18n/routing";
+import { InputSearch } from "@/components/shared/_redesign/input/variants";
+
 import styles from "./styles.module.scss";
 
 const header = cva(styles.header, {
@@ -33,10 +36,11 @@ export namespace Header {
         controlAfter?: ReactNode;
     };
 
-    export type SearchProps = ComponentProps<"header"> & VariantProps<typeof header> & {
+    export type SearchProps = VariantProps<typeof header> & InputSearch.Props & {
         iconBefore?: ReactNode;
         controlBefore?: ReactNode;
         onControlClick?: (event: MouseEvent<HTMLDivElement>) => void;
+        controlHref?: string;
     };
 }
 
@@ -75,14 +79,12 @@ const Search = ({
     iconBefore = <IconArrowLeft />,
     controlBefore,
     onControlClick,
+    controlHref,
     className,
     ...props
 }: Header.SearchProps) => {
-    return (
-        <header
-            className={header({ size, variant: "search" , className })}
-            {...props}
-        >
+    const Control = () => {
+        return (
             <div
                 onClick={onControlClick}
                 className={styles.header__left}
@@ -90,10 +92,24 @@ const Search = ({
                 { iconBefore }
                 { controlBefore }
             </div>
+        );
+    };
+    return (
+        <header className={header({ size, variant: "search" , className })}>
+            {
+                controlHref ? (
+                    <Link href={controlHref}>
+                        <Control />
+                    </Link>
+                ) : (
+                    <Control />
+                )
+            }
 
             <Input.Search
                 placeholder={"Search"}
                 iconBefore={<IconSearch />}
+                {...props}
             />
         </header>
     );

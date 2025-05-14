@@ -26,6 +26,8 @@
         outline: none;
 
         transition: background-color motions.$motion-duration-mid motions.$motion-ease-in-out;
+        -webkit-tap-highlight-color: rgba(0,0,0,0);
+        caret-color: colors.$primary;
 
         @include typography.font-creata();
         color: colors.$primary;

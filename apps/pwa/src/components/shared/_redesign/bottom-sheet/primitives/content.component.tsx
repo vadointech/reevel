@@ -59,7 +59,7 @@ export const BottomSheetContent = ({
                 drag={"y"}
                 style={{
                     y: dragY,
-                    height: rootConfig.fitContent ? "fit-content" : "100%",
+                    height: "100%",
                 }}
                 ref={bottomSheetRef}
                 dragControls={bottomSheetStore.dragControls}

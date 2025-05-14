@@ -27,12 +27,13 @@ export namespace CreateEventFormBottomSheet {
         title: string | ReactNode;
         size?: UISize;
         confirmButton?: boolean;
+        resetButton?: boolean;
         onSubmit?: (event: MouseEvent<HTMLButtonElement>) => void;
+        onReset?: (event: MouseEvent<HTMLButtonElement>) => void;
     }>;
 }
 
 export const CreateEventFormBottomSheet = (props: CreateEventFormBottomSheet.Props) => {
-
     return (
         <BottomSheetRoot fitContent fadeThreshold={0} {...props} />
     );
@@ -53,7 +54,9 @@ export const CreateEventFormBottomSheetContent = ({
     size = "default",
     children,
     confirmButton = true,
+    resetButton = true,
     onSubmit,
+    onReset,
 }: CreateEventFormBottomSheet.ContentProps) => {
     const bottomSheetStore = useBottomSheetStore();
     return (
@@ -74,16 +77,35 @@ export const CreateEventFormBottomSheetContent = ({
                         { children }
 
                         {
-                            confirmButton && (
-                                <Button
-                                    variant={"primary"}
-                                    onClick={(event) => {
-                                        onSubmit?.(event);
-                                        bottomSheetStore.setClose();
-                                    }}
-                                >
-                                    Confirm
-                                </Button>
+                            (confirmButton || resetButton) && (
+                                <div className={styles.bottomSheet__buttons}>
+                                    {
+                                        resetButton && (
+                                            <Button
+                                                variant={"secondary-muted"}
+                                                onClick={(event) => {
+                                                    onReset?.(event);
+                                                    bottomSheetStore.setClose();
+                                                }}
+                                            >
+                                                Reset
+                                            </Button>
+                                        )
+                                    }
+                                    {
+                                        confirmButton && (
+                                            <Button
+                                                variant={"primary"}
+                                                onClick={(event) => {
+                                                    onSubmit?.(event);
+                                                    bottomSheetStore.setClose();
+                                                }}
+                                            >
+                                                Confirm
+                                            </Button>
+                                        )
+                                    }
+                                </div>
                             )
                         }
                     </Container>

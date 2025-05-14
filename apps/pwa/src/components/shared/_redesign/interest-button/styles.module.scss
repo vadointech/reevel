@@ -1,5 +1,6 @@
 @use "@/theme/mixins";
 @use "@/theme/colors";
+@use "@/theme/motions";
 @use "@/theme/typography";
 
 .button {
@@ -19,6 +20,10 @@
     @include typography.font("sm");
     line-height: 1;
 
+    transition:
+            background-color motions.$motion-duration-fast motions.$motion-ease-in-out,
+            color motions.$motion-duration-fast motions.$motion-ease-in-out;
+
     &_default {
         background: colors.$foreground;
     }
@@ -31,6 +36,7 @@
     }
 
     &_primary {
-
+        background: colors.$primary;
+        color: colors.$foreground;
     }
 }

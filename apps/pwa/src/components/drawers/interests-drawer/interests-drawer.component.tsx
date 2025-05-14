@@ -7,10 +7,10 @@ import { Button, Container, Input } from "@/components/ui";
 import { IconCheck, IconSearch } from "@/components/icons";
 import { InterestsSection } from "@/components/shared/interests-section";
 import { TabButton } from "@/components/ui/tab-button";
-import { useEventStore } from "@/features/event";
+import { useEventStore } from "../../../features/_event";
 import { InterestEntity } from "@/entities/interests";
 import { observer } from "mobx-react-lite";
-import { useInterestSearch } from "@/features/event/hooks/use-interest-search.hook";
+import { useInterestSearch } from "@/features/_event/hooks/use-interest-search.hook";
 
 export namespace InterestsDrawer {
     export type Props = {

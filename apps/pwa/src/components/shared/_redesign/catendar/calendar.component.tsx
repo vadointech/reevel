@@ -1,18 +1,23 @@
 "use client";
 
-import { useState } from "react";
 import { DayPicker } from "react-day-picker";
 
 import styles from "./styles.module.scss";
 import "react-day-picker/style.css";
 
 export namespace Calendar {
-    export type Props = never;
+    export type Props = {
+        value?: Date;
+        onChange?: (value?: Date) => void;
+        hasEvent?: Date[]
+    };
 }
 
-export const Calendar = () => {
-    const [selected, setSelected] = useState<Date>(new Date());
-
+export const Calendar = ({
+    value,
+    onChange,
+    hasEvent,
+}: Calendar.Props) => {
     const customClassNames = {
         root: styles.rdp,
         nav: styles.nav,
@@ -34,21 +39,15 @@ export const Calendar = () => {
         const weekdayName = weekday.toLocaleDateString("en-US", { weekday: "long" });
         return weekdayName.charAt(0);
     };
-    const eventDates = [new Date(2025, 4, 20), new Date(2025, 4, 15)];
-
     return (
         <DayPicker
             captionLayout="label"
             animate
-            modifiers={{ hasEvent: eventDates }}
+            modifiers={{ hasEvent }}
             disabled={{ before: new Date() }}
             mode="single"
-            selected={selected}
-            onSelect={(date) => {
-                if (date) {
-                    setSelected(date);
-                }
-            }}
+            selected={value}
+            onSelect={onChange}
             showOutsideDays
             weekStartsOn={0}
             classNames={customClassNames}

@@ -10,6 +10,7 @@
     "build:sw": "node sw-build.mjs"
   },
   "dependencies": {
+    "@hookform/resolvers": "^5.0.1",
     "@tanstack/react-query": "^5.66.9",
     "@uidotdev/usehooks": "^2.4.1",
     "class-variance-authority": "^0.7.1",

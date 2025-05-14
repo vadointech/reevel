@@ -4,7 +4,7 @@ import styles from "./styles.module.scss";
 
 export namespace InputNumber {
     export type Props = ComponentProps<"input"> & {
-        label: string | ReactNode
+        label: string | ReactNode;
     };
 }
 
@@ -13,7 +13,7 @@ export const InputNumber = ({
     ...props
 }: InputNumber.Props) => {
     return (
-        <label className={styles.input__number}>
+        <label className={styles.input}>
             <input
                 type={"tel"}
                 inputMode={"numeric"}

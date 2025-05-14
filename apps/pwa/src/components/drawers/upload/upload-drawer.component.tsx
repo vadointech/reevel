@@ -38,7 +38,7 @@ export const UploadDrawer = ({ children }: UploadDrawer.Props) => {
                                 size={"small"}
                                 iconBefore={<IconArrowLeft />}
                                 controlAfter={
-                                    <Button variant={"text-area-accent"}>
+                                    <Button variant={"text-accent"}>
                                         Upload
                                     </Button>
                                 }

@@ -5,9 +5,11 @@ import {
     CreateEventFormBottomSheetContent,
     CreateEventFormBottomSheetTrigger,
 } from "../bottom-sheet";
-import { Input, OptionsListItem } from "@/components/shared/_redesign";
-import { TimePicker, useTimePicker } from "@/components/shared/time-picker";
-import { IconClock, IconDollar } from "@/components/icons";
+import { OptionsListItem } from "@/components/shared/_redesign";
+import { TimePicker } from "@/components/shared/time-picker";
+import { IconClock } from "@/components/icons";
+import { useCreateEventFormFieldFormatter, useCreateEventFormTimePicker } from "@/features/event/create";
+import { Controller } from "react-hook-form";
 
 import styles from "../styles.module.scss";
 
@@ -16,9 +18,6 @@ export namespace CreateEventFormTimePicker {
 }
 
 export const CreateEventFormTimePicker = () => {
-
-
-
     return (
         <>
             <StartTime />
@@ -28,33 +27,33 @@ export const CreateEventFormTimePicker = () => {
 };
 
 const StartTime = () => {
-    const controlsLeft = useTimePicker({
-        slideCount: 24,
-        itemSize: 50,
-        itemsInView: 2,
-        itemCount: 10,
-        loop: true,
-        perspective: "left",
-    });
-
-    const controlsRight = useTimePicker({
-        slideCount: 60,
-        itemSize: 50,
-        itemsInView: 3,
-        itemCount: 10,
-        loop: true,
-        perspective: "left",
-    });
+    const {
+        controlsLeft,
+        controlsRight,
+        resetValue,
+        setDefaultValue,
+    } = useCreateEventFormTimePicker("startTime");
+    const formatter = useCreateEventFormFieldFormatter();
     return (
         <CreateEventFormBottomSheet handleOnly>
             <CreateEventFormBottomSheetTrigger>
-                <OptionsListItem
-                    label={"Start Time"}
-                    description={"All day"}
-                    contentLeft={<IconClock />}
+                <Controller
+                    name={"startTime"}
+                    render={({ field }) => (
+                        <OptionsListItem
+                            label={"Start Time"}
+                            description={formatter.formatTime(field.value)}
+                            contentLeft={<IconClock />}
+                            onClick={setDefaultValue}
+                        />
+                    )}
                 />
             </CreateEventFormBottomSheetTrigger>
-            <CreateEventFormBottomSheetContent size={"small"} title={"Select start time"}>
+            <CreateEventFormBottomSheetContent
+                size={"small"}
+                title={"Select start time"}
+                onReset={resetValue}
+            >
                 <div className={styles.timePicker}>
                     <TimePicker controls={controlsLeft} label={"Hr"} />
                     <TimePicker controls={controlsRight} label={"Min"} />
@@ -65,35 +64,33 @@ const StartTime = () => {
 };
 
 const EndTime = () => {
-
-    const controlsLeft = useTimePicker({
-        slideCount: 24,
-        itemSize: 50,
-        itemsInView: 2,
-        itemCount: 10,
-        loop: true,
-        perspective: "left",
-    });
-
-    const controlsRight = useTimePicker({
-        slideCount: 60,
-        itemSize: 50,
-        itemsInView: 3,
-        itemCount: 10,
-        loop: true,
-        perspective: "left",
-    });
-
+    const {
+        controlsLeft,
+        controlsRight,
+        resetValue,
+        setDefaultValue,
+    } = useCreateEventFormTimePicker("endTime");
+    const formatter = useCreateEventFormFieldFormatter();
     return (
         <CreateEventFormBottomSheet handleOnly>
             <CreateEventFormBottomSheetTrigger>
-                <OptionsListItem
-                    label={"End Time"}
-                    description={"All day"}
-                    contentLeft={<IconClock />}
+                <Controller
+                    name={"endTime"}
+                    render={({ field }) => (
+                        <OptionsListItem
+                            label={"End Time"}
+                            description={formatter.formatTime(field.value)}
+                            contentLeft={<IconClock />}
+                            onClick={setDefaultValue}
+                        />
+                    )}
                 />
             </CreateEventFormBottomSheetTrigger>
-            <CreateEventFormBottomSheetContent size={"small"} title={"Select end time"}>
+            <CreateEventFormBottomSheetContent
+                size={"small"}
+                title={"Select end time"}
+                onReset={resetValue}
+            >
                 <div className={styles.timePicker}>
                     <TimePicker controls={controlsLeft} label={"Hr"} />
                     <TimePicker controls={controlsRight} label={"Min"} />

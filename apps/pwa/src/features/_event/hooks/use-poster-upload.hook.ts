@@ -3,7 +3,7 @@
 import { useMutation } from "@tanstack/react-query";
 import { uploadFile } from "@/api/upload";
 import { useCropperStore } from "@/components/shared/uploader/cropper";
-import { useEventStore } from "@/features/event";
+import { useEventStore } from ".";
 
 export function useEventPosterUpload() {
     const cropperStore = useCropperStore();

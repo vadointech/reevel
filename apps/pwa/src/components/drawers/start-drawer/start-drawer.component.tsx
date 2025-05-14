@@ -19,8 +19,8 @@ export const StartDrawer = ({ }: StartDrawer.Props) => {
             <DrawerBody>
                 <DrawerContent>
                     <OnboardingTextBlock
-                        title={"How to set up your event ?"}
-                        subtitle={"Select the type of event youd like to create"}
+                        title={"How to set up your _event ?"}
+                        subtitle={"Select the type of _event youd like to create"}
                     />
 
                     <div className={styles.cards}>

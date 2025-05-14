@@ -1,11 +1,14 @@
-import { ComponentProps } from "react";
+"use client";
 
-import { CreateEventFormInterestsPicker } from "./interests-picker";
+import { ComponentProps } from "react";
+import { Controller } from "react-hook-form";
+
 import {
     CreateEventFormPricePicker,
     CreateEventFormTicketsPicker,
     CreateEventFormDatePicker,
     CreateEventFormTimePicker,
+    CreateEventFormInterestsPicker,
 } from "./pickers";
 
 import {
@@ -28,15 +31,27 @@ export const CreateEventForm = ({ ...props }: CreateEventForm.Props) => {
         >
             <div className={styles.form__content}>
                 <div className={styles.form__gap_sm}>
-                    <Input
-                        label={"Title"}
-                        placeholder={"Enter title"}
+                    <Controller
+                        name={"title"}
+                        render={({ field }) => (
+                            <Input
+                                {...field}
+                                label={"Title"}
+                                placeholder={"Enter title"}
+                            />
+                        )}
                     />
                 </div>
                 <div className={styles.form__gap}>
-                    <Input.TextArea
-                        label={"Description"}
-                        placeholder={"Enter description"}
+                    <Controller
+                        name={"description"}
+                        render={({ field }) => (
+                            <Input.TextArea
+                                {...field}
+                                label={"Description"}
+                                placeholder={"Enter description"}
+                            />
+                        )}
                     />
                 </div>
 
