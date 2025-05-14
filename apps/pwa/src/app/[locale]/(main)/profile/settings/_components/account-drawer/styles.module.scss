@@ -1,0 +1,30 @@
+@use "@/theme/mixins";
+@use "@/theme/colors";
+
+.drawer {
+    &__trigger {
+        padding-inline: 0rem !important;
+    }
+    h2 {
+        text-align: center;
+        margin-bottom: mixins.rem(22);
+    }
+}
+
+.plus  {
+    width: mixins.rem(42);
+    height: mixins.rem(42);
+
+    background-color: colors.$accent-muted;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius:50%;
+
+    svg path{
+        stroke: colors.$accent;
+    }
+    svg {
+        margin-top: 0rem;
+    }
+}

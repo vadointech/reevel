@@ -1,0 +1,20 @@
+@use "@/theme/mixins";
+@use "@/theme/colors";
+
+.drawer {
+    &__trigger {
+        padding-inline: 0rem !important;
+    }
+    h2 {
+        text-align: center;
+        margin-bottom: mixins.rem(22);
+    }
+
+    &__options {
+        margin-top: mixins.rem(9.5);
+        &_blured {
+                opacity: 0.6;
+                pointer-events: none;
+        }
+    }
+}

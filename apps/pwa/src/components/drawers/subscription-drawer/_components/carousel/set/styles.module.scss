@@ -15,23 +15,17 @@
     &__slide {
         flex-shrink: 0;
 
-        margin-right: mixins.rem(18);
+        margin-right: mixins.rem(10);
 
         position: relative;
 
-        width: mixins.rem(145);
-        height: mixins.rem(145);
-        border-radius: 1rem;
+        width: mixins.rem(60);
+        height: mixins.rem(60);
+        border-radius: 0.5rem;
         overflow: hidden;
 
         & img {
             object-fit: cover;
-        }
-
-        &_small {
-            width: mixins.rem(60);
-            height: mixins.rem(60);
-            border-radius: 0.5rem;
         }
     }
 }

@@ -4,6 +4,7 @@ export const Back = (props: ComponentProps<"svg">) => (
     <svg
         viewBox="0 0 10 18"
         xmlns="http://www.w3.org/2000/svg"
+        // style={{ rotate: "180deg" }}
         {...props}
     >
         <path

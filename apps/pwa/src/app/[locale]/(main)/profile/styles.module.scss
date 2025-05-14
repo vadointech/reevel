@@ -46,8 +46,9 @@
     }
     &__general {
         margin-top: mixins.rem(20);
-        &__options {
-            background-color: colors.$foreground;
-        }
+    }
+
+    &__exit {
+        margin-top: mixins.rem(17);
     }
 }

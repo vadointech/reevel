@@ -1,0 +1,83 @@
+@use "@/theme/mixins";
+@use "@/theme/colors";
+@use "@/theme/fonts";
+
+
+
+.card {
+    width: mixins.rem(358);
+    height: mixins.rem(172);
+    position: relative;
+    overflow: hidden;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+
+    padding: 1rem;
+
+    background-color: colors.$primary;
+    border-radius: 1rem;
+    z-index: 1;
+
+    &::after {
+        content: "";
+        position: absolute;
+        width: 110%;
+        height: 130%;
+        top: 0;
+        left: -10;
+        border-radius: 1rem;
+        z-index: -2;
+        background: linear-gradient(
+        260deg,
+            rgba(#F7F7F7,0) 0%,           
+            rgba(#212529,1) 51%,                  
+          );
+
+          rotate: -21deg !important;
+    }
+
+    &__info {
+        width: 100%;
+
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    
+        span {
+            @include fonts.font-creata('xl',600,2rem);
+            color:colors.$foreground;
+        }
+
+        div {
+            padding: mixins.rem(3.25) mixins.rem(10);
+
+            display: flex;
+            align-items: center;
+            gap: 0.25rem;
+
+            border-radius:mixins.rem(100);
+            background-color: colors.$foreground;
+
+            @include fonts.font-creata('xs',400,mixins.rem(18));
+            color:colors.$primary;
+        }
+    }
+
+    &__meta {
+        color:colors.$foreground;
+        @include fonts.font-creata('base',400,mixins.rem(24));
+
+        p {
+            @include fonts.font-creata('xs',400,mixins.rem(18));
+        }
+
+    }
+
+    &__carousel {
+        position: absolute;
+        z-index: -3;
+        rotate: -21deg !important;
+    }
+}

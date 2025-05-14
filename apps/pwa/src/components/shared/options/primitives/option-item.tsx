@@ -12,6 +12,7 @@ export namespace OptionItem {
         label: string
         description?: string;
         icon?: ReactNode | string;
+        image?: string;
         value?: string | number;
         backIcon?: boolean;
         danger?: boolean;
@@ -23,6 +24,7 @@ export const OptionItem = ({
     label,
     description,
     icon,
+    image,
     value,
     backIcon = false,
     danger = false,
@@ -31,24 +33,6 @@ export const OptionItem = ({
     className,
     ...props
 }: OptionItem.Props) => {
-
-    const iconLayouts: Record<string, (iconProp: ReactNode | string) => ReactNode> = {
-        string: (iconProp) => (
-            <div className={styles.option__image}>
-                <Image src={iconProp as string} alt={label} width={44} height={44} className={styles.iconString} />
-            </div>
-        ),
-        reactNode: (iconProp) => (
-            <div className={styles.option__svg}>{iconProp}</div>
-        )
-    };
-
-    const renderIcon = () => {
-        if (!icon) return null;
-
-        const iconType = typeof icon === 'string' ? 'string' : 'reactNode';
-        return iconLayouts[iconType](icon);
-    };
 
     const ItemComponent = () => {
         return (
@@ -67,7 +51,12 @@ export const OptionItem = ({
                         danger && styles.option__text_danger,
                     )}
                 >
-                    {renderIcon()}
+                    {icon && <div className={styles.option__svg}>{icon}</div>}
+                    {image &&
+                        <div className={styles.option__image}>
+                            <Image src={image} alt={label} width={44} height={44} className={styles.iconString} />
+                        </div>
+                    }
                     <div className={styles.option__text__meta}>
 
                         {label}
@@ -79,7 +68,8 @@ export const OptionItem = ({
                         }
                     </div>
                 </div>
-                <div className={styles.option__value}>
+                <div
+                    className={styles.option__value}>
                     {value}
                     {children}
                 </div>
