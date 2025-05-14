@@ -1,20 +1,19 @@
 import { ComponentProps } from "react";
-import { InputNumber, InputSearch, InputTextArea } from "./variants";
 
-import baseStyles from "./base-styles.module.scss";
+import baseStyles from "../../base-styles.module.scss";
 import styles from "./styles.module.scss";
 import cx from "classnames";
 
-export namespace Input {
-    export type Props = ComponentProps<"input"> & {
+export namespace InputTextArea {
+    export type Props = ComponentProps<"textarea"> & {
         label?: string;
     };
 }
 
-export const Input = ({
+export const InputTextArea = ({
     label,
     ...props
-}: Input.Props) => {
+}: InputTextArea.Props) => {
     return (
         <label
             className={cx(
@@ -29,11 +28,7 @@ export const Input = ({
                     </span>
                 ) : null
             }
-            <input type={"text"} {...props} />
+            <textarea {...props} />
         </label>
     );
 };
-
-Input.Number = InputNumber;
-Input.TextArea = InputTextArea;
-Input.Search = InputSearch;

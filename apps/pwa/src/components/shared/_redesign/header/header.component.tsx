@@ -1,8 +1,8 @@
 import { ComponentProps, ReactNode, MouseEvent } from "react";
 import { IconArrowLeft, IconSearch } from "@/components/icons";
+import { Input } from "@/components/shared/_redesign";
 
 import { cva, VariantProps } from "class-variance-authority";
-import { Input } from "@/components/ui";
 
 import styles from "./styles.module.scss";
 
@@ -91,11 +91,9 @@ const Search = ({
                 { controlBefore }
             </div>
 
-            <Input
+            <Input.Search
                 placeholder={"Search"}
-                variant={"rounded"}
-                type="input"
-                icon={<IconSearch />}
+                iconBefore={<IconSearch />}
             />
         </header>
     );

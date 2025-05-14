@@ -1,7 +1,5 @@
 import { ComponentProps } from "react";
 
-import { Input, TextArea } from "@/components/ui";
-
 import { CreateEventFormInterestsPicker } from "./interests-picker";
 import {
     CreateEventFormPricePicker,
@@ -14,7 +12,7 @@ import {
     ArrowNext,
     IconNavigation,
 } from "@/components/icons";
-import { Button, OptionsList, OptionsListItem, Section } from "@/components/shared/_redesign";
+import { Button, Input, OptionsList, OptionsListItem, Section } from "@/components/shared/_redesign";
 
 import styles from "./styles.module.scss";
 
@@ -33,14 +31,12 @@ export const CreateEventForm = ({ ...props }: CreateEventForm.Props) => {
                     <Input
                         label={"Title"}
                         placeholder={"Enter title"}
-                        variant={"default"}
                     />
                 </div>
                 <div className={styles.form__gap}>
-                    <TextArea
+                    <Input.TextArea
                         label={"Description"}
                         placeholder={"Enter description"}
-                        variant={"default"}
                     />
                 </div>
 
