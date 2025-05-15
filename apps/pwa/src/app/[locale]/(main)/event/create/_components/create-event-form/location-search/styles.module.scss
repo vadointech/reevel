@@ -1,0 +1,8 @@
+@use "@/theme/mixins";
+@use "@/theme/spacing";
+
+.search {
+    &__header {
+        padding-bottom: mixins.rem(22);
+    }
+}

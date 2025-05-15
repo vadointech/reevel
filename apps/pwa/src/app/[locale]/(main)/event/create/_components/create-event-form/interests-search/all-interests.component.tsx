@@ -1,7 +1,6 @@
 import { Controller } from "react-hook-form";
 import { Checkbox, OptionsList, OptionsListItem, Section } from "@/components/shared/_redesign";
-
-import { CreateEventFormSchemaValues } from "../create-event-form.schema";
+import { CreateEventFormSchemaValues } from "@/features/event/create";
 
 export namespace SearchInterestsAll {
     export type Props = {
@@ -14,35 +13,36 @@ export const SearchInterestsAll = ({ ...props }: SearchInterestsAll.Props) => {
         <Section
             title={"All interests"}
         >
-            <OptionsList>
-                {
-                    Array.from({ length: 8 }).map((_, index) => (
-                        <Controller
-                            name={"interests"}
-                            render={({ field }) => {
-                                const isExists = field.value.includes(index);
-                                const handleClick = () => {
-                                    if(isExists) {
-                                        field.onChange(
-                                            field.value.filter((item: number) => item !== index),
-                                        );
-                                    } else {
-                                        field.onChange([...field.value, index]);
-                                    }
-                                };
-                                return (
+            <Controller
+                name={"interests"}
+                render={({ field }) => {
+                    const exists = (id: number) => {
+                        return field.value.includes(id);
+                    };
+                    const toggle = (id: number) => {
+                        field.onChange(
+                            exists(id)
+                                ? field.value.filter((i: number) => i !== id)
+                                : [...field.value, id],
+                        );
+                    };
+                    return (
+                        <OptionsList>
+                            {
+                                Array.from({ length: 8 }).map((_, index) => (
                                     <OptionsListItem
                                         label={"Shopping"}
                                         contentLeft={"🛍️"}
-                                        contentRight={<Checkbox checked={isExists} />}
-                                        onClick={handleClick}
+                                        contentRight={<Checkbox checked={exists(index)} />}
+                                        onClick={() => toggle(index)}
                                     />
-                                );
-                            }}
-                        />
-                    ))
-                }
-            </OptionsList>
+                                ))
+                            }
+                        </OptionsList>
+                    );
+                }}
+
+            />
         </Section>
     );
 };

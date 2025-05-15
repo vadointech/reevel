@@ -1,5 +1,5 @@
 import { SearchInterests } from "../_components";
 
-export default function CreateInterestsPage() {
+export default function CreateEventInterestsPage() {
     return <SearchInterests />;
 }

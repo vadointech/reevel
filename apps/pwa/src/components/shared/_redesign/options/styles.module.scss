@@ -30,7 +30,9 @@
 
     &_size {
         &_default {}
-        &_small {}
+        &_small {
+            column-gap: mixins.rem(12);
+        }
     }
 
     &__content {
@@ -64,20 +66,23 @@
 
         .listItem_size_default & {
             @include typography.font("4xl");
+            svg {
+                width: mixins.rem(22);
+                height: mixins.rem(22);
+            }
         }
 
         .listItem_size_small & {
             @include typography.font("2xl");
+            svg {
+                width: 1rem;
+                height: 1rem;
+            }
         }
 
         .listItem_variant_avatar & {
             width: mixins.rem(44);
             height: mixins.rem(44);
-        }
-
-        svg {
-            width: mixins.rem(22);
-            height: mixins.rem(22);
         }
 
         &_icon {

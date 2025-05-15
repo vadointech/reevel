@@ -66,13 +66,26 @@ export const CreateEventForm = ({ ...props }: CreateEventForm.Props) => {
                 <div>
                     <CreateEventFormInterestsPicker />
 
-                    <OptionsList className={styles.form__gap}>
-                        <OptionsListItem
-                            label={"Location"}
-                            description={"Required"}
-                            contentLeft={<IconNavigation />}
+                    <div className={styles.form__gap}>
+                        <Controller
+                            name={"location"}
+                            render={({ field, fieldState }) => (
+                                <FormField
+                                    nestedError={"coordinates"}
+                                    state={fieldState}
+                                >
+                                    <OptionsList>
+                                        <OptionsListItem
+                                            label={"Location"}
+                                            description={field.value.title || "Required"}
+                                            contentLeft={<IconNavigation />}
+                                            href={"/event/create/location"}
+                                        />
+                                    </OptionsList>
+                                </FormField>
+                            )}
                         />
-                    </OptionsList>
+                    </div>
 
                     <Section
                         title={"Pricing"}

@@ -10,6 +10,7 @@ export namespace FormField {
     export type Props = ComponentProps<"div"> & {
         gap?: UISize;
         state?: ControllerFieldState
+        nestedError?: string;
     };
 }
 
@@ -18,8 +19,15 @@ export const FormField = ({
     className,
     children,
     state,
+    nestedError,
     ...props
 }: FormField.Props) => {
+
+    const error = state?.error?.message ||
+      nestedError?.split(".").reduce((acc, key) => acc?.[key], state?.error as any)?.message;
+
+
+
     return (
         <div
             aria-invalid={!!state?.invalid}
@@ -32,8 +40,8 @@ export const FormField = ({
         >
             { children }
             {
-                state?.error?.message ? (
-                    <span className={styles.form__error}>{ state?.error.message }</span>
+                error ? (
+                    <span className={styles.form__error}>{ error }</span>
                 ): null
             }
         </div>

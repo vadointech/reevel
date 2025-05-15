@@ -29,6 +29,8 @@ class BottomSheetStore implements IBottomSheetStore {
             setContentPosition: action,
         });
 
+        this.open = rootConfig.defaultOpen;
+
         this.snapControls = new BottomSheetSnapPointControl(
             this.rootConfig,
             window.innerHeight,

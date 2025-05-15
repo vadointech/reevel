@@ -3,7 +3,7 @@ export const OnboardingStepPath = [
     "/onboarding/bio",
     "/onboarding/interests",
     "/onboarding/location",
-    "/onboarding/location/pick",
+    "/onboarding/location/pick-location",
     "/onboarding/location/confirm",
     "/",
 ] as const;

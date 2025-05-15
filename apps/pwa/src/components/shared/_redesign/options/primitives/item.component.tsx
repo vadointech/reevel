@@ -4,6 +4,7 @@ import { IconArrowRight } from "@/components/icons";
 
 import styles from "../styles.module.scss";
 import { cx, cva, VariantProps } from "class-variance-authority";
+import { Link } from "@/i18n/routing";
 
 const listItem = cva(styles.listItem, {
     variants: {
@@ -31,7 +32,8 @@ export namespace OptionsListItem {
         description?: string | ReactNode;
         contentLeft?: string | ReactNode;
         contentRight?: ReactNode;
-        iconType?: "filled" | "outlined"
+        iconType?: "filled" | "outlined";
+        href?: string;
     };
 }
 
@@ -44,41 +46,54 @@ export const OptionsListItem = ({
     label,
     description,
     iconType = "filled",
+    href,
     className,
     ...props
 }: OptionsListItem.Props) => {
-    return (
-        <li
-            className={listItem({ weight, variant, size, className })}
-            {...props}
-        >
-            {
-                contentLeft && (
-                    <div
-                        className={cx(
-                            styles.listItem__left,
-                            styles[`listItem__left_icon_${iconType}`],
-                        )}
-                    >
-                        { contentLeft }
-                    </div>
-                )
-            }
-            <div className={styles.listItem__content}>
-                <div className={styles.listItem__title}>{ label }</div>
+    const Component = () => {
+        return (
+            <li
+                className={listItem({ weight, variant, size, className })}
+                {...props}
+            >
                 {
-                    description && (
-                        <div className={styles.listItem__description}>{ description }</div>
+                    contentLeft && (
+                        <div
+                            className={cx(
+                                styles.listItem__left,
+                                styles[`listItem__left_icon_${iconType}`],
+                            )}
+                        >
+                            { contentLeft }
+                        </div>
                     )
                 }
-            </div>
-            {
-                contentRight && (
-                    <div className={styles.listItem__right}>
-                        { contentRight }
-                    </div>
-                )
-            }
-        </li>
-    );
+                <div className={styles.listItem__content}>
+                    <div className={styles.listItem__title}>{ label }</div>
+                    {
+                        description && (
+                            <div className={styles.listItem__description}>{ description }</div>
+                        )
+                    }
+                </div>
+                {
+                    contentRight && (
+                        <div className={styles.listItem__right}>
+                            { contentRight }
+                        </div>
+                    )
+                }
+            </li>
+        );
+    };
+
+    if(href) {
+        return (
+            <Link href={href}>
+                <Component />
+            </Link>
+        );
+    }
+
+    return <Component />;
 };

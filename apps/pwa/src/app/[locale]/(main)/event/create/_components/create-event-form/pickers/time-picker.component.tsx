@@ -51,7 +51,7 @@ export const CreateEventFormTimePicker = () => {
                 <CreateEventFormBottomSheetContent
                     size={"small"}
                     title={"Select start time"}
-                    onReset={() => setFieldValue("startTime")}
+                    // onReset={() => setFieldValue("startTime")}
                 >
                     <StartTime />
                 </CreateEventFormBottomSheetContent>
@@ -72,7 +72,7 @@ export const CreateEventFormTimePicker = () => {
                 <CreateEventFormBottomSheetContent
                     size={"small"}
                     title={"Select end time"}
-                    onReset={() => setFieldValue("endTime")}
+                    // onReset={() => setFieldValue("endTime")}
                 >
                     <EndTime />
                 </CreateEventFormBottomSheetContent>

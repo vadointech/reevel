@@ -8,6 +8,10 @@ export default function CreateEventLayout({ children }: PropsWithChildren) {
                 title: "",
                 description: "",
                 interests: [],
+                location: {
+                    title: undefined,
+                    coordinates: [],
+                },
                 ticketsCount: "",
                 ticketPrice: "",
                 startDate: new Date(),
