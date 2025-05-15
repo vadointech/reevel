@@ -106,7 +106,7 @@ export class Fetcher implements IFetcher {
         if (contentType && contentType.includes("application/json")) {
             fetcherResponse.data = await response.json() as Output;
         } else {
-            // Handle text or other response types
+            // Handle text-area or other response types
             const text = await response.text();
             try {
                 fetcherResponse.data = JSON.parse(text) as Output;

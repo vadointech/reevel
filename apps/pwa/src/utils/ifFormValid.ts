@@ -1,5 +1,5 @@
-"use client"
-import { useEventStore } from "@/features/event";
+"use client";
+import { useEventStore } from "../features/_event";
 
 export const isFormValid = () => {
     const { title, description, interests, dateStore, location, tickets, price } = useEventStore();

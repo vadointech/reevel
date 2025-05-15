@@ -1,21 +1,16 @@
-"use client"
+"use client";
 
-import { useState } from "react";
-import { useQuery } from "@tanstack/react-query";
-import cx from "classnames";
 import styles from "./styles.module.scss";
 
 import { Drawer, DrawerBody, DrawerContent } from "@/components/shared/drawer";
 import { Button, Container, Input } from "@/components/ui";
-import { Check, IconSearch } from "@/components/icons";
+import { IconCheck, IconSearch } from "@/components/icons";
 import { InterestsSection } from "@/components/shared/interests-section";
 import { TabButton } from "@/components/ui/tab-button";
-import { useEventStore } from "@/features/event";
-import { searchInterests } from "@/api/interests";
+import { useEventStore } from "../../../features/_event";
 import { InterestEntity } from "@/entities/interests";
-import { useInterestPicker } from "@/features/event/hooks/use-interest-picker.hook";
 import { observer } from "mobx-react-lite";
-import { useInterestSearch } from "@/features/event/hooks/use-interest-search.hook";
+import { useInterestSearch } from "@/features/_event/hooks/use-interest-search.hook";
 
 export namespace InterestsDrawer {
     export type Props = {
@@ -76,7 +71,7 @@ export const InterestsDrawer = observer(({ open, initialInterests, onClose }: In
                             variant="default"
                             className={styles.drawer__button}
                             onClick={onClose}
-                            iconBefore={<Check width={16} height={16} />}
+                            iconBefore={<IconCheck width={16} height={16} />}
                         >
                             Done
                         </Button>
@@ -93,7 +88,7 @@ const InterestItem = observer((
         selected: boolean;
         handlePickInterest: (interest: InterestEntity) => void;
         interest: InterestEntity;
-    }
+    },
 ) => {
     return (
         <TabButton

@@ -1,0 +1,44 @@
+@use "@/theme/mixins";
+@use "@/theme/colors";
+@use "@/theme/motions";
+
+.checkbox {
+    width: mixins.rem(22);
+    height: mixins.rem(22);
+
+    border-radius: 50%;
+
+    border: mixins.rem(1) solid colors.$secondary-muted;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    transition: background-color motions.$motion-duration-mid motions.$motion-ease-in-out;
+
+    svg {
+        transition: opacity motions.$motion-duration-mid motions.$motion-ease-in-out;
+        height: mixins.rem(7.5);
+        path {
+            stroke: colors.$foreground;
+        }
+    }
+
+    &_state {
+        &_checked {
+            background-color: colors.$primary;
+            border-color: transparent;
+            svg {
+                opacity: 1;
+            }
+        }
+
+        &_default {
+            background-color: transparent;
+        }
+    }
+
+    input {
+        display: none;
+    }
+}

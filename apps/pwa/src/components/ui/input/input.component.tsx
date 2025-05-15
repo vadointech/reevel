@@ -4,16 +4,14 @@ import cx from "classnames";
 
 export namespace Input {
     export type Variant = "default" | "rounded" | "numeric";
-    export type Type = "input" | "textarea"
 
-    export type BaseProps = {
+    export type BaseProps = ComponentProps<"div"> & {
         variant: Variant;
         label?: string;
         placeholder?: string;
         hint?: string;
         error?: string;
         icon?: ReactNode
-        type?: Type,
         children?: ReactNode
     };
 
@@ -27,12 +25,19 @@ const InputBase = memo(({
     hint,
     error,
     icon,
-    type,
     children,
+    className,
+    ...props
 }: Input.BaseProps) => {
     const id = useId();
     return (
-        <div className={styles.container}>
+        <div
+            className={cx(
+                styles.container,
+                className,
+            )}
+            {...props}
+        >
             <div className={styles.container__input__wrapper}>
                 {children}
 
@@ -95,7 +100,6 @@ export const Input = memo(({
             icon={icon}
             variant={variant}
             placeholder={placeholder}
-            type="input"
         >
             <input
                 className={cx(
@@ -129,7 +133,6 @@ export const TextArea = memo(({
             error={error}
             icon={icon}
             placeholder={placeholder}
-            type="textarea"
         >
             <textarea
                 className={cx(

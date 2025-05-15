@@ -1,20 +1,33 @@
 import { ComponentProps, ReactNode } from "react";
 
 import styles from "./styles.module.scss";
-import cx from "classnames";
+import { cva, VariantProps } from "class-variance-authority";
+
+const interestButton = cva(styles.button, {
+    variants: {
+        variant: {
+            default: styles.button_default,
+            text: styles.button_text,
+            primary: styles.button_primary,
+            outline: styles.button_outline,
+        },
+    },
+    defaultVariants: {
+        variant: "default",
+    },
+});
 
 export namespace InterestButton {
 
     export type Variant = "default" | "text" | "primary" | "outline";
 
-    export type Props = ComponentProps<"div"> & {
-        variant?: Variant;
+    export type Props = ComponentProps<"div"> & VariantProps<typeof interestButton> & {
         icon?: string | ReactNode
     };
 }
 
 export const InterestButton = ({
-    variant = "default",
+    variant,
     icon,
     className,
     children,
@@ -22,11 +35,7 @@ export const InterestButton = ({
 }: InterestButton.Props) => {
     return (
         <div
-            className={cx(
-                styles.button,
-                styles[`button_${variant}`],
-                className,
-            )}
+            className={interestButton({ variant, className })}
             {...props}
         >
             {

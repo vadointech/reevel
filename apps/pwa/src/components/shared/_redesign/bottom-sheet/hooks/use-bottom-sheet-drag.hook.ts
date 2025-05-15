@@ -39,12 +39,14 @@ export function useBottomSheetDrag(
         const lastSnapPointIndex = snapControls.snapPointsCount - 1;
         const isAtBottom = currentSnapPointIndex === lastSnapPointIndex;
 
-        if (velocity > 0 && isAtBottom) {
+        if (velocity >= 0 && isAtBottom) {
             if(bottomSheetStore.rootConfig.dismissible) {
                 bottomSheetStore.setClose();
             }
             return;
         }
+
+        if(bottomSheetStore.rootConfig.fitContent) return;
 
         const snapIndex = snapControls.determineSnapPointIndex(
             currentSnapPointIndex,
@@ -63,14 +65,24 @@ export function useBottomSheetDrag(
 
     };
 
+    const handleOpen = () => {
+        let y;
+
+        if(bottomSheetStore.rootConfig.fitContent) {
+            y =  bottomSheetStore.contentPosition;
+        } else {
+            y =  snapControls.getSnapPoint(bottomSheetStore.activeSnapPoint);
+        }
+
+        animate.start({ y }, generateBottomSheetTransitionParams(
+            0,
+            snapControls.getSnapPointRatio(0),
+        ));
+    };
+
     useEffect(() => {
         if(bottomSheetStore.open) {
-            animate.start({
-                y: snapControls.getSnapPoint(bottomSheetStore.activeSnapPoint),
-            }, generateBottomSheetTransitionParams(
-                0,
-                snapControls.getSnapPointRatio(0),
-            ));
+            handleOpen();
         }
     }, [bottomSheetStore.open]);
 

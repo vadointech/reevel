@@ -19,7 +19,7 @@ export * from "./fire";
 export * from "./lock";
 export * from "./star";
 export * from "./report";
-export * from "./clock"
+export * from "./clock";
 
 export * from "./instagram";
 export * from "./twitch";

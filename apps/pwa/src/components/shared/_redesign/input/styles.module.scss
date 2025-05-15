@@ -1,0 +1,13 @@
+@use "@/theme/mixins";
+@use "@/theme/colors";
+@use "@/theme/motions";
+@use "@/theme/typography";
+
+.input {
+    border-radius: mixins.rem(17);
+    height: mixins.rem(70);
+
+    input, textarea {
+        padding: 2rem 1rem mixins.rem(12);
+    }
+}

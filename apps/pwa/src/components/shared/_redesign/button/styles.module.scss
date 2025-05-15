@@ -42,8 +42,11 @@
 
     &__arrow-after {
         display: flex;
-        svg path {
-            fill: colors.$foreground
+        svg {
+            height: mixins.rem(14);
+            path {
+                fill: colors.$foreground
+            }
         }
     }
 
@@ -53,6 +56,7 @@
 
             span {
                 @include typography.font("base", 400);
+                line-height: 1;
             }
 
             svg {
@@ -64,6 +68,7 @@
 
             span {
                 @include typography.font("sm", 400);
+                line-height: 1;
             }
 
             svg {
@@ -88,6 +93,12 @@
         }
         &_primary {
             background-color: colors.$primary;
+
+            .button__arrow-after {
+                svg path {
+                    fill: colors.$foreground
+                }
+            }
 
             @include active(colors.$primary-highlight);
             @include disabled;

@@ -1,0 +1,47 @@
+@use "@/theme/colors";
+@use "@/theme/mixins";
+@use "@/theme/typography";
+
+.badge {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    column-gap: mixins.rem(4);
+
+    width: fit-content;
+    border-radius: mixins.rem(76);
+    border: mixins.rem(1) transparent solid;
+
+    &_size {
+        &_default {}
+        &_small {
+            height: mixins.rem(23);
+            padding-inline: mixins.rem(8);
+
+            @include typography.font("xxs");
+
+            span {
+                margin-bottom: mixins.rem(-1.5);
+            }
+
+            svg {
+                width: mixins.rem(11);
+                height: mixins.rem(11);
+            }
+
+        }
+        &_large {}
+    }
+
+    &_variant {
+        &_default {}
+        &_ghost {
+            background-color: rgba(#F5F6F7, .4);
+            border-color: rgba(#F5F6F7, .4);
+            color: colors.$foreground;
+            svg path {
+                fill: colors.$foreground;
+            }
+        }
+    }
+}

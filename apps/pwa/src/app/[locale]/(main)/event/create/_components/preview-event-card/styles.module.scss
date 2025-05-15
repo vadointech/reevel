@@ -1,0 +1,139 @@
+@use "@/theme/mixins";
+@use "@/theme/colors";
+@use "@/theme/typography";
+
+.card {
+    width: mixins.rem(294);
+    //height: clamp(474px, 100vh, 516px);
+
+    border-radius: mixins.rem(17);
+    overflow: hidden;
+
+    position: relative;
+    z-index: 0;
+
+    img {
+        position: absolute;
+        inset: 0;
+        z-index: 0;
+        object-fit: cover;
+    }
+
+    display: flex;
+    flex-direction: column;
+    color: colors.$foreground;
+
+    &__header {
+        z-index: 1;
+        padding: mixins.rem(18) mixins.rem(12) 1rem;
+    }
+
+    &__host {
+        display: grid;
+        grid-template-columns: mixins.rem(25) 1fr;
+        grid-template-rows: mixins.rem(25);
+        align-items: center;
+        column-gap: mixins.rem(8);
+
+        margin-bottom: mixins.rem(11);
+
+        color: colors.$foreground;
+
+        &_avatar {
+            outline-width: mixins.rem(1);
+            outline-offset: mixins.rem(2.25);
+        }
+
+        &_name {
+            display: flex;
+            flex-direction: column;
+            row-gap: mixins.rem(3);
+            & > * {
+                @include typography.font("xxs");
+                line-height: 1;
+            }
+        }
+    }
+
+    &__content {
+        margin-top: auto;
+        position: relative;
+        z-index: 1;
+        padding: mixins.rem(6) mixins.rem(12) mixins.rem(18);
+    }
+
+    &__title {
+        @include typography.font("2xl", 700);
+        margin-bottom: mixins.rem(8);
+    }
+
+    &__date {
+        display: flex;
+        align-items: center;
+        gap: mixins.rem(6);
+
+        @include typography.font("xxs", 300);
+        line-height: 1;
+        margin-bottom: mixins.rem(12);
+
+        svg {
+            width: mixins.rem(10.5);
+            height: mixins.rem(10.5);
+
+            path {
+                fill: colors.$foreground;
+            }
+        }
+    }
+
+    &__price {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: mixins.rem(8);
+
+        @include typography.font("2xl", 500);
+    }
+
+    &__tickets {
+        background: colors.$foreground;
+        height: mixins.rem(22);
+        padding-inline: mixins.rem(8);
+        border-radius: mixins.rem(26);
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: colors.$primary;
+
+        @include typography.font("xxs");
+        font-size: mixins.rem(9);
+        line-height: 1;
+    }
+
+    &__interests {
+        display: flex;
+        flex-wrap: nowrap;
+        column-gap: mixins.rem(6);
+        margin-bottom: mixins.rem(12);
+    }
+
+    &__interest {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        column-gap: mixins.rem(4);
+
+        height: mixins.rem(28);
+        border-radius: mixins.rem(76);
+        border: mixins.rem(1) colors.$foreground solid;
+        padding-inline: mixins.rem(12);
+
+        @include typography.font("xxs");
+    }
+
+    &__description {
+        @include typography.font("xxs");
+        @include mixins.textEllipsis(3);
+    }
+}

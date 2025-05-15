@@ -1,6 +1,7 @@
 @use "@/theme/typography";
 @use "@/theme/colors";
 @use "@/theme/mixins";
+@use "@/theme/spacing";
 
 .section {
     width: 100%;
@@ -9,7 +10,6 @@
         display: flex;
         align-items: center;
         justify-content: space-between;
-        padding-inline: 1rem;
 
         margin-bottom: mixins.rem(12);
     }
@@ -28,7 +28,7 @@
 
     &__content {
         &_container {
-            padding-inline: 1rem;
+            padding-inline: spacing.$container;
         }
     }
 }
