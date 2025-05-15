@@ -3,18 +3,30 @@ import { ComponentProps, ReactNode } from "react";
 import { IconArrowRight } from "@/components/icons";
 
 import styles from "../styles.module.scss";
-import { cva } from "class-variance-authority";
-import cx from "classnames";
+import { cx, cva, VariantProps } from "class-variance-authority";
 
-const listItem = cva(styles.option__item, {
+const listItem = cva(styles.listItem, {
     variants: {
-        variant: {
+        weight: {
+            default: styles.listItem_weight_default,
+            bold: styles.listItem_weight_bold,
         },
+        variant: {
+            avatar: styles.listItem_variant_avatar,
+        },
+        size: {
+            default: styles.listItem_size_default,
+            small: styles.listItem_size_small,
+        },
+    },
+    defaultVariants: {
+        weight: "default",
+        size: "default",
     },
 });
 
 export namespace OptionsListItem {
-    export type Props = Omit<ComponentProps<"li">, "children"> & {
+    export type Props = Omit<ComponentProps<"li">, "children"> & VariantProps<typeof listItem> & {
         label: string | ReactNode;
         description?: string | ReactNode;
         contentLeft?: string | ReactNode;
@@ -24,16 +36,20 @@ export namespace OptionsListItem {
 }
 
 export const OptionsListItem = ({
+    weight,
+    variant,
+    size,
     contentLeft,
     contentRight = <IconArrowRight />,
     label,
     description,
     iconType = "filled",
+    className,
     ...props
 }: OptionsListItem.Props) => {
     return (
         <li
-            className={styles.listItem}
+            className={listItem({ weight, variant, size, className })}
             {...props}
         >
             {

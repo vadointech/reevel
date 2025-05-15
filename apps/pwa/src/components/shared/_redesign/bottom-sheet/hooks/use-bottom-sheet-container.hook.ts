@@ -1,6 +1,6 @@
 import { useCallback, useState } from "react";
-import { useBottomSheetStore } from "@/components/shared/_redesign/bottom-sheet/store";
 import { BoundingBox } from "motion/react";
+import { useBottomSheetStore } from "../store";
 
 export function useBottomSheetContainer() {
     const bottomSheetStore = useBottomSheetStore();
@@ -15,11 +15,12 @@ export function useBottomSheetContainer() {
     const ref = useCallback((element: HTMLDivElement | null) => {
         if(!element) return;
         if(rootConfig.fitContent) {
-            const rect = element.getBoundingClientRect();
-            bottomSheetStore.setContentHeight(rect.height);
+            const { clientHeight } = element;
+            const position = snapControls.clientHeight - clientHeight;
+            bottomSheetStore.setContentPosition(position);
             setDragBounds({
-                top: snapControls.clientHeight - bottomSheetStore.contentHeight,
-                bottom: snapControls.clientHeight,
+                top: position,
+                bottom: position,
             });
         }
     }, []);

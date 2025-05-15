@@ -9,6 +9,7 @@
 
 .upload {
     &__grid {
+        touch-action: none;
         display: flex;
         flex-wrap: wrap;
         align-items: center;

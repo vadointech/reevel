@@ -89,8 +89,7 @@ export const CreateEventForm = ({ ...props }: CreateEventForm.Props) => {
 
             <div className={styles.form__submit}>
                 <Button
-                    variant={"primary"}
-                    iconAfter={<ArrowNext />}
+                    arrowAfter={<ArrowNext />}
                     href={"/event/create/preview"}
                 >
                     Next step

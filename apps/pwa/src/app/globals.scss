@@ -25,6 +25,11 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
+main {
+  width: 100%;
+  height: 100%;
+}
+
 * {
   box-sizing: border-box;
   padding: 0;
@@ -51,4 +56,8 @@ a {
 .bottom-sheet-root {
   position: absolute;
   inset: 0;
+}
+
+.pointer-none {
+  pointer-events: none;
 }

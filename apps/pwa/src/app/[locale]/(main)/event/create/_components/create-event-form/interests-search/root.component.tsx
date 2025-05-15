@@ -10,10 +10,9 @@ import { Container } from "@/components/ui";
 
 import { SearchInterestsAll } from "./all-interests.component";
 import { SearchInterestsSelected } from "./selected-interests.component";
+import { CreateEventFormSchemaValues } from "@/features/event/create";
 
-import { CreateEventFormSchemaValues } from "../create-event-form.schema";
-
-import styles from "../styles.module.scss";
+import styles from "./styles.module.scss";
 
 export namespace SearchInterests {
     export type Props = ComponentProps<"div">;
@@ -26,7 +25,6 @@ const TRANSITION_PARAMS: Transition = {
 };
 
 export const SearchInterests = ({ ...props }: SearchInterests.Props) => {
-
     const { interests } = useWatch<CreateEventFormSchemaValues>();
     const selectedAnimate = useAnimation();
     const allAnimate = useAnimation();
@@ -48,10 +46,10 @@ export const SearchInterests = ({ ...props }: SearchInterests.Props) => {
     }, [selectedRef]);
 
     return (
-        <div className={styles.searchInterests}>
+        <div className={styles.search}>
             <Header.Search
-                className={styles.searchInterests__header}
-                controlHref={"/_event/create"}
+                className={styles.search__header}
+                controlHref={"/event/create"}
                 onFocus={handleFocus}
                 onBlur={handleBlur}
             />

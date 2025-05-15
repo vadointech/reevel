@@ -15,7 +15,7 @@ export const CreateEventFormInterestsPicker = () => {
         <Section
             title={"Interests"}
             cta={"See all"}
-            ctaHref={"/_event/create/interests"}
+            ctaHref={"/event/create/interests"}
         >
             <div className={cx(styles.form__interests, styles.form__gap)}>
                 {

@@ -69,14 +69,12 @@ export function useBottomSheetDrag(
         let y;
 
         if(bottomSheetStore.rootConfig.fitContent) {
-            y = snapControls.clientHeight - bottomSheetStore.contentHeight;
+            y =  bottomSheetStore.contentPosition;
         } else {
             y =  snapControls.getSnapPoint(bottomSheetStore.activeSnapPoint);
         }
 
-        animate.start({
-            y,
-        }, generateBottomSheetTransitionParams(
+        animate.start({ y }, generateBottomSheetTransitionParams(
             0,
             snapControls.getSnapPointRatio(0),
         ));

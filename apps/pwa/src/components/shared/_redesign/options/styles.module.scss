@@ -17,6 +17,22 @@
     display: flex;
     column-gap: mixins.rem(18);
 
+    &_variant {
+        &_avatar {
+            align-items: center;
+        }
+    }
+
+    &_weight {
+        &_default {}
+        &_bold {}
+    }
+
+    &_size {
+        &_default {}
+        &_small {}
+    }
+
     &__content {
         display: flex;
         flex-direction: column;
@@ -25,9 +41,17 @@
     }
 
     &__title {
-        @include typography.font("base", 400);
-        line-height: 1;
         color: colors.$primary;
+
+        .listItem_weight_default & {
+            @include typography.font("base", 400);
+            line-height: 1;
+        }
+
+        .listItem_weight_bold & {
+            @include typography.font("base", 500);
+            line-height: 1;
+        }
     }
 
     &__description {
@@ -38,7 +62,18 @@
     &__left {
         display: flex;
 
-        @include typography.font("4xl");
+        .listItem_size_default & {
+            @include typography.font("4xl");
+        }
+
+        .listItem_size_small & {
+            @include typography.font("2xl");
+        }
+
+        .listItem_variant_avatar & {
+            width: mixins.rem(44);
+            height: mixins.rem(44);
+        }
 
         svg {
             width: mixins.rem(22);

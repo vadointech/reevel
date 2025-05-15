@@ -3,7 +3,7 @@
 import { AnimatePresence, motion } from "motion/react";
 import { Checkbox, OptionsList, OptionsListItem, Section } from "@/components/shared/_redesign";
 import { Controller } from "react-hook-form";
-import { CreateEventFormSchemaValues } from "../create-event-form.schema";
+import { CreateEventFormSchemaValues } from "@/features/event/create";
 
 import styles from "./styles.module.scss";
 
@@ -21,8 +21,7 @@ export const SearchInterestsSelected = ({
             {
                 (interests && interests.length > 0) && (
                     <motion.div
-                        initial={{ height: 0, opacity: 0 }}
-                        animate={{ height: "auto", opacity: 1 }}
+                        initial={{ height: "auto", opacity: 1 }}
                         exit={{ height: 0, opacity: 0 }}
                         transition={{
                             type: "tween",

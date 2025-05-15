@@ -46,6 +46,10 @@ export class BottomSheetSnapPointControl {
         return this.clientHeight - this.clientHeight * ratio;
     }
 
+    get p() {
+        return this.clientHeight;
+    }
+
     determineSnapPointIndex(
         activeSnapPointIndex: number,
         velocity: number,

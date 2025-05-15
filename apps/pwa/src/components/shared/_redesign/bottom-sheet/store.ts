@@ -12,7 +12,7 @@ interface IBottomSheetStore {
 class BottomSheetStore implements IBottomSheetStore {
     open = false;
     activeSnapPoint: number = 0;
-    contentHeight: number;
+    contentPosition: number = 0;
 
     readonly dragControls: DragControls;
     readonly snapControls: BottomSheetSnapPointControl;
@@ -26,14 +26,12 @@ class BottomSheetStore implements IBottomSheetStore {
             setOpen: action,
             setClose: action,
             setActiveSnapPoint: action,
-            setContentHeight: action,
+            setContentPosition: action,
         });
-
-        this.contentHeight = window.innerHeight;
 
         this.snapControls = new BottomSheetSnapPointControl(
             this.rootConfig,
-            this.contentHeight,
+            window.innerHeight,
         );
         this.dragControls = new DragControls();
     }
@@ -51,8 +49,8 @@ class BottomSheetStore implements IBottomSheetStore {
         this.activeSnapPoint = snapPoint;
     }
 
-    setContentHeight(height: number) {
-        this.contentHeight = height;
+    setContentPosition(height: number) {
+        this.contentPosition = height;
     }
 }
 
