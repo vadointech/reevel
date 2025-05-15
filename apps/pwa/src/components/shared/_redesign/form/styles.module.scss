@@ -1,0 +1,50 @@
+@use "@/theme/mixins";
+@use "@/theme/colors";
+@use "@/theme/typography";
+@use "@/theme/motions";
+
+@keyframes fadeInError {
+    0% {
+        opacity: 0;
+        transform: translateY(mixins.rem(-6));
+        max-height: 0;
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+        max-height: mixins.rem(100);
+    }
+}
+
+.form {
+    &__gap {
+        &_default {
+            margin-bottom: mixins.rem(24);
+        }
+
+        &_small {
+            margin-bottom: mixins.rem(12);
+        }
+    }
+
+    &__field {
+        display: flex;
+        flex-direction: column;
+        row-gap: mixins.rem(4);
+
+        &[aria-invalid="true"] {
+            ul,
+            input,
+            textarea {
+                background: colors.$danger-muted;
+            }
+        }
+    }
+
+    &__error {
+        color: colors.$danger;
+        @include typography.font("xs");
+        transform-origin: top center;
+        animation: fadeInError motions.$motion-duration-mid motions.$motion-ease-out;
+    }
+}

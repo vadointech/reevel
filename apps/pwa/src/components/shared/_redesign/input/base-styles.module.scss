@@ -3,29 +3,11 @@
 @use "@/theme/motions";
 @use "@/theme/typography";
 
-@keyframes fadeInError {
-    0% {
-        opacity: 0;
-        transform: translateY(mixins.rem(-6));
-        max-height: 0;
-    }
-    100% {
-        opacity: 1;
-        transform: translateY(0);
-        max-height: 100px;
-    }
-}
-
 .input {
+    flex: 1 0 auto;
     display: flex;
     position: relative;
     overflow: hidden;
-
-    &__warpper {
-        display: flex;
-        flex-direction: column;
-        row-gap: mixins.rem(4);
-    }
 
     &__label {
         position: absolute;
@@ -36,31 +18,13 @@
         pointer-events: none;
     }
 
-    &__error {
-        color: colors.$danger;
-        @include typography.font("xs");
-        transform-origin: top center;
-        animation: fadeInError motions.$motion-duration-mid motions.$motion-ease-out;
-    }
-
-    &_state {
-        &_error {
-            input, textarea {
-                background: colors.$danger-muted;
-            }
-        }
-        &_default {
-            input, textarea {
-                background: colors.$secondary-muted;
-            }
-        }
-    }
-
     input, textarea {
         flex-grow: 1;
 
         border: none;
         outline: none;
+
+        background: colors.$secondary-muted;
 
         transition: background-color motions.$motion-duration-mid motions.$motion-ease-in-out;
         -webkit-tap-highlight-color: rgba(0,0,0,0);
@@ -75,12 +39,10 @@
             transition: color motions.$motion-duration-mid motions.$motion-ease-in-out;
         }
 
-        .input_state_default & {
-            &:focus {
-                background-color: colors.$secondary-highlight;
-                &::placeholder {
-                    color: colors.$primary;
-                }
+        &:focus {
+            background-color: colors.$secondary-highlight;
+            &::placeholder {
+                color: colors.$primary;
             }
         }
     }

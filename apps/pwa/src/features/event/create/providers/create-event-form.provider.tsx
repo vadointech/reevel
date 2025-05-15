@@ -17,7 +17,7 @@ export const CreateEventFormProvider = ({ children, defaultValues }: CreateEvent
     const form = useForm<CreateEventFormSchemaValues>({
         resolver: zodResolver(createEventFormSchema),
         defaultValues,
-        mode: "onBlur",
+        mode: "onChange",
     });
 
     return (

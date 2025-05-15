@@ -15,7 +15,7 @@ import {
     ArrowNext,
     IconNavigation,
 } from "@/components/icons";
-import { Button, Input, OptionsList, OptionsListItem, Section } from "@/components/shared/_redesign";
+import { Button, FormField, Input, OptionsList, OptionsListItem, Section } from "@/components/shared/_redesign";
 import { CreateEventFormSchemaValues, useCreateEventForm } from "@/features/event/create";
 
 import styles from "./styles.module.scss";
@@ -38,12 +38,13 @@ export const CreateEventForm = ({ ...props }: CreateEventForm.Props) => {
                     <Controller
                         name={"title"}
                         render={({ field, fieldState }) => (
-                            <Input
-                                {...field}
-                                label={"Title"}
-                                placeholder={"Enter title"}
-                                error={fieldState.error?.message}
-                            />
+                            <FormField gap={"small"} state={fieldState}>
+                                <Input
+                                    {...field}
+                                    label={"Title"}
+                                    placeholder={"Enter title"}
+                                />
+                            </FormField>
                         )}
                     />
                 </div>
@@ -51,12 +52,13 @@ export const CreateEventForm = ({ ...props }: CreateEventForm.Props) => {
                     <Controller
                         name={"description"}
                         render={({ field, fieldState }) => (
-                            <Input.TextArea
-                                {...field}
-                                label={"Description"}
-                                placeholder={"Enter description"}
-                                error={fieldState.error?.message}
-                            />
+                            <FormField state={fieldState}>
+                                <Input.TextArea
+                                    {...field}
+                                    label={"Description"}
+                                    placeholder={"Enter description"}
+                                />
+                            </FormField>
                         )}
                     />
                 </div>
@@ -97,7 +99,6 @@ export const CreateEventForm = ({ ...props }: CreateEventForm.Props) => {
                 <Button
                     type={"submit"}
                     arrowAfter={<ArrowNext />}
-                    // href={"/event/create/preview"}
                 >
                     Next step
                 </Button>
