@@ -1,8 +1,8 @@
 
-import { ComponentProps } from "react"
-import styles from "./styles.module.scss"
-import cx from "classnames"
-import { Check } from "@/components/icons"
+import { ComponentProps } from "react";
+import styles from "./styles.module.scss";
+import cx from "classnames";
+import { IconCheck } from "@/components/icons";
 
 export namespace InterestSelect {
     export type Props = ComponentProps<"div"> & {
@@ -10,7 +10,7 @@ export namespace InterestSelect {
         icon: string,
         selected?: boolean,
         onClick?: () => void;
-    }
+    };
 }
 
 
@@ -28,7 +28,7 @@ export const InterestSelect = ({
             styles.select,
             className,
         )}
-            onClick={onClick}
+        onClick={onClick}
         >
             <div className={styles.select__icon}>{icon}</div>
             <div className={styles.select__title}>{title}</div>
@@ -37,9 +37,9 @@ export const InterestSelect = ({
                     styles.select__checkbox,
                     selected && styles.select__checkbox_selected,
                 )}>
-                    <Check />
+                    <IconCheck />
                 </div>
             }
         </div>
-    )
-}
+    );
+};

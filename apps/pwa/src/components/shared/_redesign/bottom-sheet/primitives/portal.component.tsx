@@ -1,3 +1,5 @@
+"use client";
+
 import { PropsWithChildren, useEffect, useRef, useState } from "react";
 import ReactDOM from "react-dom";
 

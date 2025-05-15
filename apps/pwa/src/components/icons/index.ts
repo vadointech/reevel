@@ -27,6 +27,7 @@ export * from "./lightning"
 export * from "./ukraine"
 export * from "./england"
 export * from "./system-country"
+export * from "./clock";
 
 export * from "./instagram";
 export * from "./twitch";

@@ -1,8 +1,13 @@
-import { ComponentProps, ReactNode } from "react";
-import { IconArrowLeft, IconEllipsisVertical } from "@/components/icons";
+import { ComponentProps, ReactNode, MouseEvent } from "react";
+import { IconArrowLeft, IconSearch } from "@/components/icons";
+import { Input } from "@/components/shared/_redesign";
+
+import { cva, VariantProps } from "class-variance-authority";
+
+import { Link } from "@/i18n/routing";
+import { InputSearch } from "@/components/shared/_redesign/input/variants";
 
 import styles from "./styles.module.scss";
-import { cva, VariantProps } from "class-variance-authority";
 
 const header = cva(styles.header, {
     variants: {
@@ -31,16 +36,18 @@ export namespace Header {
         controlAfter?: ReactNode;
     };
 
-    export type SearchProps = ComponentProps<"header"> & VariantProps<typeof header> & {
+    export type SearchProps = VariantProps<typeof header> & InputSearch.Props & {
         iconBefore?: ReactNode;
         controlBefore?: ReactNode;
+        onControlClick?: (event: MouseEvent<HTMLDivElement>) => void;
+        controlHref?: string;
     };
 }
 
 export const Header = ({
     size,
     children,
-    iconBefore = <IconArrowLeft />,
+    iconBefore,
     iconAfter,
     controlBefore,
     controlAfter,
@@ -71,19 +78,39 @@ const Search = ({
     size,
     iconBefore = <IconArrowLeft />,
     controlBefore,
+    onControlClick,
+    controlHref,
+    className,
     ...props
 }: Header.SearchProps) => {
-    return (
-        <header
-            className={header({ size })}
-            {...props}
-        >
-            <div className={styles.header__left}>
+    const Control = () => {
+        return (
+            <div
+                onClick={onControlClick}
+                className={styles.header__left}
+            >
                 { iconBefore }
                 { controlBefore }
             </div>
+        );
+    };
+    return (
+        <header className={header({ size, variant: "search" , className })}>
+            {
+                controlHref ? (
+                    <Link href={controlHref}>
+                        <Control />
+                    </Link>
+                ) : (
+                    <Control />
+                )
+            }
 
-            <div />
+            <Input.Search
+                placeholder={"Search"}
+                iconBefore={<IconSearch />}
+                {...props}
+            />
         </header>
     );
 };

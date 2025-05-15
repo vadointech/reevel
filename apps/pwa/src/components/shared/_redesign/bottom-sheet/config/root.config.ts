@@ -2,6 +2,7 @@ import { initStore } from "@/lib/mobx";
 
 export interface IBottomSheetRootConfig {
     snapPoints: number[];
+    fitContent?: boolean;
     defaultSnapPointIndex: number;
     overlay: boolean;
     fadeThreshold: number;
@@ -11,6 +12,7 @@ export interface IBottomSheetRootConfig {
 
 export class BottomSheetRootConfig implements IBottomSheetRootConfig {
     snapPoints: number[] = [.97];
+    fitContent: boolean = false;
     defaultSnapPointIndex: number = 0;
     overlay: boolean = true;
     fadeThreshold: number = .5;

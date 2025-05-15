@@ -29,7 +29,9 @@
 
         }
         &_search {
-            grid-template-columns: 2rem 1fr;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
             column-gap: mixins.rem(22);
         }
     }

@@ -1,8 +1,8 @@
-"use client"
+"use client";
 import { Drawer, DrawerBody, DrawerContent } from "@/components/shared/drawer";
 
 import { OnboardingTextBlock } from "@/app/[locale]/(main)/onboarding/_components";
-import { useEventStore } from "@/features/event";
+import { useEventStore } from "../../../features/_event";
 import { OptionItem, Options } from "@/components/shared/options";
 
 
@@ -19,7 +19,7 @@ export const ReportDrawer = ({ open, onClose }: ReportDrawer.Props) => {
             <DrawerBody>
                 <DrawerContent>
                     <OnboardingTextBlock
-                        title={`What would you like to report?`}
+                        title={"What would you like to report?"}
                     />
 
                     <Options>
@@ -33,5 +33,5 @@ export const ReportDrawer = ({ open, onClose }: ReportDrawer.Props) => {
                 </DrawerContent>
             </DrawerBody>
         </Drawer>
-    )
+    );
 };

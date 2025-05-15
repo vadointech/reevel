@@ -12,7 +12,7 @@ export namespace VisibilityCard {
 }
 
 export const VisibilityCard = ({ type, className, ...props }: VisibilityCard.Props) => {
-    const description = type === "Public" ? 'Your event will be shown for everyone' : "Your event will be shown for your friends"
+    const description = type === "Public" ? "Your _event will be shown for everyone" : "Your _event will be shown for your friends";
 
     return (
         <div className={cx(className, styles.card)} {...props}>

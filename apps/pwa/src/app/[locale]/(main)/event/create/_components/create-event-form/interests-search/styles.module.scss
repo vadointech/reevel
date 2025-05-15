@@ -1,0 +1,10 @@
+@use "@/theme/mixins";
+
+.search {
+    &__header {
+        padding-bottom: mixins.rem(22);
+    }
+    &__gap {
+       padding-bottom: mixins.rem(24);
+    }
+}

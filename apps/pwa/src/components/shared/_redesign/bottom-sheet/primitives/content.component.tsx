@@ -1,7 +1,7 @@
 "use client";
 
 import { HTMLMotionProps, motion } from "motion/react";
-import { useBottomSheetDrag } from "../hooks";
+import { useBottomSheetContainer, useBottomSheetDrag } from "../hooks";
 import { generateBottomSheetExitTransitionParams } from "../config/transition.config";
 import { useBottomSheetStore } from "../store";
 import { useOutsideEvent } from "@/hooks/use-outside-event";
@@ -23,6 +23,7 @@ export const BottomSheetContent = ({
     const bottomSheetStore = useBottomSheetStore();
 
     const snapControls = bottomSheetStore.snapControls;
+    const rootConfig = bottomSheetStore.rootConfig;
 
     const {
         dragY,
@@ -33,10 +34,11 @@ export const BottomSheetContent = ({
         handleDragEnd,
     } = useBottomSheetDrag(snapControls);
 
+    const [contentRef, content] = useBottomSheetContainer();
 
     const [bottomSheetRef] = useOutsideEvent<HTMLDivElement>(
         ["pointerdown"], {
-            activate: bottomSheetStore.rootConfig.dismissible,
+            activate: rootConfig.dismissible,
             handleEvent: () => {
                 bottomSheetStore.setClose();
             },
@@ -46,19 +48,22 @@ export const BottomSheetContent = ({
     return (
         <>
             {
-                bottomSheetStore.rootConfig.overlay && (
+                rootConfig.overlay && (
                     <BottomSheetOverlay
                         dragYProgress={dragYProgress}
-                        threshold={bottomSheetStore.rootConfig.fadeThreshold}
+                        threshold={rootConfig.fadeThreshold}
                     />
                 )
             }
             <motion.div
                 drag={"y"}
-                style={{ y: dragY }}
+                style={{
+                    y: dragY,
+                    height: "100%",
+                }}
                 ref={bottomSheetRef}
                 dragControls={bottomSheetStore.dragControls}
-                dragListener={!bottomSheetStore.rootConfig.handleOnly}
+                dragListener={!rootConfig.handleOnly}
                 transition={generateBottomSheetExitTransitionParams(
                     snapControls.getSnapPointRatio(snapControls.snapPointsCount - 1),
                 )}
@@ -66,10 +71,7 @@ export const BottomSheetContent = ({
                 exit={{ y: snapControls.clientHeight }}
                 animate={animate}
                 dragDirectionLock
-                dragConstraints={{
-                    top: snapControls.Top,
-                    bottom: snapControls.Bottom,
-                }}
+                dragConstraints={content.dragBounds}
                 dragElastic={{
                     top: .07,
                     bottom: snapControls.snapPointsCount === 1 ? .2 : .07,
@@ -78,6 +80,7 @@ export const BottomSheetContent = ({
                 className={styles.bottomSheet__body}
             >
                 <motion.div
+                    ref={contentRef}
                     style={{
                         opacity: contentOpacity,
                         paddingBottom: snapControls.Top,
