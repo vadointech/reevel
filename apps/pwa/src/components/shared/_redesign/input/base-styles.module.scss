@@ -3,11 +3,29 @@
 @use "@/theme/motions";
 @use "@/theme/typography";
 
+@keyframes fadeInError {
+    0% {
+        opacity: 0;
+        transform: translateY(mixins.rem(-6));
+        max-height: 0;
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+        max-height: 100px;
+    }
+}
+
 .input {
-    flex: 1 0 auto;
+    display: flex;
     position: relative;
     overflow: hidden;
-    display: flex;
+
+    &__warpper {
+        display: flex;
+        flex-direction: column;
+        row-gap: mixins.rem(4);
+    }
 
     &__label {
         position: absolute;
@@ -18,10 +36,29 @@
         pointer-events: none;
     }
 
+    &__error {
+        color: colors.$danger;
+        @include typography.font("xs");
+        transform-origin: top center;
+        animation: fadeInError motions.$motion-duration-mid motions.$motion-ease-out;
+    }
+
+    &_state {
+        &_error {
+            input, textarea {
+                background: colors.$danger-muted;
+            }
+        }
+        &_default {
+            input, textarea {
+                background: colors.$secondary-muted;
+            }
+        }
+    }
+
     input, textarea {
         flex-grow: 1;
 
-        background-color: colors.$secondary-muted;
         border: none;
         outline: none;
 
@@ -38,10 +75,12 @@
             transition: color motions.$motion-duration-mid motions.$motion-ease-in-out;
         }
 
-        &:focus {
-            background-color: colors.$secondary-highlight;
-            &::placeholder {
-                color: colors.$primary;
+        .input_state_default & {
+            &:focus {
+                background-color: colors.$secondary-highlight;
+                &::placeholder {
+                    color: colors.$primary;
+                }
             }
         }
     }

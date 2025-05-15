@@ -7,28 +7,38 @@ import cx from "classnames";
 export namespace InputTextArea {
     export type Props = ComponentProps<"textarea"> & {
         label?: string;
+        error?: string;
     };
 }
 
 export const InputTextArea = ({
     label,
+    error,
     ...props
 }: InputTextArea.Props) => {
     return (
-        <label
-            className={cx(
-                baseStyles.input,
-                styles.input,
-            )}
-        >
+        <div className={baseStyles.input__warpper}>
+            <label
+                className={cx(
+                    baseStyles.input,
+                    styles.input,
+                    error ? baseStyles.input_state_error : baseStyles.input_state_default,
+                )}
+            >
+                {
+                    label ? (
+                        <span className={baseStyles.input__label}>
+                            { label }
+                        </span>
+                    ) : null
+                }
+                <textarea {...props} />
+            </label>
             {
-                label ? (
-                    <span className={baseStyles.input__label}>
-                        { label }
-                    </span>
-                ) : null
+                error ? (
+                    <span className={baseStyles.input__error}>{ error }</span>
+                ): null
             }
-            <textarea {...props} />
-        </label>
+        </div>
     );
 };

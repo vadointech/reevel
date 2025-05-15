@@ -32,12 +32,12 @@ export const TimePicker = ({ controls, label }: TimePicker.Props) => {
                     >
                         <div className={styles.picker__container}>
                             {
-                                wheel.slides.map((_, index) => (
+                                wheel.slides.map((item) => (
                                     <div
                                         className={styles.picker__slide}
-                                        key={index}
+                                        key={item}
                                     >
-                                        {index < 10 ? `0${index}` : index}
+                                        {item < 10 ? `0${item}` : item}
                                     </div>
                                 ))
                             }
