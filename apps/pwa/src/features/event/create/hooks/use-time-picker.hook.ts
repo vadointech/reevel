@@ -1,79 +1,73 @@
 "use client";
 
-import { useMemo } from "react";
+import { useEffect, useRef } from "react";
 import { useFormContext } from "react-hook-form";
 import { useTimePicker } from "@/components/shared/time-picker";
 import { CreateEventFormSchemaValues } from "@/features/event/create";
 
 const HOURS_OFFSET = 1;
 
-type TimeField = "startTime" | "endTime";
+type TimeField = "startTime" | "endTime" | "endDate";
 
 export function useCreateEventFormTimePicker(field: TimeField) {
+    const {
+        defaultValue,
+        valueConstraints,
+    } = getFieldConstraints(field);
 
     const { getValues, setValue } = useFormContext<CreateEventFormSchemaValues>();
 
-    const now = new Date();
-    const startDate = getValues("startDate");
-    const startTime = getValues("startTime");
+    const startIndex = defaultValue.getHours() - valueConstraints.getHours();
+    const fieldValue = useRef<Date | undefined>(defaultValue);
 
-    const defaultValue = useMemo<Date>(() => {
-        let date: Date;
-        if(startTime) {
-            date = new Date(startTime);
-        } else {
-            date = new Date(startDate);
-            date.setHours(now.getHours(), now.getMinutes(), 0, 0);
-        }
-        return date;
+    const resetFieldValue = () => fieldValue.current = undefined;
+
+    const setFieldValue = (field: TimeField, value?: Date) => {
+        setValue(field, value);
+    };
+    
+    useEffect(() => {
+        return () => {
+            setFieldValue(field, fieldValue.current);
+
+            if(field === "startTime") {
+                if(fieldValue.current) {
+                    const endTime = getValues("endTime");
+                    if(endTime && endTime.getHours() < fieldValue.current.getHours()) {
+                        setFieldValue("endTime", undefined);
+                        setFieldValue("endDate", undefined);
+                    }
+                }
+            }
+
+            if(field === "endTime") {
+                setFieldValue("endDate", fieldValue.current);
+            }
+        };
     }, []);
 
-    const bounds = useMemo<{ hours: number, minutes: number }>(() => {
-        if(defaultValue.getDate() === now.getDate()) {
-            return {
-                hours: now.getHours() + HOURS_OFFSET,
-                minutes: now.getMinutes(),
-            };
-        }
-
-        return { hours: 0, minutes: 0 };
-    }, [defaultValue]);
-
-    const setFieldValue = (value?: Date) => {
-        setValue(field, value, {
-            shouldValidate: false,
-            shouldDirty: false,
-            shouldTouch: false,
-        });
-    };
-
     const controlsLeft = useTimePicker({
+        startIndex,
         slideCount: 24,
-        slidesFrom: bounds.hours,
-        startIndex: (defaultValue.getHours() - bounds.hours) + (field === "endTime" ? 1 : 0),
+        slidesFrom: valueConstraints.getHours(),
         handlers: {
             onChange: (carousel) => {
-                const hours = carousel.api.selectedScrollSnap() + bounds.hours;
+                const hours = carousel.api.selectedScrollSnap() + valueConstraints.getHours();
 
-                const updatedDate = new Date(defaultValue);
-                const minutes = updatedDate.getMinutes();
-                updatedDate.setHours(hours, minutes, 0, 0);
-                setFieldValue(updatedDate);
+                fieldValue.current?.setHours(hours);
             },
         },
     });
 
     const controlsRight = useTimePicker({
         slideCount: 60,
+        slidesFrom: valueConstraints.getMinutes(),
         startIndex: defaultValue.getMinutes(),
         handlers: {
             onChange: (carousel) => {
-                const minutes = carousel.api.selectedScrollSnap();
+                const minutes = carousel.api.selectedScrollSnap() + valueConstraints.getMinutes();
 
-                const updatedDate = new Date(defaultValue);
-                const hours = updatedDate.getHours();
-                updatedDate.setHours(hours, minutes, 0, 0);
-                setFieldValue(updatedDate);
+                fieldValue.current?.setMinutes(minutes);
             },
         },
     });
@@ -81,5 +75,44 @@ export function useCreateEventFormTimePicker(field: TimeField) {
     return {
         controlsLeft,
         controlsRight,
+        resetFieldValue,
+    };
+}
+
+function getFieldConstraints(field: TimeField) {
+    const { getValues } = useFormContext<CreateEventFormSchemaValues>();
+
+    const now = new Date();
+    const startTime = getValues("startTime");
+
+    let valueConstraints: Date;
+
+    if(field === "startTime") {
+        valueConstraints = new Date(
+            getValues("startDate"),
+        );
+        if(valueConstraints.getDate() === now.getDate()) {
+            valueConstraints.setHours(
+                now.getHours() + HOURS_OFFSET,
+                0, 0, 0,
+            );
+        }
+    } else {
+        if(startTime) {
+            valueConstraints = new Date(startTime);
+        } else {
+            valueConstraints = new Date(now);
+        }
+        valueConstraints.setHours(
+            valueConstraints.getHours() + HOURS_OFFSET,
+            0, 0, 0,
+        );
+    }
+
+    const defaultValue = getValues(field) || valueConstraints;
+
+    return {
+        defaultValue,
+        valueConstraints,
     };
 }

@@ -39,7 +39,7 @@ export function useBottomSheetDrag(
         const lastSnapPointIndex = snapControls.snapPointsCount - 1;
         const isAtBottom = currentSnapPointIndex === lastSnapPointIndex;
 
-        if (velocity >= 0 && isAtBottom) {
+        if (velocity >= 30 && isAtBottom) {
             if(bottomSheetStore.rootConfig.dismissible) {
                 bottomSheetStore.setClose();
             }

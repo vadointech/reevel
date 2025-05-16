@@ -11,6 +11,7 @@ export const createEventFormSchema = z.object({
     ticketsCount: z.string().or(z.undefined()),
     ticketPrice: z.string().or(z.undefined()),
     startDate: z.date(),
+    endDate: z.date().or(z.undefined()),
     startTime: z.date().or(z.undefined()),
     endTime: z.date().or(z.undefined()),
 });

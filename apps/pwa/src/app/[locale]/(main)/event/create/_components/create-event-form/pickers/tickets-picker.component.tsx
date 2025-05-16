@@ -5,6 +5,7 @@ import {
     CreateEventFormBottomSheet,
     CreateEventFormBottomSheetTrigger,
     CreateEventFormBottomSheetContent,
+    CreateEventFormBottomSheetBody,
 } from "../bottom-sheet";
 import { useCreateEventFormFieldFormatter } from "@/features/event/create";
 
@@ -36,18 +37,20 @@ const Field = ({ field }: UseControllerReturn) => {
                     contentLeft={<IconTicketTilted />}
                 />
             </CreateEventFormBottomSheetTrigger>
-            <CreateEventFormBottomSheetContent
-                title={"How Many Tickets?"}
-                onReset={() => {
-                    field.onChange(null);
-                }}
-            >
-                <Input.Number
-                    {...field}
-                    label={"tickets"}
-                    placeholder={"0"}
-                />
-            </CreateEventFormBottomSheetContent>
+            <CreateEventFormBottomSheetBody>
+                <CreateEventFormBottomSheetContent
+                    title={"How Many Tickets?"}
+                    onReset={() => {
+                        field.onChange(null);
+                    }}
+                >
+                    <Input.Number
+                        {...field}
+                        label={"tickets"}
+                        placeholder={"0"}
+                    />
+                </CreateEventFormBottomSheetContent>
+            </CreateEventFormBottomSheetBody>
         </>
     );
 };
