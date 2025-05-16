@@ -1,42 +1,153 @@
-import { Injectable } from "@nestjs/common";
+import { DataSource } from "typeorm";
+import { BadRequestException, Injectable, Logger, NotFoundException } from "@nestjs/common";
+
+import { UploadsService } from "@/modules/uploads/uploads.service";
+import { BookingService } from "@/modules/booking/booking.service";
+
+import { EventRepository } from "./repositories/event.repository";
+import { EventHostsRepository } from "./repositories/event-hosts.repository";
+import { EventInterestsRepository } from "./repositories/event-interests.repository";
+import { EventTicketsRepository } from "@/modules/event/repositories/event-tickets.repository";
+import { SubscriptionRegistry } from "@/modules/subscription/registry/subscription.registry";
+
+import { EventsEntity } from "./entities/events.entity";
+
 import { CreateEventDto } from "./dto/create-event.dto";
-import { Repository } from "typeorm";
-import { EventEntity } from "./entities/event.entity";
-import { InjectRepository } from "@nestjs/typeorm";
 import { UpdateEventDto } from "./dto/update-event.dto";
+import { UploadsFileType } from "@/modules/uploads/uploads.register";
+
+import { Session } from "@/types";
 
 @Injectable()
 export class EventService {
+    private logger = new Logger(EventService.name);
+
     constructor(
-        @InjectRepository(EventEntity)
-        private readonly eventsRepository: Repository<EventEntity>,
-    ) { }
+        private readonly uploadService: UploadsService,
+        private readonly bookingService: BookingService,
 
-    async create(createEventDto: CreateEventDto) {
-        const event = this.eventsRepository.create(createEventDto);
-        await this.eventsRepository.save(event);
-    }
+        private readonly eventTicketsRepository: EventTicketsRepository,
+        private readonly eventRepository: EventRepository,
+        private readonly eventHostsRepository: EventHostsRepository,
+        private readonly eventInterestsRepository: EventInterestsRepository,
 
-    async findAll() {
-        return await this.eventsRepository.find();
-    }
+        private readonly subscriptionRegistry: SubscriptionRegistry,
 
-    async findOne(id: string) {
-        return await this.eventsRepository.findOneBy({ id });
-    }
+        private dataSource: DataSource,
+    ) {}
+    
+    async createEvent(session: Session, input: CreateEventDto): Promise<EventsEntity> {
+        try {
+            const {
+                location,
+                interests,
+                ...newEvent
+            } = input;
 
-    async update(id: string, updateEventDto: UpdateEventDto) {
-        const event = await this.eventsRepository.findOneBy({ id });
+            const monthlyHostedCount = await this.eventHostsRepository.countMonthlyHosted(session.user.id);
 
-        if (!event) {
-            throw new Error(`Event with id ${id} not found`);
+            if(monthlyHostedCount >= this.subscriptionRegistry.event.hostingLimit(session)) {
+                throw new BadRequestException("Reached the event hosting limit");
+            }
+
+            return this.dataSource.transaction(async entityManager => {
+                const event = await this.eventRepository.create({
+                    ...newEvent,
+                    location: {
+                        type: "Point",
+                        coordinates: location,
+                    },
+                }, entityManager);
+
+                if(interests && interests.length > 0) {
+                    event.interests = await this.eventInterestsRepository.createInterests(
+                        event.id,
+                        interests,
+                        entityManager,
+                    );
+                }
+
+                event.hosts = await this.eventHostsRepository.createHosts(
+                    event.id,
+                    [session.user.id],
+                    entityManager,
+                );
+
+                return event;
+            });
+        } catch(error) {
+            this.logger.error(`Unexpected error creating event: ${error.message}`, error.stack);
+            throw new BadRequestException();
         }
-
-        event.title = updateEventDto.title;
-        await this.eventsRepository.save(event);
     }
 
-    async remove(id: string) {
-        await this.eventsRepository.delete({ id });
+    async updateEvent(_: Session, eventId: string, input: UpdateEventDto): Promise<EventsEntity> {
+        try {
+            const event = await this.eventRepository.findOneBy({ id: eventId });
+            if(!event) {
+                throw new NotFoundException();
+            }
+
+            const {
+                location,
+                interests,
+                ...newEvent
+            } = input;
+
+            if(newEvent.ticketsAvailable !== null && newEvent.ticketsAvailable !== undefined) {
+                const ticketsCount = await this.eventTicketsRepository.countBy({ eventId });
+                if(ticketsCount > newEvent.ticketsAvailable) {
+                    throw new BadRequestException("Invalid value of ticketsAvailable");
+                }
+            }
+
+            Object.assign(event, newEvent, {
+                location: location ? {
+                    type: "Point",
+                    coordinates: location,
+                } : event.location,
+            });
+
+            await this.eventRepository.create(event);
+
+            event.interests = await this.dataSource.transaction(async entityManager => {
+                if(!interests) return event.interests;
+                return this.eventInterestsRepository.updateInterests(eventId, interests, entityManager);
+            });
+
+            return event;
+        } catch(error) {
+            this.logger.error(`Unexpected error updating event: ${error.message}`, error.stack);
+            throw new BadRequestException();
+        }
+    }
+
+    async deleteEvent(session: Session, eventId: string) {
+        const deleteEventPromise = this.dataSource.transaction(async entityManager => {
+            await this.bookingService.reclaimTickets(eventId, entityManager);
+            await this.eventRepository.delete({ id: eventId }, entityManager);
+        });
+
+        const deleteFilesPromise = this.uploadService.deleteFiles(session.user.id, {
+            folder: UploadsFileType.Events,
+            tags: this.uploadService.tagRegister.events(eventId),
+        });
+
+        await Promise.all([
+            deleteEventPromise,
+            deleteFilesPromise,
+        ]);
+
+        return true;
+    }
+
+    async uploadPoster(session: Session, eventId: string, files: Express.Multer.File[]) {
+        return this.uploadService.uploadImages(files, {
+            folder: this.uploadService.folderRegister.events(session.user.id),
+            tags: [this.uploadService.tagRegister.events(eventId)],
+            colorPalette: {
+                preset: this.subscriptionRegistry.event.posterColor(session),
+            },
+        });
     }
 }

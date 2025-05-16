@@ -1,19 +1,18 @@
 import { Entity, JoinColumn, ManyToOne, PrimaryColumn } from "typeorm";
-import { EventEntity } from "./event.entity";
+import { EventsEntity } from "./events.entity";
 import { UserEntity } from "@/modules/user/entities/user.entity";
 
-
-@Entity("event_attendee")
-export class EventAttendeeEntity {
+@Entity("event_hosts")
+export class EventHostsEntity {
     @PrimaryColumn()
     eventId: string;
     @JoinColumn({ name: "eventId" })
-    @ManyToOne(() => EventEntity, event => event.attendees, { onDelete: "CASCADE" })
-    event: EventEntity;
+    @ManyToOne(() => EventsEntity, event => event.hosts, { onDelete: "CASCADE" })
+    event: EventsEntity;
 
     @PrimaryColumn()
     userId: string;
     @JoinColumn({ name: "userId" })
-    @ManyToOne(() => UserEntity, user => user.attendees, { onDelete: "CASCADE" })
+    @ManyToOne(() => UserEntity, user => user.events, { onDelete: "CASCADE" })
     user: UserEntity;
 }

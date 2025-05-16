@@ -1,37 +1,50 @@
-import { Public } from "@/decorators";
-import { Body, Controller, Delete, Get, Param, Patch, Post } from "@nestjs/common";
+import { Body, Controller, Delete, Param, Patch, Post, Req, UseInterceptors } from "@nestjs/common";
 import { EventService } from "./event.service";
 import { CreateEventDto } from "./dto/create-event.dto";
-import { UpdateEventDto } from "./dto/update-event.dto";
-@Controller("event")
+import { Session } from "@/decorators";
+import { ServerSession } from "@/modules/auth/dto/jwt.dto";
+import { FileUploadInterceptor } from "@/modules/uploads/uploads.interceptor";
+import { UpdateEventDto } from "@/modules/event/dto/update-event.dto";
+
+@Controller("events")
 export class EventController {
-    constructor(private eventService: EventService) { }
+    constructor(
+        private eventService: EventService,
+    ) {}
 
     @Post()
-    async create(@Body() createEventDto: CreateEventDto) {
-        return this.eventService.create(createEventDto);
+    async createEvent(
+        @Body() body: CreateEventDto,
+        @Session() session: ServerSession,
+    ) {
+        return this.eventService.createEvent(session, body);
     }
 
-    @Get()
-    async findAll() {
-        return this.eventService.findAll();
+    @Patch(":eventId")
+    async updateEvent(
+        @Body() body: UpdateEventDto,
+        @Param("eventId") eventId: string,
+        @Session() session: ServerSession,
+    ) {
+        return this.eventService.updateEvent(session, eventId, body);
     }
 
-    @Get(":id")
-    async getOne(@Param("id") id: string) {
-        return this.eventService.findOne(id);
+    @Delete(":eventId")
+    async deleteEvent(
+        @Param("eventId") eventId: string,
+        @Session() session: ServerSession,
+    ) {
+        return this.eventService.deleteEvent(session, eventId);
     }
 
-    @Patch(":id")
-    async update(@Param("id") id: string, @Body() updateEventDto: UpdateEventDto) {
-        return this.eventService.update(id, updateEventDto);
-
-    }
-
-    @Public()
-    @Delete(":id")
-    async remove(@Param("id") id: string) {
-        return this.eventService.remove(id);
-
+    @Post(":eventId/poster")
+    @UseInterceptors(FileUploadInterceptor)
+    async uploadPoster(
+        @Req() request: Express.Request,
+        @Param("eventId") eventId: string,
+        @Session() session: ServerSession,
+    ) {
+        const files = request.files as Express.Multer.File[];
+        return this.eventService.uploadPoster(session, eventId, files);
     }
 }

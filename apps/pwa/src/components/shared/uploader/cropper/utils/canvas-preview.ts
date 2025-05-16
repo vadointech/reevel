@@ -23,7 +23,7 @@ export async function canvasPreview(
     const scaleY = image.naturalHeight / image.height;
     // devicePixelRatio slightly increases sharpness on retina devices
     // at the expense of slightly slower render times and needing to
-    // size the image back down if you want to download/upload and be
+    // size the image back down if you want to download/uploads and be
     // true to the images natural size.
     const pixelRatio = window.devicePixelRatio;
     // const pixelRatio = 1;

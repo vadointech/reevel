@@ -1,7 +1,9 @@
 import { Column, Entity, OneToMany, OneToOne, PrimaryGeneratedColumn } from "typeorm";
 import { ProfileEntity } from "@/modules/profile/entities/profile.entity";
-import { EventAttendeeEntity } from "@/modules/event/entities/event-attendee.entity";
-import { EventCreatorsEntity } from "@/modules/event/entities/event-creators.entity";
+import { EventHostsEntity } from "@/modules/event/entities/event-hosts.entity";
+import { EventTicketsEntity } from "@/modules/event/entities/event-tickets.entity";
+import { PaymentsEntity } from "@/modules/payment/entities/payment.entity";
+import { SubscriptionEntity } from "@/modules/subscription/entities/subscription.entity";
 
 @Entity("users")
 export class UserEntity {
@@ -14,9 +16,15 @@ export class UserEntity {
     @OneToOne(() => ProfileEntity, (profile) => profile.user)
     profile: ProfileEntity;
 
-    @OneToMany(() => EventAttendeeEntity, event => event.user)
-    attendees: EventAttendeeEntity[];
+    @OneToMany(() => EventTicketsEntity, ticket => ticket.user)
+    tickets: EventTicketsEntity[];
 
-    @OneToMany(() => EventAttendeeEntity, event => event.user)
-    creators: EventCreatorsEntity[];
+    @OneToMany(() => EventHostsEntity, event => event.user)
+    events: EventHostsEntity[];
+
+    @OneToMany(() => PaymentsEntity, payment => payment.user)
+    payments: PaymentsEntity[];
+
+    @OneToOne(() => SubscriptionEntity, subscription => subscription.user)
+    subscription: SubscriptionEntity;
 }

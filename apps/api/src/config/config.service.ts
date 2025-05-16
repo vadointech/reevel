@@ -9,6 +9,7 @@ const environmentVariables = [
 
     // CORS
     "API_PUBLIC_URL",
+    "API_PUBLIC_URL_INTERFACE",
     "PWA_PUBLIC_URL",
 
     // Database
@@ -26,6 +27,10 @@ const environmentVariables = [
     "CLOUDINARY_NAME",
     "CLOUDINARY_API_KEY",
     "CLOUDINARY_API_SECRET",
+
+    // Monobank
+    "MONOBANK_PUBLIC_API_TOKEN",
+    "MONOBANK_MERCHANT_PUBLIC_KEY",
 ] as const;
 
 @Injectable()
