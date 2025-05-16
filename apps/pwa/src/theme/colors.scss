@@ -1,10 +1,21 @@
-$primary: var(--primary);
-$primary-highlight: var(--primary-highlight);
+$background: var(--background);
+$foreground: var(--foreground);
 $secondary: var(--secondary);
 $secondary-muted: var(--secondary-muted);
+$primary: var(--primary);
+$accent: var(--accent);
+$accent-muted: var(--accent-muted);
+$danger: var(--danger);
+
+
+$foreground-highlight: var(--foreground-highlight);
 $secondary-highlight: var(--secondary-highlight);
-$background: var(--background);
-$background-muted: var(--background-muted);
-$foreground: var(--foreground);
-$border: var(--border);
-$white: var(--white);
+$secondary-muted-highlight: var(--secondary-muted-highlight);
+$primary-highlight: var(--primary-highlight);
+$accent-highlight: var(--accent-highlight);
+$accent-muted-highlight: var(--accent-muted-highlight);
+$danger-highlight: var(--danger-highlight);
+
+$white: red;
+$background-muted: red;
+$border: red;

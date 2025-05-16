@@ -1,0 +1,45 @@
+@use "@/theme/mixins";
+@use "@/theme/colors";
+@use "@/theme/typography";
+
+.card {
+    flex-shrink: 0;
+
+    width: mixins.rem(292);
+    height: mixins.rem(154);
+
+    background: colors.$foreground;
+
+    border-radius: mixins.rem(17);
+    padding: 1rem;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+
+    &__feedback {
+        @include typography.font("sm");
+        @include mixins.textEllipsis(4);
+    }
+
+    &__details {
+        display: grid;
+        grid-template-columns: mixins.rem(34) 1fr;
+        grid-template-rows: mixins.rem(34);
+        gap: .5rem;
+    }
+
+    &__stars {
+        margin-top: mixins.rem(-2);
+    }
+
+    &__author {
+        margin-top: mixins.rem(-4);
+        color: colors.$primary;
+        @include typography.font("xs");
+        span {
+            color: colors.$secondary;
+        }
+    }
+
+}

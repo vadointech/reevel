@@ -7,3 +7,5 @@ export type ParamsWithLocale<P = unknown> = {
         locale: Locale
     }>
 };
+
+export type UISize = "default" | "small" | "large";

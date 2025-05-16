@@ -1,42 +1,57 @@
-import { Children, ComponentProps, ReactNode } from "react";
-import styles from "../styles.module.scss";
-import cx from "classnames";
+import { ComponentProps, ReactNode } from "react";
+
 import { Back } from "@/components/icons";
 import { Link } from "@/i18n/routing";
+
+import styles from "../styles.module.scss";
+import cx from "classnames";
 
 export namespace OptionItem {
     export type Props = ComponentProps<"div"> & {
         label: string
+        description?: string;
         icon?: ReactNode;
         value?: string | number;
         backIcon?: boolean;
-        warn?: boolean;
+        danger?: boolean;
         href?: string
-        onClick?: () => void;
     };
 }
 
 export const OptionItem = ({
     label,
+    description,
     icon,
     value,
     backIcon = false,
-    warn,
+    danger = false,
     href,
-    onClick,
     className,
     ...props
 }: OptionItem.Props) => {
 
     const ItemComponent = () => {
         return (
-            <div className={styles.option} onClick={onClick} {...props}>
-                <div className={cx(
-                    styles.option__label,
-                    warn && styles.option__label__warn
-                )}>
-                    {icon && icon}
-                    {label}
+            <div
+                className={cx(
+                    styles.option,
+                    className,
+                )}
+                {...props}
+            >
+                <div
+                    className={cx(
+                        styles.option__text,
+                        danger && styles.option__text_danger,
+                    )}
+                >
+                    {icon ? icon : null }
+                    <div className={styles.option__text__meta}>
+                        {label}
+                        <span>
+                            {description}
+                        </span>
+                    </div>
                 </div>
                 <div className={styles.option__value}>
                     {value}
@@ -44,7 +59,7 @@ export const OptionItem = ({
                 </div>
             </div>
         );
-    }
+    };
 
     if (href) {
         return (
@@ -54,7 +69,7 @@ export const OptionItem = ({
         );
     }
 
-    return <ItemComponent />
-}
+    return <ItemComponent />;
+};
 
 

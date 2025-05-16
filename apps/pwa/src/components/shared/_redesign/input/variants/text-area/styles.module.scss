@@ -1,0 +1,11 @@
+@use "@/theme/mixins";
+
+.input {
+    height: auto;
+    border-radius: mixins.rem(17);
+
+    textarea {
+        padding: 2rem 1rem mixins.rem(12);
+        min-height: mixins.rem(140);
+    }
+}

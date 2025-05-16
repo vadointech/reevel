@@ -8,6 +8,8 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
+    gap: 22px;
+    margin-bottom: mixins.rem(22);
 
     &__large {
         height: mixins.rem(45);
@@ -19,7 +21,6 @@
     display: flex;
     align-items: center;    
 
-    @include fonts.font-creata();
     color: colors.$primary;
 
     svg path {
@@ -57,16 +58,18 @@
 
 .title {
     height: 100%;
+    width: 100%;
     color:colors.$primary;
 
     display: flex;
     align-items: center;
+    justify-content: center;
 
     &_default {
         @include fonts.font-creata("lg",500);
 
     }
     &_large {
-        @include fonts.font-creata("xl",500,24px);
+        @include fonts.font-creata("lg",500,24px);
     }
 }

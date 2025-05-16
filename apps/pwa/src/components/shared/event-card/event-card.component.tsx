@@ -1,54 +1,134 @@
-import { ComponentProps } from "react";
-import styles from "./styles.module.scss";
-import cx from "classnames";
+import { ComponentProps, ReactNode } from "react";
 import Image from "next/image";
 
-import { IconCalendar } from "@/components/icons";
-import { StaticImport } from "next/dist/shared/lib/get-img-props";
-import { HostedBy } from "../hosted-by";
-import { Badge } from "@/components/ui/badge/badge.component";
+import { Badge } from "@/components/ui";
+import { IconLock, IconNavigation, IconWorld } from "@/components/icons";
+import { AttendersSection } from "../attenders";
 
-export type Type = 'horizontal' | 'vertical'
+import { hexToRgba } from "@/utils/hex-to-rgba";
+
+import { UserProfileEntity } from "@/entities/profile";
+import { UISize } from "@/types/common";
+
+import styles from "./styles.module.scss";
+import cx from "classnames";
+
+const defaultAttendees: UserProfileEntity[] = [
+    { id: "1", userId: "", completed: "true", picture: "http://localhost:3000/assets/temp/valentine.png" },
+    { id: "2", userId: "", completed: "true", picture: "http://localhost:3000/assets/temp/poster1.jpg" },
+    { id: "3", userId: "", completed: "true", picture: "http://localhost:3000/assets/temp/poster2.png" },
+    { id: "4", userId: "", completed: "true", picture: "http://localhost:3000/assets/temp/poster3.png" },
+    { id: "5", userId: "", completed: "true", picture: "http://localhost:3000/assets/temp/poster4.png" },
+];
 
 export namespace EventCard {
-    export type Props = ComponentProps<"div"> & {
-        type?: Type;
-        author: string;
-        date: string;
+    export type EventType = "Public" | "Private";
+    type Data = {
+        poster: string;
+        primaryColor: string;
         title: string;
-        descr: string;
-        src: string | StaticImport
+        location: string;
+        type: EventType;
+        size?: UISize;
     };
+
+    export type Props = ComponentProps<"div"> & Data;
 }
 
 
 export const EventCard = ({
     title,
-    descr,
-    src,
-    author,
-    date,
+    size = "default",
+    primaryColor,
+    poster,
     type,
+    location,
     className,
     ...props
 }: EventCard.Props) => {
+    const icon: Record<EventCard.EventType, ReactNode> = {
+        Public: <IconWorld />,
+        Private: <IconLock />,
+    };
+
     return (
-        <div className={cx(styles.card, className)} {...props}>
+        <div
+            className={cx(
+                styles.card,
+                styles[`card_size_${size}`],
+                className,
+            )}
+            {...props}
+        >
             <Image
-                alt="image"
-                src={src}
                 fill
+                src={poster}
+                alt={title}
+                className={styles.card__background}
             />
 
-            <div className={styles.card__content}>
-                <HostedBy author={author} />
+            <div
+                className={cx(
+                    styles.card__section,
+                    styles[`card__section_size_${size}`],
+                )}
+                style={{
+                    background: `linear-gradient(
+                        to bottom,
+                        ${hexToRgba(primaryColor, 0.5)} 58%,
+                        ${hexToRgba(primaryColor, 0.4)} 66%,
+                        ${hexToRgba(primaryColor, 0.2)} 80%,
+                        ${hexToRgba(primaryColor, 0.05)} 92%,
+                        ${hexToRgba(primaryColor, 0)} 100%
+                    )`,
+                }}
+            >
+                <Badge
+                    size={"small"}
+                    variant={"ghost"}
+                    icon={icon[type]}
+                >
+                    { type }
+                </Badge>
+            </div>
 
-                <div className={styles.card__content__below}>
-                    <Badge title={date} icon={<IconCalendar height={8} width={8} />} className={styles.badge} />
-                    <h3>{title}</h3>
-                    <p>{descr}</p>
+            <div
+                className={cx(
+                    styles.card__section,
+                    styles[`card__section_size_${size}`],
+                )}
+                style={{
+                    background: `linear-gradient(
+                        to top,
+                        ${hexToRgba(primaryColor, 1)} 44%,
+                        ${hexToRgba(primaryColor, 0.2)} 80%,
+                        ${hexToRgba(primaryColor, 0.05)} 92%,
+                        ${hexToRgba(primaryColor, 0)} 100%
+                    )`,
+                }}
+            >
+                <div
+                    className={cx(
+                        styles.card__location,
+                        styles[`card__location_size_${size}`],
+                    )}
+                >
+                    <IconNavigation />
+                    { location }
                 </div>
+                <h3
+                    className={cx(
+                        styles.card__title,
+                        styles[`card__title_size_${size}`],
+                    )}
+                >
+                    { title }
+                </h3>
+                <AttendersSection
+                    size={size}
+                    users={defaultAttendees}
+                />
             </div>
         </div>
     );
-}
+};

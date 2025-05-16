@@ -1,0 +1,2 @@
+export const PROFILE_PAGE_COVER_HEIGHT = 260;
+export const PROFILE_PAGE_HEADER_HEIGHT = 76;

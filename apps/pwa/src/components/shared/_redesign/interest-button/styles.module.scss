@@ -1,0 +1,42 @@
+@use "@/theme/mixins";
+@use "@/theme/colors";
+@use "@/theme/motions";
+@use "@/theme/typography";
+
+.button {
+    height: mixins.rem(38);
+    width: fit-content;
+    border-radius: mixins.rem(100);
+    padding-inline: mixins.rem(18);
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    column-gap: .5rem;
+
+    span {
+        @include mixins.textEllipsis(1);
+    }
+    @include typography.font("sm");
+    line-height: 1;
+
+    transition:
+            background-color motions.$motion-duration-fast motions.$motion-ease-in-out,
+            color motions.$motion-duration-fast motions.$motion-ease-in-out;
+
+    &_default {
+        background: colors.$foreground;
+    }
+    &_outline {
+        border: 0.75px solid colors.$foreground;
+    }
+
+    &_text {
+
+    }
+
+    &_primary {
+        background: colors.$primary;
+        color: colors.$foreground;
+    }
+}

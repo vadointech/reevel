@@ -33,7 +33,6 @@ export class InterestsController {
         @Query("s") search?: string,
     ) {
 
-        console.log("Search param:", search);
         const builder = await this.interestsService.queryBuilder("interests");
 
         if (search) {

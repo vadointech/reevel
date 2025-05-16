@@ -1,55 +1,64 @@
 import { ComponentProps } from "react";
-import cx from "classnames";
-import styles from "./styles.module.scss";
 import { ArrowBack } from "@/components/icons";
 
+import styles from "./styles.module.scss";
+import cx from "classnames";
+
 export namespace CollectionCard {
-    export type Props = ComponentProps<"div"> & {
+    export type Data = {
         title: string,
-        city: string,
+        location: string,
         emoji: string,
-        backgroundText: string,
-        colorFrom: string,
-        colorTo: string
+        primaryColor: string,
+        secondaryColor: string
     };
+    export type Props = ComponentProps<"div"> & Data;
 }
-
-
 
 export const CollectionCard = ({
     title,
-    city,
+    location,
     emoji,
-    backgroundText,
-    colorFrom,
-    colorTo,
+    primaryColor,
+    secondaryColor,
     className,
     ...props
 }: CollectionCard.Props) => {
     return (
         <div
-            className={cx(styles.card, className)}
-            style={{ background: `linear-gradient(94deg, ${colorFrom} 50%, ${colorTo} 100%)` }}
+            className={cx(
+                styles.card,
+                className,
+            )}
+            style={{
+                background: `linear-gradient(94deg, ${primaryColor} 50%, ${secondaryColor} 100%)`,
+            }}
             {...props}
         >
             <div className={styles.card__info}>
-                <h2 className={styles.card__info__title}>{title}</h2>
-                <p className={styles.card__info__city}>in {city}</p>
+                <h2 className={styles.card__info__title}>
+                    { title }
+                </h2>
+                <span className={styles.card__info__city}>
+                    in { location }
+                </span>
             </div>
 
             <div className={styles.card__foreground}>
-                {emoji}
+                { emoji }
             </div>
 
             <div className={styles.card__detailed}>
                 <div className={styles.card__detailed__icon}>
                     <ArrowBack width={7} height={6} strokeWidth={0.3} />
                 </div>
-                <p>SHOW ME</p>
+                <span>
+                    SHOW ME
+                </span>
             </div>
 
             <div className={styles.card__background}>
-                {backgroundText}
+                { title }
             </div>
         </div>
     );

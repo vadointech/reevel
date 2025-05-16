@@ -1,38 +1,37 @@
 import { ComponentProps, ReactNode } from "react";
 import styles from "./styles.module.scss";
 import cx from "classnames";
-import { IconWorld } from "@/components/icons/world";
-
-export type Variant = 'default' | 'primary' | 'ghost' | 'date';
-
 
 export namespace Badge {
+    export type Variant = "default" | "primary" | "ghost" | "date" | "fire";
+    export type Size = "default" | "small";
     export type Props = ComponentProps<"div"> & {
         variant?: Variant;
-        title: string;
+        size?: Size;
         icon?: ReactNode;
     };
 }
 
 export const Badge = ({
-    variant = 'default',
-    title,
-    icon = <IconWorld />,
-    children,
+    variant = "default",
+    size = "default",
+    icon,
     className,
+    children,
     ...props
 }: Badge.Props) => {
     return (
-        <div className={cx(
-            styles.badge,
-            styles[`badge__variant_${variant}`],
-            className
-        )}
+        <div
+            className={cx(
+                styles.badge,
+                styles[`badge__variant_${variant}`],
+                styles[`badge__size_${size}`],
+                className,
+            )}
             {...props}
         >
-            {icon ? icon : <IconWorld />}
-
-            <span>{title}</span>
+            { icon ? icon : null }
+            { children }
         </div>
-    )
-}
+    );
+};

@@ -1,5 +1,7 @@
 @use "@/theme/mixins";
 @use "@/theme/fonts";
+@use "@/theme/colors";
+
 
 .section {
     &__header {
@@ -11,7 +13,7 @@
         &__title {
             &__size {
                 &_default {
-                    @include fonts.font-creata('lg', 500)
+                    @include fonts.font-creata('lg', 500,mixins.rem(26))
                 }
 
                 &_small {
@@ -19,22 +21,40 @@
                 }
             }
         }
+        &__more {
+            @include fonts.font-creata('sm', 500);
+            color: colors.$accent;
+            background: none;
+            border: none;
+        }
     }
+
     &__items {
         margin-top: mixins.rem(12);
         
         display: grid;
         grid-template-rows: repeat(1, auto);
         grid-auto-flow: column;
-        column-gap: mixins.rem(12);
+        column-gap: 0.5rem;
         
         overflow-x: auto;
         @include mixins.no-scrollbar;
 
-        &__cols {
+        &_cols {
             grid-template-rows: repeat(2, auto);
             row-gap: mixins.rem(16);
             column-gap: mixins.rem(38);
+        }
+        &_column {
+            display: flex;
+            flex-direction: column;
+            flex-wrap: wrap;
+            row-gap: 0.5rem;
+        }
+        &_flex {
+            display: flex;
+            flex-wrap: wrap;
+            row-gap: 0.5rem;
         }
     }
 }

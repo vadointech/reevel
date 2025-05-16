@@ -1,9 +1,10 @@
 import { ComponentProps } from "react";
-import cx from "classnames";
-import styles from "./styles.module.scss";
-import { Drawer, DrawerBody, DrawerContent, DrawerTrigger } from "@/components/shared/drawer";
+
+import { Drawer, DrawerBody, DrawerContent } from "@/components/shared/drawer";
 import { OnboardingTextBlock } from "@/app/[locale]/(main)/onboarding/_components";
 import { VisibilityCard } from "./visibility-card";
+
+import styles from "./styles.module.scss";
 
 
 export namespace StartDrawer {
@@ -18,8 +19,8 @@ export const StartDrawer = ({ }: StartDrawer.Props) => {
             <DrawerBody>
                 <DrawerContent>
                     <OnboardingTextBlock
-                        title={`How to set up your event ?`}
-                        subtitle={'Select the type of event youd like to create'}
+                        title={"How to set up your _event ?"}
+                        subtitle={"Select the type of _event youd like to create"}
                     />
 
                     <div className={styles.cards}>

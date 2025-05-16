@@ -1,21 +1,23 @@
-@use "@/theme/fonts";
+@use "@/theme/typography";
 @use "@/theme/colors";
 @use "@/theme/mixins";
 
 
 .container {
-    width: mixins.rem(96);
-    display: flex;
+    display: grid;
+    grid-template-columns: 2rem 1fr;
+    grid-template-rows: 2rem;
     align-items: center;
-    gap: mixins.rem(6);
+    column-gap: mixins.rem(12);
+
+    color: colors.$foreground;
 
     &__text {
-        @include fonts.font-creata();
-        font-size: mixins.rem(10);
-        font-weight: 300;
-        color: colors.$white;
-        span {
-            font-weight: 400;
-        }
+        @include typography.font("sm")
+        //font-weight: 300;
+        //
+        //span {
+        //    font-weight: 400;
+        //}
     }
 }

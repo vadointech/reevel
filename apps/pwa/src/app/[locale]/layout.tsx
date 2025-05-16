@@ -14,6 +14,7 @@ import { locales } from "@/i18n/locales";
 import { headers } from "next/headers";
 
 import "../globals.scss";
+import { QuerySelectorProvider } from "@/providers/query-selector.provider";
 
 export const metadata: Metadata = {
     title: "Reevel",
@@ -23,7 +24,7 @@ export const metadata: Metadata = {
 export const viewport: Viewport = {
     themeColor: [
         { media: "(prefers-color-scheme: dark)", color: "#000000" },
-        { media: "(prefers-color-scheme: light)", color: "#ffffff" },
+        { media: "(prefers-color-scheme: light)", color: "#F7F7F7" },
     ],
 };
 
@@ -59,7 +60,12 @@ export default async function RootLayout({ children, params }: PropsWithChildren
                                 }]}
                             >
                                 <StandaloneProvider>
-                                    {children}
+                                    <QuerySelectorProvider>
+                                        <main id={"main"}>
+                                            { children }
+                                        </main>
+                                        <div id="bottom-sheet-root" />
+                                    </QuerySelectorProvider>
                                 </StandaloneProvider>
                             </SessionStoreProvider>
                         </ReactQueryClientProvider>

@@ -1,0 +1,34 @@
+@use "@/theme/mixins";
+@use "@/theme/colors";
+@use "@/theme/typography";
+
+.reviews {
+    height: mixins.rem(154);
+    border-radius: mixins.rem(17);
+    padding: 1rem;
+
+    background: colors.$foreground;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: end;
+    row-gap: mixins.rem(6);
+
+    &__content {
+        display: flex;
+        align-items: flex-end;
+        column-gap: mixins.rem(6);
+        margin-top: mixins.rem(-2);
+    }
+
+    &__rating {
+        color: colors.$primary;
+        @include typography.font("xl", 700);
+        line-height: 1;
+    }
+
+    &__count {
+        color: colors.$secondary;
+        @include typography.font("xs");
+    }
+}

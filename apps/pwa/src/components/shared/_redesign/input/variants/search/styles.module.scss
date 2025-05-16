@@ -1,0 +1,26 @@
+@use "@/theme/mixins";
+@use "@/theme/colors";
+@use "@/theme/motions";
+@use "@/theme/typography";
+
+.search {
+    border-radius: mixins.rem(26);
+    height: mixins.rem(44);
+
+    svg {
+        position: absolute;
+        top: 50%;
+        left: mixins.rem(14);
+        transform: translateY(-50%);
+        width: mixins.rem(18);
+        height: mixins.rem(18);
+
+        path {
+            fill: colors.$secondary;
+        }
+    }
+
+    input {
+        padding: 0 mixins.rem(14) 0 mixins.rem(46);
+    }
+}

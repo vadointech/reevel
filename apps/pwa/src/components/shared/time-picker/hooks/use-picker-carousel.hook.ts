@@ -13,6 +13,7 @@ export function useTimePickerCarousel(controls: TimePicker) {
         containScroll: false,
         watchSlides: false,
         loop: controls.wheel.loop,
+        startIndex: controls.wheel.startIndex,
     });
 
     useEffect(() => {

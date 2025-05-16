@@ -1,0 +1,45 @@
+@use "@/theme/colors";
+@use "@/theme/mixins";
+
+.bottomSheet {
+    &__body {
+        position: fixed;
+        inset: 0;
+        z-index: 10;
+
+        border-radius: 20px 20px 0 0;
+        overflow: hidden;
+
+        background: colors.$background;
+    }
+
+    &__content {
+        position: relative;
+
+        display: flex;
+        flex-direction: column;
+
+        background-color: colors.$background;
+        border-radius: mixins.rem(20) mixins.rem(20) 0 0;
+
+        & > * {
+            flex: 0 0 auto;
+        }
+    }
+
+    &__triger {
+        width: 100%;
+    }
+
+    &__handle {
+        padding-top: mixins.rem(24);
+    }
+
+    &__overlay {
+        position: fixed;
+        inset: 0;
+        z-index: 9;
+        background: rgba(0, 0, 0, 0.4);
+        pointer-events: none;
+    }
+}

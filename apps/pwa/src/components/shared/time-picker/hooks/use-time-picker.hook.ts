@@ -21,6 +21,7 @@ export function useTimePicker({ handlers = {}, ...wheelParams }: UseTimePickerPa
             itemCount: 18,
             itemsInView: 4,
             perspective: "left",
+            startIndex: 0,
             ...wheelParams,
         }),
         handlers,

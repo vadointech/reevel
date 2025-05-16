@@ -3,13 +3,16 @@ import { NextRequest } from "next/server";
 import { cookies } from "next/headers";
 import { authRoutes, publicRoutes } from "@/routes";
 
-export default async function (request: NextRequest) {
+export default async function(request: NextRequest) {
     const {
         nextUrl,
     } = request;
 
+
     const isPublicRoute = publicRoutes.includes(nextUrl.pathname);
     const isAuthRoute = authRoutes.includes(nextUrl.pathname);
+
+    return intlMiddleware(request);
 
     if (isPublicRoute) {
         return intlMiddleware(request);

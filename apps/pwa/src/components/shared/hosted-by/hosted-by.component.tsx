@@ -1,28 +1,37 @@
 import { ComponentProps } from "react";
+import { Avatar } from "@/components/shared/_redesign";
+
 import styles from "./styles.module.scss";
 import cx from "classnames";
 
-import { Avatar } from "@/components/ui";
-
-
 export namespace HostedBy {
     export type Props = ComponentProps<"div"> & {
-        author: string
+        name: string,
+        avatar?: string,
     };
 }
 
-
 export const HostedBy = ({
-    author,
+    name,
+    avatar,
     className,
     ...props
 }: HostedBy.Props) => {
     return (
-        <div className={cx(styles.container, className)} {...props}>
-            <Avatar variant="outline" type="custom" size={25} />
-            <div className={styles.container__text}>
-                Hosted by <span>{author}</span>
+        <div
+            className={cx(
+                styles.container,
+                className,
+            )}
+            {...props}
+        >
+            <Avatar image={avatar} variant={"outline"} />
+            <div>
+                <h3 className={styles.container__text}>
+                    Hosted by
+                </h3>
+                <span>{name}</span>
             </div>
         </div>
     );
-}
+};

@@ -1,0 +1,65 @@
+@use "@/theme/mixins";
+@use "@/theme/typography";
+.header {
+    display: grid;
+    grid-template-columns: 1fr 5fr 1fr;
+    align-items: center;
+    padding-inline: 1rem;
+
+    &_size {
+        &_small {
+            svg {
+                height: 1rem;
+            }
+        }
+        &_default {
+            svg {
+                height: mixins.rem(18);
+            }
+        }
+        &_large {
+            svg {
+                height: mixins.rem(18);
+            }
+        }
+    }
+
+    &_variant {
+        &_default {
+
+        }
+        &_search {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            column-gap: mixins.rem(22);
+        }
+    }
+
+    &__left {
+        display: flex;
+        justify-self: flex-start;
+    }
+
+    &__right {
+        display: flex;
+        justify-self: flex-end;
+
+        & > * {
+            padding-inline: 0;
+        }
+    }
+
+    &__title {
+        text-align: center;
+        .header_size_small & {
+            @include typography.font("lg", 500);
+        }
+        .header_size_default & {
+            @include typography.font("xl", 500);
+        }
+        .header_size_large & {
+            @include typography.font("xl", 700);
+        }
+    }
+}

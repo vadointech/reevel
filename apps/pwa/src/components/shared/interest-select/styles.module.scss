@@ -1,0 +1,49 @@
+@use "@/theme/mixins";
+@use "@/theme/colors";
+
+
+.select {
+    width: 100%;
+    position: relative;
+
+    padding: mixins.rem(14) 1rem;
+
+    background-color: #fff;
+    border-radius:1rem;
+
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+
+    &__icon {
+        font-size: 2rem;
+    }
+
+    &__title {
+        flex: 1;
+    }
+
+    &__checkbox {
+        height: mixins.rem(22);
+        width: mixins.rem(22);
+
+        border: 1px solid colors.$secondary-muted;
+
+        border-radius: 1rem;
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        svg path {
+            fill: none;
+        }
+
+        &_selected {
+            background-color: colors.$primary;
+            svg path {
+                fill: colors.$background;
+            }
+        }
+    }
+}

@@ -3,7 +3,7 @@
 import { ComponentProps, memo } from "react";
 import { OnboardingLocationItem } from "../location-item";
 import { Container, Input } from "@/components/ui";
-import { Search } from "@/components/icons/search";
+import { IconSearch } from "@/components/icons/search";
 import { MapboxFeatureResponse } from "@/api/mapbox/types";
 import { useLocationPicker } from "@/features/onboarding";
 import { observer } from "mobx-react-lite";
@@ -39,8 +39,7 @@ export const OnboardingLocationPicker = observer(({ data: initialLocationList }:
                     value={searchValue}
                     variant={"rounded"}
                     placeholder={"Search events"}
-                    background={"muted"}
-                    icon={<Search />}
+                    icon={<IconSearch />}
                     onChange={onSearchValueChange}
                 />
             </Container>

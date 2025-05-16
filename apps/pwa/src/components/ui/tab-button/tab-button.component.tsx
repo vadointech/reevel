@@ -1,5 +1,3 @@
-"use client";
-
 import { ComponentProps, ReactNode } from "react";
 import styles from "./styles.module.scss";
 import cx from "classnames";
@@ -9,10 +7,9 @@ export type TabButtonVariant = "default" | "primary" | "outline" | "icon" | "das
 export namespace TabButton {
     export type Props = Omit<ComponentProps<"button">, "onChange"> & {
         variant?: TabButtonVariant
-        name: string
+        name?: string
         icon?: ReactNode | string
         selected?: boolean
-        // onChange: (selected: boolean) => void
     };
 }
 
@@ -21,15 +18,9 @@ export const TabButton = ({
     name,
     icon,
     selected = false,
-    // onChange,
     className,
     ...props
 }: TabButton.Props) => {
-
-    // const handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
-    //     e.preventDefault();
-    //     onChange(!selected);
-    // };
 
     return (
         <button
@@ -43,13 +34,12 @@ export const TabButton = ({
                 selected && styles.button__selected,
                 className,
             )}
-            // onClick={handleClick}
             {...props}
         >
             {icon && (
-                <div className={styles.button__icon}>
+                <span className={styles.button__icon}>
                     {icon}
-                </div>
+                </span>
             )}
             <p className={styles.button__text}>{name}</p>
         </button>
