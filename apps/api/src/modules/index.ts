@@ -4,8 +4,11 @@ import { AuthModule } from "./auth/auth.module";
 import { ProfileModule } from "./profile/profile.module";
 import { InterestsModule } from "./interests/interests.module";
 import { SeedModule } from "./seed/seed.module";
-import { UploadModule } from "./upload/upload.module";
-import { CloudinaryModule } from "@/modules/upload/cloudinary/cloudinary.module";
+import { UploadsModule } from "@/modules/uploads/uploads.module";
+import { EventModule } from "@/modules/event/event.module";
+import { BookingModule } from "@/modules/booking/booking.module";
+import { PaymentModule } from "@/modules/payment/payment.module";
+import { SubscriptionModule } from "@/modules/subscription/subscription.module";
 
 export default [
     AuthModule,
@@ -13,7 +16,10 @@ export default [
     UserModule,
     ProfileModule,
     InterestsModule,
+    EventModule,
+    BookingModule,
+    PaymentModule,
+    SubscriptionModule,
     SeedModule,
-    UploadModule,
-    // CloudinaryModule,
+    UploadsModule,
 ];
