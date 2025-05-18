@@ -5,6 +5,7 @@ import { MapRef } from "react-map-gl/mapbox";
 import { MapStore } from "./map.store";
 import { PersistentMapContext } from "./map.context";
 import { MapboxProvider, MapboxComponent } from "./providers";
+import { IMapHandlers } from "./providers/types";
 
 type MapProviderProps = {
     mapStyleDark?: string;
@@ -29,6 +30,8 @@ export const PersistentMapProvider = ({
     const mapContainerRef = useRef<HTMLDivElement>(null);
     const persistentRootRef = useRef<HTMLDivElement | null>(null);
 
+    const mapHandlersRef = useRef<Partial<IMapHandlers>>({});
+
     const [isMapInitialized, setIsMapInitialized] = useState(false);
 
     const provider = new MapboxProvider(mapRef, {
@@ -37,9 +40,10 @@ export const PersistentMapProvider = ({
     });
     const store = new MapStore(provider);
 
-    const attachMap = useCallback((container: HTMLDivElement) => {
+    const attachMap = useCallback((container: HTMLDivElement, handlers: Partial<IMapHandlers>) => {
         if (!mapContainerRef.current || !mapRef.current) return;
         container.appendChild(mapContainerRef.current);
+        mapHandlersRef.current = handlers;
     }, []);
 
     const detachMap = useCallback(() => {
@@ -71,6 +75,7 @@ export const PersistentMapProvider = ({
                         ref={mapRef}
                         store={store}
                         provider={provider}
+                        handlers={mapHandlersRef}
                         mapStyle={mapProps.mapStyleLight}
                         mapboxAccessToken={mapProps.mapAccessToken}
                         initialViewState={mapProps.initialViewState}

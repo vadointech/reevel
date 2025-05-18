@@ -1,5 +1,9 @@
 "use client";
 
+import { Link } from "@/i18n/routing";
+
+import { useLocationPicker, useLocationPickerStore } from "@/features/location/picker";
+
 import {
     BottomSheetBody,
     BottomSheetContent,
@@ -7,20 +11,25 @@ import {
     BottomSheetPortal,
     BottomSheetRoot,
 } from "@/components/shared/_redesign/bottom-sheet";
+import { Container, Scroll } from "@/components/ui";
 import { Button, Header, InterestButton } from "@/components/shared/_redesign";
 import { IconArrowLeft } from "@/components/icons";
-import { Container, Scroll } from "@/components/ui";
 
 import styles from "../styles.module.scss";
-import { Link } from "@/i18n/routing";
+import { BottomSheetExternalStateParams } from "@/components/shared/_redesign/bottom-sheet/hooks";
 
-export namespace PickLocationDrawer {
-    export type Props = BottomSheetRoot.Props;
+export namespace LocationPickerDrawer {
+    export type Props = {
+        snapPoint: BottomSheetExternalStateParams["activeSnap"];
+    };
 }
 
-export const PickLocationDrawer = ({
-    ...props
-}: PickLocationDrawer.Props) => {
+export const LocationPickerDrawer = ({ snapPoint }: LocationPickerDrawer.Props) => {
+    const { config } = useLocationPickerStore();
+    const {
+        handleRequestLocation,
+    } = useLocationPicker();
+
     return (
         <BottomSheetRoot
             touchEvents={true}
@@ -28,10 +37,9 @@ export const PickLocationDrawer = ({
             overlay={false}
             defaultOpen
             fitContent
-            {...props}
         >
             <BottomSheetPortal>
-                <BottomSheetBody>
+                <BottomSheetBody activeSnap={snapPoint}>
                     <div className={styles.drawer__scroll}>
                         <Scroll>
                             <InterestButton variant={"background"}>
@@ -68,12 +76,13 @@ export const PickLocationDrawer = ({
                             <div className={styles.drawer__buttons}>
                                 <Button
                                     variant={"secondary-muted"}
-                                    href={"/event/create/location/search"}
+                                    href={config.locationSearchUrl}
                                 >
                                     Enter location manually
                                 </Button>
                                 <Button
                                     variant={"primary"}
+                                    onClick={handleRequestLocation}
                                 >
                                     Allow location access
                                 </Button>

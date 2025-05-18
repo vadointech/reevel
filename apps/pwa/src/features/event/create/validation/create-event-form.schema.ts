@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { formInterestsEntityShema } from "@/features/interests/interests-picker/form-field.schema";
+import { formInterestsEntityShema } from "@/features/interests/picker/form-field.schema";
 
 export const createEventFormSchema = z.object({
     title: z.string().min(1).or(z.undefined()),

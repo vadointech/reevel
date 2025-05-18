@@ -3,9 +3,9 @@
 import { ComponentProps } from "react";
 
 import { useFormContext } from "react-hook-form";
-import { FormInterestsFieldSchema, InterestsPickerStoreProvider } from "@/features/interests/interests-picker";
 
 import { InterestsPickerContent } from "./primitives/content.component";
+import { FormInterestsFieldSchema, InterestsPickerStoreProvider } from "@/features/interests/picker";
 
 import { GetInitialInterests } from "@/api/interests";
 
@@ -27,11 +27,7 @@ export const InterestsPickerScreen = ({
             init={[
                 { interests, selectedInterests },
                 (interests) => {
-                    form.setValue("interests", interests, {
-                        shouldValidate: false,
-                        shouldDirty: false,
-                        shouldTouch: false,
-                    });
+                    form.setValue("interests", interests);
                 },
             ]}
         >

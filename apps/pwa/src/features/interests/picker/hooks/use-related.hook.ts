@@ -6,14 +6,22 @@ import { getRelatedInterests, GetRelatedInterests } from "@/api/interests";
 import { useInterestsPickerStore } from "../interests-picker.store";
 import { useFetchQuery } from "@/lib/react-query";
 
-type Callbacks = {
-    onSettled: (key: string, related: InterestEntity[]) => void;
-};
-
-export function useRelatedInterests(callbacks: Partial<Callbacks> = {}) {
+export function useRelatedInterests() {
     const interestsPickerStore = useInterestsPickerStore();
     const fetchRelatedInterests = useFetchQuery();
     const queryClient = useQueryClient();
+
+    function isExist(related: InterestEntity | InterestEntity[]) {
+        if(Array.isArray(related)) {
+            return interestsPickerStore.interests.some(item =>
+                related.every(r => item.slug === r.slug),
+            );
+        } else {
+            return interestsPickerStore.interests.some(interest =>
+                interest.slug === interest.slug,
+            );
+        }
+    }
 
     function insertInterestsAfter(key: string, interests: InterestEntity[]): InterestEntity[] | undefined {
         if (!key || !interests?.length) {
@@ -42,17 +50,18 @@ export function useRelatedInterests(callbacks: Partial<Callbacks> = {}) {
         });
     }
 
-    const getRelated = async(key: string) => {
+    async function getRelated(key: string) {
         const response = await fetchRelatedInterests({
             queryKey: [...GetRelatedInterests.queryKey, key],
             queryFn: () => getRelatedInterests({ body: { slug: key } })
                 .then(res => res.data || []),
         });
         insertInterestsAfter(key, response);
-        callbacks.onSettled?.(key, response);
-    };
+        return response;
+    }
 
     return {
+        isExist,
         getRelated,
         removeRelated,
     };

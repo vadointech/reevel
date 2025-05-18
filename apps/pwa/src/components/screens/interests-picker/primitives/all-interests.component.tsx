@@ -1,11 +1,14 @@
 "use client";
 
 import { observer } from "mobx-react-lite";
+
+import { useInterestsPicker, useInterestsPickerStore } from "@/features/interests/picker";
+import { useRelatedInterests } from "@/features/interests/picker/hooks/use-related.hook";
+
 import { OptionsList, Section } from "@/components/shared/_redesign";
-import { useInterestsPicker, useRelatedInterests } from "@/features/interests";
-import { useInterestsPickerStore } from "@/features/interests/interests-picker";
-import { InterestEntity } from "@/entities/interests";
 import { InterestsPickerScreenListItem } from "./list-item.component";
+
+import { InterestEntity } from "@/entities/interests";
 
 export namespace SearchInterestsAll {
     export type Props = never;
@@ -19,21 +22,21 @@ export const SearchInterestsAll = () => {
     const interestsPickerStore = useInterestsPickerStore();
 
     const {
+        isExist,
         getRelated,
-    } = useRelatedInterests({
-        onSettled: (_, int) => {
-            const isExists = interestsPickerStore.interests.some(item => int.every(i => item.slug === i.slug));
-            if(isExists) {
-                interestsPickerStore.setSearchTerm("");
-            }
-        },
-    });
+    } = useRelatedInterests();
 
     const {
         handleToggleInterest,
     } = useInterestsPicker({
-        onSelect: ({ slug }) => {
-            getRelated(slug);
+        onSelect: async({ slug }) => {
+            const related = await getRelated(slug);
+            if(isExist(related)) {
+                interestsPickerStore.setSearchTerm("");
+            }
+        },
+        onRemove: () => {
+            interestsPickerStore.setSearchTerm("");
         },
     });
 

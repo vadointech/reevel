@@ -1,6 +1,6 @@
 import { observer } from "mobx-react-lite";
 import { Header } from "@/components/shared/_redesign";
-import { useInterestsSearch } from "@/features/interests/interests-picker/hooks/use-search.hook";
+import { useInterestsSearch } from "@/features/interests/picker/hooks/use-search.hook";
 import styles from "../styles.module.scss";
 
 export namespace InterestsPickerSearch {

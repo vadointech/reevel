@@ -1,16 +1,15 @@
-import { useEffect } from "react";
-import { PanInfo, useAnimation, useMotionValue, useTransform } from "motion/react";
+import { PanInfo, useMotionValue, useTransform } from "motion/react";
 
 import { useBottomSheetStore } from "../store";
 import { BottomSheetSnapPointControl } from "../snap-controls";
-import { generateBottomSheetTransitionParams } from "../config/transition.config";
 import { normalize } from "@/utils/normalize";
+import { useBottomSheetPosition } from "./use-bottom-sheet-position.hook";
 
 export function useBottomSheetDrag(
     snapControls: BottomSheetSnapPointControl,
 ) {
     const bottomSheetStore = useBottomSheetStore();
-    const animate = useAnimation();
+    const positionControls = useBottomSheetPosition(snapControls);
 
     const dragY = useMotionValue(0);
     const dragYProgress = useTransform(
@@ -55,42 +54,25 @@ export function useBottomSheetDrag(
         );
 
         bottomSheetStore.setActiveSnapPoint(snapIndex);
-
-        animate.start({
-            y: snapControls.getSnapPoint(snapIndex),
-        }, generateBottomSheetTransitionParams(
-            snapControls.getSnapPointRatio(currentSnapPointIndex),
-            snapControls.getSnapPointRatio(snapIndex),
-        ));
-
+        positionControls.setPositionBySnapIndex(snapIndex);
     };
 
-    const handleOpen = () => {
-        let y;
-
-        if(bottomSheetStore.rootConfig.fitContent) {
-            y =  bottomSheetStore.contentPosition;
-        } else {
-            y =  snapControls.getSnapPoint(bottomSheetStore.activeSnapPoint);
-        }
-
-        animate.start({ y }, generateBottomSheetTransitionParams(
-            0,
-            snapControls.getSnapPointRatio(0),
-        ));
-    };
-
-    useEffect(() => {
-        if(bottomSheetStore.open) {
-            handleOpen();
-        }
-    }, [bottomSheetStore.open]);
+    // useEffect(() => {
+    //     if(bottomSheetStore.open) {
+    //         if(bottomSheetStore.rootConfig.fitContent) {
+    //             setPositionByPx(bottomSheetStore.contentPosition);
+    //         } else {
+    //             setPositionBySnapIndex(bottomSheetStore.activeSnapPoint);
+    //         }
+    //     }
+    // }, [bottomSheetStore.open]);
 
     return {
         dragY,
         dragYProgress,
-        animate,
         contentOpacity,
         handleDragEnd,
+
+        positionControls,
     };
 }

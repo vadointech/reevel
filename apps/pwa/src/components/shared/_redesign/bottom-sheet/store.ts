@@ -12,7 +12,6 @@ interface IBottomSheetStore {
 class BottomSheetStore implements IBottomSheetStore {
     open = false;
     activeSnapPoint: number = 0;
-    contentPosition: number = 0;
 
     readonly dragControls: DragControls;
     readonly snapControls: BottomSheetSnapPointControl;
@@ -26,7 +25,6 @@ class BottomSheetStore implements IBottomSheetStore {
             setOpen: action,
             setClose: action,
             setActiveSnapPoint: action,
-            setContentPosition: action,
         });
 
         this.open = rootConfig.defaultOpen;
@@ -49,10 +47,6 @@ class BottomSheetStore implements IBottomSheetStore {
 
     setActiveSnapPoint(snapPoint: number) {
         this.activeSnapPoint = snapPoint;
-    }
-
-    setContentPosition(height: number) {
-        this.contentPosition = height;
     }
 }
 

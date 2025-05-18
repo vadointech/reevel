@@ -1,7 +1,13 @@
 "use client";
 
+import { useEffect } from "react";
 import { HTMLMotionProps, motion } from "motion/react";
-import { useBottomSheetContainer, useBottomSheetDrag } from "../hooks";
+import {
+    useBottomSheetContainer,
+    useBottomSheetDrag,
+    useBottomSheetExternalState,
+    BottomSheetExternalStateParams,
+} from "../hooks";
 import { generateBottomSheetExitTransitionParams } from "../config/transition.config";
 import { useBottomSheetStore } from "../store";
 import { useOutsideEvent } from "@/hooks/use-outside-event";
@@ -12,29 +18,45 @@ import styles from "../styles.module.scss";
 import cx from "classnames";
 
 export namespace BottomSheetBody {
-    export type Props = HTMLMotionProps<"div">;
+    export type Props = HTMLMotionProps<"div"> & Partial<BottomSheetExternalStateParams>;
 }
 
 export const BottomSheetBody = ({
     style,
     className,
+
+    open,
+    activeSnap,
+
     ...props
 }: BottomSheetBody.Props) => {
     const bottomSheetStore = useBottomSheetStore();
+    const { snapControls, rootConfig } = bottomSheetStore;
 
-    const snapControls = bottomSheetStore.snapControls;
-    const rootConfig = bottomSheetStore.rootConfig;
+    const [bodyRef, body] = useBottomSheetContainer();
 
     const {
         dragY,
         dragYProgress,
-
-        animate,
         contentOpacity,
         handleDragEnd,
+
+        positionControls,
     } = useBottomSheetDrag(snapControls);
 
-    const [bodyRef, body] = useBottomSheetContainer();
+    useBottomSheetExternalState(
+        positionControls,
+        body, {
+            open,
+            activeSnap,
+        },
+    );
+
+    useEffect(() => {
+        if(bottomSheetStore.open) {
+            positionControls.setPositionByPx(body.contentPosition.current);
+        }
+    }, []);
 
     const [bottomSheetRef] = useOutsideEvent<HTMLDivElement>(
         ["pointerdown"], {
@@ -69,7 +91,7 @@ export const BottomSheetBody = ({
                 )}
                 initial={{ y: snapControls.clientHeight }}
                 exit={{ y: snapControls.clientHeight }}
-                animate={animate}
+                animate={positionControls.animate}
                 dragDirectionLock
                 dragConstraints={body.dragBounds}
                 dragElastic={{

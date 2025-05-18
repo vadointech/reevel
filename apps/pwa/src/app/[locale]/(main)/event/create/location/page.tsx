@@ -1,11 +1,5 @@
-import { MapView } from "@/components/shared/map";
-import { PickLocationDrawer } from "@/components/drawers/location";
+import { LocationPickerMapView } from "@/components/screens/location-picker";
 
 export default function CreateEventLocationPage() {
-    return (
-        <>
-            <MapView />
-            <PickLocationDrawer />
-        </>
-    );
+    return <LocationPickerMapView />;
 }

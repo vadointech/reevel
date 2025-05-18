@@ -1,6 +1,6 @@
 "use client";
 
-import { forwardRef, memo } from "react";
+import { forwardRef, memo, RefObject } from "react";
 import { MapboxEvent } from "mapbox-gl";
 import { observer } from "mobx-react-lite";
 import MapboxGLMap, { MapRef, Marker, ViewState } from "react-map-gl/mapbox";
@@ -8,7 +8,7 @@ import {  useMapboxClusterHook } from "./hooks/use-mapbox-cluster.hook";
 import { useMapbox } from "./hooks/use-mapbox.hook";
 import { ClusterMarker, EventMarker } from "../../markers";
 import { MapStore } from "../../map.store";
-import { IMapProvider } from "../types";
+import { IMapHandlers, IMapProvider } from "../types";
 
 import "mapbox-gl/dist/mapbox-gl.css";
 
@@ -20,12 +20,14 @@ export namespace MapboxComponent {
         mapboxAccessToken?: string;
         handleInitializeMap: (e: MapboxEvent) => void
         initialViewState?: Partial<ViewState>;
+        handlers: RefObject<Partial<IMapHandlers>>
     };
 }
 
 export const MapboxComponent = memo(observer(forwardRef<MapRef, MapboxComponent.Props>(({
     store,
     provider,
+    handlers,
     mapboxAccessToken,
     mapStyle,
     handleInitializeMap,
@@ -41,6 +43,7 @@ export const MapboxComponent = memo(observer(forwardRef<MapRef, MapboxComponent.
     } = useMapbox({
         store,
         initialViewState,
+        handlers,
         onMapLoad: handleInitializeMap,
     });
 

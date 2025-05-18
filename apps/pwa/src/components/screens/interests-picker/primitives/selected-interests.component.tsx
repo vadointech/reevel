@@ -1,12 +1,13 @@
 "use client";
 
-import { AnimatePresence, motion } from "motion/react";
 import { observer } from "mobx-react-lite";
-import { OptionsList, Section } from "@/components/shared/_redesign";
-import { useInterestsPicker } from "@/features/interests";
+import { AnimatePresence, motion } from "motion/react";
 
+import { useInterestsPicker, useInterestsPickerStore } from "@/features/interests/picker";
+
+import { OptionsList, Section } from "@/components/shared/_redesign";
 import { InterestsPickerScreenListItem } from "./list-item.component";
-import { useInterestsPickerStore } from "@/features/interests/interests-picker/interests-picker.store";
+
 import { InterestEntity } from "@/entities/interests";
 
 import styles from "../styles.module.scss";

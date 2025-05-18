@@ -2,12 +2,12 @@ import { memo, useEffect } from "react";
 
 import { observer } from "mobx-react-lite";
 import { AnimationControls, motion, Transition, useAnimation } from "motion/react";
-import { useInterestsPickerStore } from "@/features/interests/interests-picker/interests-picker.store";
+import { useInterestsPickerStore } from "@/features/interests/picker";
 
-import { InterestsPickerSearch } from "@/components/screens/interests-picker/primitives/search.component";
 import { Container } from "@/components/ui";
-import { SearchInterestsSelected } from "@/components/screens/interests-picker/primitives/selected-interests.component";
-import { SearchInterestsAll } from "@/components/screens/interests-picker/primitives/all-interests.component";
+import { InterestsPickerSearch } from "./search.component";
+import { SearchInterestsSelected } from "./selected-interests.component";
+import { SearchInterestsAll } from "./all-interests.component";
 
 import styles from "../styles.module.scss";
 

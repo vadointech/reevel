@@ -2,13 +2,14 @@ import { MapRef } from "react-map-gl/mapbox";
 import { RefObject, createContext, useContext } from "react";
 import { MapStore } from "./map.store";
 import { IMapboxProvider } from "./providers/mapbox";
+import { IMapHandlers } from "./providers/types";
 
 interface PersistentMapContextType<T> {
     mapRef: RefObject<T | null> | null;
     store: MapStore | null;
     provider: IMapboxProvider | null;
     isMapInitialized: boolean;
-    attachMap: (container: HTMLDivElement) => void;
+    attachMap: (container: HTMLDivElement, handlers: Partial<IMapHandlers>) => void;
     detachMap: () => void;
 }
 

@@ -38,7 +38,6 @@ class InterestsPickerStore implements IInterestsPickerStore {
             this.disposeReaction = reaction(
                 () => this.selectedInterests.slice(), // Create a copy to react to array content changes
                 (interests) => syncSelectedInterests(interests),
-                { fireImmediately: true },
             );
         }
     }
