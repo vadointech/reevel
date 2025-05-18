@@ -19,12 +19,19 @@ import { Button, FormField, Input, OptionsList, OptionsListItem, Section } from 
 import { CreateEventFormSchemaValues, useCreateEventForm } from "@/features/event/create";
 
 import styles from "./styles.module.scss";
+import { InterestEntity } from "@/entities/interests";
 
 export namespace CreateEventForm {
-    export type Props = ComponentProps<"form">;
+    export type Data = {
+        interests: InterestEntity[]
+    };
+    export type Props = ComponentProps<"form"> & Data;
 }
 
-export const CreateEventForm = ({ ...props }: CreateEventForm.Props) => {
+export const CreateEventForm = ({
+    interests,
+    ...props
+}: CreateEventForm.Props) => {
     const { handleSubmit } = useFormContext<CreateEventFormSchemaValues>();
     const { onSubmit } = useCreateEventForm();
     return (
@@ -64,7 +71,7 @@ export const CreateEventForm = ({ ...props }: CreateEventForm.Props) => {
                 </div>
 
                 <div>
-                    <CreateEventFormInterestsPicker />
+                    <CreateEventFormInterestsPicker interests={interests} />
 
                     <div className={styles.form__gap}>
                         <Controller

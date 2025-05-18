@@ -49,7 +49,7 @@ export const CropperControls = observer(({
                 <img
                     ref={store.imgRef}
                     src={store.imgSrc}
-                    alt={"Crop me"}
+                    alt={"Crop user"}
                     onLoad={onImageLoad}
                     style={{
                         width: "100%",

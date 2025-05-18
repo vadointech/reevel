@@ -6,8 +6,7 @@ import {
     FindManyOptions,
     FindOneOptions,
     FindOptionsWhere,
-    ObjectLiteral,
-    // Repository
+    ObjectLiteral, SelectQueryBuilder,
 } from "typeorm";
 import { QueryDeepPartialEntity } from "typeorm/query-builder/QueryPartialEntity";
 
@@ -28,6 +27,14 @@ export class Repository<Entity extends ObjectLiteral> {
     async query(query: string, parameters?: any[], entityManager?: EntityManager): Promise<any> {
         const repository = this.getRepository(entityManager);
         return repository.query(query, parameters);
+    }
+
+    async queryBuilder(
+        alias?: string,
+        entityManager?: EntityManager,
+    ): Promise<SelectQueryBuilder<Entity>> {
+        const repository = this.getRepository(entityManager);
+        return repository.createQueryBuilder(alias);
     }
 
     async create(

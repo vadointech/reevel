@@ -1,9 +1,10 @@
 import { z } from "zod";
+import { formInterestsEntityShema } from "@/features/interests/interests-picker/form-field.schema";
 
 export const createEventFormSchema = z.object({
     title: z.string().min(1).or(z.undefined()),
     description: z.string().min(1).or(z.undefined()),
-    interests: z.array(z.number()).min(1).or(z.undefined()),
+    interests: z.array(formInterestsEntityShema).min(1, "Expected at least one interest"),
     location: z.object({
         title: z.string().min(1).or(z.undefined()),
         coordinates: z.array(z.number()).min(2).or(z.undefined()),

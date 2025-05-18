@@ -25,7 +25,7 @@ export function useInterestPicker(interestsInit: GetRelatedInterests.TOutput) {
     };
 
     const { mutate } = useMutation({
-        mutationFn: async (input: GetRelatedInterests.TInput) => {
+        mutationFn: async(input: GetRelatedInterests.TInput) => {
             const response = await getRelatedInterests({
                 body: input,
             }).then(res => res.data || []);

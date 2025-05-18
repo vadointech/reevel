@@ -17,13 +17,6 @@ export class ProfileController {
         return this.profileService.getProfile(session.user.id);
     }
 
-    @Get("/interests")
-    async getProfileInterests(
-        @Session() session: ServerSession,
-    ) {
-        return this.profileService.getUserInterests(session.user.id);
-    }
-
     @Patch()
     async updateProfile(
         @Body() body: UpdateProfileDto,

@@ -2,19 +2,22 @@ import { Module } from "@nestjs/common";
 import { TypeOrmModule } from "@nestjs/typeorm";
 import { InterestsService } from "./interests.service";
 import { InterestsController } from "./interests.controller";
-import { InterestsEntity } from "./entities/interests.entity";
 import { InterestRelationsEntity } from "./entities/interest-relations.entity";
 import { ProfileEntity } from "@/modules/profile/entities/profile.entity";
+import { InterestsRepository } from "./repositories/interests.repository";
 
 @Module({
     imports: [
         TypeOrmModule.forFeature([
             ProfileEntity,
-            InterestsEntity,
             InterestRelationsEntity,
         ]),
     ],
     controllers: [InterestsController],
-    providers: [InterestsService],
+    providers: [
+        InterestsService,
+
+        InterestsRepository,
+    ],
 })
 export class InterestsModule {}

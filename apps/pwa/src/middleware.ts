@@ -12,7 +12,7 @@ export default async function(request: NextRequest) {
     const isPublicRoute = publicRoutes.includes(nextUrl.pathname);
     const isAuthRoute = authRoutes.includes(nextUrl.pathname);
 
-    return intlMiddleware(request);
+    // return intlMiddleware(request);
 
     if (isPublicRoute) {
         return intlMiddleware(request);

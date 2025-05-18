@@ -1,46 +1,49 @@
 "use client";
 
-import { Controller } from "react-hook-form";
+import { Controller, ControllerRenderProps } from "react-hook-form";
 import { FormField, InterestButton, Section } from "@/components/shared/_redesign";
 
+import { CreateEventFormSchemaValues, useCreateEventFormInterestsPicker } from "@/features/event/create";
+
 import styles from "../styles.module.scss";
+import { InterestEntity } from "@/entities/interests";
 
 export namespace CreateEventFormInterestsPicker {
-    export type Props = never;
+    export type Data = {
+        interests: InterestEntity[]
+    };
+    export type Props = Data;
 }
 
-export const CreateEventFormInterestsPicker = () => {
+export const CreateEventFormInterestsPicker = ({
+    interests: interestsInit,
+}: CreateEventFormInterestsPicker.Props) => {
+    const {
+        interests,
+        isSelected,
+        handleToggle,
+    } = useCreateEventFormInterestsPicker(interestsInit);
     return (
         <Section
             title={"Interests"}
             cta={"See all"}
             ctaHref={"/event/create/interests"}
         >
-            <Controller
+            <Controller<CreateEventFormSchemaValues, "interests">
                 name={"interests"}
                 render={({ field, fieldState }) => {
-                    const exists = (id: number) => {
-                        return field.value.includes(id);
-                    };
-                    const toggle = (id: number) => {
-                        field.onChange(
-                            exists(id)
-                                ? field.value.filter((i: number) => i !== id)
-                                : [...field.value, id],
-                        );
-                    };
                     return (
                         <FormField state={fieldState}>
                             <div className={styles.form__interests}>
                                 {
-                                    Array.from({ length: 8 }).map((_, id) => (
+                                    interests.map(item => (
                                         <InterestButton
-                                            key={id}
-                                            variant={exists(id) ? "primary" : "default"}
-                                            icon={"🥊"}
-                                            onClick={() => toggle(id)}
+                                            key={item.slug}
+                                            icon={item.icon}
+                                            variant={isSelected(item) ? "primary" : "default"}
+                                            onClick={() => handleToggle(field, item)}
                                         >
-                                            Boxing
+                                            { item.title_en }
                                         </InterestButton>
                                     ))
                                 }

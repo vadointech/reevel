@@ -11,9 +11,11 @@ export type UserProfileEntity = {
         type: "Point";
         coordinates: [number, number];
     };
-    interests?: Array<{
-        profileId: string;
-        interestId: string;
-        interest: InterestEntity;
-    }>
+    interests?: ProfileInterestsEntity[];
+};
+
+export type ProfileInterestsEntity = {
+    profileId: string;
+    interestId: string;
+    interest: InterestEntity;
 };
