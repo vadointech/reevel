@@ -1,10 +1,10 @@
 "use client";
 
-import { ComponentProps, useState } from "react";
+import { ComponentProps, useRef, useState } from "react";
 
 import { MapView } from "@/components/shared/map";
 import { LocationPickerDrawer } from "./drawer.component";
-import { BottomSheetExternalStateParams } from "@/components/shared/_redesign/bottom-sheet/hooks";
+import { BottomSheetPositionControls } from "@/components/shared/_redesign/bottom-sheet/controls";
 
 export namespace LocationPickerMapView {
     type Data = never;
@@ -13,18 +13,18 @@ export namespace LocationPickerMapView {
 
 export const LocationPickerMapView = ({ ...props }: LocationPickerMapView.Props) => {
 
-    const [snapPoint, setSnapPoint] = useState<BottomSheetExternalStateParams["activeSnap"]>("fit-content");
-   
+    const positionControls = useRef<BottomSheetPositionControls | null>(null);
+  
     return (
         <>
             <MapView
                 onViewportChange={() => {
-                    if(snapPoint === "fit-content") {
-                        setSnapPoint(.14);
-                    }
+                    positionControls.current?.setPositionBySnapIndex(1);
                 }}
             />
-            <LocationPickerDrawer snapPoint={snapPoint} />
+            <LocationPickerDrawer
+                positionControls={positionControls}
+            />
         </>
     );
 };

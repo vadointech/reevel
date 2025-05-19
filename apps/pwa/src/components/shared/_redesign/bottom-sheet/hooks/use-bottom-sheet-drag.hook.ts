@@ -1,29 +1,29 @@
 import { PanInfo, useMotionValue, useTransform } from "motion/react";
 
 import { useBottomSheetStore } from "../store";
-import { BottomSheetSnapPointControl } from "../snap-controls";
 import { normalize } from "@/utils/normalize";
-import { useBottomSheetPosition } from "./use-bottom-sheet-position.hook";
+import { RefObject } from "react";
+import { BottomSheetSnapPointControl, BottomSheetPositionControls } from "../controls";
 
 export function useBottomSheetDrag(
-    snapControls: BottomSheetSnapPointControl,
+    snapControls: RefObject<BottomSheetSnapPointControl>,
+    positionControls: RefObject<BottomSheetPositionControls>,
 ) {
     const bottomSheetStore = useBottomSheetStore();
-    const positionControls = useBottomSheetPosition(snapControls);
 
     const dragY = useMotionValue(0);
     const dragYProgress = useTransform(
         dragY,
         (val) => {
             if(val === 0) return 0;
-            return normalize(snapControls.clientHeight, snapControls.Top, val);
+            return normalize(snapControls.current.clientHeight, snapControls.current.Top, val);
         },
     );
     const contentOpacity = useTransform(
         dragY,
         [
-            snapControls.clientHeight,
-            snapControls.clientHeight - 100,
+            snapControls.current.clientHeight,
+            snapControls.current.clientHeight - 100,
         ],
         [0, 1],
     );
@@ -35,7 +35,7 @@ export function useBottomSheetDrag(
         const position = info.offset.y;
 
         const currentSnapPointIndex = bottomSheetStore.activeSnapPoint;
-        const lastSnapPointIndex = snapControls.snapPointsCount - 1;
+        const lastSnapPointIndex = snapControls.current.snapPointsCount - 1;
         const isAtBottom = currentSnapPointIndex === lastSnapPointIndex;
 
         if (velocity >= 30 && isAtBottom) {
@@ -45,34 +45,20 @@ export function useBottomSheetDrag(
             return;
         }
 
-        if(bottomSheetStore.rootConfig.fitContent) return;
-
-        const snapIndex = snapControls.determineSnapPointIndex(
+        const snapIndex = snapControls.current.determineSnapPointIndex(
             currentSnapPointIndex,
             velocity,
             position,
         );
 
         bottomSheetStore.setActiveSnapPoint(snapIndex);
-        positionControls.setPositionBySnapIndex(snapIndex);
+        positionControls.current.setPositionBySnapIndex(snapIndex);
     };
-
-    // useEffect(() => {
-    //     if(bottomSheetStore.open) {
-    //         if(bottomSheetStore.rootConfig.fitContent) {
-    //             setPositionByPx(bottomSheetStore.contentPosition);
-    //         } else {
-    //             setPositionBySnapIndex(bottomSheetStore.activeSnapPoint);
-    //         }
-    //     }
-    // }, [bottomSheetStore.open]);
 
     return {
         dragY,
         dragYProgress,
         contentOpacity,
         handleDragEnd,
-
-        positionControls,
     };
 }

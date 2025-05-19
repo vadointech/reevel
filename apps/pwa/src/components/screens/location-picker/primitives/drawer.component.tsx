@@ -1,5 +1,6 @@
 "use client";
 
+import { RefObject } from "react";
 import { Link } from "@/i18n/routing";
 
 import { useLocationPicker, useLocationPickerStore } from "@/features/location/picker";
@@ -15,16 +16,17 @@ import { Container, Scroll } from "@/components/ui";
 import { Button, Header, InterestButton } from "@/components/shared/_redesign";
 import { IconArrowLeft } from "@/components/icons";
 
+import { BottomSheetPositionControls } from "@/components/shared/_redesign/bottom-sheet";
+
 import styles from "../styles.module.scss";
-import { BottomSheetExternalStateParams } from "@/components/shared/_redesign/bottom-sheet/hooks";
 
 export namespace LocationPickerDrawer {
     export type Props = {
-        snapPoint: BottomSheetExternalStateParams["activeSnap"];
+        positionControls: RefObject<BottomSheetPositionControls | null>;
     };
 }
 
-export const LocationPickerDrawer = ({ snapPoint }: LocationPickerDrawer.Props) => {
+export const LocationPickerDrawer = ({ positionControls }: LocationPickerDrawer.Props) => {
     const { config } = useLocationPickerStore();
     const {
         handleRequestLocation,
@@ -36,10 +38,12 @@ export const LocationPickerDrawer = ({ snapPoint }: LocationPickerDrawer.Props) 
             dismissible={false}
             overlay={false}
             defaultOpen
-            fitContent
+            snapPoints={["fit-content", .14]}
         >
             <BottomSheetPortal>
-                <BottomSheetBody activeSnap={snapPoint}>
+                <BottomSheetBody
+                    externalControls={{ positionControls }}
+                >
                     <div className={styles.drawer__scroll}>
                         <Scroll>
                             <InterestButton variant={"background"}>

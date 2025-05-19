@@ -2,61 +2,64 @@
 
 import { useEffect } from "react";
 import { HTMLMotionProps, motion } from "motion/react";
+
 import {
-    useBottomSheetContainer,
+    BottomSheetExternalControls,
+    useBottomSheetControls,
     useBottomSheetDrag,
-    useBottomSheetExternalState,
-    BottomSheetExternalStateParams,
 } from "../hooks";
 import { generateBottomSheetExitTransitionParams } from "../config/transition.config";
 import { useBottomSheetStore } from "../store";
-import { useOutsideEvent } from "@/hooks/use-outside-event";
-
 import { BottomSheetOverlay } from "./overlay.component";
+
+import { useOutsideEvent } from "@/hooks/use-outside-event";
 
 import styles from "../styles.module.scss";
 import cx from "classnames";
 
 export namespace BottomSheetBody {
-    export type Props = HTMLMotionProps<"div"> & Partial<BottomSheetExternalStateParams>;
+    export type Props = HTMLMotionProps<"div"> & {
+        externalControls?: Partial<BottomSheetExternalControls>;
+    };
 }
 
 export const BottomSheetBody = ({
     style,
     className,
-
-    open,
-    activeSnap,
-
+    externalControls,
     ...props
 }: BottomSheetBody.Props) => {
     const bottomSheetStore = useBottomSheetStore();
-    const { snapControls, rootConfig } = bottomSheetStore;
+    const { rootConfig } = bottomSheetStore;
 
-    const [bodyRef, body] = useBottomSheetContainer();
+    const {
+        initialized,
+
+        containerRef,
+        snapControls,
+        positionControls,
+
+        containerAnimate,
+    } = useBottomSheetControls(
+        rootConfig,
+        externalControls,
+    );
 
     const {
         dragY,
         dragYProgress,
         contentOpacity,
         handleDragEnd,
-
+    } = useBottomSheetDrag(
+        snapControls,
         positionControls,
-    } = useBottomSheetDrag(snapControls);
-
-    useBottomSheetExternalState(
-        positionControls,
-        body, {
-            open,
-            activeSnap,
-        },
     );
 
     useEffect(() => {
-        if(bottomSheetStore.open) {
-            positionControls.setPositionByPx(body.contentPosition.current);
+        if(initialized && bottomSheetStore.open) {
+            positionControls.current.setPositionBySnapIndex(rootConfig.defaultSnapPointIndex);
         }
-    }, []);
+    }, [initialized]);
 
     const [bottomSheetRef] = useOutsideEvent<HTMLDivElement>(
         ["pointerdown"], {
@@ -86,23 +89,24 @@ export const BottomSheetBody = ({
                 ref={bottomSheetRef}
                 dragControls={bottomSheetStore.dragControls}
                 dragListener={!rootConfig.handleOnly}
-                transition={generateBottomSheetExitTransitionParams(
-                    snapControls.getSnapPointRatio(snapControls.snapPointsCount - 1),
-                )}
-                initial={{ y: snapControls.clientHeight }}
-                exit={{ y: snapControls.clientHeight }}
-                animate={positionControls.animate}
+                transition={generateBottomSheetExitTransitionParams(0)}
+                initial={{ y: snapControls.current.clientHeight }}
+                exit={{ y: snapControls.current.clientHeight }}
+                animate={containerAnimate}
                 dragDirectionLock
-                dragConstraints={body.dragBounds}
+                dragConstraints={{
+                    top: snapControls.current.Top,
+                    bottom: snapControls.current.Bottom,
+                }}
                 dragElastic={{
                     top: .07,
-                    bottom: snapControls.snapPointsCount === 1 ? .2 : .07,
+                    bottom: snapControls.current.snapPointsCount === 1 ? .2 : .07,
                 }}
                 onDragEnd={handleDragEnd}
                 className={styles.bottomSheet__dragger}
             >
                 <motion.div
-                    ref={bodyRef}
+                    ref={containerRef}
                     style={{
                         opacity: contentOpacity,
                         ...style,

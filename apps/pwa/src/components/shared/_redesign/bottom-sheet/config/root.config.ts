@@ -1,8 +1,9 @@
 import { initStore } from "@/lib/mobx";
 
+type SnapPoint = number | "fit-content";
+
 export interface IBottomSheetRootConfig {
-    snapPoints: number[];
-    fitContent?: boolean;
+    snapPoints: SnapPoint[];
     defaultOpen?: boolean;
     defaultSnapPointIndex: number;
     overlay: boolean;
@@ -14,7 +15,6 @@ export interface IBottomSheetRootConfig {
 
 export class BottomSheetRootConfig implements IBottomSheetRootConfig {
     snapPoints: number[] = [.97];
-    fitContent: boolean = false;
     defaultOpen: boolean = false;
     defaultSnapPointIndex: number = 0;
     overlay: boolean = true;

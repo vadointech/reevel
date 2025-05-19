@@ -1,7 +1,6 @@
 import { action, makeObservable, observable } from "mobx";
 import { DragControls } from "motion/react";
 import { createMobxStoreProvider } from "@/lib/mobx";
-import { BottomSheetSnapPointControl } from "./snap-controls";
 import { BottomSheetRootConfig } from "./config/root.config";
 
 interface IBottomSheetStore {
@@ -14,7 +13,6 @@ class BottomSheetStore implements IBottomSheetStore {
     activeSnapPoint: number = 0;
 
     readonly dragControls: DragControls;
-    readonly snapControls: BottomSheetSnapPointControl;
 
     constructor(
         readonly rootConfig: BottomSheetRootConfig,
@@ -28,16 +26,12 @@ class BottomSheetStore implements IBottomSheetStore {
         });
 
         this.open = rootConfig.defaultOpen;
-
-        this.snapControls = new BottomSheetSnapPointControl(
-            this.rootConfig,
-            window.innerHeight,
-        );
+        this.activeSnapPoint = rootConfig.defaultSnapPointIndex;
         this.dragControls = new DragControls();
     }
 
     setOpen() {
-        this.activeSnapPoint = this.rootConfig.defaultSnapPointIndex;
+        // this.activeSnapPoint = this.rootConfig.defaultSnapPointIndex;
         this.open = true;
     }
 

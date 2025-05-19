@@ -35,7 +35,7 @@ export namespace CreateEventFormBottomSheet {
 
 export const CreateEventFormBottomSheet = (props: CreateEventFormBottomSheet.Props) => {
     return (
-        <BottomSheetRoot fitContent fadeThreshold={0} {...props} />
+        <BottomSheetRoot snapPoints={["fit-content"]} fadeThreshold={0} {...props} />
     );
 };
 
