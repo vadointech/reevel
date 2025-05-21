@@ -19,10 +19,14 @@ const listItem = cva(styles.listItem, {
             default: styles.listItem_size_default,
             small: styles.listItem_size_small,
         },
+        disabled: {
+            true: styles.listItem_disabled,
+        }
     },
     defaultVariants: {
         weight: "default",
         size: "default",
+        disabled: false,
     },
 });
 
@@ -32,7 +36,8 @@ export namespace OptionsListItem {
         description?: string | ReactNode;
         contentLeft?: string | ReactNode;
         contentRight?: ReactNode;
-        iconType?: "filled" | "outlined"
+        iconType?: "filled" | "outlined";
+        disabled?: boolean;
     };
 }
 
@@ -45,12 +50,13 @@ export const OptionsListItem = ({
     label,
     description,
     iconType = "filled",
+    disabled = false,
     className,
     ...props
 }: OptionsListItem.Props) => {
     return (
         <li
-            className={listItem({ weight, variant, size, className })}
+            className={listItem({ weight, variant, size, disabled, className })}
             {...props}
         >
             {

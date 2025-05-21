@@ -1,11 +1,9 @@
-import { Button, OptionsList, OptionsListItem, Section } from "@/components/shared/_redesign";
-import { OptionItem, Options } from "@/components/shared/options";
+import { OptionsList, OptionsListItem, Section } from "@/components/shared/_redesign";
 import { ComponentProps } from "react";
 import { SubscriptionCard } from "../subscription-card";
 
 import styles from "./styles.module.scss"
 import { SubscriptionData } from "../../subscription-drawer.component";
-import { Container } from "@/components/ui";
 
 export namespace Plan {
     export type Props = ComponentProps<"div"> & {

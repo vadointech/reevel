@@ -2,7 +2,7 @@
 
 import { ComponentProps } from "react"
 
-import styles from "./styles.module.scss"
+import styles from "../styles.module.scss"
 import { OptionsList, OptionsListItem } from "@/components/shared/_redesign"
 import { Toggle } from "@/components/shared/toggle"
 import { useDrawerNotification } from "@/features/profile/settings/hooks"

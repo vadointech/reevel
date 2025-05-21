@@ -3,9 +3,7 @@ import { ComponentProps } from "react";
 import styles from "./styles.module.scss"
 import cx from "classnames"
 import { IconLightning } from "@/components/icons";
-import { LoginCarousel, LoginCarouselPagination } from "@/app/[locale]/(auth)/login/_components";
-import { CardCarouselSet } from "../carousel/set";
-import { CardCarousel } from "../carousel/card-carousel";
+import { CardCarousel } from "./_components/carousel/card-carousel";
 
 export namespace SubscriptionCard {
     export type Props = ComponentProps<"div"> & {

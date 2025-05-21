@@ -30,3 +30,10 @@
         margin-top: 1rem;
     }
 }
+
+
+.test {
+    svg path {
+        stroke: colors.$secondary !important;
+    }
+}

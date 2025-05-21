@@ -1,11 +1,15 @@
-import styles from "../styles.module.scss";
+import styles from "./styles.module.scss";
 
 import { Header } from "@/components/shared/header";
 import { Container } from "@/components/ui";
 
-
-import { useSessionStore } from "@/features/session";
-import { ProfileSettings } from "./_components";
+import { AppearanceSection } from "./_components/pickers/appearance-section";
+import { OptionsList, OptionsListItem, Section } from "@/components/shared/_redesign";
+import { SubscriptionDrawer } from "@/components/drawers/subscription-drawer";
+import { IconExit } from "@/components/icons/exit";
+import { AccountDrawer } from "./_components/pickers/account-drawer";
+import { NotificationDrawer } from "./_components/pickers/notification-drawer";
+import { LanguageDrawer } from "./_components/pickers/language-drawer";
 
 
 
@@ -17,8 +21,29 @@ export default function PrivateProfileSettingsPage() {
                 title="Settings"
                 size="large"
             />
+            <div className={styles.gap}>
+                <AccountDrawer />
+            </div>
 
-            <ProfileSettings />
+            <AppearanceSection className={styles.gap_lg} />
+
+            <Section title="General" className={styles.gap_sm}>
+                <OptionsList>
+                    <NotificationDrawer />
+                    <LanguageDrawer />
+                    <SubscriptionDrawer />
+                </OptionsList>
+            </Section>
+
+            <OptionsList>
+                <OptionsListItem
+                    className={styles.warn}
+                    label="Log out"
+                    contentLeft={<IconExit width={20} height={22} fill="#F62816" />}
+                    contentRight={false}
+                    variant={"warn"}
+                />
+            </OptionsList>
         </Container>
     );
 }

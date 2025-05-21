@@ -1,34 +1,36 @@
+"use client"
+
 import { ComponentProps } from "react"
 import { OptionsListItem } from "@/components/shared/_redesign"
-import { Back, IconNotification } from "@/components/icons"
-
+import { Back, IconWorld } from "@/components/icons"
 import { CreateSettingsBottomSheet, CreateSettingsBottomSheetContent, CreateSettingsBottomSheetTrigger } from "../../bottom-sheet"
-import { NotificationContent } from "./notification-content.component"
+import { LanguageContent } from "./primitives/language-content.component"
 
-export namespace NotificationDrawer {
-    export type Props = ComponentProps<"div">
+
+export namespace LanguageDrawer {
+    export type Props = never;
 }
 
-export const NotificationDrawer = ({ children, ...props }: NotificationDrawer.Props) => {
-    return (
+export const LanguageDrawer = () => {
 
+    return (
         <CreateSettingsBottomSheet>
             <CreateSettingsBottomSheetTrigger>
                 <OptionsListItem
-                    label="Notifications"
-                    description="All"
-                    contentLeft={<IconNotification width={22} height={22} />}
+                    label="Language"
+                    description={"System"}
+                    contentLeft={<IconWorld width={22} height={22} />}
                     contentRight={<Back width={7} height={14} style={{ rotate: "180deg" }} />}
                 />
             </CreateSettingsBottomSheetTrigger>
 
             <CreateSettingsBottomSheetContent
                 title="Push notifications"
-                size="xsmall"
+                size="small"
             >
-                <NotificationContent />
-
+                <LanguageContent />
             </CreateSettingsBottomSheetContent>
         </CreateSettingsBottomSheet>
     )
 }
+

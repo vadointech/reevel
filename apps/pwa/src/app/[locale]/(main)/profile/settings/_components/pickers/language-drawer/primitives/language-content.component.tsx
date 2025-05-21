@@ -1,14 +1,8 @@
 "use client"
 
 import { ComponentProps, useState } from "react"
-
-import styles from "./styles.module.scss"
 import { OptionsList, OptionsListItem } from "@/components/shared/_redesign"
-import { Toggle } from "@/components/shared/toggle"
-import { useDrawerNotification } from "@/features/profile/settings/hooks"
 import { Checkbox } from "@/components/shared/checkbox"
-
-import cx from "classnames"
 import { IconEngland, IconSystemCounty, IconUkraine } from "@/components/icons"
 
 export namespace LanguageContent {
@@ -19,7 +13,7 @@ export namespace LanguageContent {
 
 export const LanguageContent = ({ ...props }: LanguageContent.Props) => {
 
-    const [selectedLanguage, setSelectedLanguage] = useState<LanguageContent.Language>('system');
+    const [selectedLanguage, setSelectedLanguage] = useState<LanguageContent.Language>('ukrainian');
 
     const handleLanguageSelect = (language: LanguageContent.Language) => {
         setSelectedLanguage(language);
@@ -36,6 +30,7 @@ export const LanguageContent = ({ ...props }: LanguageContent.Props) => {
                         selected={selectedLanguage === 'english'}
                     />}
                     iconType="outlined"
+                    disabled={true}
                 />
 
                 <OptionsListItem
@@ -61,7 +56,7 @@ export const LanguageContent = ({ ...props }: LanguageContent.Props) => {
                         />
                     }
                     iconType="outlined"
-
+                    disabled={true}
                 />
             </OptionsList>
         </>

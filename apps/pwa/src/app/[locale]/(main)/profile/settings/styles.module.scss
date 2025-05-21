@@ -1,4 +1,6 @@
 @use "@/theme/mixins";
+@use "@/theme/colors";
+@use "@/theme/typography";
 
 .gap {
     margin-bottom: mixins.rem(20);

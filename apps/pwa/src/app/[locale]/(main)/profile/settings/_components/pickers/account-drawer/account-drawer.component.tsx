@@ -1,34 +1,29 @@
-
+"use client"
 import { ComponentProps } from "react"
-
-import { OptionItem, Options } from "@/components/shared/options"
 import { OptionsList, OptionsListItem } from "@/components/shared/_redesign"
-import { Back, IconNotification, IconPlus } from "@/components/icons"
-import { Container } from "@/components/ui"
+import { Back, IconPlus } from "@/components/icons"
 import { Checkbox } from "@/components/shared/checkbox"
+import Image from "next/image"
+import { CreateSettingsBottomSheet, CreateSettingsBottomSheetTrigger, CreateSettingsBottomSheetContent } from "../../bottom-sheet"
 
 import styles from "./styles.module.scss"
-import { useSessionStore } from "@/features/session"
-import { CreateSettingsBottomSheet, CreateSettingsBottomSheetTrigger, CreateSettingsBottomSheetContent } from "../../bottom-sheet"
-import { NotificationContent } from "../notification-drawer"
-import Image from "next/image"
+
 
 
 export namespace AccountDrawer {
-    export type Props = ComponentProps<"div">
+    export type Props = never;
 }
 
-export const AccountDrawer = ({ className }: AccountDrawer.Props) => {
+export const AccountDrawer = () => {
 
     return (
-
         <CreateSettingsBottomSheet>
             <CreateSettingsBottomSheetTrigger>
                 <OptionsList>
                     <OptionsListItem
                         label="Jimmy Smdasith"
                         description="jimmy_smith@gmail.com"
-                        contentLeft={<Image src={"/assets/temp/avatar.png"} alt={'tes'} width={44} height={44} className={styles.image} />}
+                        contentLeft={<Image src={"/assets/temp/avatar.png"} alt={'Current account'} width={44} height={44} className={styles.image} />}
                         contentRight={<Back width={7} height={14} style={{ rotate: "180deg" }} />}
                         variant={"avatar"}
                     />
@@ -43,7 +38,7 @@ export const AccountDrawer = ({ className }: AccountDrawer.Props) => {
                     <OptionsListItem
                         label="Jimmy Smdasith"
                         description="jimmy_smith@gmail.com"
-                        contentLeft={<Image src={"/assets/temp/avatar.png"} alt={'tes'} width={44} height={44} className={styles.image} />}
+                        contentLeft={<Image src={"/assets/temp/avatar.png"} alt={'Current account'} width={44} height={44} className={styles.image} />}
                         contentRight={<Checkbox selected />}
                     />
                     <OptionsListItem

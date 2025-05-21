@@ -17,6 +17,12 @@
     display: flex;
     column-gap: mixins.rem(18);
 
+    &_disabled {
+        opacity: 0.5;
+        pointer-events: none;
+        cursor: not-allowed;
+    }
+
     &_variant {
         &_avatar {
             align-items: center;

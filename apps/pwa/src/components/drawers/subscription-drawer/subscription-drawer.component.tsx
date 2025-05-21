@@ -1,3 +1,5 @@
+"use client"
+
 import { ComponentProps } from "react"
 
 import { Button, OptionsListItem, TabsBody, TabsContent, TabsRoot } from "@/components/shared/_redesign"
@@ -100,11 +102,11 @@ const data: SubscriptionData[] = [
 
 
 export namespace SubscriptionDrawer {
-    export type Props = ComponentProps<"div"> & {
-    }
+    export type Props = never;
 }
 
-export const SubscriptionDrawer = ({ children, ...props }: SubscriptionDrawer.Props) => {
+export const SubscriptionDrawer = () => {
+
 
     return (
         <>
@@ -114,7 +116,7 @@ export const SubscriptionDrawer = ({ children, ...props }: SubscriptionDrawer.Pr
                         label="Subscription"
                         description="Standart"
                         contentRight={<Back width={7} height={14} style={{ rotate: "180deg" }} />}
-                        contentLeft={<IconStar width={22} height={22} fill="#212629" />}>
+                        contentLeft={<IconStar width={22} height={22} className={styles.test} />}>
                     </OptionsListItem>
                 </BottomSheetTrigger>
                 <BottomSheetPortal>
