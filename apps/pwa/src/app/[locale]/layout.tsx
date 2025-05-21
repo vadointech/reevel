@@ -12,6 +12,7 @@ import { StandaloneProvider } from "@/providers/standalone.provider";
 import { SessionStoreProvider } from "@/features/session";
 import { locales } from "@/i18n/locales";
 import { headers } from "next/headers";
+import { ThemeProvider } from "@/providers/theme.provider";
 
 import "../globals.scss";
 import { QuerySelectorProvider } from "@/providers/query-selector.provider";
@@ -59,14 +60,16 @@ export default async function RootLayout({ children, params }: PropsWithChildren
                                     user: data,
                                 }]}
                             >
-                                <StandaloneProvider>
-                                    <QuerySelectorProvider>
-                                        <main id={"main"}>
-                                            { children }
-                                        </main>
-                                        <div id="bottom-sheet-root" />
-                                    </QuerySelectorProvider>
-                                </StandaloneProvider>
+                                <ThemeProvider>
+                                    <StandaloneProvider>
+                                        <QuerySelectorProvider>
+                                            <main id={"main"}>
+                                                {children}
+                                            </main>
+                                            <div id="bottom-sheet-root" />
+                                        </QuerySelectorProvider>
+                                    </StandaloneProvider>
+                                </ThemeProvider>
                             </SessionStoreProvider>
                         </ReactQueryClientProvider>
                     </NextIntlClientProvider>
