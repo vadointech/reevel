@@ -1,5 +1,6 @@
 
-import { Check } from "@/components/icons"
+
+import { IconCheck } from "@/components/icons"
 import styles from "./styles.module.scss"
 import cx from "classnames"
 import { ComponentProps } from "react"
@@ -27,7 +28,7 @@ export const Checkbox = ({
                 { ...props }
             )}>
             {selected &&
-                <Check width={11} height={8} className={cx(
+                <IconCheck className={cx(
                     styles.checkbox__icon
                 )} />
             }

@@ -16,7 +16,7 @@ export const BottomSheetHandle = ({
 }: BottomSheetHandle.Props) => {
     const bottomSheetStore = useBottomSheetStore();
     const handlePointerDown = (event: PointerEvent<HTMLDivElement>) => {
-        if(bottomSheetStore.rootConfig.handleOnly) {
+        if (bottomSheetStore.rootConfig.handleOnly) {
             bottomSheetStore.dragControls.start(event);
         }
         onPointerDown?.(event);

@@ -13,6 +13,7 @@ const listItem = cva(styles.listItem, {
         },
         variant: {
             avatar: styles.listItem_variant_avatar,
+            warn: styles.listItem_variant_warn,
         },
         size: {
             default: styles.listItem_size_default,
@@ -60,22 +61,22 @@ export const OptionsListItem = ({
                             styles[`listItem__left_icon_${iconType}`],
                         )}
                     >
-                        { contentLeft }
+                        {contentLeft}
                     </div>
                 )
             }
             <div className={styles.listItem__content}>
-                <div className={styles.listItem__title}>{ label }</div>
+                <div className={styles.listItem__title}>{label}</div>
                 {
                     description && (
-                        <div className={styles.listItem__description}>{ description }</div>
+                        <div className={styles.listItem__description}>{description}</div>
                     )
                 }
             </div>
             {
                 contentRight && (
                     <div className={styles.listItem__right}>
-                        { contentRight }
+                        {contentRight}
                     </div>
                 )
             }

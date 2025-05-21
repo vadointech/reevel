@@ -1,0 +1,11 @@
+@use "@/theme/mixins";
+
+.gap {
+    margin-bottom: mixins.rem(20);
+    &_lg {
+        margin-bottom: mixins.rem(25);
+    }
+    &_sm {
+        margin-bottom: mixins.rem(17);
+    }
+}

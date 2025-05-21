@@ -25,12 +25,15 @@ export const IconUkraine = (props: ComponentProps<"svg">) => (
                 fill="white"
             />
         </mask>
-        <g mask="url(#mask0_649_4534)">
+        <g mask="url(#mask0_649_4534)" >
             <path
                 d="M0 13.4988L13.1016 11.498L26 13.4988V26.4988H0V13.4988Z"
-                fill="#FFDA44"
+                fill='#FFDA44'
             />
-            <path d="M0 0.5H26V13.5H0V0.5Z" fill="#338AF3" />
+            <path
+                d="M0 0.5H26V13.5H0V0.5Z"
+                fill='#338AF3'
+            />
         </g>
     </svg>
 );

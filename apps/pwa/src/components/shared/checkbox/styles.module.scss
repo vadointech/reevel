@@ -24,10 +24,12 @@
     &__icon {
         transform: translate(50% -50%);
         position: absolute;
-        margin-top: 0rem !important;
+        height: mixins.rem(10);
+        width: mixins.rem(13);
 
         path {
-            fill: colors.$foreground;
+            stroke: colors.$foreground;
+            stroke-width: mixins.rem(3);
         }
     }
 }

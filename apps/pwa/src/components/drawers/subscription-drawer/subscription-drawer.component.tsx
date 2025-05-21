@@ -1,14 +1,15 @@
 import { ComponentProps } from "react"
 
-import { TabsBody, TabsContent, TabsRoot } from "@/components/shared/_redesign"
+import { Button, OptionsListItem, TabsBody, TabsContent, TabsRoot } from "@/components/shared/_redesign"
 import { Container } from "@/components/ui"
 
 
 
 import styles from "./styles.module.scss"
 import { ScrollArea } from "../../shared/_redesign/scroll-area/scroll-area.component"
-import { Plan } from "./_components/features-section"
+import { Plan } from "./_components/plan"
 import { BottomSheetRoot, BottomSheetTrigger, BottomSheetPortal, BottomSheetBody, BottomSheetContent, BottomSheetHandle } from "@/components/shared/_redesign/bottom-sheet"
+import { Back, IconStar } from "@/components/icons"
 
 
 type SubscriptionFeatures = {
@@ -107,13 +108,18 @@ export const SubscriptionDrawer = ({ children, ...props }: SubscriptionDrawer.Pr
 
     return (
         <>
-            <BottomSheetRoot handleOnly>
+            <BottomSheetRoot handleOnly fadeThreshold={0}>
                 <BottomSheetTrigger>
-                    {children}
+                    <OptionsListItem
+                        label="Subscription"
+                        description="Standart"
+                        contentRight={<Back width={7} height={14} style={{ rotate: "180deg" }} />}
+                        contentLeft={<IconStar width={22} height={22} fill="#212629" />}>
+                    </OptionsListItem>
                 </BottomSheetTrigger>
                 <BottomSheetPortal>
                     <BottomSheetBody>
-                        <BottomSheetContent>
+                        <BottomSheetContent className={styles.content}>
                             <BottomSheetHandle>
                                 <Container>
                                     <div className={styles.drawer__title}>Upgrade Plan</div>
@@ -123,11 +129,18 @@ export const SubscriptionDrawer = ({ children, ...props }: SubscriptionDrawer.Pr
                                 <TabsBody
                                     items={data.map(item => item.title)}
                                 >
-                                    {data.map((item) => (
-                                        <TabsContent>
-                                            <ScrollArea>
-                                                <Plan data={item} />
-                                            </ScrollArea>
+                                    {data.map((item, i) => (
+                                        <TabsContent key={i}>
+                                            <>
+                                                <ScrollArea >
+                                                    <Plan data={item} />
+                                                </ScrollArea>
+                                                <Container className={styles.buttons}>
+                                                    <Button className={styles.buttons__button}>
+                                                        Upgrade for {item.price} €/m
+                                                    </Button>
+                                                </Container>
+                                            </>
                                         </TabsContent>
                                     ))}
                                 </TabsBody>
