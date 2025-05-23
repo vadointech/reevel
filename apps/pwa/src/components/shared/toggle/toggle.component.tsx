@@ -1,11 +1,11 @@
-
+"use client"
 
 import { ComponentProps } from "react";
 import styles from "./styles.module.scss"
 import cx from "classnames"
 
 export namespace Toggle {
-    export type Props = ComponentProps<"div"> & {
+    export type Props = ComponentProps<"button"> & {
         toggled: boolean;
         setToggled: () => void;
     }
@@ -15,7 +15,8 @@ export namespace Toggle {
 export const Toggle = ({
     toggled,
     setToggled,
-    className
+    className,
+    ...props
 }: Toggle.Props) => {
     return (
         <button
@@ -24,7 +25,9 @@ export const Toggle = ({
                 styles.toggle,
                 toggled && styles.toggle_toggled,
                 className
-            )}>
+            )}
+            {...props}
+        >
             <div className={cx(
                 styles.toggle__thumb,
                 toggled && styles.toggle__thumb_toggled

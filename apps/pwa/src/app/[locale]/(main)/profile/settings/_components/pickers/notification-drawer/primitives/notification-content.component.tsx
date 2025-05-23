@@ -5,7 +5,7 @@ import { ComponentProps } from "react"
 import styles from "../styles.module.scss"
 import { OptionsList, OptionsListItem } from "@/components/shared/_redesign"
 import { Toggle } from "@/components/shared/toggle"
-import { useDrawerNotification } from "@/features/profile/settings/hooks"
+import { useNotificationDrawer } from "@/features/profile/settings/hooks"
 import { Checkbox } from "@/components/shared/checkbox"
 
 import cx from "classnames"
@@ -15,7 +15,7 @@ export namespace NotificationContent {
 }
 
 export const NotificationContent = ({ ...props }: NotificationContent.Props) => {
-    const { settings, handleSettingChange } = useDrawerNotification()
+    const { settings, handleSettingChange } = useNotificationDrawer()
 
     return (
         <>

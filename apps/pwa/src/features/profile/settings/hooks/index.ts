@@ -6,7 +6,7 @@ export type NotificationSettings = {
     expiredNotification: boolean;
 }
 
-export const useDrawerNotification = () => {
+export const useNotificationDrawer = () => {
     const [settings, setSettings] = useState<NotificationSettings>({
         blocked: false,
         recommendations: false,

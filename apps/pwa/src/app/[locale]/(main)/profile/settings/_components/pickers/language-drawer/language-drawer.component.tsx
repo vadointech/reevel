@@ -3,8 +3,8 @@
 import { ComponentProps } from "react"
 import { OptionsListItem } from "@/components/shared/_redesign"
 import { Back, IconWorld } from "@/components/icons"
-import { CreateSettingsBottomSheet, CreateSettingsBottomSheetContent, CreateSettingsBottomSheetTrigger } from "../../bottom-sheet"
 import { LanguageContent } from "./primitives/language-content.component"
+import { ProfileSettingsBottomSheet, ProfileSettingsBottomSheetContent, ProfileSettingsBottomSheetTrigger } from "../../bottom-sheet"
 
 
 export namespace LanguageDrawer {
@@ -14,23 +14,23 @@ export namespace LanguageDrawer {
 export const LanguageDrawer = () => {
 
     return (
-        <CreateSettingsBottomSheet>
-            <CreateSettingsBottomSheetTrigger>
+        <ProfileSettingsBottomSheet>
+            <ProfileSettingsBottomSheetTrigger>
                 <OptionsListItem
-                    label="Language"
+                    label="Application language"
                     description={"System"}
                     contentLeft={<IconWorld width={22} height={22} />}
                     contentRight={<Back width={7} height={14} style={{ rotate: "180deg" }} />}
                 />
-            </CreateSettingsBottomSheetTrigger>
+            </ProfileSettingsBottomSheetTrigger>
 
-            <CreateSettingsBottomSheetContent
+            <ProfileSettingsBottomSheetContent
                 title="Push notifications"
                 size="small"
             >
                 <LanguageContent />
-            </CreateSettingsBottomSheetContent>
-        </CreateSettingsBottomSheet>
+            </ProfileSettingsBottomSheetContent>
+        </ProfileSettingsBottomSheet>
     )
 }
 

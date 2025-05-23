@@ -1,6 +1,6 @@
 @use "@/theme/mixins";
 @use "@/theme/colors";
-@use "@/theme/fonts";
+@use "@/theme/typography";
 
 
 
@@ -46,7 +46,7 @@
         justify-content: space-between;
     
         span {
-            @include fonts.font-creata('xl',600,2rem);
+            @include typography.font('xl',600);
             color:colors.$foreground;
         }
 
@@ -60,17 +60,17 @@
             border-radius:mixins.rem(100);
             background-color: colors.$foreground;
 
-            @include fonts.font-creata('xs',400,mixins.rem(18));
+            @include typography.font('xs',400);
             color:colors.$primary;
         }
     }
 
     &__meta {
         color:colors.$foreground;
-        @include fonts.font-creata('base',400,mixins.rem(24));
+        @include typography.font('base',400);
 
         p {
-            @include fonts.font-creata('xs',400,mixins.rem(18));
+            @include typography.font('xs',400);
         }
 
     }

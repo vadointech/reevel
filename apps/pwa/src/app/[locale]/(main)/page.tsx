@@ -9,6 +9,9 @@ export default function Home() {
             <Link href={"/profile"}>
                 To profile
             </Link>
+            <Link href={"/profile/settings"}>
+                To profile settings
+            </Link>
         </div>
     );
 }

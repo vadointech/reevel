@@ -9,9 +9,8 @@ import {
     BottomSheetPortal,
     BottomSheetRoot,
     BottomSheetTrigger,
-    useBottomSheetStore,
 } from "@/components/shared/_redesign/bottom-sheet";
-import { Button, Header } from "@/components/shared/_redesign";
+import { Header } from "@/components/shared/_redesign";
 
 import { Container } from "@/components/ui";
 import { UISize } from "@/types/common";
@@ -35,9 +34,9 @@ export const ProfileSettingsBottomSheet = (props: ProfileSettingsBottomSheet.Pro
     );
 };
 
-export const CreateSettingsBottomSheetTrigger = ({
+export const ProfileSettingsBottomSheetTrigger = ({
     children,
-}: CreateSettingsSheet.TriggerProps) => {
+}: ProfileSettingsBottomSheet.TriggerProps) => {
     return (
         <BottomSheetTrigger>
             {children}
@@ -45,11 +44,11 @@ export const CreateSettingsBottomSheetTrigger = ({
     );
 };
 
-export const CreateSettingsBottomSheetContent = ({
+export const ProfileSettingsBottomSheetContent = ({
     title,
     size = "default",
     children,
-}: CreateSettingsSheet.ContentProps) => {
+}: ProfileSettingsBottomSheet.ContentProps) => {
 
     return (
         <BottomSheetPortal>

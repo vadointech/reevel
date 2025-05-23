@@ -3,15 +3,10 @@ import styles from "./styles.module.scss";
 import { Header } from "@/components/shared/header";
 import { Container } from "@/components/ui";
 
-import { AppearanceSection } from "./_components/pickers/appearance-section";
 import { OptionsList, OptionsListItem, Section } from "@/components/shared/_redesign";
 import { SubscriptionDrawer } from "@/components/drawers/subscription-drawer";
 import { IconExit } from "@/components/icons/exit";
-import { AccountDrawer } from "./_components/pickers/account-drawer";
-import { NotificationDrawer } from "./_components/pickers/notification-drawer";
-import { LanguageDrawer } from "./_components/pickers/language-drawer";
-
-
+import { AccountDrawer, NotificationDrawer, LanguageDrawer, AppearanceDrawer } from "./_components";
 
 export default function PrivateProfileSettingsPage() {
 
@@ -25,7 +20,9 @@ export default function PrivateProfileSettingsPage() {
                 <AccountDrawer />
             </div>
 
-            <AppearanceSection className={styles.gap_lg} />
+            <div className={styles.gap_lg} >
+                <AppearanceDrawer />
+            </div>
 
             <Section title="General" className={styles.gap_sm}>
                 <OptionsList>

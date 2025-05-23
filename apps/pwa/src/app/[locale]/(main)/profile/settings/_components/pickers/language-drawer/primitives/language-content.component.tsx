@@ -4,6 +4,7 @@ import { ComponentProps, useState } from "react"
 import { OptionsList, OptionsListItem } from "@/components/shared/_redesign"
 import { Checkbox } from "@/components/shared/checkbox"
 import { IconEngland, IconSystemCounty, IconUkraine } from "@/components/icons"
+import { Locale } from "@/types/common"
 
 export namespace LanguageContent {
     export type Language = Locale | 'system';
@@ -13,7 +14,7 @@ export namespace LanguageContent {
 
 export const LanguageContent = ({ ...props }: LanguageContent.Props) => {
 
-    const [selectedLanguage, setSelectedLanguage] = useState<LanguageContent.Language>('ukrainian');
+    const [selectedLanguage, setSelectedLanguage] = useState<LanguageContent.Language>('uk');
 
     const handleLanguageSelect = (language: LanguageContent.Language) => {
         setSelectedLanguage(language);
@@ -26,8 +27,8 @@ export const LanguageContent = ({ ...props }: LanguageContent.Props) => {
                     label="English"
                     contentLeft={<IconEngland width={22} height={22} />}
                     contentRight={<Checkbox
-                        setSelected={() => handleLanguageSelect('english')}
-                        selected={selectedLanguage === 'english'}
+                        setSelected={() => handleLanguageSelect('en')}
+                        selected={selectedLanguage === 'en'}
                     />}
                     iconType="outlined"
                     disabled={true}
@@ -38,8 +39,8 @@ export const LanguageContent = ({ ...props }: LanguageContent.Props) => {
                     contentLeft={<IconUkraine width={22} height={22} />}
                     contentRight={
                         <Checkbox
-                            setSelected={() => handleLanguageSelect('ukrainian')}
-                            selected={selectedLanguage === 'ukrainian'}
+                            setSelected={() => handleLanguageSelect('uk')}
+                            selected={selectedLanguage === 'uk'}
                         />
                     }
                     iconType="outlined"

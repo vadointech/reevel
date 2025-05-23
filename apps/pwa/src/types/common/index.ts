@@ -9,3 +9,5 @@ export type ParamsWithLocale<P = unknown> = {
 };
 
 export type UISize = "default" | "small" | "large" | "xsmall";
+
+export type UIMode = "dark" | "light" | "system";

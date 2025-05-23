@@ -5,7 +5,7 @@ import { OptionsListItem } from "@/components/shared/_redesign"
 import { Back, IconNotification } from "@/components/icons"
 
 import { NotificationContent } from "./primitives/notification-content.component"
-import { CreateSettingsBottomSheet, CreateSettingsBottomSheetTrigger, CreateSettingsBottomSheetContent } from "../../bottom-sheet"
+import { ProfileSettingsBottomSheet, ProfileSettingsBottomSheetTrigger, ProfileSettingsBottomSheetContent } from "../../bottom-sheet"
 
 export namespace NotificationDrawer {
     export type Props = never;
@@ -14,23 +14,23 @@ export namespace NotificationDrawer {
 export const NotificationDrawer = () => {
     return (
 
-        <CreateSettingsBottomSheet>
-            <CreateSettingsBottomSheetTrigger>
+        <ProfileSettingsBottomSheet>
+            <ProfileSettingsBottomSheetTrigger>
                 <OptionsListItem
                     label="Notifications"
                     description="All"
                     contentLeft={<IconNotification width={22} height={22} />}
                     contentRight={<Back width={7} height={14} style={{ rotate: "180deg" }} />}
                 />
-            </CreateSettingsBottomSheetTrigger>
+            </ProfileSettingsBottomSheetTrigger>
 
-            <CreateSettingsBottomSheetContent
+            <ProfileSettingsBottomSheetContent
                 title="Push notifications"
                 size="xsmall"
             >
                 <NotificationContent />
 
-            </CreateSettingsBottomSheetContent>
-        </CreateSettingsBottomSheet>
+            </ProfileSettingsBottomSheetContent>
+        </ProfileSettingsBottomSheet>
     )
 }

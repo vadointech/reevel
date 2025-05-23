@@ -1,12 +1,12 @@
 "use client"
-import { ComponentProps } from "react"
+
 import { OptionsList, OptionsListItem } from "@/components/shared/_redesign"
 import { Back, IconPlus } from "@/components/icons"
 import { Checkbox } from "@/components/shared/checkbox"
 import Image from "next/image"
-import { CreateSettingsBottomSheet, CreateSettingsBottomSheetTrigger, CreateSettingsBottomSheetContent } from "../../bottom-sheet"
 
 import styles from "./styles.module.scss"
+import { ProfileSettingsBottomSheet, ProfileSettingsBottomSheetTrigger, ProfileSettingsBottomSheetContent } from "../../bottom-sheet"
 
 
 
@@ -17,8 +17,8 @@ export namespace AccountDrawer {
 export const AccountDrawer = () => {
 
     return (
-        <CreateSettingsBottomSheet>
-            <CreateSettingsBottomSheetTrigger>
+        <ProfileSettingsBottomSheet>
+            <ProfileSettingsBottomSheetTrigger>
                 <OptionsList>
                     <OptionsListItem
                         label="Jimmy Smdasith"
@@ -28,9 +28,9 @@ export const AccountDrawer = () => {
                         variant={"avatar"}
                     />
                 </OptionsList>
-            </CreateSettingsBottomSheetTrigger>
+            </ProfileSettingsBottomSheetTrigger>
 
-            <CreateSettingsBottomSheetContent
+            <ProfileSettingsBottomSheetContent
                 title="Account management"
                 size="small"
             >
@@ -48,8 +48,8 @@ export const AccountDrawer = () => {
                         contentRight={<Back width={7} height={14} style={{ rotate: "180deg" }} />}
                     />
                 </OptionsList>
-            </CreateSettingsBottomSheetContent>
-        </CreateSettingsBottomSheet >
+            </ProfileSettingsBottomSheetContent>
+        </ProfileSettingsBottomSheet >
     )
 }
 
