@@ -1,22 +1,15 @@
 "use client";
 
-import { RefObject, useCallback, useRef, useState } from "react";
+import { useCallback, useRef, useState } from "react";
 import { useAnimation } from "motion/react";
 import {
     BottomSheetPositionControls,
     BottomSheetSnapPointControl,
 } from "../controls";
+import { IBottomSheetStore } from "../store";
 import { BottomSheetRootConfig } from "../config/root.config";
 
-export type BottomSheetExternalControls = {
-    snapControls: RefObject<BottomSheetSnapPointControl | null>;
-    positionControls: RefObject<BottomSheetPositionControls | null>;
-};
-
-export function useBottomSheetControls(
-    rootConfig: BottomSheetRootConfig,
-    externalControls: Partial<BottomSheetExternalControls> = {},
-) {
+export function useBottomSheetControls(store: IBottomSheetStore, rootConfig: BottomSheetRootConfig) {
     const containerAnimate = useAnimation();
 
     const [initialized, setInitialized] = useState(false);
@@ -32,6 +25,7 @@ export function useBottomSheetControls(
         new BottomSheetPositionControls(
             containerAnimate,
             snapControls.current,
+            store,
         ),
     );
 
@@ -50,16 +44,16 @@ export function useBottomSheetControls(
         positionControls.current = new BottomSheetPositionControls(
             containerAnimate,
             snapControls.current,
+            store,
         );
 
-        /**
-         * Bing external controls
-         */
-        if(externalControls.snapControls) {
-            externalControls.snapControls.current = snapControls.current;
+
+        // Binding external controls
+        if(rootConfig.externalControls.snapControls) {
+            rootConfig.externalControls.snapControls.current = snapControls.current;
         }
-        if(externalControls.positionControls) {
-            externalControls.positionControls.current = positionControls.current;
+        if(rootConfig.externalControls.positionControls) {
+            rootConfig.externalControls.positionControls.current = positionControls.current;
         }
 
         setInitialized(true);

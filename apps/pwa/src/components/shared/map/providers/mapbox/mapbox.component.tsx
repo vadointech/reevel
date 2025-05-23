@@ -1,6 +1,6 @@
 "use client";
 
-import { forwardRef, memo, RefObject } from "react";
+import { forwardRef, memo, RefObject, useEffect } from "react";
 import { MapboxEvent } from "mapbox-gl";
 import { observer } from "mobx-react-lite";
 import MapboxGLMap, { MapRef, Marker, ViewState } from "react-map-gl/mapbox";
@@ -11,6 +11,7 @@ import { MapStore } from "../../map.store";
 import { IMapHandlers, IMapProvider } from "../types";
 
 import "mapbox-gl/dist/mapbox-gl.css";
+import { reaction } from "mobx";
 
 export namespace MapboxComponent {
     export type Props = {
@@ -33,7 +34,6 @@ export const MapboxComponent = memo(observer(forwardRef<MapRef, MapboxComponent.
     handleInitializeMap,
     initialViewState = {},
 }, ref) => {
-
     const {
         viewState,
         bounds,
@@ -42,6 +42,7 @@ export const MapboxComponent = memo(observer(forwardRef<MapRef, MapboxComponent.
         handleSelectPoint,
     } = useMapbox({
         store,
+        provider,
         initialViewState,
         handlers,
         onMapLoad: handleInitializeMap,
@@ -56,6 +57,19 @@ export const MapboxComponent = memo(observer(forwardRef<MapRef, MapboxComponent.
         points: store.points,
         zoom: viewState.zoom || 12,
     });
+
+    useEffect(() => {
+        const disposer = reaction(
+            () => store.selectedPoint,
+            (value) => {
+                handlers.current.onPointSelect?.(value);
+            },
+        );
+
+        return () => {
+            disposer();
+        };
+    }, [store, handlers]);
 
     return (
         <MapboxGLMap
@@ -77,6 +91,9 @@ export const MapboxComponent = memo(observer(forwardRef<MapRef, MapboxComponent.
                     const pointCount = cluster.properties.point_count || 0;
                     const clusterSize = getClusterSize(pointCount, viewState.zoom);
 
+                    const selected = store.selectedPoint === cluster.properties.id;
+                    const active = (!store.selectedPoint || selected) && !store.pointsHidden;
+
                     if(isCluster) {
                         return (
                             <Marker
@@ -87,6 +104,7 @@ export const MapboxComponent = memo(observer(forwardRef<MapRef, MapboxComponent.
                             >
                                 <ClusterMarker
                                     size={clusterSize}
+                                    active={active}
                                 >
                                     { pointCount }
                                 </ClusterMarker>
@@ -100,10 +118,14 @@ export const MapboxComponent = memo(observer(forwardRef<MapRef, MapboxComponent.
                             longitude={longitude}
                             latitude={latitude}
                             onClick={() => handleSelectPoint(cluster.properties.id)}
+                            style={{
+                                zIndex: selected ? 1 : 0,
+                            }}
                         >
                             <EventMarker
                                 point={cluster.properties}
-                                selected={store.selectedPoint === cluster.properties.id}
+                                selected={selected}
+                                active={active}
                             />
                         </Marker>
                     );

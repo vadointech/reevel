@@ -51,7 +51,6 @@ export function useBottomSheetDrag(
             position,
         );
 
-        bottomSheetStore.setActiveSnapPoint(snapIndex);
         positionControls.current.setPositionBySnapIndex(snapIndex);
     };
 

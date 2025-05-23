@@ -20,6 +20,14 @@ const nextConfig: NextConfig = {
                 protocol: "https",
                 hostname: "res.cloudinary.com",
             },
+            {
+                protocol: "https",
+                hostname: "places.googleapis.com",
+            },
+            {
+                protocol: "https",
+                hostname: "maps.gstatic.com",
+            },
         ],
     },
     /* config options here */

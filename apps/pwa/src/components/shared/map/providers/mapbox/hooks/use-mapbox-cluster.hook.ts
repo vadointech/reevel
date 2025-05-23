@@ -2,14 +2,13 @@ import { useCallback } from "react";
 import useSupercluster from "use-supercluster";
 import Supercluster, { PointFeature } from "supercluster";
 import { IMapProvider } from "../../types";
+import { MapProviderCameraState } from "@/components/shared/map/providers/types/camera";
 
 type Options = {
     points: PointFeature<any>[],
-    bounds: Bounds,
+    bounds: MapProviderCameraState.Bounds,
     zoom: number,
 };
-
-export type Bounds = [number, number, number, number];
 
 export function useMapboxClusterHook(provider: IMapProvider, args: Options) {
     const { clusters, supercluster } = useSupercluster({

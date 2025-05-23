@@ -4,7 +4,6 @@ import { useEffect } from "react";
 import { HTMLMotionProps, motion } from "motion/react";
 
 import {
-    BottomSheetExternalControls,
     useBottomSheetControls,
     useBottomSheetDrag,
 } from "../hooks";
@@ -18,15 +17,12 @@ import styles from "../styles.module.scss";
 import cx from "classnames";
 
 export namespace BottomSheetBody {
-    export type Props = HTMLMotionProps<"div"> & {
-        externalControls?: Partial<BottomSheetExternalControls>;
-    };
+    export type Props = HTMLMotionProps<"div">;
 }
 
 export const BottomSheetBody = ({
     style,
     className,
-    externalControls,
     ...props
 }: BottomSheetBody.Props) => {
     const bottomSheetStore = useBottomSheetStore();
@@ -40,10 +36,7 @@ export const BottomSheetBody = ({
         positionControls,
 
         containerAnimate,
-    } = useBottomSheetControls(
-        rootConfig,
-        externalControls,
-    );
+    } = useBottomSheetControls(bottomSheetStore, rootConfig);
 
     const {
         dragY,

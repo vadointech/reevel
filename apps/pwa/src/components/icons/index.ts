@@ -30,3 +30,5 @@ export * from "./settings";
 export * from "./picture";
 
 export * from "./verified";
+
+export * from "./places";

@@ -3,7 +3,10 @@
 import { RefObject } from "react";
 import { Link } from "@/i18n/routing";
 
-import { useLocationPicker, useLocationPickerStore } from "@/features/location/picker";
+import {
+    GOOGLE_PLACES_API_INCLUDED_TYPES,
+    useLocationPickerStore,
+} from "@/features/location/picker";
 
 import {
     BottomSheetBody,
@@ -19,18 +22,29 @@ import { IconArrowLeft } from "@/components/icons";
 import { BottomSheetPositionControls } from "@/components/shared/_redesign/bottom-sheet";
 
 import styles from "../styles.module.scss";
+import { observer } from "mobx-react-lite";
+import { IBottomSheetStore } from "@/components/shared/_redesign/bottom-sheet/store";
+import { GooglePLacesApiIncludedTypes } from "@/api/google/places";
 
 export namespace LocationPickerDrawer {
-    export type Props = {
-        positionControls: RefObject<BottomSheetPositionControls | null>;
+    export type Props = & LocationTypesListProps & {
+        positionControls?: RefObject<BottomSheetPositionControls | null>;
+        storeControls?: RefObject<IBottomSheetStore | null>;
+        onSnapPointChange?: (snapPointIndex: number) => void;
+    };
+
+    export type LocationTypesListProps = {
+        onLocationTypePick: (type: GooglePLacesApiIncludedTypes) => void;
     };
 }
 
-export const LocationPickerDrawer = ({ positionControls }: LocationPickerDrawer.Props) => {
+export const LocationPickerDrawer = ({
+    storeControls,
+    positionControls,
+    onLocationTypePick,
+    onSnapPointChange,
+}: LocationPickerDrawer.Props) => {
     const { config } = useLocationPickerStore();
-    const {
-        handleRequestLocation,
-    } = useLocationPicker();
 
     return (
         <BottomSheetRoot
@@ -38,23 +52,18 @@ export const LocationPickerDrawer = ({ positionControls }: LocationPickerDrawer.
             dismissible={false}
             overlay={false}
             defaultOpen
-            snapPoints={["fit-content", .14]}
+            snapPoints={["fit-content", .14, 0]}
+            externalControls={{
+                storeControls,
+                positionControls,
+            }}
+            onSnapPointChange={onSnapPointChange}
         >
             <BottomSheetPortal>
-                <BottomSheetBody
-                    externalControls={{ positionControls }}
-                >
+                <BottomSheetBody>
                     <div className={styles.drawer__scroll}>
                         <Scroll>
-                            <InterestButton variant={"background"}>
-                                Keletska, 102A
-                            </InterestButton>
-                            <InterestButton variant={"background"}>
-                                Keletska, 102A
-                            </InterestButton>
-                            <InterestButton variant={"background"}>
-                                Keletska, 102A
-                            </InterestButton>
+                            <LocationTypesList onLocationTypePick={onLocationTypePick} />
                         </Scroll>
                     </div>
                     <BottomSheetContent>
@@ -86,7 +95,6 @@ export const LocationPickerDrawer = ({ positionControls }: LocationPickerDrawer.
                                 </Button>
                                 <Button
                                     variant={"primary"}
-                                    onClick={handleRequestLocation}
                                 >
                                     Allow location access
                                 </Button>
@@ -98,3 +106,21 @@ export const LocationPickerDrawer = ({ positionControls }: LocationPickerDrawer.
         </BottomSheetRoot>
     );
 };
+
+const LocationTypesList = observer(({
+    onLocationTypePick,
+}: LocationPickerDrawer.LocationTypesListProps) => {
+    const locationPickerStore = useLocationPickerStore();
+    return GOOGLE_PLACES_API_INCLUDED_TYPES.display.map(item => (
+        <InterestButton
+            key={item.slug}
+            icon={item.icon}
+            variant={
+                locationPickerStore.filters.locationType === item.slug ? "primary" : "default"
+            }
+            onClick={() => onLocationTypePick(item.slug)}
+        >
+            { item.title_uk }
+        </InterestButton>
+    ));
+});

@@ -1,0 +1,1 @@
+export * from "./confirmation-drawer.component";

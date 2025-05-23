@@ -1,46 +1,62 @@
-import { useLocationAccess, useLocationPickerStore } from "@/features/location/picker";
-import { useRouter } from "@/i18n/routing";
+import { useLocationPickerMap, useLocationPickerStore } from "@/features/location/picker";
+import { useFetchNearestLocations } from "@/features/location/picker/hooks/use-fetch-nearest-locations.hook";
 import { usePersistentMap } from "@/components/shared/map/map.context";
-import { useFetchQuery } from "@/lib/react-query";
-import { getPlaceByCoordinates, GetPlaceByCoordinates } from "@/api/mapbox/get-place-by-coordinates";
-import { useLocale } from "next-intl";
+import { googlePlacesApiResponseMapper } from "@/features/google/mappers";
+import { useRef } from "react";
+import { MapProviderGL } from "@/components/shared/map/providers/types";
+import { GooglePLacesApiIncludedTypes } from "@/api/google/places";
 
 export function useLocationPicker() {
     const locationPickerStore = useLocationPickerStore();
-    const router = useRouter();
-    const { provider } = usePersistentMap();
-    const locale = useLocale();
+    const persistentMap = usePersistentMap();
+    const { getPlacesByArea } = useFetchNearestLocations();
 
-    const fetchPlaceByCoordinates = useFetchQuery();
+    const prevBoundsArr = useRef<MapProviderGL.LngLatBounds[]>([]);
+    const prevCenter = useRef<MapProviderGL.LngLat | null>(null);
+    const prevBoundsArea = useRef<number>(0);
+    const prevRadius = useRef<number>(0);
 
-    const { handleRequestLocation } = useLocationAccess({
-        onSuccess: async(location) => {
-            locationPickerStore.setLocation([location.longitude, location.latitude]);
-            // router.push(locationPickerStore.config.confirmationUrl);
+    const { handleViewportChange } = useLocationPickerMap(
+        prevBoundsArr,
+        prevCenter,
+        prevBoundsArea,
+        prevRadius,
+    );
 
-            const response = await fetchPlaceByCoordinates({
-                queryKey: [GetPlaceByCoordinates.queryKey, location.longitude, location.latitude],
-                queryFn: () => getPlaceByCoordinates({
-                    body: {
-                        lng: location.longitude,
-                        lat: location.latitude,
-                    },
-                    params: {
-                        access_token: provider?.accessToken,
-                        types: "address",
-                        language: locale,
-                    },
-                }).then(({ data }) => data?.features[0]),
-            });
-        },
-    });
+    const resetLocationRestriction = () => {
+        prevBoundsArr.current = [];
+        prevCenter.current = null;
+        prevBoundsArea.current = 0;
+        prevRadius.current = 0;
+    };
 
-    const handlePickLocation = (location: [number, number]) => {
-        locationPickerStore.setLocation(location);
+    const handlePickLocationType = async(type: GooglePLacesApiIncludedTypes) => {
+        if(!persistentMap.provider) return;
+
+        const bounds = persistentMap.provider.getBounds();
+        if(!bounds) return;
+
+        const currentType = locationPickerStore.filters.locationType;
+        const center = bounds.getCenter();
+        const radius = persistentMap.provider.getHorizontalRadius(bounds, center);
+
+        if(currentType === type) {
+            locationPickerStore.filters.setLocationType();
+            const points = await getPlacesByArea(center, radius)
+                .then(googlePlacesApiResponseMapper.toBasePoint);
+            persistentMap.store?.replacePoints(points);
+            resetLocationRestriction();
+        } else {
+            locationPickerStore.filters.setLocationType(type);
+            const points = await getPlacesByArea(center, radius, type)
+                .then(googlePlacesApiResponseMapper.toBasePoint);
+            persistentMap.store?.replacePoints(points);
+            resetLocationRestriction();
+        }
     };
 
     return {
-        handleRequestLocation,
-        handlePickLocation,
+        handleViewportChange,
+        handlePickLocationType,
     };
 }

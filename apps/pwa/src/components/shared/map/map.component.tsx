@@ -2,22 +2,23 @@
 
 import { ComponentProps, useEffect, useRef } from "react";
 import { usePersistentMap } from "./map.context";
-import { IMapHandlers, IMapProvider } from "./providers/types";
+import { IMapHandlers } from "./providers/types";
 import { BasePoint, Point } from "./types";
-import { MapStore } from "./map.store";
 
 export namespace MapView {
     export type Props<P extends BasePoint> = ComponentProps<"div"> & Partial<IMapHandlers> & {
-        points?: Point<P>[]
-        onMapReady?: (store: MapStore, provider: IMapProvider) => void;
+        points?: Point<P>[];
     };
 }
 
 export function MapView<P extends BasePoint>({
-    onMapReady,
     style,
     points,
+
+    onMapMounted,
+    onPointSelect,
     onViewportChange,
+
     ...props
 }: MapView.Props<P>) {
     const { attachMap, detachMap, store, isMapInitialized, provider } = usePersistentMap();
@@ -27,17 +28,19 @@ export function MapView<P extends BasePoint>({
         if (!containerRef.current) return;
 
         attachMap(containerRef.current, {
+            onMapMounted,
+            onPointSelect,
             onViewportChange,
         });
 
-        if(onMapReady && store && provider) {
-            onMapReady(store, provider);
+        if(onMapMounted && store && provider) {
+            onMapMounted({ store, provider });
         }
 
         return () => {
             detachMap();
         };
-    }, [attachMap, detachMap, isMapInitialized, onMapReady]);
+    }, [attachMap, detachMap, isMapInitialized, onMapMounted]);
 
     useEffect(() => {
         if(isMapInitialized) {
@@ -45,7 +48,7 @@ export function MapView<P extends BasePoint>({
                 store?.setPoints(points);
             }
         }
-    }, [isMapInitialized]);
+    }, [isMapInitialized, points]);
 
     return (
         <div

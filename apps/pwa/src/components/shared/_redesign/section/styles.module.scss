@@ -27,6 +27,7 @@
     }
 
     &__content {
+        height: 100%;
         &_container {
             padding-inline: spacing.$container;
         }

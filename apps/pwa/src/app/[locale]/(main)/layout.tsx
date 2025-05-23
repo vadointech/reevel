@@ -11,7 +11,7 @@ export default function MainLayout({ children }: PropsWithChildren) {
                 latitude: 49.23188823685999,
                 longitude: 28.468377628194958,
                 zoom: 12,
-                pitch: 45,
+                pitch: 0,
             }}
         >
             { children }

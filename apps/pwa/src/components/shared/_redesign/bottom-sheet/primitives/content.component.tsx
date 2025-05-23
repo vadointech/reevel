@@ -1,20 +1,27 @@
-import { ComponentProps } from "react";
+import { ComponentProps, ReactNode } from "react";
 
 import styles from "../styles.module.scss";
 import cx from "classnames";
 
 export namespace BottomSheetContent {
-    export type Props = ComponentProps<"div">;
+    export type Props = Omit<ComponentProps<"div">, "children"> & {
+        children: ReactNode | (() => ReactNode)
+    };
 }
 
 export const BottomSheetContent = ({
     className,
+    children,
     ...props
 }: BottomSheetContent.Props) => {
     return (
         <div
             className={cx(styles.bottomSheet__content, className)}
             {...props}
-        />
+        >
+            {
+                typeof children === "function" ? children() : children
+            }
+        </div>
     );
 };

@@ -16,15 +16,32 @@ class LocationPickerConfig implements ILocationPickerConfig {
     }
 }
 
+class LocationPickerFilters {
+    locationType?: string;
+
+    constructor() {
+        makeObservable(this, {
+            locationType: observable,
+
+            setLocationType: action,
+        });
+    }
+
+    setLocationType(type?: string) {
+        this.locationType = type;
+    }
+}
+
 class LocationPickerStore {
     config: ILocationPickerConfig;
+    filters: LocationPickerFilters;
 
     location: [number, number] = [0, 0];
 
-    constructor(
-        config: ILocationPickerConfig,
-    ) {
+    constructor(config: ILocationPickerConfig) {
         this.config = new LocationPickerConfig(config);
+        this.filters = new LocationPickerFilters();
+
         makeObservable(this, {
             location: observable,
 

@@ -1,9 +1,9 @@
 import { initStore } from "@/lib/mobx";
+import { BottomSheetSnapPoint } from "../controls";
+import { IBottomSheetExternalControls, IBottomSheetHandlers } from "../types";
 
-type SnapPoint = number | "fit-content";
-
-export interface IBottomSheetRootConfig {
-    snapPoints: SnapPoint[];
+export interface IBottomSheetRootConfig extends IBottomSheetHandlers {
+    snapPoints: BottomSheetSnapPoint[];
     defaultOpen?: boolean;
     defaultSnapPointIndex: number;
     overlay: boolean;
@@ -11,6 +11,8 @@ export interface IBottomSheetRootConfig {
     dismissible?: boolean;
     handleOnly?: boolean;
     touchEvents?: boolean;
+
+    externalControls?: Partial<IBottomSheetExternalControls>;
 }
 
 export class BottomSheetRootConfig implements IBottomSheetRootConfig {
@@ -22,6 +24,13 @@ export class BottomSheetRootConfig implements IBottomSheetRootConfig {
     dismissible: boolean = true;
     handleOnly: boolean = false;
     touchEvents: boolean = false;
+
+    externalControls: Partial<IBottomSheetExternalControls> = {};
+
+    onClose() {}
+
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    onSnapPointChange(snapPointIndex: number) {}
 
     constructor(init: Partial<IBottomSheetRootConfig>) {
         initStore(this, init);
