@@ -1,0 +1,5 @@
+@use "@/theme/mixins";
+
+.section {
+    margin-top: mixins.rem(24);
+}

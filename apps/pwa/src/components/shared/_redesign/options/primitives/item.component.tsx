@@ -13,15 +13,20 @@ const listItem = cva(styles.listItem, {
         },
         variant: {
             avatar: styles.listItem_variant_avatar,
+            warn: styles.listItem_variant_warn,
         },
         size: {
             default: styles.listItem_size_default,
             small: styles.listItem_size_small,
         },
+        disabled: {
+            true: styles.listItem_disabled,
+        }
     },
     defaultVariants: {
         weight: "default",
         size: "default",
+        disabled: false,
     },
 });
 
@@ -31,7 +36,8 @@ export namespace OptionsListItem {
         description?: string | ReactNode;
         contentLeft?: string | ReactNode;
         contentRight?: ReactNode;
-        iconType?: "filled" | "outlined"
+        iconType?: "filled" | "outlined";
+        disabled?: boolean;
     };
 }
 
@@ -44,12 +50,13 @@ export const OptionsListItem = ({
     label,
     description,
     iconType = "filled",
+    disabled = false,
     className,
     ...props
 }: OptionsListItem.Props) => {
     return (
         <li
-            className={listItem({ weight, variant, size, className })}
+            className={listItem({ weight, variant, size, disabled, className })}
             {...props}
         >
             {
@@ -60,22 +67,22 @@ export const OptionsListItem = ({
                             styles[`listItem__left_icon_${iconType}`],
                         )}
                     >
-                        { contentLeft }
+                        {contentLeft}
                     </div>
                 )
             }
             <div className={styles.listItem__content}>
-                <div className={styles.listItem__title}>{ label }</div>
+                <div className={styles.listItem__title}>{label}</div>
                 {
                     description && (
-                        <div className={styles.listItem__description}>{ description }</div>
+                        <div className={styles.listItem__description}>{description}</div>
                     )
                 }
             </div>
             {
                 contentRight && (
                     <div className={styles.listItem__right}>
-                        { contentRight }
+                        {contentRight}
                     </div>
                 )
             }

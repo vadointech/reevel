@@ -28,7 +28,7 @@ export const UploadDrawer = ({ children }: UploadDrawer.Props) => {
     return (
         <BottomSheetRoot handleOnly>
             <BottomSheetTrigger>
-                { children }
+                {children}
             </BottomSheetTrigger>
             <BottomSheetPortal>
                 <BottomSheetBody>

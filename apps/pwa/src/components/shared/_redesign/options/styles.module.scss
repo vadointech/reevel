@@ -17,6 +17,12 @@
     display: flex;
     column-gap: mixins.rem(18);
 
+    &_disabled {
+        opacity: 0.5;
+        pointer-events: none;
+        cursor: not-allowed;
+    }
+
     &_variant {
         &_avatar {
             align-items: center;
@@ -52,6 +58,10 @@
             @include typography.font("base", 500);
             line-height: 1;
         }
+
+        .listItem_variant_warn & {
+            color:red;
+        }
     }
 
     &__description {
@@ -73,6 +83,12 @@
         .listItem_variant_avatar & {
             width: mixins.rem(44);
             height: mixins.rem(44);
+        }
+
+        .listItem_variant_warn & {
+            svg path {
+                fill: red;
+            }
         }
 
         svg {
@@ -105,6 +121,12 @@
             height: mixins.rem(12);
             path {
                 fill: colors.$secondary;
+            }
+        }
+
+        .listItem_variant_warn & {
+            svg path {
+                fill: red;
             }
         }
     }
