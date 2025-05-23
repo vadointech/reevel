@@ -1,10 +1,10 @@
-import { MapProviderGL } from "@/components/shared/map/providers/types/gl";
+import { MapProviderGL } from "@/components/shared/map/types/provider/gl";
 import { calculateBoundsArea, calculateRadius, createBufferedBounds } from "../utils/map-dimentions";
-import { usePersistentMap } from "@/components/shared/map/map.context";
 import { useFetchNearestLocations } from "@/features/location/picker/hooks/use-fetch-nearest-locations.hook";
 import { googlePlacesApiResponseMapper } from "@/features/google/mappers";
 import { useLocationPickerStore } from "@/features/location/picker";
 import { RefObject } from "react";
+import { usePersistentMap } from "@/components/shared/map";
 
 export function useLocationPickerMap(
     prevBoundsArr: RefObject<MapProviderGL.LngLatBounds[]>,
@@ -12,14 +12,14 @@ export function useLocationPickerMap(
     prevBoundsArea: RefObject<number>,
     prevRadius: RefObject<number>,
 ) {
-    const { store } = usePersistentMap();
+    const persistentMap = usePersistentMap();
     const locationPickerStore = useLocationPickerStore();
     const { getPlacesByArea } = useFetchNearestLocations();
 
     const handleFetchPlaces = async(center: MapProviderGL.LngLat, radius: number) => {
         const points = await getPlacesByArea(center, radius, locationPickerStore.filters.locationType)
             .then(googlePlacesApiResponseMapper.toBasePoint);
-        store?.appendPoints(points);
+        persistentMap.controller.current.appendPoints(points);
     };
 
     const handleViewportChange = (bounds: MapProviderGL.LngLatBounds | null) => {

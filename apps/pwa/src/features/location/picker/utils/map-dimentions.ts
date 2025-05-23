@@ -1,5 +1,5 @@
 import { LngLat, LngLatBounds } from "mapbox-gl";
-import { MapProviderGL } from "@/components/shared/map/providers/types/gl";
+import { MapProviderGL } from "@/components/shared/map/types/provider/gl";
 
 /**
  * Creates a new set of geographical bounds by applying a buffer percentage to the provided bounds.

@@ -1,38 +1,26 @@
 "use client";
 
-import { forwardRef, memo, RefObject, useEffect } from "react";
-import { MapboxEvent } from "mapbox-gl";
+import { forwardRef, memo, RefObject } from "react";
 import { observer } from "mobx-react-lite";
-import MapboxGLMap, { MapRef, Marker, ViewState } from "react-map-gl/mapbox";
-import {  useMapboxClusterHook } from "./hooks/use-mapbox-cluster.hook";
-import { useMapbox } from "./hooks/use-mapbox.hook";
+import MapboxGLMap, { MapRef, Marker } from "react-map-gl/mapbox";
+import { useMapbox, useMapboxCluster } from "./hooks";
 import { ClusterMarker, EventMarker } from "../../markers";
-import { MapStore } from "../../map.store";
-import { IMapHandlers, IMapProvider } from "../types";
+import { IMapProvider, IMapRootController } from "./types";
 
 import "mapbox-gl/dist/mapbox-gl.css";
-import { reaction } from "mobx";
 
 export namespace MapboxComponent {
     export type Props = {
-        store: MapStore;
-        provider: IMapProvider;
-        mapStyle?: string;
-        mapboxAccessToken?: string;
-        handleInitializeMap: (e: MapboxEvent) => void
-        initialViewState?: Partial<ViewState>;
-        handlers: RefObject<Partial<IMapHandlers>>
+        provider: RefObject<IMapProvider>
+        controller: RefObject<IMapRootController>;
+        onMapLoad?: () => void;
     };
 }
 
 export const MapboxComponent = memo(observer(forwardRef<MapRef, MapboxComponent.Props>(({
-    store,
     provider,
-    handlers,
-    mapboxAccessToken,
-    mapStyle,
-    handleInitializeMap,
-    initialViewState = {},
+    controller,
+    onMapLoad,
 }, ref) => {
     const {
         viewState,
@@ -40,47 +28,32 @@ export const MapboxComponent = memo(observer(forwardRef<MapRef, MapboxComponent.
         handleMapMove,
         handleMapLoad,
         handleSelectPoint,
-    } = useMapbox({
-        store,
+    } = useMapbox(
         provider,
-        initialViewState,
-        handlers,
-        onMapLoad: handleInitializeMap,
-    });
+        controller,
+        onMapLoad,
+    );
 
     const {
         clusters,
         getClusterSize,
         handleZoomToCluster,
-    } = useMapboxClusterHook(provider, {
+    } = useMapboxCluster(provider, {
         bounds,
-        points: store.points,
+        points: controller.current.store.points,
         zoom: viewState.zoom || 12,
     });
-
-    useEffect(() => {
-        const disposer = reaction(
-            () => store.selectedPoint,
-            (value) => {
-                handlers.current.onPointSelect?.(value);
-            },
-        );
-
-        return () => {
-            disposer();
-        };
-    }, [store, handlers]);
 
     return (
         <MapboxGLMap
             {...viewState}
             reuseMaps // This is a key prop for performance
             ref={ref}
-            mapStyle={mapStyle}
+            mapStyle={provider.current.config.mapStyleLight}
             onMove={handleMapMove}
             onLoad={handleMapLoad}
-            initialViewState={initialViewState}
-            mapboxAccessToken={mapboxAccessToken}
+            initialViewState={provider.current.config.initialViewState}
+            mapboxAccessToken={provider.current.config.accessToken}
             style={{ width: "100%", height: "100%" }}
         >
             {
@@ -91,8 +64,8 @@ export const MapboxComponent = memo(observer(forwardRef<MapRef, MapboxComponent.
                     const pointCount = cluster.properties.point_count || 0;
                     const clusterSize = getClusterSize(pointCount, viewState.zoom);
 
-                    const selected = store.selectedPoint === cluster.properties.id;
-                    const active = (!store.selectedPoint || selected) && !store.pointsHidden;
+                    const selected = controller.current.store.selectedPoint === cluster.properties.id;
+                    const active = (!controller.current.store.selectedPoint || selected) && controller.current.store.pointsVisible;
 
                     if(isCluster) {
                         return (

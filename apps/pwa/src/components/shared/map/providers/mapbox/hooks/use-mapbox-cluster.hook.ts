@@ -1,8 +1,7 @@
-import { useCallback } from "react";
+import { RefObject, useCallback } from "react";
 import useSupercluster from "use-supercluster";
 import Supercluster, { PointFeature } from "supercluster";
-import { IMapProvider } from "../../types";
-import { MapProviderCameraState } from "@/components/shared/map/providers/types/camera";
+import { IMapProvider, MapProviderCameraState } from "../types";
 
 type Options = {
     points: PointFeature<any>[],
@@ -10,7 +9,7 @@ type Options = {
     zoom: number,
 };
 
-export function useMapboxClusterHook(provider: IMapProvider, args: Options) {
+export function useMapboxCluster(provider: RefObject<IMapProvider>, args: Options) {
     const { clusters, supercluster } = useSupercluster({
         ...args,
         options: { radius: 40, maxZoom: 20 },
@@ -26,11 +25,12 @@ export function useMapboxClusterHook(provider: IMapProvider, args: Options) {
         const [longitude, latitude] = cluster.geometry.coordinates;
         const expansionZoom = supercluster.getClusterExpansionZoom(cluster.id as number);
 
-        provider.flyTo([longitude, latitude], {
+        provider.current.flyTo({
+            center: [longitude, latitude],
             speed: 2,
             zoom: Math.min(expansionZoom, 20),
         });
-    }, [supercluster, provider]);
+    }, [supercluster]);
 
     return {
         clusters,

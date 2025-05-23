@@ -1,1 +1,1 @@
-export { type IMapboxProvider, MapboxProvider, MapboxComponent } from "./mapbox";
+export { MapboxProvider, MapboxComponent } from "./mapbox";

@@ -1,7 +1,7 @@
 import Image from "next/image";
 import { ComponentProps } from "react";
 import { observer } from "mobx-react-lite";
-import { BasePoint } from "../../types";
+import { BasePoint } from "../../types/root/point";
 
 import { GooglePlacesApiIncludedTypesMarker } from "@/features/location/picker/config/icons.config";
 import { GooglePLacesApiIncludedTypes } from "@/api/google/places/included-types.config";

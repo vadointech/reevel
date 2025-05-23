@@ -248,7 +248,7 @@ export const GooglePlacesApiIncludedTypesMarker: Record<GooglePLacesApiIncludedT
     },
 
     museum: {
-        icon: <IconMuseum />,
+        icon: <IconMuseum style={{ transform: "translateY(-1.5px)"}} />,
         primaryColor: "#4169E1",
         secondaryColor: "#B0C4DE",
     },

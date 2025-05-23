@@ -1,6 +1,6 @@
 import { LngLat } from "mapbox-gl";
 import { GooglePlacesApiResponse } from "@/api/google/places/types";
-import { MapProviderGL } from "@/components/shared/map/providers/types";
+import { MapProviderGL } from "@/components/shared/map/providers/mapbox/types";
 
 class GooglePlacesApiResponseTransformer<T extends GooglePlacesApiResponse = GooglePlacesApiResponse> {
     /**

@@ -1,31 +1,33 @@
 import { RefObject } from "react";
 import { LngLat, LngLatBounds } from "mapbox-gl";
-import { MapRef, ViewState } from "react-map-gl/mapbox";
-import { IMapProvider, MapProviderGL, MapProviderCameraState } from "../types";
-
-export type ProviderParams = {
-    accessToken?: string;
-    initialViewState?: Partial<ViewState>;
-};
-
+import { MapRef } from "react-map-gl/mapbox";
+import {
+    IMapProvider,
+    MapProviderGL,
+    MapProviderCameraState,
+    MapProviderConfig,
+} from "../../types";
 
 export class MapboxProvider<T extends MapRef = MapRef> implements IMapProvider {
-    private mapRef: RefObject<T | null> = { current: null };
 
-    accessToken: string;
-    initialViewState: Partial<ViewState>;
-     
-    constructor(ref: RefObject<T | null>, params: ProviderParams) {
-        this.mapRef = ref;
-        this.accessToken = params.accessToken || "";
-        this.initialViewState = params.initialViewState || {};
+    constructor(
+        readonly mapRef: RefObject<T | null>,
+        public readonly config: MapProviderConfig,
+    ) {}
+
+    initialize(map?: RefObject<T>) {
+        if(map?.current) {
+            console.warn("Map initialized");
+
+            this.mapRef.current = map.current;
+            this.flyTo(this.config.initialViewState);
+        }
     }
 
-    flyTo(coordinates: [number, number], options: MapProviderCameraState.EasingOptions): void {
+    flyTo(options: MapProviderCameraState.EasingOptions): void {
         if(this.mapRef.current) {
             this.mapRef.current.flyTo({
-                center: coordinates,
-                ...this.initialViewState,
+                ...this.config.initialViewState,
                 ...options,
             });
         }
@@ -34,7 +36,7 @@ export class MapboxProvider<T extends MapRef = MapRef> implements IMapProvider {
     fitBounds(bounds: [number, number, number, number], options: MapProviderCameraState.EasingOptions): void {
         if(this.mapRef.current) {
             this.mapRef.current.fitBounds(bounds, {
-                pitch: this.initialViewState.pitch,
+                pitch: this.config.initialViewState.pitch,
                 ...options,
             });
         }

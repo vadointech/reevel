@@ -41,7 +41,7 @@ export namespace MapProviderCameraState {
         zoom: number;
         bearing: number;
         pitch: number;
-        padding: number | PaddingOptions;
+        padding: number | Partial<PaddingOptions>;
         minZoom: number;
         maxZoom: number;
         retainPadding: boolean;

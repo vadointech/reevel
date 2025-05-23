@@ -1,25 +1,14 @@
-import { MapRef } from "react-map-gl/mapbox";
-import { RefObject, createContext, useContext } from "react";
-import { MapStore } from "./map.store";
-import { IMapHandlers, IMapProvider } from "./providers/types";
+"use client";
 
-interface PersistentMapContextType<T> {
-    mapRef: RefObject<T | null> | null;
-    store: MapStore | null;
-    provider: IMapProvider | null;
-    isMapInitialized: boolean;
-    attachMap: (container: HTMLDivElement, handlers: Partial<IMapHandlers>) => void;
-    detachMap: () => void;
-}
+import { createContext, RefObject, useContext } from "react";
+import { IMapRootController, IMapProvider } from "./types";
 
-export const PersistentMapContext = createContext<PersistentMapContextType<MapRef>>({
-    mapRef: null,
-    store: null,
-    provider: null,
-    isMapInitialized: false,
-    attachMap: () => {},
-    detachMap: () => {},
-});
+type PersistentMapContextValue = {
+    controller: RefObject<IMapRootController>;
+    provider: RefObject<IMapProvider>;
+};
+
+export const PersistentMapContext = createContext<PersistentMapContextValue | null>(null);
 
 export function usePersistentMap() {
     const ctx = useContext(PersistentMapContext);

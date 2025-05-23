@@ -1,4 +1,4 @@
-export * from "./map.provider";
-export * from "./map.component";
-export { MapStore } from "./map.store";
-export { type IMapProvider } from "./providers/types";
+export * from "./primitives/map-provider.component";
+export * from "./primitives/map-view.component";
+
+export { usePersistentMap } from "./map.context";

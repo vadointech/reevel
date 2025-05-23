@@ -1,10 +1,10 @@
 import { useLocationPickerMap, useLocationPickerStore } from "@/features/location/picker";
 import { useFetchNearestLocations } from "@/features/location/picker/hooks/use-fetch-nearest-locations.hook";
-import { usePersistentMap } from "@/components/shared/map/map.context";
 import { googlePlacesApiResponseMapper } from "@/features/google/mappers";
 import { useRef } from "react";
-import { MapProviderGL } from "@/components/shared/map/providers/types";
+import { MapProviderGL } from "@/components/shared/map/providers/mapbox/types";
 import { GooglePLacesApiIncludedTypes } from "@/api/google/places";
+import { usePersistentMap } from "@/components/shared/map";
 
 export function useLocationPicker() {
     const locationPickerStore = useLocationPickerStore();
@@ -31,26 +31,25 @@ export function useLocationPicker() {
     };
 
     const handlePickLocationType = async(type: GooglePLacesApiIncludedTypes) => {
-        if(!persistentMap.provider) return;
 
-        const bounds = persistentMap.provider.getBounds();
+        const bounds = persistentMap.provider.current.getBounds();
         if(!bounds) return;
 
         const currentType = locationPickerStore.filters.locationType;
         const center = bounds.getCenter();
-        const radius = persistentMap.provider.getHorizontalRadius(bounds, center);
+        const radius = persistentMap.provider.current.getHorizontalRadius(bounds, center);
 
         if(currentType === type) {
             locationPickerStore.filters.setLocationType();
             const points = await getPlacesByArea(center, radius)
                 .then(googlePlacesApiResponseMapper.toBasePoint);
-            persistentMap.store?.replacePoints(points);
+            persistentMap.controller.current.replacePoints(points);
             resetLocationRestriction();
         } else {
             locationPickerStore.filters.setLocationType(type);
             const points = await getPlacesByArea(center, radius, type)
                 .then(googlePlacesApiResponseMapper.toBasePoint);
-            persistentMap.store?.replacePoints(points);
+            persistentMap.controller.current.replacePoints(points);
             resetLocationRestriction();
         }
     };

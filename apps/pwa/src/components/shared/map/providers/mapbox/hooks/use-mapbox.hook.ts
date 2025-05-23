@@ -1,31 +1,21 @@
 import { RefObject, useCallback, useState } from "react";
-import { MapboxEvent } from "mapbox-gl";
+import { MapEvent } from "mapbox-gl";
 import { ViewStateChangeEvent } from "react-map-gl/mapbox";
-import { MapStore } from "../../../map.store";
-import { MapProviderCameraState } from "@/components/shared/map/providers/types/camera";
-import { IMapHandlers, IMapProvider } from "@/components/shared/map/providers/types";
+import { IMapProvider , IMapRootController, MapProviderCameraState } from "../types";
 
-type Params = {
-    store: MapStore;
-    provider: IMapProvider;
-    initialViewState: Partial<MapProviderCameraState.Viewport>;
-    onMapLoad?: (e: MapboxEvent) => void;
-    handlers: RefObject<Partial<IMapHandlers>>;
-};
-
-export function useMapbox({
-    store,
-    provider,
-    initialViewState,
-    onMapLoad,
-    handlers,
-}: Params) {
-    const [viewState, setViewState] = useState<Partial<MapProviderCameraState.Viewport>>(initialViewState);
+export function useMapbox(
+    provider: RefObject<IMapProvider>,
+    controller: RefObject<IMapRootController>,
+    onMapLoad?: () => void,
+) {
+    const [viewState, setViewState] = useState<Partial<MapProviderCameraState.Viewport>>(
+        provider.current.config.initialViewState,
+    );
     const [bounds, setBounds] = useState<MapProviderCameraState.Bounds>([0, 0, 0, 0]);
 
-    const handleMapLoad = (e: MapboxEvent) => {
+    const handleMapLoad = (e: MapEvent) => {
         updateBounds(e);
-        onMapLoad?.(e);
+        onMapLoad?.();
     };
   
     const handleMapMove = useCallback((e: ViewStateChangeEvent) => {
@@ -35,13 +25,12 @@ export function useMapbox({
 
         const lngLatBounds = target.getBounds();
 
-        handlers.current.onViewportChange?.(
+        controller.current.externalHandlers.onViewportChange?.(
             { viewState: e.viewState, bounds: lngLatBounds },
-            { provider, store },
         );
     }, []);
 
-    const updateBounds = useCallback((e: MapboxEvent) => {
+    const updateBounds = useCallback((e: MapEvent) => {
         const lngLatBounds = e.target.getBounds();
         if(lngLatBounds) {
             setBounds(lngLatBounds.toArray().flat() as MapProviderCameraState.Bounds);
@@ -49,9 +38,8 @@ export function useMapbox({
     }, []);
 
     const handleSelectPoint = useCallback((pointId: string) => {
-        store.selectPoint(pointId);
-        handlers.current.onPointSelect?.(pointId);
-    }, [store]);
+        controller.current.selectPoint(pointId);
+    }, []);
 
     return {
         viewState,

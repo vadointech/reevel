@@ -1,6 +1,6 @@
 import { useFetchQuery } from "@/lib/react-query";
 import { useDebounceCallback } from "@/lib/hooks";
-import { MapProviderGL } from "@/components/shared/map/providers/types/gl";
+import { MapProviderGL } from "@/components/shared/map/types/provider/gl";
 import { GOOGLE_PLACES_API_EXCLUDED_TYPES, GOOGLE_PLACES_API_INCLUDED_TYPES } from "@/features/location/picker";
 import { GetNearbyPlaces, getNearbyPlaces } from "@/api/google/places";
 import { googlePlacesApiResponseTransformer } from "@/features/google/transformers";

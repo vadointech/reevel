@@ -1,4 +1,4 @@
-import { MapProviderGL } from "@/components/shared/map/providers/types/gl";
+import { MapProviderGL } from "@/components/shared/map/types/provider/gl";
 import { calculateDistance } from "./map-dimentions";
 
 /**

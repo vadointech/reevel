@@ -1,20 +1,32 @@
+import { RefObject } from "react";
 import { MapProviderCameraState } from "./camera";
 import { MapProviderGL } from "./gl";
 
-export interface IMapProvider {
-    /**
-     * The `accessToken` is a string used to authenticate requests to the map provider
-     */
+export type MapProviderConfig = {
     accessToken: string;
+    mapStyleDark: string;
+    mapStyleLight: string;
+    initialViewState: Partial<MapProviderCameraState.Viewport>;
+};
+
+export interface IMapProvider {
+    mapRef: RefObject<any>
+    config: MapProviderConfig;
+
+    /**
+     * Initializes the given map reference, setting up necessary configurations or subscriptions.
+     *
+     * @param {RefObject<any>} [mapRef] - An optional reference object of the map to initialize.
+     * @return {void} Does not return any value.
+     */
+    initialize(mapRef?: RefObject<any>): void;
 
     /**
      * Moves the view of the map smoothly to the specified coordinates.
      *
-     * @param {Array<number>} coordinates - An array containing the latitude and longitude to which the view is moved. The array should be in the format [latitude, longitude].
-     * @param {Options} [transitionOptions] - Optional parameters to customize the transition effect, such as duration and easing function.
      * @return {void} This method does not return a value.
      */
-    flyTo(coordinates: [number, number], transitionOptions?: MapProviderCameraState.EasingOptions): void;
+    flyTo(options?: MapProviderCameraState.EasingOptions): void;
 
     /**
      * Adjusts the view of the map to fit the provided geographical bounds with optional configuration settings.

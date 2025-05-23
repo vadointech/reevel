@@ -2,11 +2,10 @@
 
 import { ComponentProps, useRef } from "react";
 
-import { MapView } from "@/components/shared/map";
+import { MapView, usePersistentMap } from "@/components/shared/map";
 import { LocationPickerDrawer } from "@/components/screens/location-picker/primitives/drawer.component";
 import { BottomSheetPositionControls } from "@/components/shared/_redesign/bottom-sheet";
 import { useLocationPicker } from "@/features/location/picker";
-import { usePersistentMap } from "@/components/shared/map/map.context";
 import {
     LocationPickerConfirmationDrawer,
 } from "@/components/screens/location-picker/primitives/confirmation/confirmation-drawer.component";
@@ -31,16 +30,16 @@ export const LocationPickerMapView = (props: LocationPickerMapView.Props) => {
     const positionControls = useRef<BottomSheetPositionControls | null>(null);
     const storeControls = useRef<IBottomSheetStore | null>(null);
 
-    const persistentMap = usePersistentMap();
+    const map = usePersistentMap();
 
     const handleSnapPointChange = (snapIndex: number) => {
-        if(!persistentMap.provider) return;
+        if(!map.provider) return;
         switch(snapIndex) {
             case 0:
-                persistentMap.provider.setPadding({ bottom: 260 });
+                map.provider.current.setPadding({ bottom: 260 });
                 break;
             case 1:
-                persistentMap.provider.setPadding({ bottom: 0 });
+                map.provider.current.setPadding({ bottom: 0 });
                 break;
         }
     };
@@ -60,6 +59,8 @@ export const LocationPickerMapView = (props: LocationPickerMapView.Props) => {
                 (item.state.data as GetNearbyPlaces.TOutput).places.some(place => place.id === pointId),
             )?.state.data as GetNearbyPlaces.TOutput;
 
+            console.log(pointId, data);
+
             confirmationDataRef.current = data.places.find(item => item.id === pointId);
             confirmationDrawerStore.current?.setOpen();
         } else {
@@ -71,13 +72,13 @@ export const LocationPickerMapView = (props: LocationPickerMapView.Props) => {
     return (
         <>
             <MapView
-                onMapMounted={({ provider }) => {
-                    provider.setPadding({ bottom: 260 }, { animate: false });
+                viewState={{
+                    padding: { bottom: 260 },
                 }}
                 onViewportChange={({ bounds }) => {
                     handleViewportChange(bounds);
-                    if(persistentMap.store?.selectedPoint) {
-                        persistentMap.store?.selectPoint(null);
+                    if(map.controller.current.store.selectedPoint) {
+                        map.controller.current.selectPoint(null);
                     }
                 }}
                 onPointSelect={handlePointSelect}

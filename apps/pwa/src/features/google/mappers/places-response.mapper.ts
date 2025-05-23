@@ -1,5 +1,5 @@
 import { GooglePlacesApiResponse } from "@/api/google/places/types";
-import { BasePoint, Point } from "@/components/shared/map/types";
+import { BasePoint, Point } from "@/components/shared/map/types/root/point";
 
 export class GooglePlacesApiResponseMapper<T extends GooglePlacesApiResponse = GooglePlacesApiResponse> {
     toBasePoint(input?: T): Point<BasePoint>[] {

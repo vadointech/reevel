@@ -3,7 +3,7 @@
 import { Drawer, DrawerBody, DrawerContent } from "@/components/shared/drawer";
 import { OnboardingConfirmLocation } from "../_components";
 import { OnboardingProgress, OnboardingTextBlock } from "../../_components";
-import { MapView } from "@/components/shared/map/map.component";
+import { MapView } from "@/components/shared/map/primitives/map-view.component";
 import { observer } from "mobx-react-lite";
 import { useLocationConfirmation } from "@/features/onboarding";
 import { MapboxFeatureResponse } from "@/api/mapbox/types";
