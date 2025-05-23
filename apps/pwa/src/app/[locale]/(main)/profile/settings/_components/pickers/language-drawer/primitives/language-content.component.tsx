@@ -6,7 +6,7 @@ import { Checkbox } from "@/components/shared/checkbox"
 import { IconEngland, IconSystemCounty, IconUkraine } from "@/components/icons"
 
 export namespace LanguageContent {
-    export type Language = 'english' | 'ukrainian' | 'system';
+    export type Language = Locale | 'system';
 
     export type Props = ComponentProps<"div">
 }
