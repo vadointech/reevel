@@ -19,7 +19,7 @@ import { UISize } from "@/types/common";
 import styles from "./styles.module.scss";
 import cx from "classnames";
 
-export namespace CreateSettingsSheet {
+export namespace ProfileSettingsBottomSheet {
     export type Props = BottomSheetRoot.Props;
 
     export type TriggerProps = PropsWithChildren;
@@ -29,7 +29,7 @@ export namespace CreateSettingsSheet {
     }>;
 }
 
-export const CreateSettingsBottomSheet = (props: CreateSettingsSheet.Props) => {
+export const ProfileSettingsBottomSheet = (props: ProfileSettingsBottomSheet.Props) => {
     return (
         <BottomSheetRoot fitContent fadeThreshold={0} {...props} />
     );
