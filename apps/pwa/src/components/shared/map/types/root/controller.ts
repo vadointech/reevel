@@ -1,7 +1,8 @@
 import { RefObject } from "react";
-import { BasePoint, Point } from "@/components/shared/map/types/root/point";
-import { IMapStore } from "@/components/shared/map/map.store";
-import { IMapHandlers, MapProviderCameraState } from "../../providers/mapbox/types";
+import { BasePoint, Point } from "./point";
+import { MapProviderCameraState } from "../provider/camera";
+import { IMapHandlers } from "../provider/handlers";
+import { IMapStore } from "../root/store";
 
 export interface IMapRootController {
     store: IMapStore;

@@ -36,10 +36,9 @@ export class MapRootController implements IMapRootController {
             container.current.appendChild(this.mapContainerRef.current);
 
             if(viewState) {
-                this._provider.current.config.initialViewState = {
-                    ...this._provider.current.config.initialViewState,
-                    ...viewState,
-                };
+                this._provider.current.syncViewState(viewState, {
+                    animate: false,
+                });
             }
 
             if(handlers) {

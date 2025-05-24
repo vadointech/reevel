@@ -18,10 +18,17 @@ export class MapboxProvider<T extends MapRef = MapRef> implements IMapProvider {
     initialize(map?: RefObject<T>) {
         if(map?.current) {
             console.warn("Map initialized");
-
             this.mapRef.current = map.current;
-            this.flyTo(this.config.initialViewState);
+            this.syncViewState();
         }
+    }
+
+    syncViewState(viewState?: Partial<MapProviderCameraState.Viewport>, options?: MapProviderCameraState.EasingOptions) {
+        if(viewState) this.config.initialViewState = viewState;
+        this.flyTo({
+            ...this.config.initialViewState,
+            ...options,
+        });
     }
 
     flyTo(options: MapProviderCameraState.EasingOptions): void {

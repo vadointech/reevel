@@ -22,6 +22,16 @@ export interface IMapProvider {
     initialize(mapRef?: RefObject<any>): void;
 
     /**
+     * Synchronizes the current view state with the provided partial viewport configuration.
+     *
+     * @return {void} This method does not return a value.
+     */
+    syncViewState(
+        viewState?: Partial<MapProviderCameraState.Viewport>,
+        options?: MapProviderCameraState.EasingOptions
+    ): void;
+
+    /**
      * Moves the view of the map smoothly to the specified coordinates.
      *
      * @return {void} This method does not return a value.
