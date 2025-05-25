@@ -1,6 +1,6 @@
 import { ComponentProps, PointerEvent } from "react";
+import { useBottomSheet } from "@/components/shared/_redesign/bottom-sheet/bottom-sheet.context";
 
-import { useBottomSheetStore } from "../store";
 
 import styles from "../styles.module.scss";
 import cx from "classnames";
@@ -14,10 +14,10 @@ export const BottomSheetHandle = ({
     onPointerDown,
     ...props
 }: BottomSheetHandle.Props) => {
-    const bottomSheetStore = useBottomSheetStore();
+    const { controller } = useBottomSheet();
     const handlePointerDown = (event: PointerEvent<HTMLDivElement>) => {
-        if(bottomSheetStore.rootConfig.handleOnly) {
-            bottomSheetStore.dragControls.start(event);
+        if(controller.current.internalConfig.handleOnly) {
+            controller.current.dragControls.start(event);
         }
         onPointerDown?.(event);
     };

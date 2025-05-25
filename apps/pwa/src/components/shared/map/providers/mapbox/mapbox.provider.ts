@@ -5,7 +5,7 @@ import {
     IMapProvider,
     MapProviderGL,
     MapProviderCameraState,
-    MapProviderConfig,
+    MapProviderConfig, MapProviderInitialViewState,
 } from "../../types";
 
 export class MapboxProvider<T extends MapRef = MapRef> implements IMapProvider {
@@ -23,12 +23,24 @@ export class MapboxProvider<T extends MapRef = MapRef> implements IMapProvider {
         }
     }
 
-    syncViewState(viewState?: Partial<MapProviderCameraState.Viewport>, options?: MapProviderCameraState.EasingOptions) {
-        if(viewState) this.config.initialViewState = viewState;
-        this.flyTo({
+    syncViewState(viewState?: Partial<MapProviderInitialViewState>, options?: MapProviderCameraState.EasingOptions) {
+        if(viewState) this.config.initialViewState = {
             ...this.config.initialViewState,
-            ...options,
-        });
+            ...viewState,
+        };
+
+        const bbox = this.config.initialViewState.bboxPolygon;
+
+        if(bbox) {
+            const bboxViewState = this.config.initialViewState;
+            delete bboxViewState.center;
+            delete bboxViewState.zoom;
+            const lngLatBounds = this.polygonToBounds(bbox);
+            this.fitBounds(lngLatBounds, {
+                ...bboxViewState,
+                ...options,
+            });
+        }
     }
 
     flyTo(options: MapProviderCameraState.EasingOptions): void {
@@ -40,7 +52,7 @@ export class MapboxProvider<T extends MapRef = MapRef> implements IMapProvider {
         }
     }
 
-    fitBounds(bounds: [number, number, number, number], options: MapProviderCameraState.EasingOptions): void {
+    fitBounds(bounds: MapProviderGL.LngLatBoundsLike, options?: MapProviderCameraState.EasingOptions): void {
         if(this.mapRef.current) {
             this.mapRef.current.fitBounds(bounds, {
                 pitch: this.config.initialViewState.pitch,
@@ -87,5 +99,15 @@ export class MapboxProvider<T extends MapRef = MapRef> implements IMapProvider {
         const westPoint = new LngLat(west, center.lat);
 
         return westPoint.distanceTo(eastPoint) / 2;
+    }
+
+
+    polygonToBounds(polygon: MapProviderGL.LngLatPolygon): MapProviderGL.LngLatBounds {
+        const bbox = polygon[0];
+
+        return new LngLatBounds(
+            [bbox[0][0], bbox[0][1]],
+            [bbox[2][0], bbox[2][1]],
+        );
     }
 }

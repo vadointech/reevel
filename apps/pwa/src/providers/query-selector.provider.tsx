@@ -1,6 +1,6 @@
 "use client";
 
-import { createContext, PropsWithChildren, RefObject, useContext, useEffect, useRef } from "react";
+import { createContext, PropsWithChildren, RefObject, useContext, useEffect, useRef, useState } from "react";
 
 type QuerySelectorProviderValues = {
     main: RefObject<HTMLElement | null>;
@@ -13,9 +13,12 @@ export const QuerySelectorProvider = ({ children }: PropsWithChildren) => {
     const main = useRef<HTMLElement | null>(null);
     const modal = useRef<HTMLElement | null>(null);
 
+    const [_, setReady] = useState(false);
+
     useEffect(() => {
         main.current = document.getElementById("main");
         modal.current = document.getElementById("modal-root");
+        setReady(true);
     }, []);
 
     return (

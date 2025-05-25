@@ -1,4 +1,3 @@
-import { Locale } from "@/types/common";
 import { GooglePLacesApiIncludedTypes, GooglePLacesApiPrimaryIncludedTypes } from "./included-types.config";
 import { GooglePLacesApiExcludedTypes, GooglePLacesApiPrimaryExcludedTypes } from "./excluded-types.config";
 
@@ -8,6 +7,7 @@ export type GooglePlacesApiRequestBody = {
     includedPrimaryTypes?: readonly GooglePLacesApiPrimaryIncludedTypes[],
     excludedPrimaryTypes?: readonly GooglePLacesApiPrimaryExcludedTypes[]
     maxResultCount?: number,
+    languageCode?: string;
     locationRestriction: {
         circle: {
             center: {
@@ -25,9 +25,9 @@ const _fieldMaskValues = [
 ] as const;
 
 export type GooglePlacesApiRequestParams = {
-    fieldMask: Array<typeof _fieldMaskValues[number]>;
-    imageMaxWidth: number;
-    imageMaxHeight: number;
+    fieldMask?: Array<typeof _fieldMaskValues[number]>;
+    imageMaxWidth?: number;
+    imageMaxHeight?: number;
 };
 
 export type GooglePlacesApiResponse = {
@@ -35,7 +35,7 @@ export type GooglePlacesApiResponse = {
         id: string;
         displayName: {
             text: string;
-            languageCode: Locale
+            languageCode: string;
         },
         location: {
             latitude: number,

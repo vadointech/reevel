@@ -13,7 +13,7 @@ export function useFetchNearestLocations() {
     const getPlacesByArea = (
         center: MapProviderGL.LngLat,
         radius: number,
-        includedType?: GooglePLacesApiIncludedTypes,
+        includedType?: GooglePLacesApiIncludedTypes | null,
     ) => {
         return debouncedCallback(async() => {
             return fetchQuery({
@@ -42,13 +42,10 @@ export function useFetchNearestLocations() {
                         },
                     },
                     params: {
-                        fieldMask: ["id", "displayName", "location", "primaryType", "iconBackgroundColor", "iconMaskBaseUri", "primaryTypeDisplayName"],
-                        imageMaxWidth: 100,
-                        imageMaxHeight: 100,
+                        fieldMask: ["id", "displayName", "location", "primaryType", "primaryTypeDisplayName"],
                     },
                 })
                     .then(res => res.data || { places: [] })
-                    .then(googlePlacesApiResponseTransformer.filterEmptyIcons)
                     .then(googlePlacesApiResponseTransformer.filterClosePoints),
             });
         });

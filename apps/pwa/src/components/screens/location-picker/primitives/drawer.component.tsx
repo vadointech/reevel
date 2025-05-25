@@ -1,11 +1,9 @@
 "use client";
 
-import { RefObject } from "react";
 import { Link } from "@/i18n/routing";
 
 import {
-    GOOGLE_PLACES_API_INCLUDED_TYPES,
-    useLocationPickerStore,
+    GOOGLE_PLACES_API_INCLUDED_TYPES, useLocationPicker,
 } from "@/features/location/picker";
 
 import {
@@ -19,17 +17,14 @@ import { Container, Scroll } from "@/components/ui";
 import { Button, Header, InterestButton } from "@/components/shared/_redesign";
 import { IconArrowLeft } from "@/components/icons";
 
-import { BottomSheetPositionControls } from "@/components/shared/_redesign/bottom-sheet";
-
 import styles from "../styles.module.scss";
 import { observer } from "mobx-react-lite";
-import { IBottomSheetStore } from "@/components/shared/_redesign/bottom-sheet/store";
 import { GooglePLacesApiIncludedTypes } from "@/api/google/places";
+import { BottomSheetExternalController } from "@/components/shared/_redesign/bottom-sheet/types";
 
 export namespace LocationPickerDrawer {
     export type Props = & LocationTypesListProps & {
-        positionControls?: RefObject<BottomSheetPositionControls | null>;
-        storeControls?: RefObject<IBottomSheetStore | null>;
+        controller?: BottomSheetExternalController
         onSnapPointChange?: (snapPointIndex: number) => void;
     };
 
@@ -39,12 +34,10 @@ export namespace LocationPickerDrawer {
 }
 
 export const LocationPickerDrawer = ({
-    storeControls,
-    positionControls,
     onLocationTypePick,
-    onSnapPointChange,
+    controller,
 }: LocationPickerDrawer.Props) => {
-    const { config } = useLocationPickerStore();
+    const { controller: pickerController } = useLocationPicker();
 
     return (
         <BottomSheetRoot
@@ -52,12 +45,8 @@ export const LocationPickerDrawer = ({
             dismissible={false}
             overlay={false}
             defaultOpen
-            snapPoints={["fit-content", .14, 0]}
-            externalControls={{
-                storeControls,
-                positionControls,
-            }}
-            onSnapPointChange={onSnapPointChange}
+            snapPoints={["fit-content", .14]}
+            externalController={controller}
         >
             <BottomSheetPortal>
                 <BottomSheetBody>
@@ -89,7 +78,7 @@ export const LocationPickerDrawer = ({
                             <div className={styles.drawer__buttons}>
                                 <Button
                                     variant={"secondary-muted"}
-                                    href={config.locationSearchUrl}
+                                    href={pickerController.current.config.locationSearchUrl}
                                 >
                                     Enter location manually
                                 </Button>
@@ -110,13 +99,13 @@ export const LocationPickerDrawer = ({
 const LocationTypesList = observer(({
     onLocationTypePick,
 }: LocationPickerDrawer.LocationTypesListProps) => {
-    const locationPickerStore = useLocationPickerStore();
+    const { filtersStore } = useLocationPicker();
     return GOOGLE_PLACES_API_INCLUDED_TYPES.display.map(item => (
         <InterestButton
             key={item.slug}
             icon={item.icon}
             variant={
-                locationPickerStore.filters.locationType === item.slug ? "primary" : "default"
+                filtersStore.locationType === item.slug ? "primary" : "default"
             }
             onClick={() => onLocationTypePick(item.slug)}
         >

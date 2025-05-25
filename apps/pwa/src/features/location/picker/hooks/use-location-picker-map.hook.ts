@@ -1,23 +1,33 @@
+"use client";
+
+import { useRef } from "react";
 import { MapProviderGL } from "@/components/shared/map/types/provider/gl";
 import { calculateBoundsArea, calculateRadius, createBufferedBounds } from "../utils/map-dimentions";
-import { useFetchNearestLocations } from "@/features/location/picker/hooks/use-fetch-nearest-locations.hook";
+import { useFetchNearestLocations } from "@/features/google/hooks/use-fetch-nearest-locations.hook";
 import { googlePlacesApiResponseMapper } from "@/features/google/mappers";
-import { useLocationPickerStore } from "@/features/location/picker";
-import { RefObject } from "react";
 import { usePersistentMap } from "@/components/shared/map";
+import { useLocationPicker } from "../location-picker.context";
+import { GooglePLacesApiIncludedTypes } from "@/api/google/places";
 
-export function useLocationPickerMap(
-    prevBoundsArr: RefObject<MapProviderGL.LngLatBounds[]>,
-    prevCenter: RefObject<MapProviderGL.LngLat | null>,
-    prevBoundsArea: RefObject<number>,
-    prevRadius: RefObject<number>,
-) {
+export function useLocationPickerMap() {
+    const prevBoundsArr = useRef<MapProviderGL.LngLatBounds[]>([]);
+    const prevCenter = useRef<MapProviderGL.LngLat | null>(null);
+    const prevBoundsArea = useRef<number>(0);
+    const prevRadius = useRef<number>(0);
+
+    const resetLocationRestriction = () => {
+        prevBoundsArr.current = [];
+        prevCenter.current = null;
+        prevBoundsArea.current = 0;
+        prevRadius.current = 0;
+    };
+
     const persistentMap = usePersistentMap();
-    const locationPickerStore = useLocationPickerStore();
+    const { filtersStore } = useLocationPicker();
     const { getPlacesByArea } = useFetchNearestLocations();
 
     const handleFetchPlaces = async(center: MapProviderGL.LngLat, radius: number) => {
-        const points = await getPlacesByArea(center, radius, locationPickerStore.filters.locationType)
+        const points = await getPlacesByArea(center, radius, filtersStore.locationType)
             .then(googlePlacesApiResponseMapper.toBasePoint);
         persistentMap.controller.current.appendPoints(points);
     };
@@ -75,7 +85,32 @@ export function useLocationPickerMap(
 
     };
 
+    const handlePickLocationType = async(type: GooglePLacesApiIncludedTypes) => {
+
+        const bounds = persistentMap.provider.current.getBounds();
+        if(!bounds) return;
+
+        const currentType = filtersStore.locationType;
+        const center = bounds.getCenter();
+        const radius = persistentMap.provider.current.getHorizontalRadius(bounds, center);
+
+        if(currentType === type) {
+            filtersStore.setLocationType(null);
+            const points = await getPlacesByArea(center, radius)
+                .then(googlePlacesApiResponseMapper.toBasePoint);
+            persistentMap.controller.current.replacePoints(points);
+            resetLocationRestriction();
+        } else {
+            filtersStore.setLocationType(type);
+            const points = await getPlacesByArea(center, radius, type)
+                .then(googlePlacesApiResponseMapper.toBasePoint);
+            persistentMap.controller.current.replacePoints(points);
+            resetLocationRestriction();
+        }
+    };
+
     return {
         handleViewportChange,
+        handlePickLocationType,
     };
 }

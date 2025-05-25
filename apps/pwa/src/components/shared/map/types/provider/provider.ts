@@ -2,11 +2,19 @@ import { RefObject } from "react";
 import { MapProviderCameraState } from "./camera";
 import { MapProviderGL } from "./gl";
 
+export type MapProviderInitialViewState = {
+    pitch: number;
+    zoom: number;
+    center: [number, number];
+    padding: MapProviderCameraState.PaddingOptions;
+    bboxPolygon: MapProviderGL.LngLatPolygon;
+};
+
 export type MapProviderConfig = {
     accessToken: string;
     mapStyleDark: string;
     mapStyleLight: string;
-    initialViewState: Partial<MapProviderCameraState.Viewport>;
+    initialViewState: Partial<MapProviderInitialViewState>;
 };
 
 export interface IMapProvider {
@@ -80,4 +88,12 @@ export interface IMapProvider {
      * @return {number} The calculated radius based on the horizontal distance of the bounds.
      */
     getHorizontalRadius(bounds: MapProviderGL.LngLatBounds, center: MapProviderGL.LngLat): number;
+
+    /**
+     * Converts a polygon into a bounding box that fully contains the polygon.
+     *
+     * @param {MapProviderGL.LngLatPolygon} polygon - The polygon to be converted into bounds.
+     * @return {MapProviderGL.LngLatBounds} The bounding box that encompasses the entire polygon.
+     */
+    polygonToBounds(polygon: MapProviderGL.LngLatPolygon): MapProviderGL.LngLatBounds
 }

@@ -22,9 +22,7 @@ export default observer(function Page() {
 
     return (
         <>
-            <MapView
-                onMapReady={handleShowOnMap}
-            />
+            <MapView onMapReady={handleShowOnMap} />
             <Drawer open={!!place} staticPoint={"middle"} modal={false}>
                 <DrawerBody>
                     <DrawerContent>

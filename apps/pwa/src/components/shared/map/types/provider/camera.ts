@@ -1,4 +1,4 @@
-import { LngLatLike } from "mapbox-gl";
+import { MapProviderGL } from "@/components/shared/map/types";
 
 export namespace MapProviderCameraState {
     export type Viewport = {
@@ -37,7 +37,7 @@ export namespace MapProviderCameraState {
     };
 
     export type CameraOptions = {
-        center: LngLatLike;
+        center: MapProviderGL.LngLatLike;
         zoom: number;
         bearing: number;
         pitch: number;

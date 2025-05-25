@@ -1,4 +1,4 @@
-import { action, makeObservable, observable } from "mobx";
+import { action, makeObservable, observable, reaction } from "mobx";
 import { BasePoint, Point, IMapStore } from "./types";
 
 export class MapStore implements IMapStore {

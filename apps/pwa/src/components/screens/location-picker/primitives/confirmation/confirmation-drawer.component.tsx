@@ -4,7 +4,6 @@ import {
     BottomSheetBody,
     BottomSheetContent, BottomSheetHandle, BottomSheetPortal, BottomSheetRoot,
 } from "@/components/shared/_redesign/bottom-sheet";
-import { IBottomSheetExternalControls } from "@/components/shared/_redesign/bottom-sheet/types";
 
 import styles from "./styles.module.scss";
 import { CloseButton } from "@/components/shared/_redesign/close-button";
@@ -14,29 +13,28 @@ import { Button } from "@/components/shared/_redesign";
 import Image from "next/image";
 import { GetNearbyPlaces } from "@/api/google/places";
 import { RefObject } from "react";
+import { BottomSheetExternalController } from "@/components/shared/_redesign/bottom-sheet/types";
 
 export namespace LocationPickerConfirmationDrawer {
-    export type Props = Partial<IBottomSheetExternalControls> & {
+    export type Props = {
+        controller?: BottomSheetExternalController;
         dataRef: RefObject<GetNearbyPlaces.TOutput["places"][number] | undefined>;
         onClose?: () => void;
     };
 }
 
 export const LocationPickerConfirmationDrawer = ({
-    storeControls,
-    onClose,
     dataRef,
+    controller,
+    onClose,
 }: LocationPickerConfirmationDrawer.Props) => {
-
     return (
         <BottomSheetRoot
-            touchEvents={true}
+            touchEvents={false}
             overlay={false}
             snapPoints={["fit-content"]}
             onClose={onClose}
-            externalControls={{
-                storeControls,
-            }}
+            externalController={controller}
         >
             <BottomSheetPortal>
                 <BottomSheetBody>

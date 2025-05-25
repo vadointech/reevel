@@ -22,6 +22,6 @@ export class ProfileController {
         @Body() body: UpdateProfileDto,
         @Session() session: ServerSession,
     ) {
-        return await this.profileService.updateProfile(session.user.id, body);
+        return this.profileService.updateProfile(session.user.id, body);
     }
 }

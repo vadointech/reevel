@@ -1,17 +1,15 @@
 "use client";
 
-import { useEffect } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { HTMLMotionProps, motion } from "motion/react";
 
-import {
-    useBottomSheetControls,
-    useBottomSheetDrag,
-} from "../hooks";
+import { useOutsideEvent } from "@/hooks/use-outside-event";
+import { useBottomSheet } from "../bottom-sheet.context";
+import { useBottomSheetDrag } from "../hooks";
 import { generateBottomSheetExitTransitionParams } from "../config/transition.config";
-import { useBottomSheetStore } from "../store";
+
 import { BottomSheetOverlay } from "./overlay.component";
 
-import { useOutsideEvent } from "@/hooks/use-outside-event";
 
 import styles from "../styles.module.scss";
 import cx from "classnames";
@@ -25,40 +23,33 @@ export const BottomSheetBody = ({
     className,
     ...props
 }: BottomSheetBody.Props) => {
-    const bottomSheetStore = useBottomSheetStore();
-    const { rootConfig } = bottomSheetStore;
+    const { controller, store } = useBottomSheet();
 
-    const {
-        initialized,
+    const [ready, setReady] = useState(false);
 
-        containerRef,
-        snapControls,
-        positionControls,
-
-        containerAnimate,
-    } = useBottomSheetControls(bottomSheetStore, rootConfig);
+    const containerRef = useCallback((element: HTMLElement | null) => {
+        controller.current.attach(element);
+        setReady(true);
+    }, [controller]);
 
     const {
         dragY,
         dragYProgress,
         contentOpacity,
         handleDragEnd,
-    } = useBottomSheetDrag(
-        snapControls,
-        positionControls,
-    );
+    } = useBottomSheetDrag();
 
     useEffect(() => {
-        if(initialized && bottomSheetStore.open) {
-            positionControls.current.setPositionBySnapIndex(rootConfig.defaultSnapPointIndex);
+        if(ready && store.open) {
+            controller.current.open();
         }
-    }, [initialized]);
+    }, [ready]);
 
     const [bottomSheetRef] = useOutsideEvent<HTMLDivElement>(
         ["pointerdown"], {
-            activate: rootConfig.dismissible,
+            activate: controller.current.internalConfig.dismissible,
             handleEvent: () => {
-                bottomSheetStore.setClose();
+                controller.current.close();
             },
         },
     );
@@ -66,10 +57,10 @@ export const BottomSheetBody = ({
     return (
         <>
             {
-                rootConfig.overlay && (
+                controller.current.internalConfig.overlay && (
                     <BottomSheetOverlay
                         dragYProgress={dragYProgress}
-                        threshold={rootConfig.fadeThreshold}
+                        threshold={controller.current.internalConfig.fadeThreshold}
                     />
                 )
             }
@@ -80,20 +71,17 @@ export const BottomSheetBody = ({
                     height: "100%",
                 }}
                 ref={bottomSheetRef}
-                dragControls={bottomSheetStore.dragControls}
-                dragListener={!rootConfig.handleOnly}
+                dragControls={controller.current.dragControls}
+                dragListener={!controller.current.internalConfig.handleOnly}
                 transition={generateBottomSheetExitTransitionParams(0)}
-                initial={{ y: snapControls.current.clientHeight }}
-                exit={{ y: snapControls.current.clientHeight }}
-                animate={containerAnimate}
+                initial={{ y: controller.current.internalConfig.clientHeight }}
+                exit={{ y: controller.current.internalConfig.clientHeight }}
+                animate={controller.current.animationControls}
                 dragDirectionLock
-                dragConstraints={{
-                    top: snapControls.current.Top,
-                    bottom: snapControls.current.Bottom,
-                }}
+                dragConstraints={controller.current.dragConstraints}
                 dragElastic={{
                     top: .07,
-                    bottom: snapControls.current.snapPointsCount === 1 ? .2 : .07,
+                    bottom: controller.current.internalConfig.snapPointsCount === 1 ? .2 : .07,
                 }}
                 onDragEnd={handleDragEnd}
                 className={styles.bottomSheet__dragger}

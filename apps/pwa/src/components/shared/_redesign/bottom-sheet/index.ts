@@ -1,6 +1,4 @@
 export * from "./root.component";
 export * from "./primitives";
-export * from "./controls";
-
-export { useBottomSheetStore } from "./store";
-
+export { useBottomSheet, type BottomSheetInstance } from "./bottom-sheet.context";
+// export * from "./use-bottom-sheet.hook";

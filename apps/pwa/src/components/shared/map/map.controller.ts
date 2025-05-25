@@ -8,7 +8,7 @@ import {
     IMapRootController,
     IMapStore,
     Point,
-    MapProviderCameraState,
+    MapProviderInitialViewState,
 } from "./types";
 
 export class MapRootController implements IMapRootController {
@@ -31,7 +31,7 @@ export class MapRootController implements IMapRootController {
         return this._externalHandlers;
     }
 
-    attachMap(container: React.RefObject<HTMLElement | null>, viewState?: Partial<MapProviderCameraState.Viewport>, handlers?: Partial<IMapHandlers>) {
+    attachMap(container: React.RefObject<HTMLElement | null>, viewState?: Partial<MapProviderInitialViewState>, handlers?: Partial<IMapHandlers>) {
         if(this.mapContainerRef.current && container.current) {
             container.current.appendChild(this.mapContainerRef.current);
 
@@ -44,6 +44,8 @@ export class MapRootController implements IMapRootController {
             if(handlers) {
                 this._externalHandlers = handlers;
             }
+
+            this._externalHandlers.onMapReady?.();
         }
     }
 

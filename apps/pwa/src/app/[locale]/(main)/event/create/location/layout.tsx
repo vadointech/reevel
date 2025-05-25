@@ -1,5 +1,5 @@
 import { PropsWithChildren } from "react";
-import { LocationPickerProvider } from "@/components/screens/location-picker";
+import { LocationPickerProvider } from "@/features/location/picker";
 
 export default function CreateEventLocationLayout({ children }: PropsWithChildren) {
     return (

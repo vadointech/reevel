@@ -1,6 +1,7 @@
-import { Column, Entity, JoinColumn, OneToMany, OneToOne, Point, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, JoinColumn, OneToMany, OneToOne, PrimaryGeneratedColumn } from "typeorm";
 import { UserEntity } from "@/modules/user/entities/user.entity";
 import { ProfileInterestsEntity } from "@/modules/profile/entities/profile-interests.entity";
+import { ProfileLocationsEntity } from "@/modules/profile/entities/profile-location.entity";
 
 @Entity("profiles")
 export class ProfileEntity {
@@ -16,8 +17,8 @@ export class ProfileEntity {
     @Column({ nullable: true })
     picture?: string;
 
-    @Column("geography", { nullable: true, spatialFeatureType: "Point", srid: 4326 })
-    location?: Point;
+    @OneToOne(() => ProfileLocationsEntity, location => location.profile, { nullable: true, onDelete: "SET NULL" })
+    location?: ProfileLocationsEntity;
 
     @Column({ nullable: true })
     completed: string; // "true" | "false" | "current step"

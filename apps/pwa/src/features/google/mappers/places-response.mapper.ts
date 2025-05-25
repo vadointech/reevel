@@ -20,10 +20,6 @@ export class GooglePlacesApiResponseMapper<T extends GooglePlacesApiResponse = G
                 image: item.photos?.[0].imageUri,
                 label: item.displayName.text,
                 primaryType: item.primaryType,
-                icon: {
-                    mask: item.iconMaskBaseUri,
-                    color: item.iconBackgroundColor,
-                },
             },
         }));
     }

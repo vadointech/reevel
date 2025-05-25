@@ -6,7 +6,7 @@ import { JwtStrategy } from "./strategies/jwt.strategy";
 import { JwtSession } from "./dto/jwt.dto";
 import { GoogleOAuthUserInfo } from "./dto/auth.dto";
 import { UserRepository } from "@/modules/user/user.repository";
-import { ProfileRepository } from "@/modules/profile/profile.repository";
+import { ProfileRepository } from "@/modules/profile/repositories/profile.repository";
 import { SubscriptionRepository } from "@/modules/subscription/subscription.repository";
 
 @Injectable()

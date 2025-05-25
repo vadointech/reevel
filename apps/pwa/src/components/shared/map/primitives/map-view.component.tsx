@@ -2,12 +2,12 @@
 
 import { ComponentProps, useEffect, useRef } from "react";
 import { usePersistentMap } from "../map.context";
-import { BasePoint, Point, IMapHandlers, MapProviderCameraState } from "../types";
+import { BasePoint, Point, IMapHandlers, MapProviderInitialViewState } from "../types";
 
 export namespace MapView {
     export type Props<P extends BasePoint> = ComponentProps<"div"> & Partial<IMapHandlers> & {
         points?: Point<P>[];
-        viewState?: Partial<MapProviderCameraState.Viewport>;
+        viewState?: Partial<MapProviderInitialViewState>;
     };
 }
 
@@ -16,6 +16,7 @@ export const MapView = ({
 
     viewState,
 
+    onMapReady,
     onPointSelect,
     onViewportChange,
 
@@ -31,6 +32,7 @@ export const MapView = ({
             containerRef,
             viewState,
             {
+                onMapReady,
                 onPointSelect,
                 onViewportChange,
             },

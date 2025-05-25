@@ -61,3 +61,7 @@ a {
 .pointer-none {
   pointer-events: none;
 }
+
+.mapboxgl-marker {
+  pointer-events: inherit !important;
+}

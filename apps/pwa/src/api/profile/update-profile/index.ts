@@ -7,7 +7,10 @@ export namespace UpdateProfile {
         fullName: string;
         picture: string;
         completed: string;
-        location: [number, number];
+        location: {
+            center?: [number, number],
+            bbox?: [number, number, number, number],
+        };
         interests: string[];
     }>;
     export type TOutput = Partial<{

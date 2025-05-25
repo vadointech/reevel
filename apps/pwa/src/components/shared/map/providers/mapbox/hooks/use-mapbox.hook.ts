@@ -1,5 +1,5 @@
-import { RefObject, useCallback, useState } from "react";
 import { MapEvent } from "mapbox-gl";
+import { RefObject, useCallback, useState } from "react";
 import { ViewStateChangeEvent } from "react-map-gl/mapbox";
 import { IMapProvider , IMapRootController, MapProviderCameraState } from "../types";
 
@@ -8,8 +8,17 @@ export function useMapbox(
     controller: RefObject<IMapRootController>,
     onMapLoad?: () => void,
 ) {
+
+    const initialViewState = provider.current.config.initialViewState;
+
     const [viewState, setViewState] = useState<Partial<MapProviderCameraState.Viewport>>(
-        provider.current.config.initialViewState,
+        {
+            longitude: initialViewState.center?.[0] || 0,
+            latitude: initialViewState.center?.[1] || 0,
+            zoom: initialViewState.zoom || 12,
+            pitch: initialViewState.pitch || 0,
+            padding: initialViewState.padding,
+        },
     );
     const [bounds, setBounds] = useState<MapProviderCameraState.Bounds>([0, 0, 0, 0]);
 

@@ -9,7 +9,7 @@ import {
     BottomSheetPortal,
     BottomSheetRoot,
     BottomSheetTrigger,
-    useBottomSheetStore,
+    useBottomSheet,
 } from "@/components/shared/_redesign/bottom-sheet";
 import { Button, Header } from "@/components/shared/_redesign";
 
@@ -62,7 +62,7 @@ export const CreateEventFormBottomSheetContent = ({
     onSubmit,
     onReset,
 }: CreateEventFormBottomSheet.ContentProps) => {
-    const bottomSheetStore = useBottomSheetStore();
+    const { controller } = useBottomSheet();
     return (
         <BottomSheetContent>
             <BottomSheetHandle>
@@ -87,7 +87,7 @@ export const CreateEventFormBottomSheetContent = ({
                                         variant={"secondary-muted"}
                                         onClick={(event) => {
                                             onReset?.(event);
-                                            bottomSheetStore.setClose();
+                                            controller.current.close();
                                         }}
                                     >
                                         Reset
@@ -100,7 +100,7 @@ export const CreateEventFormBottomSheetContent = ({
                                         variant={"primary"}
                                         onClick={(event) => {
                                             onSubmit?.(event);
-                                            bottomSheetStore.setClose();
+                                            controller.current.close();
                                         }}
                                     >
                                         Confirm

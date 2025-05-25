@@ -55,7 +55,9 @@ export class UserRepository extends Repository<UserEntity> implements IUserRepos
         return this.findOne({
             where: { id: userId },
             relations: {
-                profile: true,
+                profile: {
+                    location: true,
+                },
                 subscription: true,
             },
             select: {

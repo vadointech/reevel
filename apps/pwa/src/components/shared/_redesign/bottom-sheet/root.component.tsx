@@ -1,26 +1,52 @@
 "use client";
 
-import { PropsWithChildren, useState } from "react";
-import { BottomSheetStoreProvider } from "./store";
-import { BottomSheetRootConfig, IBottomSheetRootConfig } from "./config/root.config";
+import { ReactNode, useEffect, useMemo, useRef } from "react";
+import { useAnimation } from "motion/react";
+
+import { BottomSheetRootConfig } from "./config/root.config";
+import { BottomSheetContext } from "./bottom-sheet.context";
+import { BottomSheetRootController } from "./controllers";
+import { BottomSheetStore } from "./store";
+
+import { IBottomSheetConfigParams, BottomSheetExternalController } from "./types";
 
 export namespace BottomSheetRoot {
-    export type Props = PropsWithChildren<Partial<IBottomSheetRootConfig>>;
+    export type Props = Partial<IBottomSheetConfigParams> & {
+        children: ReactNode;
+        externalController?: BottomSheetExternalController;
+    };
 }
 
 export const BottomSheetRoot = ({
     children,
+    externalController,
     ...configProps
 }: BottomSheetRoot.Props) => {
-    const [rootConfig] = useState(() => {
-        return new BottomSheetRootConfig(configProps);
+    const animationControls = useAnimation();
+
+    const rootConfig = new BottomSheetRootConfig({
+        ...configProps,
     });
 
+    const store = useMemo(() => new BottomSheetStore(rootConfig), []);
+
+    const controller = useRef(
+        new BottomSheetRootController(
+            rootConfig,
+            store,
+            animationControls,
+        ),
+    );
+
+    useEffect(() => {
+        if(externalController) {
+            externalController.current = controller.current;
+        }
+    }, [controller]);
+
     return (
-        <BottomSheetStoreProvider
-            init={[rootConfig]}
-        >
+        <BottomSheetContext.Provider value={{ store, controller }}>
             { children }
-        </BottomSheetStoreProvider>
+        </BottomSheetContext.Provider>
     );
 };

@@ -8,7 +8,8 @@ export interface IOnboardingStore {
     bio: string;
     picture: string;
     interests: string[];
-    location?: [number, number];
+    locationCenter?: [number, number];
+    locationBbox?: [number, number, number, number];
     locationQuery: string;
 }
 
@@ -19,7 +20,8 @@ class OnboardingStore implements IOnboardingStore {
     interests: string[] = [];
 
     locationQuery: string = "";
-    location?: [number, number] = undefined;
+    locationCenter?: [number, number] = undefined;
+    locationBbox?: [number, number, number, number] = undefined;
 
     initialState: Partial<IOnboardingStore> = {};
 
@@ -30,7 +32,8 @@ class OnboardingStore implements IOnboardingStore {
             picture: observable,
             interests: observable.shallow,
             locationQuery: observable,
-            location: observable.ref,
+            locationCenter: observable.ref,
+            locationBbox: observable.ref,
             setName: action,
             setPicture: action,
             setBio: action,
@@ -69,8 +72,9 @@ class OnboardingStore implements IOnboardingStore {
         this.locationQuery = query;
     }
 
-    setLocation(lng: number, lat: number) {
-        this.location = [lng, lat];
+    setLocation(center?: [number, number], bbox?: [number, number, number, number]) {
+        this.locationCenter = center;
+        this.locationBbox = bbox;
     }
 }
 

@@ -29,7 +29,7 @@ export function useLocationPicker(initialLocationList: MapboxFeatureResponse[]) 
                     name: debounceSearchValue,
                 },
                 params: {
-                    access_token: provider?.accessToken,
+                    access_token: provider.current.config.accessToken,
                     language: locale,
                     types: "place",
                     limit: 4,
@@ -48,7 +48,7 @@ export function useLocationPicker(initialLocationList: MapboxFeatureResponse[]) 
         if (ref) {
             if(ref.childNodes.length === 0) return;
 
-            const currentLocation = onboardingStore.location?.join(",") || "";
+            const currentLocation = onboardingStore.locationCenter?.join(",") || "";
             if(!currentLocation) return;
 
             const containerHeight = ref.clientHeight;
@@ -71,11 +71,11 @@ export function useLocationPicker(initialLocationList: MapboxFeatureResponse[]) 
                 }
             }
         }
-    }, [onboardingStore.location]);
+    }, [onboardingStore.locationCenter]);
 
     const handleSelectLocation = useCallback((feature: MapboxFeatureResponse) => {
         const location = feature.center;
-        onboardingStore.setLocation(location[0], location[1]);
+        onboardingStore.setLocation(feature.center, feature.bbox);
         queryClient.setQueryData<MapboxFeatureResponse>(["user/city", ...location], () => {
             return mapboxFeatureResponseTransformer.toConfirmationDrawer(feature);
         });

@@ -10,7 +10,7 @@ export function useLocationAccess() {
         if ("geolocation" in navigator) {
             navigator.geolocation.getCurrentPosition(
                 ({ coords }) => {
-                    onboardingStore.setLocation(coords.longitude, coords.latitude);
+                    onboardingStore.setLocation([coords.longitude, coords.latitude], [0, 0, 0, 0]);
                     handleSetStep("/onboarding/location/confirm");
                 },
                 () => {

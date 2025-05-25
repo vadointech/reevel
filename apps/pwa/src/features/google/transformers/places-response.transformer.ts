@@ -31,7 +31,7 @@ class GooglePlacesApiResponseTransformer<T extends GooglePlacesApiResponse = Goo
           filteredPoints.push(points[0]);
       }
 
-      // Check each subsequent point against all filtered points
+      // Check each following point against all filtered points
       for (let i = 1; i < points.length; i++) {
           const currentPoint = points[i];
           let isTooClose = false;
@@ -66,12 +66,6 @@ class GooglePlacesApiResponseTransformer<T extends GooglePlacesApiResponse = Goo
     filterEmptyImages(input: GooglePlacesApiResponse): GooglePlacesApiResponse {
         return {
             places: input.places.filter(place => place.photos && place.photos.length > 0),
-        };
-    }
-
-    filterEmptyIcons(input: GooglePlacesApiResponse): GooglePlacesApiResponse {
-        return {
-            places: input.places.filter(place => place.iconMaskBaseUri && place.iconBackgroundColor),
         };
     }
 }

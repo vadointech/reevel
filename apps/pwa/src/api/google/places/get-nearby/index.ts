@@ -39,29 +39,31 @@ export const getNearbyPlaces = fetcherClient<GetNearbyPlaces.TInput, GetNearbyPl
                 result.data.places = [];
                 return result;
             }
-            result.data.places = result.data.places.map(item => {
-                if(!item.photos || item.photos.length === 0) return item;
-
-                const photos = item.photos.map(photo => ({
-                    ...photo,
-                    imageUri: `https://places.googleapis.com/v1/${photo.name}/media?key=AIzaSyAIfGyOk4VSltw4QnBr1r6wjK_2bkw1pU4&maxWidthPx=${
-                        input?.params?.imageMaxWidth || input?.params?.imageMaxHeight || photo.widthPx
-                    }&maxHeightPx=${
-                        input?.params?.imageMaxHeight || input?.params?.imageMaxWidth || photo.heightPx
-                    }`,
-                }));
-
-                return {
-                    ...item,
-                    photos,
-                };
-            });
-
-            result.data.places = result.data.places.map(item => ({
-                ...item,
-                iconMaskBaseUri: item.iconMaskBaseUri + ".png",
-            }));
         }
+
+        // if(result.data) {
+        //     if(!result.data.places) {
+        //         result.data.places = [];
+        //         return result;
+        //     }
+        //     result.data.places = result.data.places.map(item => {
+        //         if(!item.photos || item.photos.length === 0) return item;
+        //
+        //         const photos = item.photos.map(photo => ({
+        //             ...photo,
+        //             imageUri: `https://places.googleapis.com/v1/${photo.name}/media?key=AIzaSyAIfGyOk4VSltw4QnBr1r6wjK_2bkw1pU4&maxWidthPx=${
+        //                 input?.params?.imageMaxWidth || input?.params?.imageMaxHeight || photo.widthPx
+        //             }&maxHeightPx=${
+        //                 input?.params?.imageMaxHeight || input?.params?.imageMaxWidth || photo.heightPx
+        //             }`,
+        //         }));
+        //
+        //         return {
+        //             ...item,
+        //             photos,
+        //         };
+        //     });
+        // }
 
         return result;
     },

@@ -1,16 +1,15 @@
 import { ComponentProps } from "react";
 
-import { useBottomSheetStore } from "../store";
-
 import styles from "../styles.module.scss";
 import cx from "classnames";
+import { useBottomSheet } from "@/components/shared/_redesign/bottom-sheet/bottom-sheet.context";
 
 export namespace BottomSheetTrigger {
     export type Props = ComponentProps<"div">;
 }
 
 export const BottomSheetTrigger = ({ className, ...props }: BottomSheetTrigger.Props) => {
-    const bottomSheetStore = useBottomSheetStore();
+    const { controller } = useBottomSheet();
 
     return (
         <div
@@ -18,7 +17,7 @@ export const BottomSheetTrigger = ({ className, ...props }: BottomSheetTrigger.P
                 styles.bottomSheet__triger,
                 className,
             )}
-            onClick={() => bottomSheetStore.setOpen()}
+            onClick={() => controller.current.open()}
             {...props}
         />
     );
