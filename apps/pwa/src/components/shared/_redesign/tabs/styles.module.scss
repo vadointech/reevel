@@ -21,6 +21,7 @@ $content-height: calc($button-height + $control-offest * 2);
     padding-inline: 1rem;
     //overflow-y: auto;
     overflow-y: hidden;
+    position: relative;
 }
 
 .controls {

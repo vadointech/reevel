@@ -15,10 +15,19 @@ import { headers } from "next/headers";
 
 import "../globals.scss";
 import { QuerySelectorProvider } from "@/providers/query-selector.provider";
+import { ThemeProvider } from "@/providers/theme.provider";
+import { ThemeColorManager } from "@/providers/theme-color-manager";
+
+
 
 export const metadata: Metadata = {
     title: "Reevel",
     description: "Easily bring people together. Reevel turns simple moments into lasting memories.",
+    appleWebApp: {
+        capable: true,
+        statusBarStyle: "black-translucent", // або ""
+        title: "Reevel",
+    },
 };
 
 export const viewport: Viewport = {
@@ -42,13 +51,14 @@ export default async function RootLayout({ children, params }: PropsWithChildren
         nextHeaders: await headers(),
     });
 
+
     return (
-        <html lang={locale}>
+        <html lang={locale} suppressHydrationWarning>
             <head>
                 <ReactScan />
             </head>
-            <body className={fonts}>
-                <ServiceWorkerProvider register={process.env.SETVICE_WORKER === "true"}>
+            <body className={fonts} >
+                <ServiceWorkerProvider register={process.env.SERVICE_WORKER === "true"}>
                     <NextIntlClientProvider
                         locale={locale}
                         messages={messages}
@@ -59,14 +69,22 @@ export default async function RootLayout({ children, params }: PropsWithChildren
                                     user: data,
                                 }]}
                             >
-                                <StandaloneProvider>
-                                    <QuerySelectorProvider>
-                                        <main id={"main"}>
-                                            { children }
-                                        </main>
-                                        <div id="modal-root" />
-                                    </QuerySelectorProvider>
-                                </StandaloneProvider>
+                                <ThemeProvider
+                                    attribute="class"
+                                    defaultTheme="system"
+                                    enableSystem
+                                    disableTransitionOnChange
+                                >
+                                    <ThemeColorManager />
+                                    <StandaloneProvider>
+                                        <QuerySelectorProvider>
+                                            <main id={"main"}>
+                                                {children}
+                                            </main>
+                                            <div id="bottom-sheet-root" />
+                                        </QuerySelectorProvider>
+                                    </StandaloneProvider>
+                                </ThemeProvider>
                             </SessionStoreProvider>
                         </ReactQueryClientProvider>
                     </NextIntlClientProvider>

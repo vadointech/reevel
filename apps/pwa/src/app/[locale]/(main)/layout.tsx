@@ -23,7 +23,7 @@ export default async function MainLayout({ children }: PropsWithChildren) {
                 pitch: 0,
             }}
         >
-            { children }
+            {children}
         </PersistentMapProvider>
     );
 }

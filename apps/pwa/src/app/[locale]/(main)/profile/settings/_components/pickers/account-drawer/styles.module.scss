@@ -1,0 +1,28 @@
+@use "@/theme/mixins";
+@use "@/theme/colors";
+
+
+.plus  {
+    width: mixins.rem(42);
+    height: mixins.rem(42);
+
+    background-color: colors.$accent-muted;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius:50%;
+
+    svg path{
+        stroke: colors.$accent;
+    }
+    svg {
+        margin-top: 0rem;
+    }
+}
+
+
+.image {
+    width: 44px;
+    height: 44px;
+    border-radius:50%;
+}

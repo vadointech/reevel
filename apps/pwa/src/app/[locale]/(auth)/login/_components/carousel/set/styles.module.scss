@@ -19,13 +19,19 @@
 
         position: relative;
 
-        width: 145px;
-        height: 145px;
+        width: mixins.rem(145);
+        height: mixins.rem(145);
         border-radius: 1rem;
         overflow: hidden;
 
         & img {
             object-fit: cover;
+        }
+
+        &_small {
+            width: mixins.rem(60);
+            height: mixins.rem(60);
+            border-radius: 0.5rem;
         }
     }
 }

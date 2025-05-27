@@ -1,0 +1,27 @@
+@use "@/theme/mixins";
+
+.grid {
+    display: flex;
+    flex-direction: column;
+    gap: mixins.rem(10);
+
+    transform-origin: center center;
+
+    rotate: -18deg;
+    transform: translateY(-16%);
+}
+
+.first {
+position: relative;
+left: 80px;
+}
+
+.second {
+    position: relative;
+    left: 100px;
+}
+
+.third {
+    position: relative;
+    left: 130px;
+}
