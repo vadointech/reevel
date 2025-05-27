@@ -48,7 +48,7 @@ export const LocationPickerConfirmationDrawer = ({
                                                 <div className={styles.drawer__info}>
                                                     <h1 className={styles.drawer__title}>
                                                         {
-                                                            dataRef.current?.displayName.text
+                                                            dataRef.current?.displayName?.text
                                                         }
                                                     </h1>
                                                     <h2 className={styles.drawer__subtitle}>

@@ -2,12 +2,14 @@ import { fetcherClient } from "@/api/fetcher-client";
 import {
     GooglePlacesApiRequestBody,
     GooglePlacesApiRequestParams,
-    GooglePlacesApiResponse,
+    GooglePlacesApiResponse, GooglePlacesApiRestrictionCircle,
 } from "../types";
 import { FetcherResponse } from "@/lib/fetcher/types";
 
 export namespace GetNearbyPlaces {
-    export type TInput = GooglePlacesApiRequestBody;
+    export type TInput = GooglePlacesApiRequestBody & {
+        locationRestriction?: GooglePlacesApiRestrictionCircle
+    };
 
     export type TParams = Partial<GooglePlacesApiRequestParams>;
 
@@ -21,7 +23,11 @@ export const getNearbyPlaces = fetcherClient<GetNearbyPlaces.TInput, GetNearbyPl
         let fieldMask = "places.id,places.displayName,place.location";
 
         if(input?.params?.fieldMask) {
-            fieldMask = input.params.fieldMask.map(mask => `places.${mask}`).join(",");
+            if(typeof input.params.fieldMask === "string") {
+                fieldMask = input.params.fieldMask;
+            } else {
+                fieldMask = input.params.fieldMask.map(mask => `places.${mask}`).join(",");
+            }
         }
         
         const result: FetcherResponse<GetNearbyPlaces.TOutput> = await fetcher.post(":searchNearby", {
@@ -40,31 +46,6 @@ export const getNearbyPlaces = fetcherClient<GetNearbyPlaces.TInput, GetNearbyPl
                 return result;
             }
         }
-
-        // if(result.data) {
-        //     if(!result.data.places) {
-        //         result.data.places = [];
-        //         return result;
-        //     }
-        //     result.data.places = result.data.places.map(item => {
-        //         if(!item.photos || item.photos.length === 0) return item;
-        //
-        //         const photos = item.photos.map(photo => ({
-        //             ...photo,
-        //             imageUri: `https://places.googleapis.com/v1/${photo.name}/media?key=AIzaSyAIfGyOk4VSltw4QnBr1r6wjK_2bkw1pU4&maxWidthPx=${
-        //                 input?.params?.imageMaxWidth || input?.params?.imageMaxHeight || photo.widthPx
-        //             }&maxHeightPx=${
-        //                 input?.params?.imageMaxHeight || input?.params?.imageMaxWidth || photo.heightPx
-        //             }`,
-        //         }));
-        //
-        //         return {
-        //             ...item,
-        //             photos,
-        //         };
-        //     });
-        // }
-
         return result;
     },
 });

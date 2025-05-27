@@ -1,23 +1,53 @@
-import { ChangeEvent } from "react";
-import { useSearchLocation } from "@/features/google/hooks";
+import { ChangeEvent, useEffect, useMemo, useState } from "react";
+import { useSearchLocation } from "@/infrastructure/google/hooks";
 import { useLocationPicker } from "@/features/location/picker";
-import { googlePlacesApiResponseMapper } from "@/features/google/mappers";
+import { googlePlacesApiResponseMapper } from "@/infrastructure/google/mappers";
+import { googlePlacesApiResponseTransformer } from "@/infrastructure/google/transformers";
+import { useDebounce } from "@/lib/hooks";
+import { usePersistentMap } from "@/components/shared/map";
 
 export function useLocationPickerSearch() {
-    const { searchStore } = useLocationPicker();
+    const [searchTerm, setSearchTerm] = useState("");
+    const debouncedSearchTerm = useDebounce(searchTerm, 1000);
+
+    const { controller, searchStore } = useLocationPicker();
     const { searchPlacesByTextQuery } = useSearchLocation();
 
-    const handleSearch = (e: ChangeEvent<HTMLInputElement>) => {
-        const value = e.target.value;
-        searchStore.setSearchTerm(value);
+    const { provider } = usePersistentMap();
 
-        if(value.length > 2) {
-            searchPlacesByTextQuery(e.target.value)
-                .then(googlePlacesApiResponseMapper.toBasePoint)
-                .then(points => searchStore.setSearchResults(points));
+    const restrictions = useMemo(() => {
+        const { bounds, center } = provider.current.internalConfig.viewState;
+
+        if(bounds && center) {
+            const radius = provider.current.getHorizontalRadius(bounds, center);
+            return {
+                center,
+                radius,
+            };
         }
 
+        return undefined;
+    }, [provider]);
+
+    useEffect(() => {
+        if(debouncedSearchTerm.length > 2) {
+            searchPlacesByTextQuery(debouncedSearchTerm, restrictions)
+                .then(googlePlacesApiResponseTransformer.formatAddress)
+                .then(res => controller.current.cacheGooglePlacesApiResponse(res))
+                .then(googlePlacesApiResponseMapper.toIconPoint)
+                .then(points => searchStore.setSearchResults(points));
+        } else {
+            searchStore.setSearchResults([]);
+        }
+    }, [debouncedSearchTerm]);
+
+
+    const handleSearch = (e: ChangeEvent<HTMLInputElement>) => {
+        setSearchTerm(e.target.value.toLowerCase());
     };
 
-    return { handleSearch };
+    return {
+        searchTerm,
+        handleSearch,
+    };
 }

@@ -32,7 +32,7 @@ export type Icon = {
     secondaryColor: string;
 };
 
-export const GooglePlacesApiIncludedTypesMarker: Record<GooglePLacesApiIncludedTypes | "default", Icon> = {
+export const IncludedTypesMarker: Record<GooglePLacesApiIncludedTypes | "default" | "pin", Icon> = {
     /**
      * Food_and_drink
      */
@@ -312,5 +312,14 @@ export const GooglePlacesApiIncludedTypesMarker: Record<GooglePLacesApiIncludedT
         icon: <IconDefaultMarker />,
         primaryColor: "#696969",
         secondaryColor: "#A9A9A9",
+    },
+
+    /**
+     * Pin
+     */
+    pin: {
+        icon: <>1</>,
+        primaryColor: "red",
+        secondaryColor: "red",
     },
 };

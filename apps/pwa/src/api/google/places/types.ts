@@ -1,6 +1,16 @@
 import { GooglePLacesApiIncludedTypes, GooglePLacesApiPrimaryIncludedTypes } from "./included-types.config";
 import { GooglePLacesApiExcludedTypes, GooglePLacesApiPrimaryExcludedTypes } from "./excluded-types.config";
 
+export type GooglePlacesApiRestrictionCircle = {
+    circle: {
+        center: {
+            latitude: number,
+            longitude: number,
+        }
+        radius: number,
+    }
+};
+
 export type GooglePlacesApiRequestBody = {
     includedTypes?: readonly GooglePLacesApiIncludedTypes[],
     excludedTypes?: readonly GooglePLacesApiExcludedTypes[],
@@ -8,50 +18,56 @@ export type GooglePlacesApiRequestBody = {
     excludedPrimaryTypes?: readonly GooglePLacesApiPrimaryExcludedTypes[]
     maxResultCount?: number,
     languageCode?: string;
-    locationRestriction: {
-        circle: {
-            center: {
-                latitude: number,
-                longitude: number,
-            }
-            radius: number,
-        }
-    }
 };
 
 const _fieldMaskValues = [
-    "id", "displayName", "photos", "location", "types",
-    "primaryType", "primaryTypeDisplayName",
+    "id", "displayName", "location", "photos",
+    "types", "primaryType", "primaryTypeDisplayName",
+    "formattedAddress", "addressComponents",
 ] as const;
 
+const _addressComponentsTypes = [
+    "street_number", "route", "locality", "political",
+    "administrative_area_level_1", "administrative_area_level_2",
+    "country", "postal_code",
+];
+
 export type GooglePlacesApiRequestParams = {
-    fieldMask?: Array<typeof _fieldMaskValues[number]>;
+    fieldMask?: Array<typeof _fieldMaskValues[number]> | "*";
     imageMaxWidth?: number;
     imageMaxHeight?: number;
 };
 
+export type GooglePlacesApiResponsePlace = {
+    id: string;
+    displayName: {
+        text: string;
+        languageCode: string;
+    };
+    location: {
+        latitude: number,
+        longitude: number,
+    };
+    photos: Array<{
+        heightPx: number;
+        widthPx: number;
+        name: string;
+        flagContentUri: string;
+    }>;
+    types: string[];
+    primaryType: string;
+    primaryTypeDisplayName?: {
+        text: string;
+        languageCode: string;
+    };
+    formattedAddress: string;
+    addressComponents: Array<{
+        longText: string;
+        shortText: string;
+        types: Array<typeof _addressComponentsTypes[number]>;
+    }>;
+};
+
 export type GooglePlacesApiResponse = {
-    places: Array<{
-        id: string;
-        displayName: {
-            text: string;
-            languageCode: string;
-        },
-        location: {
-            latitude: number,
-            longitude: number,
-        }
-        primaryType?: string;
-        primaryTypeDisplayName?: {
-            text: string;
-            languageCode: string;
-        },
-        photos?: Array<{
-            heightPx: number;
-            widthPx: number;
-            name: string;
-            flagContentUri: string;
-            imageUri?: string; // Custom field
-        }>
-    }>
+    places: Array<Partial<GooglePlacesApiResponsePlace>>
 };

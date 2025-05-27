@@ -2,7 +2,26 @@
 @use "@/theme/spacing";
 
 .search {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+
     &__header {
         padding-bottom: mixins.rem(22);
+        flex: 0 0 auto;
+    }
+
+    &__content {
+        flex: 1 1 auto;
+        overflow-y: visible;
+        position: relative;
+    }
+
+    &__block {
+        padding-inline: spacing.$container;
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
     }
 }

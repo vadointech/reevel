@@ -2,12 +2,13 @@ import { fetcherClient } from "@/api/fetcher-client";
 import {
     GooglePlacesApiRequestBody,
     GooglePlacesApiRequestParams,
-    GooglePlacesApiResponse,
+    GooglePlacesApiResponse, GooglePlacesApiRestrictionCircle,
 } from "@/api/google/places/types";
 
 export namespace SearchLocations {
-    export type TInput = Partial<GooglePlacesApiRequestBody>  & {
+    export type TInput = Partial<GooglePlacesApiRequestBody> & {
         textQuery: string;
+        locationBias?: GooglePlacesApiRestrictionCircle;
     };
     export type TOutput = GooglePlacesApiResponse;
     export type TParams = GooglePlacesApiRequestParams;
@@ -17,10 +18,14 @@ export namespace SearchLocations {
 
 export const searchLocations = fetcherClient<SearchLocations.TInput, SearchLocations.TOutput, SearchLocations.TParams>({
     fetcherFunc: async(fetcher, input) => {
-        let fieldMask = "places.id,places.displayName,place.location";
+        let fieldMask = "places.id,places.displayName,places.location";
 
         if(input?.params?.fieldMask) {
-            fieldMask = input.params.fieldMask.map(mask => `places.${mask}`).join(",");
+            if(typeof input.params.fieldMask === "string") {
+                fieldMask = input.params.fieldMask;
+            } else {
+                fieldMask = input.params.fieldMask.map(mask => `places.${mask}`).join(",");
+            }
         }
 
         const result = await fetcher.post(":searchText", {

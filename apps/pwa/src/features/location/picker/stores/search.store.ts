@@ -1,25 +1,17 @@
-import { BasePoint, Point } from "@/components/shared/map/types";
+import { IconPoint, Point } from "@/components/shared/map/types";
 import { action, makeObservable, observable } from "mobx";
 
 export class LocationPickerSearchStore {
-    searchTerm = "";
-    searchResults: Point<BasePoint>[] = [];
+    searchResults: Point<IconPoint>[] = [];
 
     constructor() {
         makeObservable(this, {
-            searchTerm: observable,
             searchResults: observable,
-
-            setSearchTerm: action,
             setSearchResults: action,
         });
     }
 
-    setSearchTerm(searchTerm: string) {
-        this.searchTerm = searchTerm;
-    }
-
-    setSearchResults(searchResults: Point<BasePoint>[]) {
+    setSearchResults(searchResults: Point<IconPoint>[]) {
         this.searchResults = searchResults;
     }
 }

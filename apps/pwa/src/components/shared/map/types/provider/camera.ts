@@ -16,6 +16,13 @@ export namespace MapProviderCameraState {
         padding: Partial<PaddingOptions>;
     };
 
+    export type ViewState = {
+        center: MapProviderGL.LngLat;
+        bbox: MapProviderGL.LngLatBounds | null;
+        zoom: number;
+        pitch: number;
+    };
+
     export type PaddingOptions = {
         top: number;
         bottom: number;

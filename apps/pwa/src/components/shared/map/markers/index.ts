@@ -1,2 +1,2 @@
-export * from "./event/event-marker.component";
+export * from "./marker";
 export * from "./cluster/cluster-marker.component";

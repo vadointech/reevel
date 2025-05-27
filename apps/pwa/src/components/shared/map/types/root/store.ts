@@ -1,4 +1,4 @@
-import { BasePoint, Point } from "./point";
+import { BasePoint, Point } from "../point/point";
 
 export interface IMapStore {
     initialized: boolean;

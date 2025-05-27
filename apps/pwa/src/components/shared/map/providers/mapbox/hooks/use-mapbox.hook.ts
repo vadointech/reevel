@@ -9,14 +9,14 @@ export function useMapbox(
     onMapLoad?: () => void,
 ) {
 
-    const initialViewState = provider.current.config.initialViewState;
+    const initialViewState = provider.current.internalConfig.viewState;
 
     const [viewState, setViewState] = useState<Partial<MapProviderCameraState.Viewport>>(
         {
-            longitude: initialViewState.center?.[0] || 0,
-            latitude: initialViewState.center?.[1] || 0,
-            zoom: initialViewState.zoom || 12,
-            pitch: initialViewState.pitch || 0,
+            longitude: initialViewState.center.lng,
+            latitude: initialViewState.center.lat,
+            zoom: initialViewState.zoom,
+            pitch: initialViewState.pitch,
             padding: initialViewState.padding,
         },
     );

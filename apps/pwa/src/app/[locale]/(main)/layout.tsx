@@ -16,7 +16,7 @@ export default async function MainLayout({ children }: PropsWithChildren) {
             accessToken={process.env.MAPBOX_ACESS_TOKEN || ""}
             mapStyleDark={process.env.MAPBOX_MAP_STYLE_DARK || ""}
             mapStyleLight={process.env.MAPBOX_MAP_STYLE_LIGHT || ""}
-            initialViewState={{
+            viewState={{
                 center: location?.center.coordinates,
                 bboxPolygon: location?.bbox.coordinates,
                 zoom: 12,

@@ -153,6 +153,10 @@
                 }
             }
 
+            span {
+                font-weight: 500;
+            }
+
             &:active {
                 color: colors.$primary-highlight;
             }
@@ -167,6 +171,10 @@
                 svg path {
                     fill: colors.$accent
                 }
+            }
+
+            span {
+                font-weight: 500;
             }
 
             &:active {

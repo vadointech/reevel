@@ -2,18 +2,19 @@
 
 import { ComponentProps, useEffect, useRef } from "react";
 import { usePersistentMap } from "../map.context";
-import { BasePoint, Point, IMapHandlers, MapProviderInitialViewState } from "../types";
+import { BasePoint, Point, IMapHandlers, MapInternalConfig } from "../types";
 
 export namespace MapView {
     export type Props<P extends BasePoint> = ComponentProps<"div"> & Partial<IMapHandlers> & {
         points?: Point<P>[];
-        viewState?: Partial<MapProviderInitialViewState>;
+        viewState?: Partial<MapInternalConfig.IViewStateConfig>;
     };
 }
 
 export const MapView = ({
     style,
 
+    points,
     viewState,
 
     onMapReady,
@@ -29,12 +30,14 @@ export const MapView = ({
         if (!containerRef.current) return;
 
         controller.current.attachMap(
-            containerRef,
-            viewState,
-            {
-                onMapReady,
-                onPointSelect,
-                onViewportChange,
+            containerRef, {
+                points,
+                viewState,
+                handlers: {
+                    onMapReady,
+                    onPointSelect,
+                    onViewportChange,
+                },
             },
         );
 

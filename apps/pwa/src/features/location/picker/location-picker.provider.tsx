@@ -1,6 +1,6 @@
 "use client";
 
-import { PropsWithChildren, useMemo, useRef } from "react";
+import { PropsWithChildren, useRef } from "react";
 import {
     LocationPickerConfirmationStore,
     LocationPickerFiltersStore,
@@ -19,20 +19,21 @@ export const LocationPickerProvider = ({
     ...config
 }: LocationPickerProvider.Props) => {
 
-    const searchStore = useMemo(() => new LocationPickerSearchStore(), []);
-    const filtersStore = useMemo(() => new LocationPickerFiltersStore(), []);
-    const confirmationStore = useMemo(() => new LocationPickerConfirmationStore(), []);
+    const searchStore = useRef(new LocationPickerSearchStore()).current;
+    const filtersStore = useRef(new LocationPickerFiltersStore()).current;
+    const confirmationStore = useRef(new LocationPickerConfirmationStore()).current;
 
-    const controller = useMemo(() =>
+    const persistentCacheStore = useRef<Map<any, any>>(new Map()).current;
+
+    const controller = useRef(
         new LocationPickerController(
             config,
             searchStore,
             filtersStore,
             confirmationStore,
+            persistentCacheStore,
         ),
-    []);
-
-    const controllerRef = useRef(controller);
+    );
 
     return (
         <LocationPickerContext.Provider
@@ -40,7 +41,7 @@ export const LocationPickerProvider = ({
                 searchStore,
                 filtersStore,
                 confirmationStore,
-                controller: controllerRef,
+                controller,
             }}
         >
             { children }

@@ -1,12 +1,23 @@
-import { GooglePLacesApiIncludedTypes } from "@/api/google/places/included-types.config";
+import { GooglePLacesApiIncludedTypes } from "@/api/google/places";
+
+export const GooglePLacesApiDisplayedIncludedTypes = [
+    "park",
+    "shopping_mall",
+    "university",
+    "stadium",
+    "cafe",
+    "bar",
+    "restaurant",
+    "tourist_attraction",
+] as const satisfies Partial<GooglePLacesApiIncludedTypes>[];
+
 
 type DisplayedType = {
-    slug: GooglePLacesApiIncludedTypes;
+    slug: ArrayValues<typeof GooglePLacesApiDisplayedIncludedTypes>;
     title_en: string;
     title_uk: string;
     icon: string;
 };
-
 export const GooglePLacesApiDisplayedTypes: DisplayedType[] = [
     {
         slug: "park",

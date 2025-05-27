@@ -22,6 +22,14 @@ export class MapStore implements IMapStore {
             setPointsVisible: action,
             setSelectedPoint: action,
         });
+
+
+        reaction(
+            () => this.points.slice(),
+            (p) => {
+                console.log(p);
+            },
+        );
     }
 
     setInitialized(initialized: boolean) {

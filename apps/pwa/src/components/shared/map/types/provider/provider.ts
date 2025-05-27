@@ -1,25 +1,24 @@
 import { RefObject } from "react";
+import { MapInternalConfig } from "./config";
 import { MapProviderCameraState } from "./camera";
 import { MapProviderGL } from "./gl";
 
-export type MapProviderInitialViewState = {
-    pitch: number;
-    zoom: number;
-    center: [number, number];
-    padding: MapProviderCameraState.PaddingOptions;
-    bboxPolygon: MapProviderGL.LngLatPolygon;
-};
 
-export type MapProviderConfig = {
-    accessToken: string;
-    mapStyleDark: string;
-    mapStyleLight: string;
-    initialViewState: Partial<MapProviderInitialViewState>;
-};
+export interface IMapRootProvider {
+    internalConfig: MapInternalConfig.IInternalConfig;
 
-export interface IMapProvider {
+    /**
+     * Calculates the radius from the center point to the bounds' horizontal distance.
+     *
+     * @param {MapProviderGL.LngLatBounds} bounds - The geographical bounds representing the area.
+     * @param {MapProviderGL.LngLat} center - The geographical center point to calculate the radius from.
+     * @return {number} The calculated radius based on the horizontal distance of the bounds.
+     */
+    getHorizontalRadius(bounds: MapProviderGL.LngLatBounds, center: MapProviderGL.LngLat): number;
+}
+
+export interface IMapProvider extends IMapRootProvider {
     mapRef: RefObject<any>
-    config: MapProviderConfig;
 
     /**
      * Initializes the given map reference, setting up necessary configurations or subscriptions.
@@ -30,12 +29,15 @@ export interface IMapProvider {
     initialize(mapRef?: RefObject<any>): void;
 
     /**
-     * Synchronizes the current view state with the provided partial viewport configuration.
+     * Resets the view state of the map to the specified configurations.
+     * By default, this method will reset the view state to the default configurations.
      *
-     * @return {void} This method does not return a value.
+     * @param {Partial<MapInternalConfig.IViewStateConfig>} [viewState] - An optional parameter containing partial configuration for the map's view state. If not provided, default configurations will be applied.
+     * @param {MapProviderCameraState.EasingOptions} [options] - An optional parameter specifying easing options for animating the view state transition.
+     * @return {void} No return value as this method applies changes directly to the map's view state.
      */
-    syncViewState(
-        viewState?: Partial<MapProviderCameraState.Viewport>,
+    resetViewState(
+        viewState?: Partial<MapInternalConfig.IViewStateConfig>,
         options?: MapProviderCameraState.EasingOptions
     ): void;
 
@@ -53,7 +55,7 @@ export interface IMapProvider {
      * @param {Options} [transitionOptions] - Optional settings to control the behavior of the fit operation, such as animation or padding.
      * @return {void} This method does not return any value.
      */
-    fitBounds(bounds: [number, number, number, number], transitionOptions?: MapProviderCameraState.EasingOptions): void;
+    fitBounds(bounds: MapProviderGL.LngLatBounds, transitionOptions?: MapProviderCameraState.EasingOptions): void;
 
     /**
      * Sets the padding for the map view.
@@ -79,21 +81,4 @@ export interface IMapProvider {
      * @return {MapProviderGL.LngLatBounds} - A new LngLatBounds object with buffered coordinates.
      */
     getBufferedBounds(bufferPercentage: number): MapProviderGL.LngLatBounds | null;
-
-    /**
-     * Calculates the radius from the center point to the bounds' horizontal distance.
-     *
-     * @param {MapProviderGL.LngLatBounds} bounds - The geographical bounds representing the area.
-     * @param {MapProviderGL.LngLat} center - The geographical center point to calculate the radius from.
-     * @return {number} The calculated radius based on the horizontal distance of the bounds.
-     */
-    getHorizontalRadius(bounds: MapProviderGL.LngLatBounds, center: MapProviderGL.LngLat): number;
-
-    /**
-     * Converts a polygon into a bounding box that fully contains the polygon.
-     *
-     * @param {MapProviderGL.LngLatPolygon} polygon - The polygon to be converted into bounds.
-     * @return {MapProviderGL.LngLatBounds} The bounding box that encompasses the entire polygon.
-     */
-    polygonToBounds(polygon: MapProviderGL.LngLatPolygon): MapProviderGL.LngLatBounds
 }

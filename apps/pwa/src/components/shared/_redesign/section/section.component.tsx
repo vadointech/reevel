@@ -48,7 +48,6 @@ export const Section = ({
                                 <Button
                                     size={"small"}
                                     variant={variant}
-                                    className={styles.section__cta}
                                     style={{
                                         width: "fit-content",
                                         padding: 0,

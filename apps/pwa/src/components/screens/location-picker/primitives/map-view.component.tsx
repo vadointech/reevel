@@ -1,6 +1,6 @@
 "use client";
 
-import { ComponentProps, useRef } from "react";
+import { useEffect, useRef } from "react";
 
 import { MapView, usePersistentMap } from "@/components/shared/map";
 import { LocationPickerDrawer } from "@/components/screens/location-picker/primitives/drawer.component";
@@ -8,53 +8,72 @@ import { useLocationPickerMap } from "@/features/location/picker/hooks";
 import {
     LocationPickerConfirmationDrawer,
 } from "@/components/screens/location-picker/primitives/confirmation/confirmation-drawer.component";
-import { useQueryClient } from "@tanstack/react-query";
 import { GetNearbyPlaces } from "@/api/google/places";
 import {
     IBottomSheetRootController,
 } from "@/components/shared/_redesign/bottom-sheet/types";
+import { IconPoint, Point } from "@/components/shared/map/types";
+import { googlePlacesApiResponseMapper } from "@/infrastructure/google/mappers";
+import { usePrefetchedQuery, useQueriesData } from "@/lib/react-query";
 
 export namespace LocationPickerMapView {
-    export type Props = ComponentProps<"div">;
+    export type Data = {
+        placesInit: Point<IconPoint>[]
+    };
+    export type Props = Data;
 }
 
-export const LocationPickerMapView = (props: LocationPickerMapView.Props) => {
+export const LocationPickerMapView = ({ placesInit }: LocationPickerMapView.Props) => {
     const {
         handleViewportChange,
         handlePickLocationType,
     } = useLocationPickerMap();
-
-    const queryClient = useQueryClient();
-
     const map = usePersistentMap();
 
     const confirmControls = useRef<IBottomSheetRootController>(null);
-
     const confirmationDataRef = useRef<GetNearbyPlaces.TOutput["places"][number] | undefined>(undefined);
+
+    usePrefetchedQuery<GetNearbyPlaces.TOutput>({
+        queryKey: [...GetNearbyPlaces.queryKey],
+        onSuccess: (data) => {
+            const points = data.flatMap(googlePlacesApiResponseMapper.toIconPoint);
+            map.controller.current.setPoints(points);
+        },
+    });
+
+    const getNearbyPlacesQueryData = useQueriesData<GetNearbyPlaces.TOutput>({
+        queryKey: [...GetNearbyPlaces.queryKey],
+    });
 
     const handlePointSelect = (pointId: string | null) => {
         if(!pointId) return;
 
-        const cache = queryClient.getQueryCache().getAll();
+        const nearbyPlacesQueriesData = getNearbyPlacesQueryData()
+            .flatMap((val) => val?.places || []);
 
-        const query = cache.filter(item =>
-            item.queryHash.includes(GetNearbyPlaces.queryKey[0]),
-        );
+        const data = nearbyPlacesQueriesData.find(item => item.id === pointId);
 
-        const data = query.find(item =>
-            (item.state.data as GetNearbyPlaces.TOutput).places.some(place => place.id === pointId),
-        )?.state.data as GetNearbyPlaces.TOutput;
-        confirmationDataRef.current = data.places.find(item => item.id === pointId);
-        confirmControls.current?.open();
+        if(data) {
+            confirmationDataRef.current = data;
+            confirmControls.current?.open();
+        }
     };
 
     const handleClose = () => {
         map.controller.current.selectPoint(null);
     };
 
+
+    useEffect(() => {
+        return () => {
+            map.provider.current.resetViewState(undefined, { animate: false });
+        };
+    }, []);
+
     return (
         <>
             <MapView
+                points={placesInit}
                 viewState={{
                     padding: { bottom: 260 },
                 }}

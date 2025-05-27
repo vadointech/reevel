@@ -1,6 +1,6 @@
 import { UserProfileEntity } from "../profile";
 import { InterestEntity } from "../interests";
-import { Point, BasePoint } from "@/components/shared/map/types/root/point";
+import { Point, BasePoint } from "@/components/shared/map/types/point/point";
 
 export type EventEntity = {
     id: string;

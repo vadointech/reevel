@@ -3,19 +3,20 @@
 import { PropsWithChildren, useCallback, useRef } from "react";
 import { MapRootController } from "../map.controller";
 import { PersistentMapContext } from "../map.context";
+import { MapStore } from "../map.store";
+import { MapConfig } from "../types";
 
 import { MapboxComponent, MapboxProvider } from "../providers";
-
-import { MapProviderConfig } from "../types";
 
 export const PersistentMapProvider = ({
     children,
     ...providerConfig
-}: PropsWithChildren<MapProviderConfig>) => {
+}: PropsWithChildren<MapConfig.Params>) => {
     const mapContainerRef = useRef<HTMLDivElement>(null);
     const persistentRootRef = useRef<HTMLDivElement | null>(null);
 
     const mapRef = useRef<any>(null);
+    const mapStore = useRef(new MapStore()).current;
 
     const provider = useRef(
         new MapboxProvider(
@@ -29,6 +30,7 @@ export const PersistentMapProvider = ({
             mapContainerRef,
             persistentRootRef,
             provider,
+            mapStore,
         ),
     );
 
@@ -44,6 +46,7 @@ export const PersistentMapProvider = ({
                 <div ref={mapContainerRef} style={{ width: "100%", height: "100%" }}>
                     <MapboxComponent
                         ref={mapRef}
+                        store={mapStore}
                         provider={provider}
                         controller={controller}
                         onMapLoad={handleInitialize}

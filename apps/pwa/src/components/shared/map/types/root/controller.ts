@@ -1,25 +1,25 @@
 import { RefObject } from "react";
-import { BasePoint, Point } from "./point";
-import { MapProviderCameraState } from "../provider/camera";
+import { MapInternalConfig } from "../provider/config";
 import { IMapHandlers } from "../provider/handlers";
-import { IMapStore } from "../root/store";
+import { BasePoint, Point } from "../point/point";
 
 export interface IMapRootController {
-    store: IMapStore;
     externalHandlers: Partial<IMapHandlers>
 
     /**
      * Attaches a map to the specified container and binds the provided event handlers.
      *
      * @param {RefObject<HTMLElement | null>} container - A reference to the HTML element where the map will be attached. Can be `null`.
-     * @param viewState
-     * @param {Partial<IMapHandlers>} handlers - A partial object containing event handlers for interacting with the map.
+     * @param init
      * @return {void} This method does not return a value.
      */
     attachMap(
         container: RefObject<HTMLElement | null>,
-        viewState?: Partial<MapProviderCameraState.Viewport>,
-        handlers?: Partial<IMapHandlers>,
+        init: Partial<{
+            points: Point<BasePoint>[],
+            viewState?: Partial<MapInternalConfig.IViewStateConfig>,
+            handlers?: Partial<IMapHandlers>,
+        }>
     ): void;
 
     /**
@@ -36,6 +36,14 @@ export interface IMapRootController {
      * @return {void} No return value.
      */
     selectPoint(pointId: string | null): void;
+
+    /**
+     * Sets the points to the given list of points.
+     *
+     * @param {Point<BasePoint>[]} points - An array of Point<BasePoint> objects to be set.
+     * @return {void} This method does not return a value.
+     */
+    setPoints(points: Point<BasePoint>[]): void;
 
     /**
      * Appends an array of points to the existing collection of points.
