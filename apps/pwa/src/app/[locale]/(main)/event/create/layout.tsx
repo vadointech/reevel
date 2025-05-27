@@ -5,14 +5,16 @@ export default function CreateEventLayout({ children }: PropsWithChildren) {
     return (
         <CreateEventFormProvider
             defaultValues={{
-                title: null,
-                description: null,
+                title: "",
+                description: "",
                 interests: [],
-                ticketsCount: null,
-                ticketPrice: null,
+                location: {
+                    title: undefined,
+                    coordinates: [],
+                },
+                ticketsCount: "",
+                ticketPrice: "",
                 startDate: new Date(),
-                startTime: null,
-                endTime: null,
             }}
         >
             { children }

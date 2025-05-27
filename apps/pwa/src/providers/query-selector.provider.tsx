@@ -1,22 +1,28 @@
 "use client";
 
-import { createContext, PropsWithChildren, RefObject, useContext, useEffect, useRef } from "react";
+import { createContext, PropsWithChildren, RefObject, useContext, useEffect, useRef, useState } from "react";
 
 type QuerySelectorProviderValues = {
-    main: RefObject<HTMLElement | null>
+    main: RefObject<HTMLElement | null>;
+    modal: RefObject<HTMLElement | null>;
 };
 
 const QuerySelectorContext = createContext<QuerySelectorProviderValues | null>(null);
 
 export const QuerySelectorProvider = ({ children }: PropsWithChildren) => {
     const main = useRef<HTMLElement | null>(null);
+    const modal = useRef<HTMLElement | null>(null);
+
+    const [_, setReady] = useState(false);
 
     useEffect(() => {
         main.current = document.getElementById("main");
+        modal.current = document.getElementById("modal-root");
+        setReady(true);
     }, []);
 
     return (
-        <QuerySelectorContext.Provider value={{ main }}>
+        <QuerySelectorContext.Provider value={{ main, modal }}>
             { children }
         </QuerySelectorContext.Provider>
     );

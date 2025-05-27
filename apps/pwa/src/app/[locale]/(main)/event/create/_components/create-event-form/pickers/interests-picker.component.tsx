@@ -1,55 +1,57 @@
 "use client";
 
-import { Controller } from "react-hook-form";
-import { InterestButton, Section } from "@/components/shared/_redesign";
+import { Controller, ControllerRenderProps } from "react-hook-form";
+import { FormField, InterestButton, Section } from "@/components/shared/_redesign";
+
+import { CreateEventFormSchemaValues, useCreateEventFormInterestsPicker } from "@/features/event/create";
 
 import styles from "../styles.module.scss";
-import cx from "classnames";
+import { InterestEntity } from "@/entities/interests";
 
 export namespace CreateEventFormInterestsPicker {
-    export type Props = never;
+    export type Data = {
+        interests: InterestEntity[]
+    };
+    export type Props = Data;
 }
 
-export const CreateEventFormInterestsPicker = () => {
+export const CreateEventFormInterestsPicker = ({
+    interests: interestsInit,
+}: CreateEventFormInterestsPicker.Props) => {
+    const {
+        interests,
+        isSelected,
+        handleToggle,
+    } = useCreateEventFormInterestsPicker(interestsInit);
     return (
         <Section
             title={"Interests"}
             cta={"See all"}
             ctaHref={"/event/create/interests"}
         >
-            <div className={cx(styles.form__interests, styles.form__gap)}>
-                {
-                    Array.from({ length: 8 }).map((_, index) => (
-                        <Controller
-                            key={index}
-                            name={"interests"}
-                            render={({ field }) => {
-                                const isExists = field.value.includes(index);
-                                const handleClick = () => {
-                                    if(isExists) {
-                                        field.onChange(
-                                            field.value.filter((item: number) => item !== index),
-                                        );
-                                    } else {
-                                        field.onChange([...field.value, index]);
-                                    }
-                                };
-                                return (
-                                    <InterestButton
-                                        variant={
-                                            isExists ? "primary" : "default"
-                                        }
-                                        icon={"🥊"}
-                                        onClick={handleClick}
-                                    >
-                                        Boxing
-                                    </InterestButton>
-                                );
-                            }}
-                        />
-                    ))
-                }
-            </div>
+            <Controller<CreateEventFormSchemaValues, "interests">
+                name={"interests"}
+                render={({ field, fieldState }) => {
+                    return (
+                        <FormField state={fieldState}>
+                            <div className={styles.form__interests}>
+                                {
+                                    interests.map(item => (
+                                        <InterestButton
+                                            key={item.slug}
+                                            icon={item.icon}
+                                            variant={isSelected(item) ? "primary" : "default"}
+                                            onClick={() => handleToggle(field, item)}
+                                        >
+                                            { item.title_en }
+                                        </InterestButton>
+                                    ))
+                                }
+                            </div>
+                        </FormField>
+                    );
+                }}
+            />
         </Section>
     );
 };

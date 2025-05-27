@@ -4,7 +4,7 @@ import { PropsWithChildren } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 
-import { createEventFormSchema, CreateEventFormSchemaValues } from "../validation/create-event-form.schema";
+import { createEventFormSchema, CreateEventFormSchemaValues } from "@/features/event/create";
 
 export namespace CreateEventFormProvider {
     export type Data = CreateEventFormSchemaValues;
@@ -17,7 +17,7 @@ export const CreateEventFormProvider = ({ children, defaultValues }: CreateEvent
     const form = useForm<CreateEventFormSchemaValues>({
         resolver: zodResolver(createEventFormSchema),
         defaultValues,
-        mode: "onBlur",
+        mode: "onChange",
     });
 
     return (

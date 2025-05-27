@@ -10,6 +10,8 @@ export namespace GetPlaceByCoordinates {
     export type TOutput = {
         features: MapboxFeatureResponse[]
     };
+
+    export const queryKey = ["/place/coordinates"];
 }
 
 export const getPlaceByCoordinates = fetcherClient<GetPlaceByCoordinates.TInput, GetPlaceByCoordinates.TOutput, GetPlaceByCoordinates.TParams>({

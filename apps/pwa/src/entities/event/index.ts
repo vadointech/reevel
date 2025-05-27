@@ -1,32 +1,16 @@
+import { UserProfileEntity } from "../profile";
+import { InterestEntity } from "../interests";
+import { Point, BasePoint } from "@/components/shared/map/types/point/point";
+
 export type EventEntity = {
     id: string;
     image?: string;
 };
 
-import { UserProfileEntity } from "../profile";
-import { InterestEntity } from "../interests";
-
 export enum EventVisibility {
     PUBLIC = "PUBLIC",
     PRIVATE = "PRIVATE",
 }
-
-export type BasePoint = {
-    id: string;
-    [key: string]: string | number | undefined;
-    name: string,
-};
-
-export type Point<
-    P extends BasePoint,
-> = {
-    type: "Feature",
-    properties: P
-    geometry: {
-        type: "Point",
-        coordinates: [number, number]
-    },
-};
 
 export type Event = {
     id: string;

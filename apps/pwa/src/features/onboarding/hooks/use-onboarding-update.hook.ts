@@ -35,8 +35,14 @@ export function useOnboardingUpdate() {
             bio: onboardingStore.bio,
             picture: onboardingStore.picture,
             interests: onboardingStore.interests,
-            location: onboardingStore.location,
         };
+
+        if(onboardingStore.locationCenter && onboardingStore.locationBbox) {
+            onboardingProfile.location = {
+                center: onboardingStore.locationCenter,
+                bbox: onboardingStore.locationBbox,
+            };
+        }
 
         const profileEntriesToUpdate = (Object.entries(onboardingProfile) as ObjectEntries<UpdateProfile.TInput>)
             .filter(([key, value]) => {

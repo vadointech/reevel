@@ -20,13 +20,8 @@
         @include typography.font("lg", 500)
     }
 
-    &__cta {
-        span {
-            font-weight: 500 !important;
-        }
-    }
-
     &__content {
+        height: 100%;
         &_container {
             padding-inline: spacing.$container;
         }

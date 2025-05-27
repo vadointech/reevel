@@ -3,6 +3,7 @@ import { Input, OptionsListItem } from "@/components/shared/_redesign";
 import { IconDollar } from "@/components/icons";
 import {
     CreateEventFormBottomSheet,
+    CreateEventFormBottomSheetBody,
     CreateEventFormBottomSheetContent,
     CreateEventFormBottomSheetTrigger,
 } from "../bottom-sheet";
@@ -37,18 +38,20 @@ const Field = ({ field }: UseControllerReturn) => {
                     iconType={"outlined"}
                 />
             </CreateEventFormBottomSheetTrigger>
-            <CreateEventFormBottomSheetContent
-                title={"How much does it cost?"}
-                onReset={() => {
-                    field.onChange(null);
-                }}
-            >
-                <Input.Number
-                    {...field}
-                    label={"per ticket"}
-                    placeholder={"0 ₴"}
-                />
-            </CreateEventFormBottomSheetContent>
+            <CreateEventFormBottomSheetBody>
+                <CreateEventFormBottomSheetContent
+                    title={"How much does it cost?"}
+                    onReset={() => {
+                        field.onChange(null);
+                    }}
+                >
+                    <Input.Number
+                        {...field}
+                        label={"per ticket"}
+                        placeholder={"0 ₴"}
+                    />
+                </CreateEventFormBottomSheetContent>
+            </CreateEventFormBottomSheetBody>
         </>
     );
 };

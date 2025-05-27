@@ -12,3 +12,5 @@ export * from "./catendar";
 export * from "./header";
 export * from "./tabs";
 export * from "./options";
+
+export * from "./form";

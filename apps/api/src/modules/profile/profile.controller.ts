@@ -17,18 +17,11 @@ export class ProfileController {
         return this.profileService.getProfile(session.user.id);
     }
 
-    @Get("/interests")
-    async getProfileInterests(
-        @Session() session: ServerSession,
-    ) {
-        return this.profileService.getUserInterests(session.user.id);
-    }
-
     @Patch()
     async updateProfile(
         @Body() body: UpdateProfileDto,
         @Session() session: ServerSession,
     ) {
-        return await this.profileService.updateProfile(session.user.id, body);
+        return this.profileService.updateProfile(session.user.id, body);
     }
 }

@@ -29,7 +29,10 @@ export const Input = ({
                     </span>
                 ) : null
             }
-            <input type={"text"} {...props} />
+            <input
+                type={"text"}
+                {...props}
+            />
         </label>
     );
 };

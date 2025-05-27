@@ -5,7 +5,6 @@ import { useOnboardingProgress, useOnboardingStore } from "@/features/onboarding
 import { useQuery } from "@tanstack/react-query";
 import { getPlaceByCoordinates } from "@/api/mapbox/get-place-by-coordinates";
 import { usePersistentMap } from "@/components/shared/map/map.context";
-import { MapStore, IMapProvider } from "@/components/shared/map";
 import { mapboxFeatureResponseTransformer } from "@/features/mapbox";
 import { useLocale } from "next-intl";
 
@@ -16,43 +15,48 @@ export function useLocationConfirmation() {
     const locale = useLocale();
 
     useEffect(() => {
-        if(!onboardingStore.location) {
+        if(!onboardingStore.locationCenter) {
             handleSetStep("/onboarding/location");
         }
     }, []);
 
     const { data } = useQuery({
-        queryKey: ["user/city", ...(onboardingStore.location || [])],
+        queryKey: ["user/city", ...(onboardingStore.locationCenter || [])],
         staleTime: Infinity,
         queryFn: async() => {
-            if(!onboardingStore.location) return null;
+            if(!onboardingStore.locationCenter) return null;
             return getPlaceByCoordinates({
                 body: {
-                    lng: onboardingStore.location[0],
-                    lat: onboardingStore.location[1],
+                    lng: onboardingStore.locationCenter[0],
+                    lat: onboardingStore.locationCenter[1],
                 },
                 params: {
-                    access_token: provider?.accessToken,
+                    access_token: provider.current.config.accessToken,
                     types: "place",
                     language: locale,
                 },
             })
                 .then(({ data }) => data?.features[0])
+                .then(data => {
+                    onboardingStore.setLocation(data?.center, data?.bbox);
+                    return data;
+                })
                 .then(mapboxFeatureResponseTransformer.toConfirmationDrawer);
         },
     });
 
-    const handleShowOnMap = (_: MapStore, provider: IMapProvider) => {
+    const handleShowOnMap = () => {
         if(data) {
             if(data.place_type.includes("place")) {
-                return provider.fitBounds(data?.bbox, {
+                return provider.current.fitBounds(data?.bbox, {
                     padding: {
                         bottom: 260,
                     },
                 });
             }
             if(data.place_type.includes("region")) {
-                return provider.flyTo(data?.center, {
+                return provider.current.flyTo({
+                    center: data?.center,
                     padding: {
                         bottom: 260,
                     },

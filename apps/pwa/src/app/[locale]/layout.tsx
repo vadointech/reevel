@@ -30,15 +30,15 @@ export const metadata: Metadata = {
     },
 };
 
-export function generateStaticParams() {
-    return locales.map((locale) => ({ locale }));
-}
-
 export const viewport: Viewport = {
     themeColor: [
-        { media: '(prefers-color-scheme: light)', color: '#F7F7F7' },
-        { media: '(prefers-color-scheme: dark)', color: '#000000' },
+        { media: "(prefers-color-scheme: dark)", color: "#000000" },
+        { media: "(prefers-color-scheme: light)", color: "#F7F7F7" },
     ],
+};
+
+export function generateStaticParams() {
+    return locales.map((locale) => ({ locale }));
 }
 
 export default async function RootLayout({ children, params }: PropsWithChildren<ParamsWithLocale>) {

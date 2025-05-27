@@ -2,15 +2,20 @@
 @use "@/theme/mixins";
 
 .bottomSheet {
-    &__body {
+    &__dragger {
         position: fixed;
         inset: 0;
         z-index: 10;
+        background: linear-gradient(
+            to top,
+            colors.$background 90%,
+            rgba(0, 0, 0, 0) 90%
+        );
+    }
 
-        border-radius: 20px 20px 0 0;
-        overflow: hidden;
-
-        background: colors.$background;
+    &__body {
+        display: flex;
+        flex-direction: column;
     }
 
     &__content {
@@ -21,6 +26,7 @@
 
         background-color: colors.$background;
         border-radius: mixins.rem(20) mixins.rem(20) 0 0;
+        overflow: hidden;
 
         & > * {
             flex: 0 0 auto;

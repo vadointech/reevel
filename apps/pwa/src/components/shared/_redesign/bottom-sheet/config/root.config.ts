@@ -1,25 +1,29 @@
 import { initStore } from "@/lib/mobx";
+import { IBottomSheetConfigParams, IBottomSheetInternalConfig } from "../types";
 
-export interface IBottomSheetRootConfig {
-    snapPoints: number[];
-    fitContent?: boolean;
-    defaultSnapPointIndex: number;
-    overlay: boolean;
-    fadeThreshold: number;
-    dismissible?: boolean;
-    handleOnly?: boolean;
-}
-
-export class BottomSheetRootConfig implements IBottomSheetRootConfig {
+export class BottomSheetRootConfig implements IBottomSheetInternalConfig {
+    clientHeight: number = 0;
+    contentHeight: number = 0;
     snapPoints: number[] = [.97];
-    fitContent: boolean = false;
+    snapPointsCount: number;
+
+    defaultOpen: boolean = false;
     defaultSnapPointIndex: number = 0;
     overlay: boolean = true;
     fadeThreshold: number = .5;
     dismissible: boolean = true;
     handleOnly: boolean = false;
+    touchEvents: boolean = false;
 
-    constructor(init: Partial<IBottomSheetRootConfig>) {
+    onClose() {}
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    onSnapPointChange(snapPointIndex: number) {}
+
+    constructor(init: Partial<IBottomSheetConfigParams>) {
         initStore(this, init);
+        this.snapPointsCount = this.snapPoints.length;
+        if(typeof window !== "undefined") {
+            this.clientHeight = window.innerHeight;
+        }
     }
 }

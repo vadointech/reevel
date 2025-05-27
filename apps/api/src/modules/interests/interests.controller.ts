@@ -1,7 +1,9 @@
 import { Controller, Get, Param, Query } from "@nestjs/common";
 import { InterestsService } from "./interests.service";
-import { Public, Session } from "@/decorators";
+import { Session } from "@/decorators";
 import { ServerSession } from "@/modules/auth/dto/jwt.dto";
+import { InterestsFilterParamsDto } from "./dto/interests-filter-params.dto";
+
 @Controller("interests")
 export class InterestsController {
     constructor(
@@ -9,8 +11,10 @@ export class InterestsController {
     ) { }
 
     @Get()
-    async getAllInterests() {
-        return this.interestsService.getAllInterests();
+    async getInterestsByParams(
+        @Query() params: InterestsFilterParamsDto,
+    ) {
+        return this.interestsService.getInterestsByParams(params);
     }
 
     @Get("initials")
@@ -25,25 +29,5 @@ export class InterestsController {
         @Param("slug") slug: string,
     ) {
         return this.interestsService.getRelatedInterests(slug);
-    }
-
-    @Public()
-    @Get("search")
-    async getSearch(
-        @Query("s") search?: string,
-    ) {
-
-        const builder = await this.interestsService.queryBuilder("interests");
-
-        if (search) {
-            builder.where(
-                "LOWER(interests.title_uk) LIKE LOWER(:search) OR LOWER(interests.title_en) LIKE LOWER(:search)",
-                { search: `%${search}%` },
-            );
-        }
-
-        builder.take(50);
-
-        return await builder.getMany();
     }
 }

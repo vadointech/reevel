@@ -28,7 +28,9 @@ export const InputTextArea = ({
                     </span>
                 ) : null
             }
-            <textarea {...props} />
+            <textarea
+                {...props}
+            />
         </label>
     );
 };

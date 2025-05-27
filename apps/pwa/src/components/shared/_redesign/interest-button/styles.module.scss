@@ -14,11 +14,9 @@
     justify-content: center;
     column-gap: .5rem;
 
-    span {
-        @include mixins.textEllipsis(1);
-    }
     @include typography.font("sm");
     line-height: 1;
+    text-wrap: nowrap;
 
     transition:
             background-color motions.$motion-duration-fast motions.$motion-ease-in-out,
@@ -38,5 +36,9 @@
     &_primary {
         background: colors.$primary;
         color: colors.$foreground;
+    }
+
+    &_background {
+        background: colors.$background;
     }
 }

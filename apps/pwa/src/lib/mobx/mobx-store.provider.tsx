@@ -1,13 +1,11 @@
-import { createContext, PropsWithChildren, useContext } from "react";
+import { Context, createContext, PropsWithChildren, useContext } from "react";
 
 export function createMobxStore<Store extends object>(
     StoreClass: new () => Store,
 ) {
-    const StoreContext = createContext<Store>(new StoreClass());
+    const StoreContext = createContext<Store | null>(new StoreClass());
 
-    const useStoreContext = () => {
-        return useContext(StoreContext);
-    };
+    const useStoreContext = withStoreContext(StoreContext);
 
     return [useStoreContext] as const;
 }
@@ -26,13 +24,26 @@ export function createMobxStoreProvider<Store extends object, Args extends unkno
         );
     }
 
-    const useStoreContext = () => {
+    const useStoreContext = withStoreContext(StoreContext);
+
+    return [StoreProvider, useStoreContext] as const;
+}
+
+function withStoreContext<Store extends object>(StoreContext: Context<Store | null>) {
+    function useStoreContext(): Store;
+    function useStoreContext<T extends keyof Store>(selector: T): Store[T];
+    function useStoreContext<T extends keyof Store>(selector?: T): Store | Store[T] {
         const context = useContext(StoreContext);
         if (!context) {
             throw new Error("useStoreContext must be used within a StoreProvider");
         }
-        return context;
-    };
 
-    return [StoreProvider, useStoreContext] as const;
+        if(selector) {
+            const value = context[selector];
+            return typeof value === "function" ? value.bind(context) : value;
+        }
+        return context;
+    }
+
+    return useStoreContext;
 }

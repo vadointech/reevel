@@ -9,7 +9,7 @@ import {
     BottomSheetPortal,
     BottomSheetRoot,
     BottomSheetTrigger,
-    useBottomSheetStore,
+    useBottomSheet,
 } from "@/components/shared/_redesign/bottom-sheet";
 import { Button, Header } from "@/components/shared/_redesign";
 
@@ -35,17 +35,21 @@ export namespace CreateEventFormBottomSheet {
 
 export const CreateEventFormBottomSheet = (props: CreateEventFormBottomSheet.Props) => {
     return (
-        <BottomSheetRoot fitContent fadeThreshold={0} {...props} />
+        <BottomSheetRoot snapPoints={["fit-content"]} fadeThreshold={0} {...props} />
     );
 };
 
-export const CreateEventFormBottomSheetTrigger = ({
-    children,
-}: CreateEventFormBottomSheet.TriggerProps) => {
+export const CreateEventFormBottomSheetTrigger = (props: CreateEventFormBottomSheet.TriggerProps) => {
     return (
-        <BottomSheetTrigger>
-            { children }
-        </BottomSheetTrigger>
+        <BottomSheetTrigger {...props} />
+    );
+};
+
+export const CreateEventFormBottomSheetBody = (props: BottomSheetBody.Props) => {
+    return (
+        <BottomSheetPortal>
+            <BottomSheetBody {...props} />
+        </BottomSheetPortal>
     );
 };
 
@@ -58,59 +62,55 @@ export const CreateEventFormBottomSheetContent = ({
     onSubmit,
     onReset,
 }: CreateEventFormBottomSheet.ContentProps) => {
-    const bottomSheetStore = useBottomSheetStore();
+    const { controller } = useBottomSheet();
     return (
-        <BottomSheetPortal>
-            <BottomSheetBody>
-                <BottomSheetContent>
-                    <BottomSheetHandle>
-                        <Header size={"large"}>
-                            { title }
-                        </Header>
-                    </BottomSheetHandle>
-                    <Container
-                        className={cx(
-                            styles.bottomSheet__content,
-                            styles[`bottomSheet__content_size_${size}`],
-                        )}
-                    >
-                        { children }
+        <BottomSheetContent>
+            <BottomSheetHandle>
+                <Header size={"large"}>
+                    { title }
+                </Header>
+            </BottomSheetHandle>
+            <Container
+                className={cx(
+                    styles.bottomSheet__content,
+                    styles[`bottomSheet__content_size_${size}`],
+                )}
+            >
+                { children }
 
-                        {
-                            (confirmButton || resetButton) && (
-                                <div className={styles.bottomSheet__buttons}>
-                                    {
-                                        resetButton && (
-                                            <Button
-                                                variant={"secondary-muted"}
-                                                onClick={(event) => {
-                                                    onReset?.(event);
-                                                    bottomSheetStore.setClose();
-                                                }}
-                                            >
-                                                Reset
-                                            </Button>
-                                        )
-                                    }
-                                    {
-                                        confirmButton && (
-                                            <Button
-                                                variant={"primary"}
-                                                onClick={(event) => {
-                                                    onSubmit?.(event);
-                                                    bottomSheetStore.setClose();
-                                                }}
-                                            >
-                                                Confirm
-                                            </Button>
-                                        )
-                                    }
-                                </div>
-                            )
-                        }
-                    </Container>
-                </BottomSheetContent>
-            </BottomSheetBody>
-        </BottomSheetPortal>
+                {
+                    (confirmButton || resetButton) && (
+                        <div className={styles.bottomSheet__buttons}>
+                            {
+                                resetButton && (
+                                    <Button
+                                        variant={"secondary-muted"}
+                                        onClick={(event) => {
+                                            onReset?.(event);
+                                            controller.current.close();
+                                        }}
+                                    >
+                                        Reset
+                                    </Button>
+                                )
+                            }
+                            {
+                                confirmButton && (
+                                    <Button
+                                        variant={"primary"}
+                                        onClick={(event) => {
+                                            onSubmit?.(event);
+                                            controller.current.close();
+                                        }}
+                                    >
+                                        Confirm
+                                    </Button>
+                                )
+                            }
+                        </div>
+                    )
+                }
+            </Container>
+        </BottomSheetContent>
     );
 };

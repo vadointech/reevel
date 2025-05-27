@@ -10,6 +10,7 @@ const interestButton = cva(styles.button, {
             text: styles.button_text,
             primary: styles.button_primary,
             outline: styles.button_outline,
+            background: styles.button_background,
         },
     },
     defaultVariants: {

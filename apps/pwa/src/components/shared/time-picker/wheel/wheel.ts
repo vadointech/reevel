@@ -5,6 +5,7 @@ export type WheelParams = {
     itemCount: number;
     itemSize: number;
     slideCount: number;
+    slidesFrom: number;
     itemsInView: number;
     perspective: "left" | "right";
     startIndex: number;
@@ -19,7 +20,7 @@ export class Wheel {
     perspective: WheelParams["perspective"];
     startIndex: WheelParams["startIndex"];
 
-    slides: Array<string | number | ReactNode>;
+    slides: Array<number>;
 
     itemRadius: number;
     inViewDegrees: number;
@@ -32,12 +33,14 @@ export class Wheel {
         this.loop = params.loop;
         this.itemSize = params.itemSize;
         this.itemCount = params.itemCount;
-        this.slidesCount = params.slideCount;
         this.itemsInView = params.itemsInView;
         this.perspective = params.perspective;
         this.startIndex = params.startIndex;
 
-        this.slides = Array.from(Array(params.slideCount).keys());
+        const slides = Array.from(Array(params.slideCount).keys());
+
+        this.slides = slides.slice(params.slidesFrom);
+        this.slidesCount = this.slides.length;
 
         this.itemRadius = 360 / this.itemCount;
         this.inViewDegrees = this.itemRadius * this.itemsInView;

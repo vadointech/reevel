@@ -7,13 +7,25 @@ export type UserProfileEntity = {
     bio?: string;
     picture?: string;
     completed: "true" | "false" | string;
-    location?: {
+    location?: ProfileLocationsEntity;
+    interests?: ProfileInterestsEntity[];
+};
+
+export type ProfileInterestsEntity = {
+    profileId: string;
+    interestId: string;
+    interest: InterestEntity;
+};
+
+export type ProfileLocationsEntity = {
+    id: string;
+    profileId: string;
+    center: {
         type: "Point";
         coordinates: [number, number];
-    };
-    interests?: Array<{
-        profileId: string;
-        interestId: string;
-        interest: InterestEntity;
-    }>
+    }
+    bbox: {
+        type: "Polygon";
+        coordinates: number[][][]
+    }
 };

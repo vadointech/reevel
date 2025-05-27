@@ -15,4 +15,11 @@ export class UserController {
     ) {
         return this.userService.getUserSession(session.user.id);
     }
+
+    @Get("/me/interests")
+    getUserInterests(
+        @Session() session: ServerSession,
+    ) {
+        return this.userService.getUserInterests(session);
+    }
 }

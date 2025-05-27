@@ -1,0 +1,67 @@
+@use "@/theme/mixins";
+@use "@/theme/colors";
+@use "@/theme/motions";
+@use "@/theme/typography";
+
+$transition-func: cubic-bezier(0.34, 1.56, 0.64, 1);
+
+@keyframes marker-fade-in {
+    0% {
+        opacity: 0;
+        transform: scale(0.5);
+    }
+
+    100% {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+@keyframes marker-fade-out {
+    0% {
+        opacity: 1;
+        transform: scale(1);
+    }
+    100% {
+        opacity: 0;
+        transform: scale(0.5);
+    }
+}
+
+.marker {
+    &_unactive {
+        animation: marker-fade-out 0.4s $transition-func forwards;
+    }
+
+    &_active {
+        animation: marker-fade-in 0.4s $transition-func forwards;
+    }
+
+
+    & > div {
+        transform-origin: bottom center;
+        transition:
+                scale .6s $transition-func,
+                transform .4s $transition-func;
+    }
+
+    & > label {
+        transition:
+                scale .6s $transition-func,
+                color .4s $transition-func,
+                transform .4s $transition-func;
+    }
+
+    &_selected {
+        & > div {
+            scale: 2.5;
+            transform: translateY(mixins.rem(-12));
+        }
+        & > label {
+            transform: translate(-50%, mixins.rem(12));
+            text-align: center;
+            color: colors.$primary !important;
+            @include mixins.textEllipsis(5);
+        }
+    }
+}

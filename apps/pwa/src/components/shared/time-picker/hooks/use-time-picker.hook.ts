@@ -15,11 +15,12 @@ export class TimePicker {
 export function useTimePicker({ handlers = {}, ...wheelParams }: UseTimePickerParams): TimePicker {
     return new TimePicker(
         new Wheel({
-            loop: true,
-            slideCount: 24,
-            itemSize: 32,
-            itemCount: 18,
-            itemsInView: 4,
+            slideCount: 0,
+            slidesFrom: 0,
+            itemSize: 50,
+            itemsInView: 3,
+            itemCount: 15,
+            loop: false,
             perspective: "left",
             startIndex: 0,
             ...wheelParams,

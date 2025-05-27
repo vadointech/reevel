@@ -1,4 +1,4 @@
-import { IconCheck, Navigation } from "@/components/icons";
+import { IconLocation, IconCheck } from "@/components/icons";
 import { ComponentProps } from "react";
 import styles from "./styles.module.scss";
 import cx from "classnames";
@@ -25,7 +25,7 @@ export const OnboardingLocationItem = ({ data, selected, className, ...props }: 
         >
             <div>
                 <div className={styles.container__city}>
-                    <Navigation />
+                    <IconLocation />
                     <p>{ data.city }</p>
                 </div>
                 <p className={styles.container__contry}>{ data.country }</p>
@@ -33,7 +33,7 @@ export const OnboardingLocationItem = ({ data, selected, className, ...props }: 
             {
                 selected && (
                     <div className={styles.container__check}>
-                        <Check width={12} height={8} />
+                        <IconCheck width={12} height={8} />
                     </div>
                 )
             }

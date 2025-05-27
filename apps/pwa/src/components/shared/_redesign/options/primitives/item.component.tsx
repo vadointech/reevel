@@ -4,6 +4,7 @@ import { IconArrowRight } from "@/components/icons";
 
 import styles from "../styles.module.scss";
 import { cx, cva, VariantProps } from "class-variance-authority";
+import { Link } from "@/i18n/routing";
 
 const listItem = cva(styles.listItem, {
     variants: {
@@ -13,20 +14,15 @@ const listItem = cva(styles.listItem, {
         },
         variant: {
             avatar: styles.listItem_variant_avatar,
-            warn: styles.listItem_variant_warn,
         },
         size: {
             default: styles.listItem_size_default,
             small: styles.listItem_size_small,
         },
-        disabled: {
-            true: styles.listItem_disabled,
-        }
     },
     defaultVariants: {
         weight: "default",
         size: "default",
-        disabled: false,
     },
 });
 
@@ -37,7 +33,7 @@ export namespace OptionsListItem {
         contentLeft?: string | ReactNode;
         contentRight?: ReactNode;
         iconType?: "filled" | "outlined";
-        disabled?: boolean;
+        href?: string;
     };
 }
 
@@ -50,42 +46,54 @@ export const OptionsListItem = ({
     label,
     description,
     iconType = "filled",
-    disabled = false,
+    href,
     className,
     ...props
 }: OptionsListItem.Props) => {
-    return (
-        <li
-            className={listItem({ weight, variant, size, disabled, className })}
-            {...props}
-        >
-            {
-                contentLeft && (
-                    <div
-                        className={cx(
-                            styles.listItem__left,
-                            styles[`listItem__left_icon_${iconType}`],
-                        )}
-                    >
-                        {contentLeft}
-                    </div>
-                )
-            }
-            <div className={styles.listItem__content}>
-                <div className={styles.listItem__title}>{label}</div>
+    const Component = () => {
+        return (
+            <li
+                className={listItem({ weight, variant, size, className })}
+                {...props}
+            >
                 {
-                    description && (
-                        <div className={styles.listItem__description}>{description}</div>
+                    contentLeft && (
+                        <div
+                            className={cx(
+                                styles.listItem__left,
+                                styles[`listItem__left_icon_${iconType}`],
+                            )}
+                        >
+                            { contentLeft }
+                        </div>
                     )
                 }
-            </div>
-            {
-                contentRight && (
-                    <div className={styles.listItem__right}>
-                        {contentRight}
-                    </div>
-                )
-            }
-        </li>
-    );
+                <div className={styles.listItem__content}>
+                    <div className={styles.listItem__title}>{ label }</div>
+                    {
+                        description && (
+                            <div className={styles.listItem__description}>{ description }</div>
+                        )
+                    }
+                </div>
+                {
+                    contentRight && (
+                        <div className={styles.listItem__right}>
+                            { contentRight }
+                        </div>
+                    )
+                }
+            </li>
+        );
+    };
+
+    if(href) {
+        return (
+            <Link href={href}>
+                <Component />
+            </Link>
+        );
+    }
+
+    return <Component />;
 };

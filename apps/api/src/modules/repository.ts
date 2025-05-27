@@ -6,8 +6,7 @@ import {
     FindManyOptions,
     FindOneOptions,
     FindOptionsWhere,
-    ObjectLiteral,
-    // Repository
+    ObjectLiteral, SelectQueryBuilder,
 } from "typeorm";
 import { QueryDeepPartialEntity } from "typeorm/query-builder/QueryPartialEntity";
 
@@ -25,9 +24,25 @@ export class Repository<Entity extends ObjectLiteral> {
         }
     }
 
+    protected repository<T extends ObjectLiteral>(entityTarget: EntityTarget<T>, entityManager?: EntityManager) {
+        if(entityManager instanceof EntityManager) {
+            return entityManager.getRepository(entityTarget);
+        } else {
+            return this.dataSource.getRepository(entityTarget);
+        }
+    }
+
     async query(query: string, parameters?: any[], entityManager?: EntityManager): Promise<any> {
         const repository = this.getRepository(entityManager);
         return repository.query(query, parameters);
+    }
+
+    async queryBuilder(
+        alias?: string,
+        entityManager?: EntityManager,
+    ): Promise<SelectQueryBuilder<Entity>> {
+        const repository = this.getRepository(entityManager);
+        return repository.createQueryBuilder(alias);
     }
 
     async create(
@@ -38,6 +53,14 @@ export class Repository<Entity extends ObjectLiteral> {
         return repository.save(
             repository.create(values),
         );
+    }
+
+    async save(
+        values: DeepPartial<Entity>,
+        entityManager?: EntityManager,
+    ): Promise<Entity> {
+        const repository = this.getRepository(entityManager);
+        return repository.save(values);
     }
 
     async createMany(

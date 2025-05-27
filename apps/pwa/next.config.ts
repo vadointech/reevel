@@ -6,6 +6,9 @@ const withNextIntl = createNextIntlPlugin();
 const nextConfig: NextConfig = {
     reactStrictMode: false,
     devIndicators: false,
+    experimental: {
+        viewTransition: true,
+    },
     images: {
         remotePatterns: [
             {
@@ -19,6 +22,14 @@ const nextConfig: NextConfig = {
             {
                 protocol: "https",
                 hostname: "res.cloudinary.com",
+            },
+            {
+                protocol: "https",
+                hostname: "places.googleapis.com",
+            },
+            {
+                protocol: "https",
+                hostname: "maps.gstatic.com",
             },
         ],
     },
