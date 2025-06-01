@@ -4,7 +4,7 @@ import { MapProviderCameraState } from "@/components/shared/map/types";
 export namespace MapConfig {
     export type ViewStateParams = {
         center: number[];
-        bboxPolygon?: MapProviderGL.LngLatPolygon;
+        bboxPolygon: MapProviderGL.LngLatPolygon;
         zoom: number;
         pitch: number;
         padding: Partial<MapProviderCameraState.PaddingOptions>
@@ -28,7 +28,7 @@ export namespace MapConfig {
 export namespace MapInternalConfig {
     export interface IViewStateConfig {
         center: MapProviderGL.LngLat;
-        bounds?: MapProviderGL.LngLatBounds;
+        bounds: MapProviderGL.LngLatBounds;
 
         zoom: number;
         pitch: number;

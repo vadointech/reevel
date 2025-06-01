@@ -1,24 +1,16 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { MapView } from "@/components/shared/map";
+import { LocationPickerDrawer } from "./drawer.component";
+import { LocationPickerConfirmationDrawer } from "./confirmation";
 
-import { MapView, usePersistentMap } from "@/components/shared/map";
-import { LocationPickerDrawer } from "@/components/screens/location-picker/primitives/drawer.component";
-import { useLocationPickerMap } from "@/features/location/picker/hooks";
-import {
-    LocationPickerConfirmationDrawer,
-} from "@/components/screens/location-picker/primitives/confirmation/confirmation-drawer.component";
-import { GetNearbyPlaces } from "@/api/google/places";
-import {
-    IBottomSheetRootController,
-} from "@/components/shared/_redesign/bottom-sheet/types";
-import { IconPoint, Point } from "@/components/shared/map/types";
-import { googlePlacesApiResponseMapper } from "@/infrastructure/google/mappers";
-import { usePrefetchedQuery, useQueriesData } from "@/lib/react-query";
+import { useLocationPickerMap, useConfirmationDrawer } from "@/features/location/picker/hooks";
+
+import { GooglePlacesApiResponse } from "@/api/google/places/types";
 
 export namespace LocationPickerMapView {
     export type Data = {
-        placesInit: Point<IconPoint>[]
+        placesInit: GooglePlacesApiResponse
     };
     export type Props = Data;
 }
@@ -26,69 +18,32 @@ export namespace LocationPickerMapView {
 export const LocationPickerMapView = ({ placesInit }: LocationPickerMapView.Props) => {
     const {
         handleViewportChange,
-        handlePickLocationType,
-    } = useLocationPickerMap();
-    const map = usePersistentMap();
+        handleLocationTypePick,
+    } = useLocationPickerMap(placesInit);
 
-    const confirmControls = useRef<IBottomSheetRootController>(null);
-    const confirmationDataRef = useRef<GetNearbyPlaces.TOutput["places"][number] | undefined>(undefined);
-
-    usePrefetchedQuery<GetNearbyPlaces.TOutput>({
-        queryKey: [...GetNearbyPlaces.queryKey],
-        onSuccess: (data) => {
-            const points = data.flatMap(googlePlacesApiResponseMapper.toIconPoint);
-            map.controller.current.setPoints(points);
-        },
-    });
-
-    const getNearbyPlacesQueryData = useQueriesData<GetNearbyPlaces.TOutput>({
-        queryKey: [...GetNearbyPlaces.queryKey],
-    });
-
-    const handlePointSelect = (pointId: string | null) => {
-        if(!pointId) return;
-
-        const nearbyPlacesQueriesData = getNearbyPlacesQueryData()
-            .flatMap((val) => val?.places || []);
-
-        const data = nearbyPlacesQueriesData.find(item => item.id === pointId);
-
-        if(data) {
-            confirmationDataRef.current = data;
-            confirmControls.current?.open();
-        }
-    };
-
-    const handleClose = () => {
-        map.controller.current.selectPoint(null);
-    };
-
-
-    useEffect(() => {
-        return () => {
-            map.provider.current.resetViewState(undefined, { animate: false });
-        };
-    }, []);
+    const {
+        confirmationDataRef,
+        confirmationDrawerControls,
+        handleSelectPoint,
+        handleConfirmationClose,
+    } = useConfirmationDrawer();
 
     return (
         <>
             <MapView
-                points={placesInit}
                 viewState={{
                     padding: { bottom: 260 },
                 }}
-                onViewportChange={({ bounds }) => {
-                    handleViewportChange(bounds);
-                }}
-                onPointSelect={handlePointSelect}
+                onMoveEnd={handleViewportChange}
+                onPointSelect={handleSelectPoint}
             />
             <LocationPickerDrawer
-                onLocationTypePick={handlePickLocationType}
+                onLocationTypePick={handleLocationTypePick}
             />
             <LocationPickerConfirmationDrawer
-                controller={confirmControls}
+                controller={confirmationDrawerControls}
                 dataRef={confirmationDataRef}
-                onClose={handleClose}
+                onClose={handleConfirmationClose}
             />
         </>
     );

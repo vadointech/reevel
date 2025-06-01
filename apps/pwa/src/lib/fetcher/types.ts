@@ -21,6 +21,7 @@ export type FetcherRequestConfig<Input = any, Params extends Record<string, any>
     credentials?: RequestCredentials
     next?: NextFetchRequestConfig;
     cache?: RequestCache
+    signal?: AbortSignal | null
 };
 
 export type FetcherResponse<Output = any> = {

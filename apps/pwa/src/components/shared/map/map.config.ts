@@ -7,7 +7,12 @@ export const MapProviderDefaultConfig: MapConfig.DefaultParams = {
     mapStyleLight: "",
     viewState: {
         center: [0, 0],
-        bboxPolygon: undefined,
+        bboxPolygon: [[
+            [0, 0],
+            [0, 0],
+            [0, 0],
+            [0, 0],
+        ]],
         zoom: 12,
         pitch: 0,
         padding: {
@@ -37,7 +42,7 @@ export class MapProviderInternalConfig implements MapInternalConfig.IInternalCon
 
 export class MapboxProviderInternalViewState implements MapInternalConfig.IViewStateConfig {
     center: MapProviderGL.LngLat;
-    bounds?: MapProviderGL.LngLatBounds;
+    bounds: MapProviderGL.LngLatBounds;
     zoom: number;
     pitch: number;
     padding: Partial<MapProviderCameraState.PaddingOptions>;
@@ -45,7 +50,7 @@ export class MapboxProviderInternalViewState implements MapInternalConfig.IViewS
     constructor(config: Partial<MapConfig.ViewStateParams>) {
         const {
             center = MapProviderDefaultConfig.viewState.center,
-            bboxPolygon,
+            bboxPolygon = MapProviderDefaultConfig.viewState.bboxPolygon,
             zoom = MapProviderDefaultConfig.viewState.zoom,
             pitch = MapProviderDefaultConfig.viewState.pitch,
             padding = MapProviderDefaultConfig.viewState.padding,
@@ -53,9 +58,7 @@ export class MapboxProviderInternalViewState implements MapInternalConfig.IViewS
 
         this.center = new LngLat(center[0], center[1]);
 
-        if(bboxPolygon) {
-            this.bounds = this.polygonToBounds(bboxPolygon);
-        }
+        this.bounds = this.polygonToBounds(bboxPolygon);
 
         this.zoom = zoom;
         this.pitch = pitch;

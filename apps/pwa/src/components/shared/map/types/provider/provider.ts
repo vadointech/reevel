@@ -15,6 +15,16 @@ export interface IMapRootProvider {
      * @return {number} The calculated radius based on the horizontal distance of the bounds.
      */
     getHorizontalRadius(bounds: MapProviderGL.LngLatBounds, center: MapProviderGL.LngLat): number;
+
+
+    /**
+     * Creates a new set of geographical bounds by applying a buffer percentage to the geographical.
+     *
+     * @param {MapProviderGL.LngLatBounds} bounds - The geographical bounds representing the area.
+     * @param {number} [bufferPercentage=0.2] - The percentage of buffering to apply to the bounds.
+     * @return {MapProviderGL.LngLatBounds} - A new LngLatBounds object with buffered coordinates.
+     */
+    getBufferedBounds(bounds: MapProviderGL.LngLatBounds, bufferPercentage?: number): MapProviderGL.LngLatBounds;
 }
 
 export interface IMapProvider extends IMapRootProvider {
@@ -40,6 +50,8 @@ export interface IMapProvider extends IMapRootProvider {
         viewState?: Partial<MapInternalConfig.IViewStateConfig>,
         options?: MapProviderCameraState.EasingOptions
     ): void;
+
+    getViewState(): MapInternalConfig.IViewStateConfig;
 
     /**
      * Moves the view of the map smoothly to the specified coordinates.
@@ -73,12 +85,4 @@ export interface IMapProvider extends IMapRootProvider {
      * @return {MapProviderGL.LngLatBounds | null} Returns the boundaries of the map as a LngLatBounds object, or null if the bounds cannot be determined.
      */
     getBounds(): MapProviderGL.LngLatBounds | null;
-
-    /**
-     * Creates a new set of geographical bounds by applying a buffer percentage to the geographical.
-     *
-     * @param {number} [bufferPercentage=0.2] - The percentage of buffering to apply to the bounds.
-     * @return {MapProviderGL.LngLatBounds} - A new LngLatBounds object with buffered coordinates.
-     */
-    getBufferedBounds(bufferPercentage: number): MapProviderGL.LngLatBounds | null;
 }

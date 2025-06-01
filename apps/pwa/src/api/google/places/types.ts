@@ -1,6 +1,3 @@
-import { GooglePLacesApiIncludedTypes, GooglePLacesApiPrimaryIncludedTypes } from "./included-types.config";
-import { GooglePLacesApiExcludedTypes, GooglePLacesApiPrimaryExcludedTypes } from "./excluded-types.config";
-
 export type GooglePlacesApiRestrictionCircle = {
     circle: {
         center: {
@@ -12,10 +9,10 @@ export type GooglePlacesApiRestrictionCircle = {
 };
 
 export type GooglePlacesApiRequestBody = {
-    includedTypes?: readonly GooglePLacesApiIncludedTypes[],
-    excludedTypes?: readonly GooglePLacesApiExcludedTypes[],
-    includedPrimaryTypes?: readonly GooglePLacesApiPrimaryIncludedTypes[],
-    excludedPrimaryTypes?: readonly GooglePLacesApiPrimaryExcludedTypes[]
+    includedTypes?: readonly string[],
+    excludedTypes?: readonly string[],
+    includedPrimaryTypes?: readonly string[],
+    excludedPrimaryTypes?: readonly string[]
     maxResultCount?: number,
     languageCode?: string;
 };

@@ -1,4 +1,4 @@
-import { LngLat } from "mapbox-gl";
+import { LngLat, LngLatBounds } from "mapbox-gl";
 import { MapProviderInternalConfig } from "./map.config";
 import { IMapRootProvider, MapConfig, MapProviderGL, MapInternalConfig } from "./types";
 
@@ -21,5 +21,18 @@ export class MapRootProvider implements IMapRootProvider {
         const westPoint = new LngLat(west, center.lat);
 
         return westPoint.distanceTo(eastPoint) / 2;
+    }
+
+    getBufferedBounds(bounds: MapProviderGL.LngLatBounds, bufferPercentage: number = 0): MapProviderGL.LngLatBounds {
+        const width = bounds.getEast() - bounds.getWest();
+        const height = bounds.getNorth() - bounds.getSouth();
+
+        const bufferX = width * bufferPercentage;
+        const bufferY = height * bufferPercentage;
+
+        return new LngLatBounds(
+            [bounds.getWest() + bufferX, bounds.getSouth() + bufferY], // Southwest point
+            [bounds.getEast() - bufferX, bounds.getNorth() - bufferY],  // Northeast point
+        );
     }
 }

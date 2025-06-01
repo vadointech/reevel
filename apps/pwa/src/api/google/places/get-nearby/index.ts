@@ -20,13 +20,15 @@ export namespace GetNearbyPlaces {
 
 export const getNearbyPlaces = fetcherClient<GetNearbyPlaces.TInput, GetNearbyPlaces.TOutput, GetNearbyPlaces.TParams>({
     fetcherFunc: async(fetcher, input) => {
-        let fieldMask = "places.id,places.displayName,place.location";
+        let fieldMask = "places.id,places.displayName,places.location";
+        const params = input?.params;
+        delete input?.params;
 
-        if(input?.params?.fieldMask) {
-            if(typeof input.params.fieldMask === "string") {
-                fieldMask = input.params.fieldMask;
+        if(params?.fieldMask) {
+            if(typeof params.fieldMask === "string") {
+                fieldMask = params.fieldMask;
             } else {
-                fieldMask = input.params.fieldMask.map(mask => `places.${mask}`).join(",");
+                fieldMask = params.fieldMask.map(mask => `places.${mask}`).join(",");
             }
         }
         
@@ -37,7 +39,7 @@ export const getNearbyPlaces = fetcherClient<GetNearbyPlaces.TInput, GetNearbyPl
                 "X-Goog-Api-Key": "AIzaSyAIfGyOk4VSltw4QnBr1r6wjK_2bkw1pU4",
                 "X-Goog-FieldMask": fieldMask,
             },
-            body: input?.body,
+            ...input,
         });
 
         if(result.data) {

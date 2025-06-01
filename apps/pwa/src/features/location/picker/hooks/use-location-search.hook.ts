@@ -1,53 +1,62 @@
-import { ChangeEvent, useEffect, useMemo, useState } from "react";
+import { ChangeEvent, useCallback, useEffect, useMemo, useState } from "react";
 import { useSearchLocation } from "@/infrastructure/google/hooks";
 import { useLocationPicker } from "@/features/location/picker";
 import { googlePlacesApiResponseMapper } from "@/infrastructure/google/mappers";
 import { googlePlacesApiResponseTransformer } from "@/infrastructure/google/transformers";
-import { useDebounce } from "@/lib/hooks";
+import { useDebounce } from "use-debounce";
 import { usePersistentMap } from "@/components/shared/map";
+import { MapProviderGL } from "@/components/shared/map/types";
 
 export function useLocationPickerSearch() {
-    const [searchTerm, setSearchTerm] = useState("");
-    const debouncedSearchTerm = useDebounce(searchTerm, 1000);
+    const [searchQuery, setSearchQuery] = useState("");
+    const [debouncedSearchQuery] = useDebounce(searchQuery, 1000);
 
-    const { controller, searchStore } = useLocationPicker();
-    const { searchPlacesByTextQuery } = useSearchLocation();
-
+    const { searchStore } = useLocationPicker();
     const { provider } = usePersistentMap();
 
-    const restrictions = useMemo(() => {
-        const { bounds, center } = provider.current.internalConfig.viewState;
+    const { searchPlacesByTextQuery } = useSearchLocation();
 
-        if(bounds && center) {
-            const radius = provider.current.getHorizontalRadius(bounds, center);
-            return {
-                center,
-                radius,
-            };
+    const fetchPlaces = useCallback((
+        query: string,
+        restrictions?: {
+            center: MapProviderGL.LngLat,
+            radius: number,
+        },
+    ) => {
+        searchPlacesByTextQuery(query, restrictions)
+            .then(googlePlacesApiResponseTransformer.formatAddress)
+            .then(googlePlacesApiResponseMapper.toIconPoint)
+            .then(points => searchStore.setSearchResults(points));
+    }, []);
+
+    const locationRestrictions = useMemo(() => {
+        if(searchStore.locationRestrictions) {
+            const { bounds, center } = provider.current.internalConfig.viewState;
+
+            if(bounds && center) {
+                const radius = provider.current.getHorizontalRadius(bounds, center);
+                return {
+                    center,
+                    radius,
+                };
+            }
         }
-
-        return undefined;
-    }, [provider]);
+    }, [searchStore.locationRestrictions]);
 
     useEffect(() => {
-        if(debouncedSearchTerm.length > 2) {
-            searchPlacesByTextQuery(debouncedSearchTerm, restrictions)
-                .then(googlePlacesApiResponseTransformer.formatAddress)
-                .then(res => controller.current.cacheGooglePlacesApiResponse(res))
-                .then(googlePlacesApiResponseMapper.toIconPoint)
-                .then(points => searchStore.setSearchResults(points));
+        if(debouncedSearchQuery.length > 2) {
+            fetchPlaces(debouncedSearchQuery, locationRestrictions);
         } else {
             searchStore.setSearchResults([]);
         }
-    }, [debouncedSearchTerm]);
+    }, [debouncedSearchQuery, searchStore.locationRestrictions]);
 
-
-    const handleSearch = (e: ChangeEvent<HTMLInputElement>) => {
-        setSearchTerm(e.target.value.toLowerCase());
+    const handleSetSearchQuery = (e: ChangeEvent<HTMLInputElement>) => {
+        setSearchQuery(e.target.value);
     };
 
     return {
-        searchTerm,
-        handleSearch,
+        searchQuery,
+        handleSetSearchQuery,
     };
 }

@@ -70,7 +70,9 @@ export class MapRootController implements IMapRootController {
     }
 
     setPoints(points: Point<BasePoint>[]) {
-        this._store.setPoints(points);
+        this._store.setPoints([
+            ...new ObjectUnique(points, "id"),
+        ]);
     }
 
     appendPoints(point: Point<BasePoint>[]) {

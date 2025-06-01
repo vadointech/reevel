@@ -18,7 +18,7 @@ export function useFetchNearestLocations() {
                 ...GetNearbyPlaces.queryKey,
                 center.lng.toFixed(5),
                 center.lat.toFixed(5),
-                Math.round(radius),
+                radius,
                 includedType,
             ],
             queryFn: () => getNearbyPlaces({
@@ -40,7 +40,15 @@ export function useFetchNearestLocations() {
                     },
                 },
                 params: {
-                    fieldMask: ["id", "displayName", "location", "primaryType", "primaryTypeDisplayName"],
+                    fieldMask: [
+                        "id",
+                        "displayName",
+                        "location",
+                        "primaryType",
+                        "primaryTypeDisplayName",
+                        "formattedAddress",
+                        "addressComponents",
+                    ],
                 },
             })
                 .then(res => res.data || { places: [] })

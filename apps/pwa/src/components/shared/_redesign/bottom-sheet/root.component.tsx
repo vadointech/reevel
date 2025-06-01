@@ -24,9 +24,7 @@ export const BottomSheetRoot = ({
 }: BottomSheetRoot.Props) => {
     const animationControls = useAnimation();
 
-    const rootConfig = new BottomSheetRootConfig({
-        ...configProps,
-    });
+    const rootConfig = new BottomSheetRootConfig(configProps);
 
     const store = useMemo(() => new BottomSheetStore(rootConfig), []);
 

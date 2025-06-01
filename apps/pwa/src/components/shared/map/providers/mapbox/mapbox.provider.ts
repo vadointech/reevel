@@ -1,5 +1,4 @@
 import { RefObject } from "react";
-import { LngLatBounds } from "mapbox-gl";
 import { MapRef } from "react-map-gl/mapbox";
 import {
     IMapProvider,
@@ -9,6 +8,7 @@ import {
     MapInternalConfig,
 } from "../../types";
 import { MapRootProvider } from "../../map.provider";
+import { LngLatBounds } from "mapbox-gl";
 
 export class MapboxProvider<T extends MapRef = MapRef> extends MapRootProvider implements IMapProvider {
     constructor(
@@ -37,10 +37,10 @@ export class MapboxProvider<T extends MapRef = MapRef> extends MapRootProvider i
         }
 
         if(this._internalConfig.viewState.bounds) {
-            const { bounds, pitch, padding } = this._internalConfig.viewState;
+            // eslint-disable-next-line @typescript-eslint/no-unused-vars
+            const { bounds, zoom, ...state } = this._internalConfig.viewState;
             this.fitBounds(bounds, {
-                pitch,
-                padding,
+                ...state,
                 ...options,
             });
         } else {
@@ -49,6 +49,25 @@ export class MapboxProvider<T extends MapRef = MapRef> extends MapRootProvider i
                 ...options,
             });
         }
+    }
+
+    getViewState(): MapInternalConfig.IViewStateConfig {
+        if(!this.mapRef.current) return this._internalConfig.viewState;
+
+        const bounds = this.mapRef.current.getBounds() || this._internalConfig.viewState.bounds;
+        const center = bounds.getCenter();
+
+        const padding = this.mapRef.current.getPadding();
+        const zoom = this.mapRef.current.getZoom();
+        const pitch = this.mapRef.current.getPitch();
+
+        return {
+            center,
+            bounds,
+            zoom,
+            pitch,
+            padding,
+        };
     }
 
     flyTo(options: MapProviderCameraState.EasingOptions): void {
@@ -81,21 +100,5 @@ export class MapboxProvider<T extends MapRef = MapRef> extends MapRootProvider i
     getBounds(): MapProviderGL.LngLatBounds | null {
         if(!this.mapRef.current) return null;
         return this.mapRef.current.getBounds();
-    }
-
-    getBufferedBounds(bufferPercentage: number = 0.2): MapProviderGL.LngLatBounds | null {
-        const bounds = this.getBounds();
-        if(!bounds) return null;
-
-        const width = bounds.getEast() - bounds.getWest();
-        const height = bounds.getNorth() - bounds.getSouth();
-
-        const bufferX = width * bufferPercentage;
-        const bufferY = height * bufferPercentage;
-
-        return new LngLatBounds(
-            [bounds.getWest() + bufferX, bounds.getSouth() + bufferY], // Southwest point
-            [bounds.getEast() - bufferX, bounds.getNorth() - bufferY],  // Northeast point
-        );
     }
 }

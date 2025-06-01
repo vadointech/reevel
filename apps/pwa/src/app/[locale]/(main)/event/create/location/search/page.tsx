@@ -3,13 +3,7 @@ import { getSession } from "@/api/auth/get-session";
 import { headers } from "next/headers";
 import { MapRootProvider } from "@/components/shared/map/map.provider";
 import { MapProviderDefaultConfig } from "@/components/shared/map/map.config";
-import { getNearbyPlaces } from "@/api/google/places";
-import {
-    GOOGLE_PLACES_API_RECOMMENDED_TYPES,
-} from "@/features/location/picker";
-import { googlePlacesApiResponseTransformer } from "@/infrastructure/google/transformers";
-import { googlePlacesApiResponseMapper } from "@/infrastructure/google/mappers";
-import { IconPoint, Point } from "@/components/shared/map/types";
+import { createBufferedBounds, snapRadius } from "@/features/location/picker/utils/map-dimentions";
 
 export default async function CreateEventLocationSearchPage() {
     const { data: session } = await getSession({
@@ -18,58 +12,34 @@ export default async function CreateEventLocationSearchPage() {
 
     const location = session?.profile.location;
 
-    let placesInit: Point<IconPoint>[] = [];
+    const mapProvider = new MapRootProvider({
+        ...MapProviderDefaultConfig,
+        viewState: {
+            ...MapProviderDefaultConfig.viewState,
+            center: location?.center.coordinates,
+            bboxPolygon: location?.bbox.coordinates,
+        },
+    });
 
-    if(session) {
-        const mapProvider = new MapRootProvider({
-            ...MapProviderDefaultConfig,
-            viewState: {
-                ...MapProviderDefaultConfig.viewState,
-                center: location?.center.coordinates,
-                bboxPolygon: location?.bbox.coordinates,
-            },
-        });
+    const { bounds, center } = mapProvider.internalConfig.viewState;
+    let queryKey: unknown[] = [];
 
-        const { bounds, center } = mapProvider.internalConfig.viewState;
+    if(bounds && center) {
+        const bufferedBounds = createBufferedBounds(bounds);
+        const bufferedRadius = mapProvider.getHorizontalRadius(bufferedBounds, center);
+        const snappedRadius = snapRadius(bufferedRadius);
 
-        if(bounds && center) {
-            const radius = mapProvider.getHorizontalRadius(bounds, center);
-
-            placesInit = await getNearbyPlaces({
-                nextHeaders: await headers(),
-                body: {
-                    maxResultCount: 5,
-                    includedPrimaryTypes: GOOGLE_PLACES_API_RECOMMENDED_TYPES.includedTypes,
-                    includedTypes: GOOGLE_PLACES_API_RECOMMENDED_TYPES.includedTypes,
-                    excludedPrimaryTypes: GOOGLE_PLACES_API_RECOMMENDED_TYPES.excludedTypes,
-                    excludedTypes: GOOGLE_PLACES_API_RECOMMENDED_TYPES.excludedTypes,
-                    languageCode: "uk",
-                    locationRestriction: {
-                        circle: {
-                            center: {
-                                longitude: center.lng,
-                                latitude: center.lat,
-                            },
-                            radius: radius,
-                        },
-                    },
-                },
-                params: {
-                    fieldMask: [
-                        "id",
-                        "displayName",
-                        "location",
-                        "primaryType",
-                        "formattedAddress",
-                        "addressComponents",
-                    ],
-                },
-            })
-                .then(response => response.data || { places: [] })
-                .then(googlePlacesApiResponseTransformer.formatAddress)
-                .then(googlePlacesApiResponseMapper.toIconPoint);
-        }
+        queryKey = [
+            "places/nearby",
+            center.lng.toFixed(2),
+            center.lat.toFixed(2),
+            snappedRadius,
+        ];
     }
 
-    return <LocationSearch placesInit={placesInit} />;
+    return (
+        <LocationSearch
+            queryKey={queryKey}
+        />
+    );
 }

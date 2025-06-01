@@ -1,11 +1,12 @@
 "use client";
 
 import { createContext, RefObject, useContext } from "react";
-import { IMapRootController, IMapProvider } from "./types";
+import { IMapRootController, IMapProvider, IMapStore } from "./types";
 
 type PersistentMapContextValue = {
     controller: RefObject<IMapRootController>;
     provider: RefObject<IMapProvider>;
+    store: IMapStore;
 };
 
 export const PersistentMapContext = createContext<PersistentMapContextValue | null>(null);

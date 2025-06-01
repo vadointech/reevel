@@ -40,6 +40,46 @@ export function calculateRadius(bounds: MapProviderGL.LngLatBounds, center: MapP
 }
 
 /**
+ * Snaps radius to predefined zoom levels for consistent search areas.
+ * Uses a logarithmic-like progression for smoother transitions.
+ *
+ * Zoom levels (in meters):
+ * - Level 1: 60 (minimum radius)
+ * - Level 2: 100
+ * - Level 3: 250
+ * - Level 4: 500
+ * - Level 5: 1000
+ * - Level 6: 2000
+ * - Level 7: 5000
+ * - Level 8+: Multiples of 5000
+ */
+export function snapRadius(radius: number): number {
+    const zoomLevels = [60, 100, 250, 500, 1000, 2000, 5000];
+
+    // If the radius is smaller than a minimum, return minimum
+    if (radius <= zoomLevels[0]) {
+        return zoomLevels[0];
+    }
+
+    // If the radius is larger than our largest defined level
+    if (radius > zoomLevels[zoomLevels.length - 1]) {
+        return Math.ceil(radius / 5000) * 5000;
+    }
+
+    // Find the closest zoom level
+    for (let i = 0; i < zoomLevels.length - 1; i++) {
+        if (radius > zoomLevels[i] && radius <= zoomLevels[i + 1]) {
+            // Return the closer value between the current and next level
+            return (radius - zoomLevels[i]) < (zoomLevels[i + 1] - radius)
+                ? zoomLevels[i]
+                : zoomLevels[i + 1];
+        }
+    }
+
+    return zoomLevels[0]; // Fallback to minimum radius
+}
+
+/**
  * Calculates the area of a geographical bounding box.
  *
  * @param {MapProviderGL.LngLatBounds} bounds - The bounding box defined by its southwestern and northeastern corners.
@@ -61,3 +101,4 @@ export function calculateBoundsArea(bounds: MapProviderGL.LngLatBounds): number 
 export function calculateDistance(point1: MapProviderGL.LngLat, point2: MapProviderGL.LngLat): number {
     return point1.distanceTo(point2);
 }
+

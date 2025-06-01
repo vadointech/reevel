@@ -3,12 +3,9 @@ import { getSession } from "@/api/auth/get-session";
 import { headers } from "next/headers";
 import { MapRootProvider } from "@/components/shared/map/map.provider";
 import { MapProviderDefaultConfig } from "@/components/shared/map/map.config";
-import { GetNearbyPlaces, getNearbyPlaces } from "@/api/google/places";
-import {
-    GOOGLE_PLACES_API_EXCLUDED_TYPES,
-    GOOGLE_PLACES_API_INCLUDED_TYPES,
-} from "@/features/location/picker";
-import { dehydrate, HydrationBoundary, QueryClient } from "@tanstack/react-query";
+import { QueryClient } from "@tanstack/react-query";
+import { GooglePlacesApiResponse } from "@/api/google/places/types";
+import { GetNearbyPlacesQueryBuilder } from "@/features/location/picker/queries";
 
 export default async function CreateEventLocationPage() {
     const { data: session } = await getSession({
@@ -17,6 +14,7 @@ export default async function CreateEventLocationPage() {
 
     const location = session?.profile.location;
 
+    let placesInit: GooglePlacesApiResponse = { places: [] };
     const queryClient = new QueryClient();
 
     if(session) {
@@ -30,54 +28,17 @@ export default async function CreateEventLocationPage() {
         });
 
         const { bounds, center } = mapProvider.internalConfig.viewState;
+        const radius = mapProvider.getHorizontalRadius(bounds, center);
 
-        if(bounds && center) {
-            const radius = mapProvider.getHorizontalRadius(bounds, center);
-
-            await queryClient.prefetchQuery({
-                queryKey: [
-                    ...GetNearbyPlaces.queryKey,
-                    center.lng.toFixed(5),
-                    center.lat.toFixed(5),
-                    Math.round(radius),
-                ],
-                queryFn: async() => getNearbyPlaces({
-                    nextHeaders: await headers(),
-                    body: {
-                        maxResultCount: 10,
-                        includedPrimaryTypes: GOOGLE_PLACES_API_INCLUDED_TYPES.primaryTypes,
-                        includedTypes: GOOGLE_PLACES_API_INCLUDED_TYPES.secondaryTypes,
-                        excludedPrimaryTypes: GOOGLE_PLACES_API_EXCLUDED_TYPES.primaryTypes,
-                        excludedTypes: GOOGLE_PLACES_API_EXCLUDED_TYPES.secondaryTypes,
-                        languageCode: "uk",
-                        locationRestriction: {
-                            circle: {
-                                center: {
-                                    longitude: center.lng,
-                                    latitude: center.lat,
-                                },
-                                radius: radius,
-                            },
-                        },
-                    },
-                    params: {
-                        fieldMask: [
-                            "id",
-                            "displayName",
-                            "location",
-                            "primaryType",
-                            "primaryTypeDisplayName",
-                        ],
-                    },
-                }).then(response => response.data || { places: [] }),
-            });
-        }
+        placesInit = await queryClient.fetchQuery(
+            GetNearbyPlacesQueryBuilder({
+                center,
+                radius,
+            }),
+        );
     }
 
-
     return (
-        <HydrationBoundary state={dehydrate(queryClient)}>
-            <LocationPickerMapView placesInit={[]} />;
-        </HydrationBoundary>
+        <LocationPickerMapView placesInit={placesInit} />
     );
 }
