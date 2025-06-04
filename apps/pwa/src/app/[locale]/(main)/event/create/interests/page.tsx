@@ -14,12 +14,14 @@ export default async function CreateEventInterestsPage() {
         nextHeaders: await headers(),
     });
 
-    const interests = [... new ObjectUnique<InterestEntity>(
-        [
-            ...(userInterests || []).map(item => item.interest),
-            ...(initialInterests || []),
-        ], "slug",
-    )];
+    const interests = [
+        ... new ObjectUnique<InterestEntity>(
+            [
+                ...(userInterests || []).map(item => item.interest),
+                ...(initialInterests || []),
+            ], "slug",
+        ),
+    ];
     
     return <InterestsPickerScreen interests={interests} />;
 }

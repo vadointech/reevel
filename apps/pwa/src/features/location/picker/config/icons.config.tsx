@@ -1,5 +1,5 @@
 import { ReactNode } from "react";
-import { GooglePLacesApiIncludedTypes } from "@/api/google/places/included-types.config";
+import { GooglePLacesApiIncludedTypes } from "@/api/google/places/_internal/included-types.config";
 import {
     IconAmusementPark, IconArtGallery, IconBar,
     IconBeach,
@@ -25,6 +25,7 @@ import {
     IconWater,
     IconYogaStudio, IconZoo,
 } from "@/components/icons";
+import { IconPoint } from "@/components/shared/map/types";
 
 export type Icon = {
     icon: ReactNode;
@@ -267,6 +268,11 @@ export const IncludedTypesMarker: Record<GooglePLacesApiIncludedTypes | "default
      * Shopping
      */
     shopping_mall: {
+        icon: <IconShoppingMall />,
+        primaryColor: "#FF4500",
+        secondaryColor: "#FFA500",
+    },
+    plaza: {
         icon: <IconShoppingMall />,
         primaryColor: "#FF4500",
         secondaryColor: "#FFA500",

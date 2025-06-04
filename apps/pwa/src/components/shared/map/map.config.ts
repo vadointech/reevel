@@ -6,13 +6,16 @@ export const MapProviderDefaultConfig: MapConfig.DefaultParams = {
     mapStyleDark: "",
     mapStyleLight: "",
     viewState: {
-        center: [0, 0],
+        // Vinnitsa, Ukraine
+        center: [28.46913, 49.232933],
         bboxPolygon: [[
-            [0, 0],
-            [0, 0],
-            [0, 0],
-            [0, 0],
+            [28.375272, 49.190909],
+            [28.375272, 49.278893],
+            [28.541141, 49.278893],
+            [28.541141, 49.190909],
+            [28.375272, 49.190909],
         ]],
+        /////////////////////
         zoom: 12,
         pitch: 0,
         padding: {

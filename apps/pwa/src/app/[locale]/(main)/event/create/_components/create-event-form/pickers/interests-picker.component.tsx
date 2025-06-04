@@ -1,6 +1,6 @@
 "use client";
 
-import { Controller, ControllerRenderProps } from "react-hook-form";
+import { Controller } from "react-hook-form";
 import { FormField, InterestButton, Section } from "@/components/shared/_redesign";
 
 import { CreateEventFormSchemaValues, useCreateEventFormInterestsPicker } from "@/features/event/create";

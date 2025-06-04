@@ -2,30 +2,20 @@ import { action, makeObservable, observable } from "mobx";
 import { BasePoint, Point, IMapStore } from "./types";
 
 export class MapStore implements IMapStore {
-    initialized: boolean = false;
-
     points: Point<BasePoint>[] = [];
     pointsVisible: boolean = true;
     selectedPoint: string | null = null;
 
     constructor() {
         makeObservable(this, {
-            initialized: observable,
-
             points: observable,
             pointsVisible: observable,
             selectedPoint: observable,
-
-            setInitialized: action,
 
             setPoints: action,
             setPointsVisible: action,
             setSelectedPoint: action,
         });
-    }
-
-    setInitialized(initialized: boolean) {
-        this.initialized = initialized;
     }
 
     setPoints(points: Point<BasePoint>[]) {

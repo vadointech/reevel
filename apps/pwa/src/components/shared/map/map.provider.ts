@@ -4,13 +4,24 @@ import { IMapRootProvider, MapConfig, MapProviderGL, MapInternalConfig } from ".
 
 export class MapRootProvider implements IMapRootProvider {
     protected readonly _internalConfig: MapInternalConfig.IInternalConfig;
+    protected readonly _defaultConfig: MapInternalConfig.IInternalConfig;
 
-    constructor(config: MapConfig.Params) {
-        this._internalConfig = new MapProviderInternalConfig(config);
+    constructor(config: MapConfig.Params | MapProviderInternalConfig) {
+        if(config instanceof MapProviderInternalConfig) {
+            this._internalConfig = config;
+            this._defaultConfig = config;
+        } else {
+            this._internalConfig = new MapProviderInternalConfig(config);
+            this._defaultConfig = new MapProviderInternalConfig(config);
+        }
     }
 
     get internalConfig(): MapInternalConfig.IInternalConfig {
         return this._internalConfig;
+    }
+
+    get defaultConfig(): MapInternalConfig.IInternalConfig {
+        return this._defaultConfig;
     }
 
     getHorizontalRadius(bounds: MapProviderGL.LngLatBounds, center: MapProviderGL.LngLat): number {
@@ -23,7 +34,7 @@ export class MapRootProvider implements IMapRootProvider {
         return westPoint.distanceTo(eastPoint) / 2;
     }
 
-    getBufferedBounds(bounds: MapProviderGL.LngLatBounds, bufferPercentage: number = 0): MapProviderGL.LngLatBounds {
+    getBufferedBounds(bounds: MapProviderGL.LngLatBounds, bufferPercentage: number = .2): MapProviderGL.LngLatBounds {
         const width = bounds.getEast() - bounds.getWest();
         const height = bounds.getNorth() - bounds.getSouth();
 
@@ -34,5 +45,17 @@ export class MapRootProvider implements IMapRootProvider {
             [bounds.getWest() + bufferX, bounds.getSouth() + bufferY], // Southwest point
             [bounds.getEast() - bufferX, bounds.getNorth() - bufferY],  // Northeast point
         );
+    }
+
+    getDistance(p1: MapProviderGL.LngLatLike, p2: MapProviderGL.LngLatLike): number {
+        const point1 = LngLat.convert(p1);
+        const point2 = LngLat.convert(p2);
+
+        return point1.distanceTo(point2);
+    }
+
+    getDynamicDuration(p1: MapProviderGL.LngLatLike, p2: MapProviderGL.LngLatLike): number {
+        const distance = this.getDistance(p1, p2);
+        return  Math.min(1000, Math.max(400, distance * 0.2)); // 0.2ms per 1m
     }
 }

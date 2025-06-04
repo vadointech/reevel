@@ -4,7 +4,7 @@ export class RequestDebouncer {
 
     async debounceRequest<T>(
         requestFn: (signal?: AbortSignal) => Promise<T>,
-        delayMs: number = 500,
+        delayMs: number = 300,
     ): Promise<T> {
         // Cancel previous request
         this.cancel();

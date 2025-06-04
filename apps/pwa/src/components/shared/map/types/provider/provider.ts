@@ -3,9 +3,9 @@ import { MapInternalConfig } from "./config";
 import { MapProviderCameraState } from "./camera";
 import { MapProviderGL } from "./gl";
 
-
 export interface IMapRootProvider {
     internalConfig: MapInternalConfig.IInternalConfig;
+    defaultConfig: MapInternalConfig.IInternalConfig;
 
     /**
      * Calculates the radius from the center point to the bounds' horizontal distance.
@@ -25,6 +25,23 @@ export interface IMapRootProvider {
      * @return {MapProviderGL.LngLatBounds} - A new LngLatBounds object with buffered coordinates.
      */
     getBufferedBounds(bounds: MapProviderGL.LngLatBounds, bufferPercentage?: number): MapProviderGL.LngLatBounds;
+
+    /**
+     * Calculates the distance between two geographical points.
+     *
+     * @param {MapProviderGL.LngLat} p1 - The first geographical point with longitude and latitude.
+     * @param {MapProviderGL.LngLat} p2 - The second geographical point with longitude and latitude.
+     * @return {number} The distance between the two points in meters.
+     */
+    getDistance(p1: MapProviderGL.LngLatLike, p2: MapProviderGL.LngLatLike): number;
+
+    /**
+     * Calculates the duration of the animation based on the distance between two points.
+     *
+     * @param {MapProviderGL.LngLat} p1 - The first geographical point with longitude and latitude.
+     * @param {MapProviderGL.LngLat} p2 - The second geographical point with longitude and latitude.
+     */
+    getDynamicDuration(p1: MapProviderGL.LngLatLike, p2: MapProviderGL.LngLatLike): number;
 }
 
 export interface IMapProvider extends IMapRootProvider {
@@ -84,5 +101,7 @@ export interface IMapProvider extends IMapRootProvider {
      *
      * @return {MapProviderGL.LngLatBounds | null} Returns the boundaries of the map as a LngLatBounds object, or null if the bounds cannot be determined.
      */
-    getBounds(): MapProviderGL.LngLatBounds | null;
+    getBounds(): MapProviderGL.LngLatBounds;
+
+    getZoom(zoom?: number): number;
 }

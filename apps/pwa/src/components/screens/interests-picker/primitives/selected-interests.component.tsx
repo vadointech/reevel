@@ -1,12 +1,10 @@
 "use client";
 
 import { observer } from "mobx-react-lite";
-import { AnimatePresence, motion } from "motion/react";
 
 import { useInterestsPicker, useInterestsPickerStore } from "@/features/interests/picker";
 
-import { OptionsList, Section } from "@/components/shared/_redesign";
-import { InterestsPickerScreenListItem } from "./list-item.component";
+import { Checkbox, OptionsList, OptionsListItem, Section } from "@/components/shared/_redesign";
 
 import { InterestEntity } from "@/entities/interests";
 
@@ -20,37 +18,10 @@ export namespace SearchInterestsSelected {
     };
 }
 
-const animationVariants = {
-    initial: { opacity: 0, y: -10, height: 0, overflow: "hidden" },
-    animate: {
-        opacity: 1,
-        y: 0,
-        height: "auto",
-        transition: {
-            duration: 0.2,
-            ease: [0.215, 0.61, 0.355, 1],
-        },
-    },
-    exit: {
-        opacity: 0,
-        y: -10,
-        height: 0,
-        overflow: "hidden",
-        transition: {
-            duration: 0.15,
-            ease: [0.6, -0.28, 0.735, 0.045],
-        },
-    },
-};
-
 export const SearchInterestsSelected = () => {
-    const {
-        handleRemoveInterest,
-    } = useInterestsPicker();
+    const { handleRemoveInterest } = useInterestsPicker();
     return (
-        <AnimatePresence>
-            <List handleRemove={handleRemoveInterest} />
-        </AnimatePresence>
+        <List handleRemove={handleRemoveInterest} />
     );
 };
 
@@ -60,32 +31,25 @@ const List = observer(({ handleRemove }: SearchInterestsSelected.ListProps) => {
     if(interestsPickerStore.selectedInterests.length === 0) return;
 
     return (
-        <motion.div
-            variants={animationVariants}
-            initial={"initial"}
-            animate={"animate"}
-            exit={"exit"}
-            style={{ overflow: "hidden" }}
+        <Section
+            title={"Selected interests"}
+            className={styles.search__gap}
         >
-            <Section
-                title={"Selected interests"}
-                className={styles.search__gap}
-            >
-                <OptionsList style={{ gap: 0 }}>
-                    <AnimatePresence>
-                        {
-                            interestsPickerStore.selectedInterests.map((item) => (
-                                <InterestsPickerScreenListItem
-                                    key={item.slug}
-                                    interest={item}
-                                    selected={true}
-                                    onClick={() => handleRemove(item)}
-                                />
-                            ))
-                        }
-                    </AnimatePresence>
-                </OptionsList>
-            </Section>
-        </motion.div>
+            <OptionsList>
+                {
+                    interestsPickerStore.selectedInterests.map((interest) => (
+                        <OptionsListItem
+                            key={interest.slug}
+                            label={interest.title_en}
+                            contentLeft={interest.icon}
+                            contentRight={
+                                <Checkbox checked={true} />
+                            }
+                            onClick={() => handleRemove(interest)}
+                        />
+                    ))
+                }
+            </OptionsList>
+        </Section>
     );
 });

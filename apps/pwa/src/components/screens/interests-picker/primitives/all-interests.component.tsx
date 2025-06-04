@@ -2,11 +2,10 @@
 
 import { observer } from "mobx-react-lite";
 
-import { useInterestsPicker, useInterestsPickerStore } from "@/features/interests/picker";
+import { useInterestsPicker, useInterestsPickerStore, useInterestsSearch } from "@/features/interests/picker";
 import { useRelatedInterests } from "@/features/interests/picker/hooks/use-related.hook";
 
-import { OptionsList, Section } from "@/components/shared/_redesign";
-import { InterestsPickerScreenListItem } from "./list-item.component";
+import { Checkbox, OptionsList, OptionsListItem, Section } from "@/components/shared/_redesign";
 
 import { InterestEntity } from "@/entities/interests";
 
@@ -14,7 +13,8 @@ export namespace SearchInterestsAll {
     export type Props = never;
 
     export type ListProps = {
-        handleSelect: (item: InterestEntity) => void
+        onSelect: (item: InterestEntity) => void
+        onLoadMore: () => void;
     };
 }
 
@@ -25,6 +25,8 @@ export const SearchInterestsAll = () => {
         isExist,
         getRelated,
     } = useRelatedInterests();
+
+    const { handleLoadMore } = useInterestsSearch();
 
     const {
         handleToggleInterest,
@@ -44,28 +46,37 @@ export const SearchInterestsAll = () => {
         <Section
             title={"All interests"}
         >
-            <OptionsList style={{ gap: 0 }}>
-                <List handleSelect={handleToggleInterest} />
-            </OptionsList>
+            <List
+                onLoadMore={handleLoadMore}
+                onSelect={handleToggleInterest}
+            />
         </Section>
     );
 };
 
-const List = observer(({ handleSelect }: SearchInterestsAll.ListProps) => {
+const List = observer(({ onSelect, onLoadMore }: SearchInterestsAll.ListProps) => {
     const { interests, selectedInterests } = useInterestsPickerStore();
 
     return (
         <>
-            {
-                interests.map((interest) => (
-                    <InterestsPickerScreenListItem
-                        key={interest.slug}
-                        interest={interest}
-                        selected={selectedInterests.some((item) => item.slug === interest.slug)}
-                        onClick={() => handleSelect(interest)}
-                    />
-                ))
-            }
+            <OptionsList>
+                {
+                    interests.length > 0 ? (
+                        interests.map((interest) => (
+                            <OptionsListItem
+                                key={interest.slug}
+                                label={interest.title_en}
+                                contentLeft={interest.icon}
+                                contentRight={
+                                    <Checkbox checked={selectedInterests.some((item) => item.slug === interest.slug)} />
+                                }
+                                onClick={() => onSelect(interest)}
+                            />
+                        ))
+                    ) : <>No interests found. Try another search query.</>
+                }
+            </OptionsList>
         </>
     );
+
 });

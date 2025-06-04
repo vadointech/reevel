@@ -44,10 +44,7 @@ const ViewPort = memo(({ selectedSectionAnimate }: InterestsPickerContent.ViewPo
         <div className={styles.search}>
             <InterestsPickerSearch />
             <Container className={styles.search__list}>
-                <motion.div
-                    animate={selectedSectionAnimate}
-                    // initial={{ overflow: "hidden" }}
-                >
+                <motion.div animate={selectedSectionAnimate}>
                     <SearchInterestsSelected />
                 </motion.div>
                 <SearchInterestsAll />

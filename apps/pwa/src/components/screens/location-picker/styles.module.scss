@@ -3,7 +3,7 @@
 @use "@/theme/spacing";
 @use "@/theme/typography";
 
-.drawer {
+.screen {
     &__scroll {
         padding-inline: spacing.$container;
         margin-bottom: spacing.$container;
@@ -28,6 +28,16 @@
     &__subtitle {
         @include typography.font("sm");
         color: colors.$secondary;
+
+        margin-bottom: mixins.rem(4);
+    }
+
+    &__block {
+        padding-inline: spacing.$container;
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
     }
 
     &__buttons {

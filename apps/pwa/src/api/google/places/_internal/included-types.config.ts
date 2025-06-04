@@ -5,14 +5,14 @@
  * Items in one row will be displayed with the same color and icon.
  *
  * Categories:
- * - **Food and Drink**
- * - **Education**
- * - **Green Zones**
- * - **Health and Fitness**
- * - **Culture and Entertainment**
- * - **Shopping**
- * - **Government**
- * - **Bars and Nightlife**
+ * - Food and Drink
+ * - Education
+ * - Green Zones
+ * - Health and Fitness
+ * - Culture and Entertainment
+ * - Shopping
+ * - Government
+ * - Bars and Nightlife
  *
  */
 export const GooglePLacesApiIncludedTypes = [
@@ -67,6 +67,7 @@ export const GooglePLacesApiIncludedTypes = [
      * Shopping
      */
     "shopping_mall",
+    "plaza",
 
     /**
      * Government

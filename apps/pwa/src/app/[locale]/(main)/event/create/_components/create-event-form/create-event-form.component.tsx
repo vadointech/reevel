@@ -1,6 +1,6 @@
 "use client";
 
-import { ComponentProps } from "react";
+import { ComponentProps, useEffect } from "react";
 import { Controller, useFormContext } from "react-hook-form";
 
 import {
@@ -32,8 +32,15 @@ export const CreateEventForm = ({
     interests,
     ...props
 }: CreateEventForm.Props) => {
-    const { handleSubmit } = useFormContext<CreateEventFormSchemaValues>();
+    const { handleSubmit, clearErrors } = useFormContext<CreateEventFormSchemaValues>();
     const { onSubmit } = useCreateEventForm();
+
+    useEffect(() => {
+        return () => {
+            clearErrors();
+        };
+    }, []);
+
     return (
         <form
             className={styles.form}
@@ -74,17 +81,19 @@ export const CreateEventForm = ({
                     <CreateEventFormInterestsPicker interests={interests} />
 
                     <div className={styles.form__gap}>
-                        <Controller
+                        <Controller<CreateEventFormSchemaValues, "location">
                             name={"location"}
                             render={({ field, fieldState }) => (
                                 <FormField
-                                    nestedError={"coordinates"}
                                     state={fieldState}
                                 >
                                     <OptionsList>
                                         <OptionsListItem
                                             label={"Location"}
-                                            description={field.value.title || "Required"}
+                                            description={(() => {
+                                                if(!field.value) return "Required";
+                                                return `${field.value.properties.label} • ${field.value.properties.address}`;
+                                            })()}
                                             contentLeft={<IconNavigation />}
                                             href={"/event/create/location"}
                                         />

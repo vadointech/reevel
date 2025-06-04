@@ -1,8 +1,6 @@
 import { BasePoint, Point } from "../point/point";
 
 export interface IMapStore {
-    initialized: boolean;
-
     /**
      * An array of points that are displayed on the map.
      */
@@ -16,8 +14,6 @@ export interface IMapStore {
      * The identifier of the currently selected point.
      */
     selectedPoint: string | null;
-
-    setInitialized(initialized: boolean): void;
 
     setPoints(points: Point<BasePoint>[]): void;
     setPointsVisible(visible: boolean): void;

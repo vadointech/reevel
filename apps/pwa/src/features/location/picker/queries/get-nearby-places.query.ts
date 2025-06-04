@@ -2,27 +2,28 @@ import { FetchQueryOptions } from "@tanstack/react-query";
 import { GOOGLE_PLACES_API_EXCLUDED_TYPES, GOOGLE_PLACES_API_INCLUDED_TYPES } from "../config/places.config";
 import { getNearbyPlaces, GetNearbyPlaces } from "@/api/google/places";
 import { MapProviderGL } from "@/components/shared/map/types";
+import { googlePlacesApiResponseTransformer } from "@/infrastructure/google/transformers";
 
 export namespace GetNearbyPlacesQueryBuilder {
     export type TInput = {
         center: MapProviderGL.LngLat,
         radius: number,
         regionId?: string,
-        type?: string;
+        placeType?: string;
         signal?: AbortSignal;
     };
 }
 
-export function GetNearbyPlacesQueryBuilder(
+export const GetNearbyPlacesQueryBuilder = (
     input: GetNearbyPlacesQueryBuilder.TInput,
-): FetchQueryOptions<GetNearbyPlaces.TOutput> {
+): FetchQueryOptions<GetNearbyPlaces.TOutput> => {
     return {
-        queryKey: [...GetNearbyPlaces.queryKey, input.regionId],
+        queryKey: GetNearbyPlacesQueryBuilder.queryKey([input.regionId]),
         queryFn: () => getNearbyPlaces({
             body: {
-                maxResultCount: 10,
-                includedPrimaryTypes: input.type ? [input.type] : GOOGLE_PLACES_API_INCLUDED_TYPES.primaryTypes,
-                includedTypes: input.type ? [input.type] : GOOGLE_PLACES_API_INCLUDED_TYPES.secondaryTypes,
+                maxResultCount: input.placeType ? 20 : 10,
+                includedPrimaryTypes: input.placeType ? [input.placeType] : GOOGLE_PLACES_API_INCLUDED_TYPES.primaryTypes,
+                includedTypes: input.placeType ? [input.placeType] : GOOGLE_PLACES_API_INCLUDED_TYPES.secondaryTypes,
                 excludedPrimaryTypes: GOOGLE_PLACES_API_EXCLUDED_TYPES.primaryTypes,
                 excludedTypes: GOOGLE_PLACES_API_EXCLUDED_TYPES.secondaryTypes,
                 languageCode: "uk",
@@ -35,8 +36,6 @@ export function GetNearbyPlacesQueryBuilder(
                         radius: input.radius,
                     },
                 },
-            },
-            params: {
                 fieldMask: [
                     "id",
                     "displayName",
@@ -45,10 +44,17 @@ export function GetNearbyPlacesQueryBuilder(
                     "primaryTypeDisplayName",
                     "formattedAddress",
                     "addressComponents",
+                    "googleMapsUri",
                 ],
             },
             signal: input.signal,
-        }).then(response => response.data || { places: [] }),
-        staleTime: Infinity,
+        })
+            .then(response => response.data || { places: [] })
+            .then(googlePlacesApiResponseTransformer.filterClosePoints)
+            .then(googlePlacesApiResponseTransformer.formatAddress),
     };
-}
+};
+
+GetNearbyPlacesQueryBuilder.queryKey = (params: unknown[] = []) => {
+    return [...GetNearbyPlaces.queryKey, ...params];
+};

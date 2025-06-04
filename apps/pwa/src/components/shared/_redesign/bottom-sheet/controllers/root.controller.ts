@@ -5,8 +5,11 @@ import {
     IBottomSheetInternalConfig,
     IBottomSheetRootController,
     IBottomSheetStore,
-    IBottomSheetSnapPointController,
+    IBottomSheetSnapPointController, IBottomSheetRootControllerContext,
 } from "../types";
+import {
+    generateBottomSheetTransitionParams,
+} from "@/components/shared/_redesign/bottom-sheet/config/transition.config";
 
 export class BottomSheetRootController implements IBottomSheetRootController {
     private readonly _dragControls: DragControls;
@@ -16,7 +19,7 @@ export class BottomSheetRootController implements IBottomSheetRootController {
 
     constructor(
         rootConfig: IBottomSheetInternalConfig,
-        private readonly store: IBottomSheetStore,
+        private readonly _store: IBottomSheetStore,
         private readonly _animationControls: AnimationControls,
     ) {
         this._internalConfig = rootConfig;
@@ -26,6 +29,9 @@ export class BottomSheetRootController implements IBottomSheetRootController {
 
     get internalConfig(): IBottomSheetInternalConfig {
         return this._internalConfig;
+    }
+    get store(): IBottomSheetStore {
+        return this._store;
     }
     get dragControls(): DragControls {
         return this._dragControls;
@@ -49,24 +55,30 @@ export class BottomSheetRootController implements IBottomSheetRootController {
     }
 
     open() {
-        this.store.setOpen(true);
+        this._store.setOpen(true);
         this.setPositionBySnapIndex(this._internalConfig.defaultSnapPointIndex);
     }
 
     close() {
-        this.store.setOpen(false);
-        this._internalConfig.onClose();
+        this._store.setOpen(false);
+        this._internalConfig.onClose?.();
     }
 
-    setSnapPoint(index:number) {
-        this.store.setActiveSnapPoint(index);
+    setSnapPoint(index:number, ctx?: IBottomSheetRootControllerContext) {
+        this._store.setActiveSnapPoint(index);
+
+        this.withContext(ctx, ctx => {
+            if(ctx.triggerHandlers) {
+                this._internalConfig.onSnapPointChange?.(index);
+            }
+        });
     }
 
     drag(info: PanInfo) {
         const velocity = info.velocity.y;
         const position = info.offset.y;
 
-        const currentSnapPointIndex = this.store.activeSnapPoint;
+        const currentSnapPointIndex = this._store.activeSnapPoint;
         const lastSnapPointIndex = this._internalConfig.snapPointsCount - 1;
         const isAtBottom = currentSnapPointIndex === lastSnapPointIndex;
 
@@ -83,13 +95,23 @@ export class BottomSheetRootController implements IBottomSheetRootController {
             position,
         );
 
-        this.setPositionBySnapIndex(snapIndex);
+        this.setPositionBySnapIndex(snapIndex, { triggerHandlers: true });
     }
 
-    setPositionBySnapIndex(index: number) {
+    setPositionBySnapIndex(index: number, ctx?: IBottomSheetRootControllerContext) {
         const y = this.snapPointController.getPositionPxByIndex(index);
-        if(y === this.store.positionPx) return;
-        this.setSnapPoint(index);
-        this.animationControls.start({ y });
+        if(y === this._store.positionPx) return;
+        this.setSnapPoint(index, ctx);
+        this.animationControls.start(
+            { y },
+            generateBottomSheetTransitionParams(
+                y,
+                this.snapPointController.getPositionPxByIndex(index),
+            ),
+        );
     };
+
+    private withContext(ctx: IBottomSheetRootControllerContext = { triggerHandlers: false }, callback: (ctx: IBottomSheetRootControllerContext) => void) {
+        callback(ctx);
+    }
 }

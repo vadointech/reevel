@@ -1,5 +1,6 @@
 "use client";
 
+import { useEffect } from "react";
 import { Link } from "@/i18n/routing";
 
 import {
@@ -17,27 +18,31 @@ import { Container, Scroll } from "@/components/ui";
 import { Button, Header, InterestButton } from "@/components/shared/_redesign";
 import { IconArrowLeft } from "@/components/icons";
 
-import styles from "../styles.module.scss";
 import { observer } from "mobx-react-lite";
 import { GooglePLacesApiIncludedTypes } from "@/api/google/places";
 import { BottomSheetExternalController } from "@/components/shared/_redesign/bottom-sheet/types";
 
-export namespace LocationPickerDrawer {
-    export type Props = & LocationTypesListProps & {
-        controller?: BottomSheetExternalController
-        onSnapPointChange?: (snapPointIndex: number) => void;
-    };
+import styles from "../styles.module.scss";
 
+export namespace LocationPickerDrawer {
     export type LocationTypesListProps = {
         onLocationTypePick: (type: GooglePLacesApiIncludedTypes) => void;
+    };
+
+    export type Props = & LocationTypesListProps & {
+        controller?: BottomSheetExternalController
+        defaultSnapIndex?: number;
+        onSnapPointChange?: (snapPointIndex: number) => void;
     };
 }
 
 export const LocationPickerDrawer = ({
-    onLocationTypePick,
     controller,
+    defaultSnapIndex,
+    onLocationTypePick,
+    onSnapPointChange,
 }: LocationPickerDrawer.Props) => {
-    const { controller: pickerController } = useLocationPicker();
+    const { config} = useLocationPicker();
 
     return (
         <BottomSheetRoot
@@ -46,11 +51,13 @@ export const LocationPickerDrawer = ({
             overlay={false}
             defaultOpen
             snapPoints={["fit-content", .14]}
+            defaultSnapPointIndex={defaultSnapIndex}
             externalController={controller}
+            onSnapPointChange={onSnapPointChange}
         >
             <BottomSheetPortal>
                 <BottomSheetBody>
-                    <div className={styles.drawer__scroll}>
+                    <div className={styles.screen__scroll}>
                         <Scroll>
                             <LocationTypesList onLocationTypePick={onLocationTypePick} />
                         </Scroll>
@@ -68,23 +75,21 @@ export const LocationPickerDrawer = ({
                                 Location
                             </Header>
                         </BottomSheetHandle>
-                        <Container className={styles.drawer__content}>
+                        <Container className={styles.screen__content}>
                             <div>
-                                <h1 className={styles.drawer__title}>Where’s It Happening?</h1>
-                                <p className={styles.drawer__subtitle}>
+                                <h1 className={styles.screen__title}>Where’s It Happening?</h1>
+                                <p className={styles.screen__subtitle}>
                                     Mark the location of your event or specify if it’s online.
                                 </p>
                             </div>
-                            <div className={styles.drawer__buttons}>
+                            <div className={styles.screen__buttons}>
                                 <Button
                                     variant={"secondary-muted"}
-                                    href={pickerController.current.config.locationSearchUrl}
+                                    href={config.locationSearchUrl}
                                 >
                                     Enter location manually
                                 </Button>
-                                <Button
-                                    variant={"primary"}
-                                >
+                                <Button>
                                     Allow location access
                                 </Button>
                             </div>
@@ -100,6 +105,11 @@ const LocationTypesList = observer(({
     onLocationTypePick,
 }: LocationPickerDrawer.LocationTypesListProps) => {
     const { filtersStore } = useLocationPicker();
+
+    useEffect(() => {
+        return () => filtersStore.setLocationType(undefined);
+    }, []);
+
     return GOOGLE_PLACES_API_INCLUDED_TYPES.display.map(item => (
         <InterestButton
             key={item.slug}

@@ -12,7 +12,12 @@ interface IData {
     places: unknown[]
 }
 
-type QueryBuilder<TData> = (metadata: {
+type TFetchInput<TInput> = TInput & {
+    viewState: MapInternalConfig.IViewStateConfig,
+    placeType?: string,
+};
+
+type Metadata = {
     regionId: string;
     center: MapProviderGL.LngLat;
     radius: number;
@@ -20,48 +25,59 @@ type QueryBuilder<TData> = (metadata: {
     zoom: number;
     placeType?: string;
     signal?: AbortSignal;
-}) => FetchQueryOptions<TData>;
+};
 
-interface ConfigParams<TData> {
-    queryBuilder: QueryBuilder<TData>;
-    prefetchedData?: TData | null;
-    queryResultProcessor?: (data: TData) => TData;
-    onProviderInitialized?: () => void;
+interface QueryBuilder<TData> {
+    (metadata: Metadata): FetchQueryOptions<TData>;
+    queryKey: (params: unknown[]) => unknown[];
 }
 
-export function useSpatialCache<TData extends IData>(mapProvider: IMapProvider, {
+interface ConfigParams<TData, TInput> {
+    persist?: boolean | { key: string }
+    queryBuilder: QueryBuilder<TData>;
+    prefetchedData?: TData;
+    queryResultProcessor?: (data: TData) => TData;
+    onDataFetchResponse?: (response: TData, input: TFetchInput<TInput>) => void;
+}
+
+export function useSpatialCache<TData extends IData, TInput extends object = Record<string, unknown>>(mapProvider: IMapProvider, {
     queryBuilder,
-    prefetchedData = null,
+    prefetchedData,
     queryResultProcessor,
-    onProviderInitialized,
-}: ConfigParams<TData>) {
+}: ConfigParams<TData, TInput>) {
     const queryClient = useQueryClient();
     const spatialCache = useRef(new SpatialCache());
     const debouncer = useRef(new RequestDebouncer());
-    const precacheStore = useRef<TData | null>(null);
+    // const precacheStore = useRef<TData | undefined>(undefined);
 
-    useEffect(() => {
-        const defaultViewState = mapProvider.internalConfig.viewState;
-        const viewState = mapProvider.getViewState();
-
-        if(viewState.zoom !== defaultViewState.zoom) { // Map initialized on the root page
-            const regionId = spatialCache.current.createStableRegionId(
-                viewState.bounds,
-                viewState.zoom,
-            );
-
-            onProviderInitialized?.();
-
-            writePrefetchedData(regionId, viewState);
-        } else { // Map initialized on the root page
-            precacheStore.current = prefetchedData;
-        }
-
-        return () => {
-            spatialCache.current.clear();
-        };
-    }, [prefetchedData, onProviderInitialized]);
-
+    // const persistentStorageKey = useMemo(() => {
+    //     if(!persist) return undefined;
+    //     if(typeof persist === "object") return persist.key;
+    //     return "spatial-cache";
+    // }, [persist]);
+    //
+    // const saveToPersistent = async(key: string) => {
+    //     indexedDbService.setItem<TSpatialCacheExtort>(key, spatialCache.current.export());
+    // };
+    //
+    // const loadFromPersistence = async(key: string) => {
+    //     const persistData = await indexedDbService.getItem<TSpatialCacheExtort>(key);
+    //     if(persistData) {
+    //         spatialCache.current.import(persistData);
+    //     }
+    // };
+    //
+    // useEffect(() => {
+    //     if(persistentStorageKey) {
+    //         loadFromPersistence(persistentStorageKey);
+    //     }
+    //
+    //     return () => {
+    //         if(persistentStorageKey) {
+    //             saveToPersistent(persistentStorageKey);
+    //         }
+    //     };
+    // }, [persistentStorageKey]);
 
     const cacheRegion = useCallback((
         regionId: string,
@@ -75,56 +91,42 @@ export function useSpatialCache<TData extends IData>(mapProvider: IMapProvider, 
             zoom,
             placeType,
             timestamp: Date.now(),
-            minValidZoom: zoom - 2,
-            maxValidZoom: zoom + 2,
-            density: response.places.length,
-            actualPlaceCount: response.places.length,
+            pointsCount: response.places.length,
         });
         // console.log(`✅ Cached ${response.places.length} places for ${regionId}`);
     }, []);
 
-    const writePrefetchedData = useCallback((regionId: string, viewState: MapInternalConfig.IViewStateConfig) => {
-        if(!prefetchedData) return;
-        queryClient.setQueryData(["places", regionId], prefetchedData);
-        cacheRegion(regionId, prefetchedData, viewState);
-        precacheStore.current = null;
-    }, []);
-
     const fetchSpatialData = useCallback(
         (
-            viewState: MapInternalConfig.IViewStateConfig,
-            placeType?: string,
+            input: TFetchInput<TInput>,
             forceRefresh: boolean = false,
         ) => {
+            const { placeType } = input;
+
+            const viewState = {
+                ...input.viewState,
+                zoom: spatialCache.current.getQuantizedZoom(input.viewState.zoom),
+            };
+
+
             const { bounds, zoom } = viewState;
+
+            if(!forceRefresh) {
+                const coverage = spatialCache.current.getCoverageInfo(bounds, zoom, placeType);
+                const requiredCoverage = placeType ? 0.4 : 0.6;
+
+                if(coverage.ratio >= requiredCoverage) {
+                    const cache = queryClient.getQueryData<TData>(queryBuilder.queryKey([coverage.currentBestCoveredRegionId]));
+                    // console.log(`✅ Cache hit: ${(coverage.ratio * 100).toFixed(1)}% coverage for ${coverage.currentBestCoveredRegionId}`);
+                    return debouncer.current.debounceRequest(() => Promise.resolve(cache));
+                }
+                // console.log(`❌ Cache miss: ${(coverage.ratio * 100).toFixed(1)}% coverage`);
+            }
+
             const regionId = spatialCache.current.createStableRegionId(bounds, zoom, placeType);
-            const quantizedZoom = spatialCache.current.getQuantizedZoom(zoom);
 
             const center = bounds.getCenter();
             const radius = mapProvider.getHorizontalRadius(bounds, center);
-
-            if(!forceRefresh) {
-                const coverage = spatialCache.current.getCoverageRatio(bounds, quantizedZoom, placeType);
-
-                const requiredCoverage = placeType ? 0.4 : 0.6;
-
-                if (coverage >= requiredCoverage) {
-                    // console.log(`✅ Cache hit: ${(coverage * 100).toFixed(1)}% coverage for ${regionId}`);
-                    return new Promise<TData>((resolve) =>
-                        resolve(
-                            (queryClient.getQueryData(["places", regionId]) || { places: [] }) as TData,
-                        ),
-                    );
-                }
-                // console.log(`❌ Cache miss: ${(coverage * 100).toFixed(1)}% coverage for ${regionId}`);
-            }
-
-            if(precacheStore.current && prefetchedData) {
-                writePrefetchedData(regionId, viewState);
-                return new Promise<TData>((resolve) =>
-                    resolve(prefetchedData),
-                );
-            }
 
             return debouncer.current.debounceRequest(
                 async(signal) => {
@@ -148,12 +150,27 @@ export function useSpatialCache<TData extends IData>(mapProvider: IMapProvider, 
             );
         }, [cacheRegion]);
 
+    const precacheSpatialData = useCallback((viewState: MapInternalConfig.IViewStateConfig) => {
+        if(!prefetchedData) return;
+
+        const viewStateToCache = {
+            ...viewState,
+            zoom: spatialCache.current.getQuantizedZoom(viewState.zoom),
+        };
+
+        const regionId = spatialCache.current.createStableRegionId(
+            viewStateToCache.bounds,
+            viewStateToCache.zoom,
+        );
+
+        queryClient.setQueryData(queryBuilder.queryKey([regionId]), prefetchedData);
+        cacheRegion(regionId, prefetchedData, viewStateToCache);
+    }, [prefetchedData]);
+
     return {
         spatialCache,
         fetchSpatialData,
-
+        precacheSpatialData,
         cacheRegion,
-        precacheStore,
-        writePrefetchedData,
     };
 }

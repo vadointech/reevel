@@ -4,7 +4,8 @@ import { LocationPickerProvider } from "@/features/location/picker";
 export default function CreateEventLocationLayout({ children }: PropsWithChildren) {
     return (
         <LocationPickerProvider
-            confirmationUrl={"/event/create/location/confirm"}
+            syncFormField={"location"}
+            callbackUrl={"/event/create"}
             locationSearchUrl={"/event/create/location/search"}
         >
             { children }

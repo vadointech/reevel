@@ -1,18 +1,18 @@
 "use client";
 
-import { createContext, RefObject, useContext } from "react";
-import { ILocationPickerController } from "./types";
+import { createContext, useContext } from "react";
 import {
     LocationPickerConfirmationStore,
     LocationPickerFiltersStore,
     LocationPickerSearchStore,
 } from "@/features/location/picker/stores";
+import { LocationPickerRootConfigParams } from "./types";
 
 type LocationPickerContextValue = {
+    config: LocationPickerRootConfigParams
     searchStore: LocationPickerSearchStore;
     filtersStore: LocationPickerFiltersStore;
     confirmationStore: LocationPickerConfirmationStore;
-    controller: RefObject<ILocationPickerController>
 };
 
 export const LocationPickerContext = createContext<LocationPickerContextValue | null>(null);

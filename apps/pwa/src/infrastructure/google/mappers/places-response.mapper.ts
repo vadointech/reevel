@@ -31,10 +31,6 @@ export class GooglePlacesApiResponseMapper<T extends GooglePlacesApiResponse = G
 
         return points;
     }
-
-    toSearchPoint() {
-
-    }
 }
 
 export const googlePlacesApiResponseMapper = new GooglePlacesApiResponseMapper();

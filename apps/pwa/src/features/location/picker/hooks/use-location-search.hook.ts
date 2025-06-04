@@ -1,62 +1,101 @@
-import { ChangeEvent, useCallback, useEffect, useMemo, useState } from "react";
-import { useSearchLocation } from "@/infrastructure/google/hooks";
+import { useCallback, useEffect, useMemo, useRef } from "react";
 import { useLocationPicker } from "@/features/location/picker";
 import { googlePlacesApiResponseMapper } from "@/infrastructure/google/mappers";
-import { googlePlacesApiResponseTransformer } from "@/infrastructure/google/transformers";
-import { useDebounce } from "use-debounce";
 import { usePersistentMap } from "@/components/shared/map";
-import { MapProviderGL } from "@/components/shared/map/types";
+import { useQueryClient } from "@tanstack/react-query";
+import { SearchLocationQueryBuilder } from "@/features/location/picker/queries";
+import { IReactionDisposer, reaction } from "mobx";
+import { RequestDebouncer } from "@/lib/debouncer";
+import { GooglePlacesApiResponse } from "@/api/google/places/types";
 
 export function useLocationPickerSearch() {
-    const [searchQuery, setSearchQuery] = useState("");
-    const [debouncedSearchQuery] = useDebounce(searchQuery, 1000);
-
+    const queryClient = useQueryClient();
+    const map = usePersistentMap();
     const { searchStore } = useLocationPicker();
-    const { provider } = usePersistentMap();
 
-    const { searchPlacesByTextQuery } = useSearchLocation();
+    const debouncer = useRef(new RequestDebouncer());
 
-    const fetchPlaces = useCallback((
-        query: string,
-        restrictions?: {
-            center: MapProviderGL.LngLat,
-            radius: number,
-        },
-    ) => {
-        searchPlacesByTextQuery(query, restrictions)
-            .then(googlePlacesApiResponseTransformer.formatAddress)
-            .then(googlePlacesApiResponseMapper.toIconPoint)
-            .then(points => searchStore.setSearchResults(points));
+    const locationRestrictionsValue: SearchLocationQueryBuilder.TInput["locationRestrictions"] = useMemo(() => {
+        return SearchLocationQueryBuilder.getLocationRestrictions(map.provider.current.internalConfig.viewState.bounds);
     }, []);
 
-    const locationRestrictions = useMemo(() => {
-        if(searchStore.locationRestrictions) {
-            const { bounds, center } = provider.current.internalConfig.viewState;
+    const locationRestrictions = useRef<
+      SearchLocationQueryBuilder.TInput["locationRestrictions"] | undefined
+    >(locationRestrictionsValue);
 
-            if(bounds && center) {
-                const radius = provider.current.getHorizontalRadius(bounds, center);
-                return {
-                    center,
-                    radius,
-                };
+    const handleFetchData = useCallback((input: SearchLocationQueryBuilder.TInput) => {
+        return debouncer.current.debounceRequest(async() => {
+            if (input.query.length > 2) {
+                return queryClient.fetchQuery(SearchLocationQueryBuilder(input));
+            } else {
+                return undefined;
             }
-        }
-    }, [searchStore.locationRestrictions]);
+        }, 700);
+    }, [queryClient]);
 
-    useEffect(() => {
-        if(debouncedSearchQuery.length > 2) {
-            fetchPlaces(debouncedSearchQuery, locationRestrictions);
-        } else {
-            searchStore.setSearchResults([]);
-        }
-    }, [debouncedSearchQuery, searchStore.locationRestrictions]);
+    const setSearchResults = (response?: GooglePlacesApiResponse) => {
+        searchStore.setNextPageToken(response?.nextPageToken);
 
-    const handleSetSearchQuery = (e: ChangeEvent<HTMLInputElement>) => {
-        setSearchQuery(e.target.value);
+        if(response && response.places.length === 0) {
+            searchStore.setSearchResults(null);
+            return;
+        }
+
+        searchStore.setSearchResults(googlePlacesApiResponseMapper.toIconPoint(response));
     };
 
+    const appendSearchResults = (response?: GooglePlacesApiResponse) => {
+        searchStore.setNextPageToken(response?.nextPageToken);
+        searchStore.appendSearchResults(googlePlacesApiResponseMapper.toIconPoint(response));
+    };
+
+    useEffect(() => {
+        const disposers: IReactionDisposer[] = [];
+
+        disposers.push(
+            reaction(
+                () => searchStore.searchQuery,
+                (query) => handleFetchData({
+                    query,
+                    locationRestrictions: locationRestrictions.current,
+                }).then(setSearchResults),
+            ),
+        );
+
+        return () => {
+            disposers.forEach(dispose => dispose());
+        };
+    }, []);
+
+    const handleToggleLocationRestrictions = useCallback(() => {
+        if(searchStore.locationRestrictions) {
+            locationRestrictions.current = undefined;
+            searchStore.setLocationRestrictions(false);
+            handleFetchData({
+                query: searchStore.searchQuery,
+            }).then(setSearchResults);
+        } else {
+            locationRestrictions.current = locationRestrictionsValue;
+            searchStore.setLocationRestrictions(true);
+            handleFetchData({
+                query: searchStore.searchQuery,
+                locationRestrictions: locationRestrictions.current,
+            }).then(setSearchResults);
+        }
+    }, []);
+
+    const handleLoadMore = useCallback(() => {
+        if(searchStore.nextPageToken) {
+            handleFetchData({
+                query: searchStore.searchQuery,
+                locationRestrictions: locationRestrictions.current,
+                nextPageToken: searchStore.nextPageToken,
+            }).then(appendSearchResults);
+        }
+    }, []);
+
     return {
-        searchQuery,
-        handleSetSearchQuery,
+        handleLoadMore,
+        handleToggleLocationRestrictions,
     };
 }

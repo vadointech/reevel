@@ -28,6 +28,8 @@ export interface IMapRootController {
      */
     detachMap(): void;
 
+    syncViewState(viewState: MapInternalConfig.IViewStateConfig, forceRefresh?: boolean): void;
+
     /**
      * Selects a specific point by its identifier.
      *

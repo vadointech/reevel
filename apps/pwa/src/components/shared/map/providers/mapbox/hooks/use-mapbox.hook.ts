@@ -1,7 +1,7 @@
-import { LngLatBounds, MapEvent } from "mapbox-gl";
+import { MapEvent } from "mapbox-gl";
 import { RefObject, useCallback, useState } from "react";
 import { ViewStateChangeEvent } from "react-map-gl/mapbox";
-import { IMapProvider , IMapRootController, MapProviderCameraState } from "../types";
+import { IMapProvider, IMapRootController, MapProviderCameraState } from "../types";
 
 export function useMapbox(
     provider: RefObject<IMapProvider>,
@@ -28,28 +28,19 @@ export function useMapbox(
     };
   
     const handleMapMove = useCallback((e: ViewStateChangeEvent) => {
-        const { viewState, target } = e;
+        const { viewState } = e;
         setViewState(viewState);
         updateBounds(e);
 
-        const lngLatBounds = target.getBounds();
-
-        controller.current.externalHandlers.onViewportChange?.(lngLatBounds, e.viewState);
+        controller.current.externalHandlers.onViewportChange?.(
+            provider.current.getViewState(),
+        );
     }, []);
 
-    const handleMapMoveEnd = useCallback((e: ViewStateChangeEvent) => {
-        const { viewState, target } = e;
-
-        const bounds = target.getBounds() || new LngLatBounds([0, 0, 0, 0]);
-        const center = bounds.getCenter();
-
-        controller.current.externalHandlers.onMoveEnd?.({
-            center,
-            bounds,
-            zoom: viewState.zoom,
-            pitch: viewState.pitch,
-            padding: viewState.padding,
-        });
+    const handleMapMoveEnd = useCallback(() => {
+        const viewState = provider.current.getViewState();
+        controller.current.syncViewState(viewState);
+        controller.current.externalHandlers.onMoveEnd?.(viewState);
     }, []);
 
     const updateBounds = useCallback((e: MapEvent) => {

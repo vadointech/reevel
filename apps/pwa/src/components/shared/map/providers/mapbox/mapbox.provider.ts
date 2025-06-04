@@ -8,7 +8,6 @@ import {
     MapInternalConfig,
 } from "../../types";
 import { MapRootProvider } from "../../map.provider";
-import { LngLatBounds } from "mapbox-gl";
 
 export class MapboxProvider<T extends MapRef = MapRef> extends MapRootProvider implements IMapProvider {
     constructor(
@@ -39,6 +38,7 @@ export class MapboxProvider<T extends MapRef = MapRef> extends MapRootProvider i
         if(this._internalConfig.viewState.bounds) {
             // eslint-disable-next-line @typescript-eslint/no-unused-vars
             const { bounds, zoom, ...state } = this._internalConfig.viewState;
+
             this.fitBounds(bounds, {
                 ...state,
                 ...options,
@@ -54,11 +54,11 @@ export class MapboxProvider<T extends MapRef = MapRef> extends MapRootProvider i
     getViewState(): MapInternalConfig.IViewStateConfig {
         if(!this.mapRef.current) return this._internalConfig.viewState;
 
-        const bounds = this.mapRef.current.getBounds() || this._internalConfig.viewState.bounds;
+        const bounds = this.getBounds();
         const center = bounds.getCenter();
 
+        const zoom = this.getZoom();
         const padding = this.mapRef.current.getPadding();
-        const zoom = this.mapRef.current.getZoom();
         const pitch = this.mapRef.current.getPitch();
 
         return {
@@ -79,9 +79,9 @@ export class MapboxProvider<T extends MapRef = MapRef> extends MapRootProvider i
         }
     }
 
-    fitBounds(bounds: MapProviderGL.LngLatBounds, options?: MapProviderCameraState.EasingOptions): void {
+    fitBounds(bounds: MapProviderGL.LngLatBounds, options?: MapProviderCameraState.EasingOptions) {
         if(this.mapRef.current) {
-            this.mapRef.current.fitBounds(bounds, {
+            return this.mapRef.current.fitBounds(bounds, {
                 pitch: this._internalConfig.viewState.pitch,
                 ...options,
             });
@@ -97,8 +97,14 @@ export class MapboxProvider<T extends MapRef = MapRef> extends MapRootProvider i
         }
     }
 
-    getBounds(): MapProviderGL.LngLatBounds | null {
-        if(!this.mapRef.current) return null;
-        return this.mapRef.current.getBounds();
+    getBounds(): MapProviderGL.LngLatBounds {
+        if(!this.mapRef.current) return this._internalConfig.viewState.bounds;
+        return this.mapRef.current.getBounds() || this._internalConfig.viewState.bounds;
+    }
+
+    getZoom(zoom?: number): number {
+        if(zoom) return  Math.round(zoom * 1000) / 1000;
+        if(!this.mapRef.current) return this._internalConfig.viewState.zoom;
+        return Math.round(this.mapRef.current.getZoom() * 1000) / 1000;
     }
 }

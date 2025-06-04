@@ -1,5 +1,6 @@
 
 export type LocationPickerRootConfigParams = {
-    confirmationUrl: string;
+    callbackUrl: string;
     locationSearchUrl: string;
+    syncFormField: string;
 };

@@ -8,19 +8,34 @@ export type GooglePlacesApiRestrictionCircle = {
     }
 };
 
+export type GooglePlacesApiRestrictionRectangle = {
+    rectangle: {
+        low: {
+            latitude: number,
+            longitude: number
+        },
+        high: {
+            latitude: number,
+            longitude: number
+        }
+    }
+};
+
 export type GooglePlacesApiRequestBody = {
     includedTypes?: readonly string[],
     excludedTypes?: readonly string[],
     includedPrimaryTypes?: readonly string[],
     excludedPrimaryTypes?: readonly string[]
+    fieldMask?: Array<typeof _fieldMaskValues[number]> | "*";
     maxResultCount?: number,
     languageCode?: string;
+    pageToken?: string;
 };
 
 const _fieldMaskValues = [
-    "id", "displayName", "location", "photos",
-    "types", "primaryType", "primaryTypeDisplayName",
-    "formattedAddress", "addressComponents",
+    "id", "displayName", "location",
+    "primaryType", "primaryTypeDisplayName", "formattedAddress",
+    "addressComponents", "googleMapsLinks", "googleMapsUri",
 ] as const;
 
 const _addressComponentsTypes = [
@@ -30,7 +45,6 @@ const _addressComponentsTypes = [
 ];
 
 export type GooglePlacesApiRequestParams = {
-    fieldMask?: Array<typeof _fieldMaskValues[number]> | "*";
     imageMaxWidth?: number;
     imageMaxHeight?: number;
 };
@@ -51,9 +65,9 @@ export type GooglePlacesApiResponsePlace = {
         name: string;
         flagContentUri: string;
     }>;
-    types: string[];
+    googleMapsUri: string;
     primaryType: string;
-    primaryTypeDisplayName?: {
+    primaryTypeDisplayName: {
         text: string;
         languageCode: string;
     };
@@ -66,5 +80,6 @@ export type GooglePlacesApiResponsePlace = {
 };
 
 export type GooglePlacesApiResponse = {
-    places: Array<Partial<GooglePlacesApiResponsePlace>>
+    places: Array<Partial<GooglePlacesApiResponsePlace>>;
+    nextPageToken?: string;
 };

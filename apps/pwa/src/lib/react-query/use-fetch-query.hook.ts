@@ -14,7 +14,6 @@ export function useFetchQuery() {
     >(
         options: FetchQueryOptions<TQueryFnData, TError, TData, TQueryKey, TPageParam>,
     ): Promise<TData> {
-        console.log(options.queryKey);
         let result = queryClient.getQueryData(options.queryKey) as TData;
 
         if(!result) {

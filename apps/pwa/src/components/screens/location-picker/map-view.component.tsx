@@ -1,8 +1,8 @@
 "use client";
 
 import { MapView } from "@/components/shared/map";
-import { LocationPickerDrawer } from "./drawer.component";
-import { LocationPickerConfirmationDrawer } from "./confirmation";
+import { LocationPickerDrawer } from "./primitives/picker-drawer.component";
+import { LocationPickerConfirmationDrawer } from "./primitives/confirmation-drawer.component";
 
 import { useLocationPickerMap, useConfirmationDrawer } from "@/features/location/picker/hooks";
 
@@ -17,28 +17,40 @@ export namespace LocationPickerMapView {
 
 export const LocationPickerMapView = ({ placesInit }: LocationPickerMapView.Props) => {
     const {
+        PICKER_MAP_PADDING,
+
+        defaultPoints,
         handleViewportChange,
         handleLocationTypePick,
+        handlePrecacheSpatialData,
+        handlePickerSnapPointChange,
     } = useLocationPickerMap(placesInit);
 
     const {
         confirmationDataRef,
+        pickerDrawerControls,
         confirmationDrawerControls,
+        pickerDrawerDefaultSnapIndex,
         handleSelectPoint,
         handleConfirmationClose,
-    } = useConfirmationDrawer();
+    } = useConfirmationDrawer(placesInit);
 
     return (
         <>
             <MapView
+                points={defaultPoints}
                 viewState={{
-                    padding: { bottom: 260 },
+                    padding: PICKER_MAP_PADDING,
                 }}
+                onMapReady={handlePrecacheSpatialData}
                 onMoveEnd={handleViewportChange}
                 onPointSelect={handleSelectPoint}
             />
             <LocationPickerDrawer
+                controller={pickerDrawerControls}
+                defaultSnapIndex={pickerDrawerDefaultSnapIndex}
                 onLocationTypePick={handleLocationTypePick}
+                onSnapPointChange={handlePickerSnapPointChange}
             />
             <LocationPickerConfirmationDrawer
                 controller={confirmationDrawerControls}

@@ -11,7 +11,9 @@ interface IInterestsPickerStore {
 class InterestsPickerStore implements IInterestsPickerStore {
     interests: InterestEntity[] = [];
     selectedInterests: InterestEntity[] = [];
+
     searchTerm: string = "";
+    nextPageToken?: string;
 
     private readonly disposeReaction?: () => void;
 
@@ -23,8 +25,10 @@ class InterestsPickerStore implements IInterestsPickerStore {
             interests: observable.shallow,
             selectedInterests: observable.shallow,
             searchTerm: observable,
+            nextPageToken: observable,
 
             setInterests: action,
+            appendInterests: action,
             insertInterestsAt: action,
             removeInterestsBy: action,
             isInterestSelected: action,
@@ -46,8 +50,20 @@ class InterestsPickerStore implements IInterestsPickerStore {
         this.disposeReaction?.();
     }
 
-    setInterests(interests: InterestEntity[]) {
+    setInterests(interests: InterestEntity[], nextPageToken: string = "token") {
         this.interests = [... new ObjectUnique(interests, "slug")];
+        if(interests.length === 0) {
+            this.nextPageToken = undefined;
+        } else {
+            this.nextPageToken = nextPageToken;
+        }
+    }
+
+    appendInterests(results: InterestEntity[], nextPageToken?: string) {
+        this.setInterests([
+            ...this.interests,
+            ...results,
+        ], nextPageToken);
     }
 
     insertInterestsAt(index: number, newInterests: readonly InterestEntity[]) {

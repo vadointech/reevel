@@ -17,11 +17,7 @@
         position: relative;
     }
 
-    &__block {
-        padding-inline: spacing.$container;
-        position: absolute;
-        top: 0;
-        left: 0;
-        right: 0;
+    &__more {
+        margin-top: mixins.rem(12);
     }
 }
