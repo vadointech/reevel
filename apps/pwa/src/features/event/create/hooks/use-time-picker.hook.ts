@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect, useMemo, useRef } from "react";
 import { useFormContext } from "react-hook-form";
 import { useTimePicker } from "@/components/shared/time-picker";
 import { CreateEventFormSchemaValues } from "@/features/event/create";
@@ -25,7 +25,7 @@ export function useCreateEventFormTimePicker(field: TimeField) {
     const setFieldValue = (field: TimeField, value?: Date) => {
         setValue(field, value);
     };
-    
+
     useEffect(() => {
         return () => {
             setFieldValue(field, fieldValue.current);
@@ -53,7 +53,6 @@ export function useCreateEventFormTimePicker(field: TimeField) {
         handlers: {
             onChange: (carousel) => {
                 const hours = carousel.api.selectedScrollSnap() + valueConstraints.getHours();
-
                 fieldValue.current?.setHours(hours);
             },
         },
@@ -85,31 +84,35 @@ function getFieldConstraints(field: TimeField) {
     const now = new Date();
     const startTime = getValues("startTime");
 
-    let valueConstraints: Date;
+    const valueConstraints: Date = useMemo(() => {
+        let value: Date;
 
-    if(field === "startTime") {
-        valueConstraints = new Date(
-            getValues("startDate"),
-        );
-        if(valueConstraints.getDate() === now.getDate()) {
-            valueConstraints.setHours(
-                now.getHours() + HOURS_OFFSET,
+        if(field === "startTime") {
+            value = new Date(
+                getValues("startDate"),
+            );
+            if(value.getDate() === now.getDate()) {
+                value.setHours(
+                    now.getHours() + HOURS_OFFSET,
+                    0, 0, 0,
+                );
+            }
+        } else {
+            if(startTime) {
+                value = new Date(startTime);
+            } else {
+                value = new Date(now);
+            }
+            value.setHours(
+                value.getHours() + HOURS_OFFSET,
                 0, 0, 0,
             );
         }
-    } else {
-        if(startTime) {
-            valueConstraints = new Date(startTime);
-        } else {
-            valueConstraints = new Date(now);
-        }
-        valueConstraints.setHours(
-            valueConstraints.getHours() + HOURS_OFFSET,
-            0, 0, 0,
-        );
-    }
 
-    const defaultValue = getValues(field) || valueConstraints;
+        return value;
+    }, []);
+
+    const defaultValue = getValues(field) || new Date(valueConstraints);
 
     return {
         defaultValue,
