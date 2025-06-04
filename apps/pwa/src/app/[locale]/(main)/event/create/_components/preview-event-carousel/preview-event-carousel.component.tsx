@@ -10,6 +10,8 @@ import { UploadDrawer } from "@/components/drawers/upload";
 
 import styles from "./styles.module.scss";
 import cx from "classnames";
+import { useFormContext } from "react-hook-form";
+import { CreateEventFormSchemaValues } from "@/features/event/create";
 
 export namespace PreviewEventCarousel {
     export type Props = ComponentProps<"div">;
@@ -19,6 +21,10 @@ export const PreviewEventCarousel = ({
     className,
     ...props
 }: PreviewEventCarousel.Props) => {
+    const form = useFormContext<CreateEventFormSchemaValues>();
+
+    const event = form.getValues();
+
     return (
         <div
             className={cx(
@@ -30,11 +36,11 @@ export const PreviewEventCarousel = ({
             <div
                 className={cx(
                     styles.carousel__container,
-                    // styles.carousel__container_center,
+                    styles.carousel__container_center, // remove (for carousel only)
                 )}
             >
-                {/*<PreviewEventCard />*/}
-                <Carousel />
+                <PreviewEventCard event={event} />
+                {/*<Carousel />*/}
             </div>
             <div className={styles.carousel__buttons}>
                 <UploadDrawer>
@@ -50,17 +56,17 @@ export const PreviewEventCarousel = ({
     );
 };
 
-const Carousel = () => {
+const Carousel = ({ event }: PreviewEventCard.Data) => {
     const [emblaRef] = useEmblaCarousel({});
 
     return (
         <div ref={emblaRef}>
             <div className={styles.carousel__content}>
-                <PreviewEventCard />
-                <PreviewEventCard />
-                <PreviewEventCard />
-                <PreviewEventCard />
-                <PreviewEventCard />
+                <PreviewEventCard event={event} />
+                <PreviewEventCard event={event} />
+                <PreviewEventCard event={event} />
+                <PreviewEventCard event={event} />
+                <PreviewEventCard event={event} />
             </div>
         </div>
     );

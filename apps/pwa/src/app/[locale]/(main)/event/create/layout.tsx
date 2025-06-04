@@ -1,10 +1,18 @@
 import { PropsWithChildren } from "react";
 import { CreateEventFormProvider } from "@/features/event/create";
+import { getSession } from "@/api/auth/get-session";
+import { headers } from "next/headers";
 
-export default function CreateEventLayout({ children }: PropsWithChildren) {
+export default async function CreateEventLayout({ children }: PropsWithChildren) {
+    const { data } = await getSession({
+        nextHeaders: await headers(),
+    });
+
     return (
         <CreateEventFormProvider
             defaultValues={{
+                type: "public",
+                host: data?.profile.fullName,
                 title: "",
                 description: "",
                 interests: [],

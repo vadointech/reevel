@@ -1,20 +1,29 @@
 import { ComponentProps } from "react";
 import Image from "next/image";
 import { IconCalendar, IconLock } from "@/components/icons";
-
+import {
+    CreateEventFormSchemaValues,
+    useCreateEventFormFieldFormatter,
+} from "@/features/event/create";
 import { hexToRgba } from "@/utils/hex-to-rgba";
 import { Avatar, Badge } from "@/components/shared/_redesign";
+
 import styles from "./styles.module.scss";
 import cx from "classnames";
 
 export namespace PreviewEventCard {
-    export type Props = ComponentProps<"div">;
+    export type Data = {
+        event: CreateEventFormSchemaValues
+    };
+    export type Props = ComponentProps<"div"> & Data;
 }
 
 export const PreviewEventCard = ({
     className,
+    event,
     ...props
 }: PreviewEventCard.Props) => {
+    const formatter = useCreateEventFormFieldFormatter();
     return (
         <div
             className={cx(
@@ -48,7 +57,9 @@ export const PreviewEventCard = ({
                         <h3>
                             Hosted by
                         </h3>
-                        <span>Jimmy Smith</span>
+                        <span>
+                            { event.host }
+                        </span>
                     </div>
                 </div>
 
@@ -77,40 +88,37 @@ export const PreviewEventCard = ({
                 }}
             >
                 <h3 className={styles.card__title}>
-                    NYC Outdoor Movie Night
+                    { event.title }
                 </h3>
 
                 <div className={styles.card__date}>
                     <IconCalendar />
-                    Tuesday, Aug 4 • 18:00
+                    { formatter.formatDate(event.startDate) } • { formatter.formatTime(event.startTime) }
                 </div>
 
                 <div className={styles.card__price}>
-                    378 ₴
-                    <div className={styles.card__tickets}>
-                        13 tickets
-                    </div>
+                    { event.ticketPrice || "Free" } ₴
+                    {
+                        (event.ticketsCount && event.ticketsCount.length > 0) && (
+                            <div className={styles.card__tickets}>
+                                { event.ticketsCount } tickets
+                            </div>
+                        )
+                    }
                 </div>
 
                 <div className={styles.card__interests}>
-                    <div className={styles.card__interest}>
-                        <span>🎧</span> Music
-                    </div>
-                    <div className={styles.card__interest}>
-                        <span>🎧</span> Music
-                    </div>
-                    <div className={styles.card__interest}>
-                        <span>🎧</span> Music
-                    </div>
-                    <div className={styles.card__interest}>
-                        <span>🎧</span> Music
-                    </div>
+                    {
+                        event.interests.map(item => (
+                            <div key={item.slug} className={styles.card__interest}>
+                                <span>{ item.icon }</span> { item.title_en }
+                            </div>
+                        ))
+                    }
                 </div>
 
                 <p className={styles.card__description}>
-                    Contrary to popular belief, Lorem Ipsum is not simply random text.
-                    It has roots in a piece of classical Latin literature from 45 BC, making it over 2000 years old.
-                    Contrary to popular belief, Lorem Ipsum is not simply random text.
+                    { event.description }
                 </p>
             </div>
         </div>

@@ -3,7 +3,6 @@ import { MapRootProvider } from "@/components/shared/map/map.provider";
 import { QueryClient } from "@tanstack/react-query";
 import { GetNearbyPlacesQueryBuilder } from "@/features/location/picker/queries";
 import { getUserMapInternalConfig } from "@/components/shared/map/utils";
-import { googlePlacesApiResponseTransformer } from "@/infrastructure/google/transformers";
 
 export default async function CreateEventLocationPage() {
     const queryClient = new QueryClient();
@@ -19,7 +18,7 @@ export default async function CreateEventLocationPage() {
             center,
             radius,
         }),
-    ).then(googlePlacesApiResponseTransformer.formatAddress);
+    );
 
     return (
         <LocationPickerMapView placesInit={placesInit} />

@@ -3,6 +3,8 @@ import { formInterestsEntityShema } from "@/features/interests/picker/form-field
 import { iconPoint } from "@/lib/zod/validators";
 
 export const createEventFormSchema = z.object({
+    type: z.literal("public").or(z.literal("private")),
+    host: z.string().or(z.undefined()),
     title: z.string().min(1).or(z.undefined()),
     description: z.string().min(1).or(z.undefined()),
     interests: z.array(formInterestsEntityShema).min(1, "Expected at least one interest"),

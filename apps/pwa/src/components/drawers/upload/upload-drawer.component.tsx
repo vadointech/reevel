@@ -31,7 +31,7 @@ export const UploadDrawer = ({ children }: UploadDrawer.Props) => {
                 {children}
             </BottomSheetTrigger>
             <BottomSheetPortal>
-                <BottomSheetBody>
+                <BottomSheetBody style={{ height: "100%" }}>
                     <BottomSheetContent className={styles.content}>
                         <BottomSheetHandle>
                             <Header

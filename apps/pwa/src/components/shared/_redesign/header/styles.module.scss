@@ -37,15 +37,16 @@
     }
 
     &__left {
-        display: flex;
-        justify-self: flex-start;
+        & > * {
+            display: flex;
+            justify-self: flex-start;
+        }
     }
 
     &__right {
-        display: flex;
-        justify-self: flex-end;
-
         & > * {
+            display: flex;
+            justify-self: flex-end;
             padding-inline: 0;
         }
     }
