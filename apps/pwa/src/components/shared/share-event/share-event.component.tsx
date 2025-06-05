@@ -38,7 +38,7 @@ export const ShareEvent = ({
     return (
         <Container
             ref={contentRef}
-            className={styles.layout123}
+            className={styles.layout}
             style={{
                 "--primary-color": primaryColor,
                 "--secondary-color": secondaryColor,
