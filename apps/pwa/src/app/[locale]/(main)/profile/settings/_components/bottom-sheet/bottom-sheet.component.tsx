@@ -30,7 +30,7 @@ export namespace ProfileSettingsBottomSheet {
 
 export const ProfileSettingsBottomSheet = (props: ProfileSettingsBottomSheet.Props) => {
     return (
-        <BottomSheetRoot fitContent fadeThreshold={0} {...props} />
+        <BottomSheetRoot snapPoints={["fit-content"]} fadeThreshold={0} {...props} />
     );
 };
 

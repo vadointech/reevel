@@ -81,10 +81,10 @@ export class Fetcher implements IFetcher {
             }
         }
 
-        // const response = await fetch(fullURL.toString(), requestOptions);
-        // return this.parseResponse(response);
+        const response = await fetch(fullURL.toString(), requestOptions);
+        return this.parseResponse(response);
 
-        return { data: null }
+        // return { data: null }
 
     }
 

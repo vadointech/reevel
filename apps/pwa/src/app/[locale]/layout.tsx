@@ -81,7 +81,7 @@ export default async function RootLayout({ children, params }: PropsWithChildren
                                             <main id={"main"}>
                                                 {children}
                                             </main>
-                                            <div id="bottom-sheet-root" />
+                                            <div id="modal-root" />
                                         </QuerySelectorProvider>
                                     </StandaloneProvider>
                                 </ThemeProvider>

@@ -23,6 +23,7 @@ export * from "./clock"
 export * from "./dark"
 export * from "./notification"
 export * from "./lightning"
+export * from "./important"
 
 export * from "./ukraine"
 export * from "./england"
