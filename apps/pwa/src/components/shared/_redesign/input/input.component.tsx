@@ -1,5 +1,5 @@
 import { ComponentProps } from "react";
-import { InputNumber, InputSearch, InputTextArea } from "./variants";
+import { InputNumber, InputSearch, InputTextArea, InputFile } from "./variants";
 
 import baseStyles from "./base-styles.module.scss";
 import styles from "./styles.module.scss";
@@ -40,3 +40,4 @@ export const Input = ({
 Input.Number = InputNumber;
 Input.TextArea = InputTextArea;
 Input.Search = InputSearch;
+Input.File = InputFile;

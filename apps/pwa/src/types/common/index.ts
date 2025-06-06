@@ -1,5 +1,5 @@
 import { type locales } from "@/i18n/locales";
-import { FetchQueryOptions } from "@tanstack/react-query";
+import { FetchQueryOptions, UseMutationOptions } from "@tanstack/react-query";
 
 export type Locale = (typeof locales)[number];
 
@@ -13,6 +13,10 @@ export type UISize = "default" | "small" | "large" | "xsmall";
 
 export type UIMode = "dark" | "light" | "system";
 
+
+export interface MobxStore {
+    dispose(): void;
+}
 
 type QueryBuilderMethods = {
     queryKey: (params: unknown[]) => unknown[];
