@@ -1,25 +1,46 @@
 import { IFileUploaderStore } from "./types";
-import { action, makeObservable, observable } from "mobx";
+import { action, IReactionDisposer, makeObservable, observable, reaction } from "mobx";
+import { UploadApiErrorResponse, UploadApiResponse } from "@/api/upload/types";
 
 export class FileUploaderStore implements IFileUploaderStore {
     loading: boolean = false;
-    fileUrl?: string;
+    uploadResponse: UploadApiResponse | undefined = undefined;
+    uploadErrorResponse: UploadApiErrorResponse | undefined = undefined;
 
-    constructor() {
+    private readonly disposer?: IReactionDisposer;
+
+    constructor(
+        syncUploadResponse?: (uploadResponse: UploadApiResponse | undefined) => void,
+    ) {
         makeObservable(this, {
             loading: observable,
+            uploadResponse: observable,
 
             setLoading: action,
+            setUploadResponse: action,
         });
+
+        if(syncUploadResponse) {
+            this.disposer = reaction(
+                () => this.uploadResponse,
+                syncUploadResponse,
+            );
+        }
     }
 
-    dispose() {}
+    dispose() {
+        this.disposer?.();
+    }
 
     setLoading(loading: boolean) {
         this.loading = loading;
     }
 
-    setFileUrl(url?: string) {
-        this.fileUrl = url;
+    setUploadResponse(uploadResponse: UploadApiResponse | undefined) {
+        this.uploadResponse = uploadResponse;
+    }
+
+    setUploadErrorResponse(uploadErrorResponse: UploadApiErrorResponse | undefined) {
+        this.uploadErrorResponse = uploadErrorResponse;
     }
 }

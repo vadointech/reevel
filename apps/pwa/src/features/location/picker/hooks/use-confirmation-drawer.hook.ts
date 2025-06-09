@@ -3,7 +3,7 @@ import { useCallback, useEffect, useMemo, useRef } from "react";
 import { useQueryClient } from "@tanstack/react-query";
 
 import { useLocationPicker } from "../location-picker.context";
-import { GetNearbyPlacesQueryBuilder } from "../queries";
+import { GetNearbyPlacesQueryBuilder, GetPlacesByCoordinatesQueryBuilder } from "../queries";
 
 import { usePersistentMap } from "@/components/shared/map";
 
@@ -154,6 +154,34 @@ export function useConfirmationDrawer(placesInit: GooglePlacesApiResponse) {
         confirmationStore.setPoint(null);
     };
 
+    const handleLocationAccessRequest = useCallback(() => {
+        if ("geolocation" in navigator) {
+            navigator.geolocation.getCurrentPosition(
+                async({ coords }) => {
+                    const point = await queryClient.fetchQuery(
+                        GetPlacesByCoordinatesQueryBuilder({}),
+                    ).then(googlePlacesApiResponseMapper.toIconPoint).then(points => points[0]);
+
+                    if(point) {
+                        pickerDrawerControls.current?.setPositionBySnapIndex(1);
+
+                        moveViewStateToPoint(point, false);
+
+                        pointsBuffer.current = googlePlacesApiResponseMapper.toIconPoint(placesInit);
+                        map.controller.current.setPoints([point]);
+                        map.controller.current.selectPoint(point.id);
+                        handleSelectPoint(point.id);
+                    }
+                },
+                () => {
+                    // TODO: Show modal "We're unable to get your location. (Enter it manually)"
+                },
+            );
+        } else {
+            // TODO: Show modal "We're unable to get your location. (Enter it manually)"
+        }
+    }, []);
+
     return {
         confirmationDataRef,
         pickerDrawerControls,
@@ -161,5 +189,6 @@ export function useConfirmationDrawer(placesInit: GooglePlacesApiResponse) {
         pickerDrawerDefaultSnapIndex,
         handleSelectPoint,
         handleConfirmationClose,
+        handleLocationAccessRequest,
     };
 }

@@ -3,21 +3,21 @@
 import { InterestEntity } from "@/entities/interests";
 import { useQueryClient } from "@tanstack/react-query";
 import { getRelatedInterests, GetRelatedInterests } from "@/api/interests";
-import { useInterestsPickerStore } from "../interests-picker.store";
+import { useInterestsPickerContext } from "../interests-picker.context";
 import { useFetchQuery } from "@/lib/react-query";
 
 export function useRelatedInterests() {
-    const interestsPickerStore = useInterestsPickerStore();
+    const { controller, store } = useInterestsPickerContext();
     const fetchRelatedInterests = useFetchQuery();
     const queryClient = useQueryClient();
 
     function isExist(related: InterestEntity | InterestEntity[]) {
         if(Array.isArray(related)) {
-            return interestsPickerStore.interests.some(item =>
+            return store.interests.some(item =>
                 related.every(r => item.slug === r.slug),
             );
         } else {
-            return interestsPickerStore.interests.some(interest =>
+            return store.interests.some(interest =>
                 interest.slug === interest.slug,
             );
         }
@@ -28,12 +28,12 @@ export function useRelatedInterests() {
             return;
         }
 
-        const targetIndex = interestsPickerStore.interests.findIndex((item) => item.slug === key);
+        const targetIndex = store.interests.findIndex((item) => item.slug === key);
         if (targetIndex === -1) {
             return;
         }
 
-        interestsPickerStore.insertInterestsAt(targetIndex, interests);
+        controller.insertInterestsAt(targetIndex, interests);
     }
 
     function removeRelated(key: string) {
@@ -42,10 +42,10 @@ export function useRelatedInterests() {
         const related = queryClient.getQueryData(queryKey) as GetRelatedInterests.TOutput;
         if (!related) return;
 
-        const selected = related.some(item => interestsPickerStore.isInterestSelected(item.slug));
+        const selected = related.some(item => controller.isInterestSelected(item.slug));
         if(selected) return;
 
-        interestsPickerStore.removeInterestsBy((item) => {
+        controller.removeInterestsBy((item) => {
             return !related.some(interest => interest.slug === item.slug);
         });
     }

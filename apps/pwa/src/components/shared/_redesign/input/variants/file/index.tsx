@@ -7,7 +7,7 @@ export namespace InputFile {
     export type Props = ComponentProps<"input"> & {
         label: string | ReactNode;
         icon?: ReactNode | null;
-        variant?: "secondary-muted" | "accent-muted"
+        variant?: "secondary-muted" | "accent-muted" | "text-accent";
     };
 }
 

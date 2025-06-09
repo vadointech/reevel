@@ -49,6 +49,11 @@ export type GooglePlacesApiRequestParams = {
     imageMaxHeight?: number;
 };
 
+export type GoogleGeocodeRequestParams = {
+    latlng: string;
+    key: string;
+};
+
 export type GooglePlacesApiResponsePlace = {
     id: string;
     displayName: {

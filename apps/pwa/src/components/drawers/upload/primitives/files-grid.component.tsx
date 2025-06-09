@@ -1,10 +1,11 @@
 import { ComponentProps } from "react";
 
 import { UploadFileItem } from "./upload-item.component";
+import { UserUploadsEntity } from "@/entities/uploads";
+import { GetUserUploads } from "../../../../api/user/uploads/get-uploads";
 
 import styles from "../styles.module.scss";
 import { cva, VariantProps } from "class-variance-authority";
-import { useFileUploaderContext } from "@/features/uploader";
 
 const fileGrid = cva(styles.upload__grid, {
     variants: {
@@ -28,18 +29,13 @@ export const UploadFileGrid = ({
     children,
     ...props
 }: UploadFileGrid.Props) => {
-    const { store } = useFileUploaderContext();
+
     return (
         <div
             className={fileGrid({ variant, className })}
             {...props}
         >
             { children }
-            {
-                store.fileUrl ? (
-                    <UploadFileItem image={store.fileUrl} />
-                ) : null
-            }
             {/*<UploadFileItem image={"/assets/temp/poster6.png"} />*/}
             {/*<UploadFileItem selected image={"/assets/temp/poster6.png"} />*/}
             {/*<UploadFileItem image={"/assets/temp/poster6.png"} />*/}

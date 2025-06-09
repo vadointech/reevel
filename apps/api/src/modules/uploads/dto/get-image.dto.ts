@@ -1,11 +1,16 @@
-import { IsIn, IsOptional, IsString } from "class-validator";
-import { UploadsFileType } from "@/modules/uploads/uploads.register";
+import { IsEnum, IsOptional, IsString } from "class-validator";
+import { SupportedFileCollections, SupportedFileTypes } from "@/modules/uploads/entities/uploads.entity";
 
-export class GetImageParamsDto {
+export class GetUploadedFileParamsDto {
     @IsString()
     @IsOptional()
-    @IsIn(Object.values(UploadsFileType))
-    folder?: UploadsFileType;
+    @IsEnum(SupportedFileCollections)
+    collection?: SupportedFileCollections;
+
+    @IsString()
+    @IsOptional()
+    @IsEnum(SupportedFileTypes)
+    fileType?: SupportedFileTypes;
 
     @IsString()
     @IsOptional()

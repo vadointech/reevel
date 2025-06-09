@@ -22,8 +22,10 @@ export class EventsEntity {
 
     @Column()
     poster: string;
+    @Column()
+    posterFieldId: string;
 
-    @Column({ default: "#212629"})
+    @Column({ nullable: true })
     primaryColor?: string;
 
     @Column("geography", { nullable: true, spatialFeatureType: "Point", srid: 4326 })
@@ -42,7 +44,10 @@ export class EventsEntity {
     visibility: EventVisibility;
 
     @Column({ type: "timestamptz" })
-    dateTime: Date;
+    startDate: Date;
+
+    @Column({ type: "timestamptz", nullable: true })
+    endDate?: Date;
 
     @CreateDateColumn({ type: "timestamp" })
     createdAt: Date;

@@ -1,3 +1,5 @@
+"use client";
+
 import { createContext, RefObject, useContext } from "react";
 import { IBottomSheetRootController, IBottomSheetStore } from "./types";
 

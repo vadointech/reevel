@@ -1,7 +1,6 @@
 "use client";
 
 import { ComponentProps, useMemo } from "react";
-import { useRouter } from "@/i18n/routing";
 import { observer } from "mobx-react-lite";
 import { AnimatePresence, HTMLMotionProps, motion } from "motion/react";
 
@@ -27,14 +26,13 @@ import { IconPoint, Point } from "@/components/shared/map/types";
 import styles from "./styles.module.scss";
 
 export namespace LocationSearch {
-    export type Data = {
-        points: Point<IconPoint>[] | null;
-    };
     export type Props = ComponentProps<"div"> & {
         placesInit: GooglePlacesApiResponse;
     };
     export type ListProps = {
+        points?: Point<IconPoint>[] | null;
         onLoadMore?: () => void;
+        onLocationPick?: (point: Point<IconPoint>) => void;
         onLocationRestrictionSelect?: () => void;
     };
 }
@@ -48,6 +46,7 @@ export const LocationSearch = ({ placesInit }: LocationSearch.Props) => {
 
     const {
         handleLoadMore,
+        handleLocationPick,
         handleToggleLocationRestrictions,
     } = useLocationPickerSearch();
 
@@ -61,17 +60,22 @@ export const LocationSearch = ({ placesInit }: LocationSearch.Props) => {
 
                 {
                     placesInit.places.length > 0 && (
-                        <RecommendedList points={recommendedPoints} />
+                        <RecommendedList
+                            points={recommendedPoints}
+                            onLocationPick={handleLocationPick}
+                        />
                     )
                 }
 
                 <NearbyList
                     onLoadMore={handleLoadMore}
+                    onLocationPick={handleLocationPick}
                     onLocationRestrictionSelect={handleToggleLocationRestrictions}
                 />
 
                 <AllList
                     onLoadMore={handleLoadMore}
+                    onLocationPick={handleLocationPick}
                     onLocationRestrictionSelect={handleToggleLocationRestrictions}
                 />
             </SearchScreenContent>
@@ -79,7 +83,10 @@ export const LocationSearch = ({ placesInit }: LocationSearch.Props) => {
     );
 };
 
-const RecommendedList = observer(({ points }: LocationSearch.Data) => {
+const RecommendedList = observer(({
+    points,
+    onLocationPick,
+}: LocationSearch.ListProps) => {
     const { searchStore } = useLocationPicker();
     const visible = searchStore.nearbySearchResults?.length === 0 && searchStore.allSearchResults?.length === 0;
 
@@ -111,7 +118,7 @@ const RecommendedList = observer(({ points }: LocationSearch.Data) => {
             className={styles.screen__block}
         >
             <Section title={"Recommended for you"}>
-                <SearchResultsList points={points} />
+                <SearchResultsList onLocationPick={onLocationPick} points={points} />
             </Section>
         </motion.div>
     );
@@ -119,6 +126,7 @@ const RecommendedList = observer(({ points }: LocationSearch.Data) => {
 
 const NearbyList = observer(({
     onLoadMore,
+    onLocationPick,
     onLocationRestrictionSelect,
 }: LocationSearch.ListProps) => {
     const { searchStore } = useLocationPicker();
@@ -137,7 +145,10 @@ const NearbyList = observer(({
                             cta={"See all"}
                             onCtaClick={onLocationRestrictionSelect}
                         >
-                            <SearchResultsList points={searchStore.nearbySearchResults} />
+                            <SearchResultsList
+                                onLocationPick={onLocationPick}
+                                points={searchStore.nearbySearchResults}
+                            />
                         </Section>
                         {
                             searchStore.nextPageToken ? (
@@ -153,6 +164,7 @@ const NearbyList = observer(({
 
 const AllList = observer(({
     onLoadMore,
+    onLocationPick,
     onLocationRestrictionSelect,
 }: LocationSearch.ListProps) => {
     const { searchStore } = useLocationPicker();
@@ -170,7 +182,10 @@ const AllList = observer(({
                             cta={"See in Vinnitsa"}
                             onCtaClick={onLocationRestrictionSelect}
                         >
-                            <SearchResultsList points={searchStore.allSearchResults} />
+                            <SearchResultsList
+                                onLocationPick={onLocationPick}
+                                points={searchStore.allSearchResults}
+                            />
                         </Section>
                         {
                             searchStore.nextPageToken ? (
@@ -184,9 +199,7 @@ const AllList = observer(({
     );
 });
 
-const SearchResultsList = ({ points }: LocationSearch.Data) => {
-    const router = useRouter();
-    const { confirmationStore } = useLocationPicker();
+const SearchResultsList = ({ points, onLocationPick }: LocationSearch.ListProps) => {
     return (
         <OptionsList>
             {
@@ -197,10 +210,7 @@ const SearchResultsList = ({ points }: LocationSearch.Data) => {
                         label={point.properties.label}
                         description={point.properties.address}
                         contentLeft={<IconLocation />}
-                        onClick={() => {
-                            confirmationStore.setPoint(point);
-                            router.push("/event/create/location");
-                        }}
+                        onClick={() => onLocationPick?.(point)}
                     />
                 )) : (
                     <>No result found. Try another search query.</>

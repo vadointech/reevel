@@ -1,15 +1,36 @@
-import { CreateEventFormSchemaValues } from "@/features/event/create";
-import { useRouter } from "@/i18n/routing";
+"use client";
 
-export function useCreateEventForm() {
+import { useEffect } from "react";
+import { useRouter } from "@/i18n/routing";
+import { useFormContext } from "react-hook-form";
+import { indexedDbService } from "@/lib/indexed-db.service";
+
+import { CreateEventFormSchemaValues } from "@/features/event/create";
+
+type Params = {
+    nextStepUrl: string;
+};
+
+export function useCreateEventForm(params: Params) {
     const router = useRouter();
-    const onSubmit = (values: CreateEventFormSchemaValues) => {
-        // TODO: HTTP Request
-        console.log(values);
-        router.push("/event/create/preview");
-    };
+    const form = useFormContext<CreateEventFormSchemaValues>();
+
+    const handleSubmit = form.handleSubmit((values: CreateEventFormSchemaValues) => {
+        router.push(params.nextStepUrl);
+        // indexedDbService.setItem("event_form_values", values)
+        //     .then(() =>  router.push(params.nextStepUrl));
+    });
+
+    useEffect(() => {
+        return () => {
+            form.clearErrors();
+
+            const formValues = form.getValues();
+            indexedDbService.setItem("event_form_values", formValues);
+        };
+    }, []);
 
     return {
-        onSubmit,
+        handleSubmit,
     };
 }

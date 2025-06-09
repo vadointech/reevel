@@ -2,12 +2,13 @@
 
 import { observer } from "mobx-react-lite";
 
-import { useInterestsPicker, useInterestsPickerStore, useInterestsSearch } from "@/features/interests/picker";
-import { useRelatedInterests } from "@/features/interests/picker/hooks/use-related.hook";
+import { useInterestsPickerContext } from "@/features/interests/picker";
+import { useInterestsPicker, useInterestsSearch, useRelatedInterests } from "@/features/interests/picker/hooks";
 
-import { Checkbox, OptionsList, OptionsListItem, Section } from "@/components/shared/_redesign";
-
+import { Button, Checkbox, OptionsList, OptionsListItem, Section } from "@/components/shared/_redesign";
 import { InterestEntity } from "@/entities/interests";
+
+import styles from "@/components/screens/search/styles.module.scss";
 
 export namespace SearchInterestsAll {
     export type Props = never;
@@ -19,7 +20,7 @@ export namespace SearchInterestsAll {
 }
 
 export const SearchInterestsAll = () => {
-    const interestsPickerStore = useInterestsPickerStore();
+    const { store } = useInterestsPickerContext();
 
     const {
         isExist,
@@ -34,11 +35,11 @@ export const SearchInterestsAll = () => {
         onSelect: async({ slug }) => {
             const related = await getRelated(slug);
             if(isExist(related)) {
-                interestsPickerStore.setSearchTerm("");
+                store.setSearchTerm("");
             }
         },
         onRemove: () => {
-            interestsPickerStore.setSearchTerm("");
+            store.setSearchTerm("");
         },
     });
 
@@ -55,20 +56,20 @@ export const SearchInterestsAll = () => {
 };
 
 const List = observer(({ onSelect, onLoadMore }: SearchInterestsAll.ListProps) => {
-    const { interests, selectedInterests } = useInterestsPickerStore();
+    const { store } = useInterestsPickerContext();
 
     return (
         <>
             <OptionsList>
                 {
-                    interests.length > 0 ? (
-                        interests.map((interest) => (
+                    store.interests.length > 0 ? (
+                        store.interests.map((interest) => (
                             <OptionsListItem
                                 key={interest.slug}
                                 label={interest.title_en}
                                 contentLeft={interest.icon}
                                 contentRight={
-                                    <Checkbox checked={selectedInterests.some((item) => item.slug === interest.slug)} />
+                                    <Checkbox checked={store.selectedInterests.some((item) => item.slug === interest.slug)} />
                                 }
                                 onClick={() => onSelect(interest)}
                             />
@@ -76,6 +77,14 @@ const List = observer(({ onSelect, onLoadMore }: SearchInterestsAll.ListProps) =
                     ) : <>No interests found. Try another search query.</>
                 }
             </OptionsList>
+            <Button
+                size={"small"}
+                variant={"text-primary"}
+                className={styles.search__more}
+                onClick={onLoadMore}
+            >
+                Load more
+            </Button>
         </>
     );
 

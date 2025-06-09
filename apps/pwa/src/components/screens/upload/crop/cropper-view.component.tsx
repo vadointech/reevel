@@ -4,15 +4,20 @@ import { Link } from "@/i18n/routing";
 import { Header } from "@/components/shared/_redesign";
 import { IconArrowLeft } from "@/components/icons";
 import { ImageCropper } from "@/components/shared/_redesign/cropper";
-import { CropControlsButtons } from "./primitives";
 
 import styles from "./styles.module.scss";
 
 export namespace UploadCropperView {
-    export type Props = ComponentProps<"div">;
+    export type Props = ComponentProps<"div"> & {
+        callbackUrl: string;
+    };
 }
 
-export const UploadCropperView = ({ ...props }: UploadCropperView.Props) => {
+export const UploadCropperView = ({
+    callbackUrl,
+    children,
+    ...props
+}: UploadCropperView.Props) => {
     return (
         <div
             className={styles.crop}
@@ -20,7 +25,7 @@ export const UploadCropperView = ({ ...props }: UploadCropperView.Props) => {
         >
             <Header
                 iconBefore={
-                    <Link href={"/event/create/preview"}>
+                    <Link href={callbackUrl}>
                         <IconArrowLeft />
                     </Link>
                 }
@@ -32,7 +37,9 @@ export const UploadCropperView = ({ ...props }: UploadCropperView.Props) => {
                 <ImageCropper aspect={390/510} />
             </div>
 
-            <CropControlsButtons />
+            <div className={styles.crop__buttons}>
+                { children }
+            </div>
         </div>
     );
 };

@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useRef } from "react";
+import { useCallback, useRef } from "react";
 import { FetchQueryOptions, useQueryClient } from "@tanstack/react-query";
 import { RequestDebouncer } from "@/lib/debouncer";
 import { SpatialCache } from "./spatial-cache";
@@ -36,14 +36,12 @@ interface ConfigParams<TData, TInput> {
     persist?: boolean | { key: string }
     queryBuilder: QueryBuilder<TData>;
     prefetchedData?: TData;
-    queryResultProcessor?: (data: TData) => TData;
     onDataFetchResponse?: (response: TData, input: TFetchInput<TInput>) => void;
 }
 
 export function useSpatialCache<TData extends IData, TInput extends object = Record<string, unknown>>(mapProvider: IMapProvider, {
     queryBuilder,
     prefetchedData,
-    queryResultProcessor,
 }: ConfigParams<TData, TInput>) {
     const queryClient = useQueryClient();
     const spatialCache = useRef(new SpatialCache());
@@ -140,7 +138,7 @@ export function useSpatialCache<TData extends IData, TInput extends object = Rec
                             placeType,
                             signal,
                         }),
-                    ).then(queryResultProcessor);
+                    );
 
                     cacheRegion(regionId, response, viewState, placeType);
 

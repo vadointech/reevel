@@ -7,18 +7,18 @@ import {
 
 import { Container } from "@/components/ui";
 import { Button, Header } from "@/components/shared/_redesign";
-import { GetNearbyPlaces } from "@/api/google/places";
 import { RefObject } from "react";
 import { BottomSheetExternalController } from "@/components/shared/_redesign/bottom-sheet/types";
 import { IconArrowLeft } from "@/components/icons";
 import { useLocationPicker } from "@/features/location/picker";
+import { GooglePlacesApiResponsePlace } from "@/api/google/places/types";
 
 import styles from "../styles.module.scss";
 
 export namespace LocationPickerConfirmationDrawer {
     export type Props = {
         controller?: BottomSheetExternalController;
-        dataRef: RefObject<GetNearbyPlaces.TOutput["places"][number] | undefined>;
+        dataRef: RefObject<GooglePlacesApiResponsePlace>;
         onClose?: () => void;
     };
 }

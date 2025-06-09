@@ -2,8 +2,7 @@
 
 import { ComponentProps } from "react";
 import {
-    Button,
-    Header, TabsBody,
+    Header, Input, TabsBody,
     TabsContent, TabsRoot,
 } from "@/components/shared/_redesign";
 import {
@@ -18,15 +17,47 @@ import { UploadFileButton, UploadFileGrid } from "./primitives";
 import { ScrollArea } from "@/components/shared/_redesign/scroll-area/scroll-area.component";
 import { IconArrowLeft } from "@/components/icons";
 
+import { UserUploadsEntity } from "@/entities/uploads";
+import { BottomSheetExternalController } from "@/components/shared/_redesign/bottom-sheet/types";
+import { UploadFileItem } from "@/components/drawers/upload/primitives/upload-item.component";
+import { GetUserUploads } from "@/api/user/uploads";
+
 import styles from "./styles.module.scss";
+import { useRouter } from "@/i18n/routing";
+import { useImageUploader } from "@/features/uploader/image/hooks";
 
 export namespace UploadDrawer {
-    export type Props = ComponentProps<"div">;
+    export type Props = ComponentProps<"div"> & {
+        uploads?: GetUserUploads.TOutput;
+        onImagePick: (upload: UserUploadsEntity) => void;
+        onImageDelete: (upload: UserUploadsEntity) => void;
+        selectedImageUrl?: string;
+        cropperPageUrl?: string;
+        controller?: BottomSheetExternalController
+    };
 }
 
-export const UploadDrawer = ({ children }: UploadDrawer.Props) => {
+export const UploadDrawer = ({
+    uploads = [],
+    onImagePick,
+    onImageDelete,
+    selectedImageUrl,
+    controller,
+    children,
+    cropperPageUrl,
+}: UploadDrawer.Props) => {
+    const router = useRouter();
+
+    const { handleSelectFile } = useImageUploader({
+        onFileSelected: () => {
+            if(cropperPageUrl) {
+                router.push(cropperPageUrl);
+            }
+        },
+    });
+
     return (
-        <BottomSheetRoot handleOnly>
+        <BottomSheetRoot externalController={controller} handleOnly>
             <BottomSheetTrigger>
                 {children}
             </BottomSheetTrigger>
@@ -37,10 +68,14 @@ export const UploadDrawer = ({ children }: UploadDrawer.Props) => {
                             <Header
                                 size={"small"}
                                 iconBefore={<IconArrowLeft />}
+                                onControlBeforeClick={() => controller?.current?.close()}
                                 controlAfter={
-                                    <Button variant={"text-accent"}>
-                                        Upload
-                                    </Button>
+                                    <Input.File
+                                        label={"Upload"}
+                                        accept={"image/png, image/jpeg, image/webp"}
+                                        variant={"text-accent"}
+                                        onChange={handleSelectFile}
+                                    />
                                 }
                             >
                                 Event poster
@@ -54,8 +89,21 @@ export const UploadDrawer = ({ children }: UploadDrawer.Props) => {
                             >
                                 <TabsContent>
                                     <ScrollArea>
-                                        <UploadFileGrid variant={"vertical"}>
-                                            <UploadFileButton />
+                                        <UploadFileGrid
+                                            variant={"vertical"}
+                                        >
+                                            <UploadFileButton onChange={handleSelectFile} />
+                                            {
+                                                uploads.map(item => (
+                                                    <UploadFileItem
+                                                        key={item.id}
+                                                        imageUrl={item.fileUrl}
+                                                        selected={item.fileUrl === selectedImageUrl}
+                                                        onClick={() => onImagePick(item)}
+                                                        onDelete={() => onImageDelete(item)}
+                                                    />
+                                                ))
+                                            }
                                         </UploadFileGrid>
                                     </ScrollArea>
                                 </TabsContent>

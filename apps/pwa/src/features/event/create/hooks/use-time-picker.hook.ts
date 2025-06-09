@@ -39,10 +39,6 @@ export function useCreateEventFormTimePicker(field: TimeField) {
                     }
                 }
             }
-
-            if(field === "endTime") {
-                setFieldValue("endDate", fieldValue.current);
-            }
         };
     }, []);
 

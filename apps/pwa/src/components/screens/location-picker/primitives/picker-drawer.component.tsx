@@ -33,6 +33,7 @@ export namespace LocationPickerDrawer {
         controller?: BottomSheetExternalController
         defaultSnapIndex?: number;
         onSnapPointChange?: (snapPointIndex: number) => void;
+        onLocationAccessRequest?: () => void;
     };
 }
 
@@ -40,9 +41,10 @@ export const LocationPickerDrawer = ({
     controller,
     defaultSnapIndex,
     onLocationTypePick,
+    onLocationAccessRequest,
     onSnapPointChange,
 }: LocationPickerDrawer.Props) => {
-    const { config} = useLocationPicker();
+    const { config } = useLocationPicker();
 
     return (
         <BottomSheetRoot
@@ -89,7 +91,7 @@ export const LocationPickerDrawer = ({
                                 >
                                     Enter location manually
                                 </Button>
-                                <Button>
+                                <Button onClick={onLocationAccessRequest}>
                                     Allow location access
                                 </Button>
                             </div>

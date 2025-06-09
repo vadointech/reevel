@@ -1,5 +1,5 @@
 import { type locales } from "@/i18n/locales";
-import { FetchQueryOptions, UseMutationOptions } from "@tanstack/react-query";
+import { FetchQueryOptions } from "@tanstack/react-query";
 
 export type Locale = (typeof locales)[number];
 

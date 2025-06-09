@@ -1,7 +1,7 @@
 "use client";
 
 import { InterestEntity } from "@/entities/interests";
-import { useInterestsPickerStore } from "../interests-picker.store";
+import { useInterestsPickerContext } from "../interests-picker.context";
 
 type CallBacks = {
     onSelect: (item: InterestEntity) => void;
@@ -9,22 +9,22 @@ type CallBacks = {
 };
 
 export function useInterestsPicker(callbacks: Partial<CallBacks> = {}) {
-    const interestPickerStore = useInterestsPickerStore();
+    const { controller } = useInterestsPickerContext();
 
     const handleRemoveInterest = (item: InterestEntity) => {
         callbacks.onRemove?.(item);
-        interestPickerStore.removeInterestFromSelection(item.slug);
+        controller.removeInterestFromSelection(item.slug);
     };
 
     const handleSelectInterest = (item: InterestEntity) => {
         callbacks.onSelect?.(item);
-        interestPickerStore.addInterestToSelection(item);
+        controller.addInterestToSelection(item);
     };
 
     const handleToggleInterest = (
         item: InterestEntity,
     ) => {
-        const selected = interestPickerStore.isInterestSelected(item.slug);
+        const selected = controller.isInterestSelected(item.slug);
 
         if(selected) {
             handleRemoveInterest(item);

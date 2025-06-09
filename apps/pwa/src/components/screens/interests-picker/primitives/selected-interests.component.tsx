@@ -2,33 +2,22 @@
 
 import { observer } from "mobx-react-lite";
 
-import { useInterestsPicker, useInterestsPickerStore } from "@/features/interests/picker";
+import { useInterestsPickerContext } from "@/features/interests/picker";
+import { useInterestsPicker } from "@/features/interests/picker/hooks";
 
 import { Checkbox, OptionsList, OptionsListItem, Section } from "@/components/shared/_redesign";
-
-import { InterestEntity } from "@/entities/interests";
 
 import styles from "../styles.module.scss";
 
 export namespace SearchInterestsSelected {
     export type Props = never;
-
-    export type ListProps = {
-        handleRemove: (item: InterestEntity) => void
-    };
 }
 
-export const SearchInterestsSelected = () => {
+export const SearchInterestsSelected = observer(() => {
     const { handleRemoveInterest } = useInterestsPicker();
-    return (
-        <List handleRemove={handleRemoveInterest} />
-    );
-};
+    const { store } = useInterestsPickerContext();
 
-const List = observer(({ handleRemove }: SearchInterestsSelected.ListProps) => {
-    const interestsPickerStore = useInterestsPickerStore();
-
-    if(interestsPickerStore.selectedInterests.length === 0) return;
+    if(store.selectedInterests.length === 0) return;
 
     return (
         <Section
@@ -37,7 +26,7 @@ const List = observer(({ handleRemove }: SearchInterestsSelected.ListProps) => {
         >
             <OptionsList>
                 {
-                    interestsPickerStore.selectedInterests.map((interest) => (
+                    store.selectedInterests.map((interest) => (
                         <OptionsListItem
                             key={interest.slug}
                             label={interest.title_en}
@@ -45,7 +34,7 @@ const List = observer(({ handleRemove }: SearchInterestsSelected.ListProps) => {
                             contentRight={
                                 <Checkbox checked={true} />
                             }
-                            onClick={() => handleRemove(interest)}
+                            onClick={() => handleRemoveInterest(interest)}
                         />
                     ))
                 }

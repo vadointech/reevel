@@ -1,9 +1,12 @@
 import { MobxStore } from "@/types/common";
+import { UploadApiErrorResponse, UploadApiResponse } from "@/api/upload/types";
 
 export interface IFileUploaderStore extends MobxStore {
     loading: boolean;
-    fileUrl?: string;
+    uploadResponse: UploadApiResponse | undefined;
+    uploadErrorResponse: UploadApiErrorResponse | undefined;
 
     setLoading(loading: boolean): void;
-    setFileUrl(url?: string): void;
+    setUploadResponse(uploadResponse: UploadApiResponse | undefined): void;
+    setUploadErrorResponse(uploadErrorResponse: UploadApiErrorResponse | undefined): void;
 }

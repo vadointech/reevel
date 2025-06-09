@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useMemo, useRef } from "react";
+import { useRouter } from "@/i18n/routing";
 import { useLocationPicker } from "@/features/location/picker";
 import { googlePlacesApiResponseMapper } from "@/infrastructure/google/mappers";
 import { usePersistentMap } from "@/components/shared/map";
@@ -7,11 +8,13 @@ import { SearchLocationQueryBuilder } from "@/features/location/picker/queries";
 import { IReactionDisposer, reaction } from "mobx";
 import { RequestDebouncer } from "@/lib/debouncer";
 import { GooglePlacesApiResponse } from "@/api/google/places/types";
+import { IconPoint, Point } from "@/components/shared/map/types";
 
 export function useLocationPickerSearch() {
     const queryClient = useQueryClient();
     const map = usePersistentMap();
-    const { searchStore } = useLocationPicker();
+    const router = useRouter();
+    const { searchStore, confirmationStore, config } = useLocationPicker();
 
     const debouncer = useRef(new RequestDebouncer());
 
@@ -94,8 +97,15 @@ export function useLocationPickerSearch() {
         }
     }, []);
 
+
+    const handleLocationPick = useCallback((point: Point<IconPoint>) => {
+        confirmationStore.setPoint(point);
+        router.push(config.callbackUrl);
+    }, []);
+
     return {
         handleLoadMore,
+        handleLocationPick,
         handleToggleLocationRestrictions,
     };
 }

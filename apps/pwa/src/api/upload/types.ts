@@ -33,3 +33,7 @@ export interface UploadApiErrorResponse {
 
     [futureKey: string]: any;
 }
+
+export function isUploadErrorResponse(response: UploadApiResponse | UploadApiErrorResponse): response is UploadApiErrorResponse {
+    return typeof response.message !== "undefined" && typeof response.http_code !== "undefined";
+}

@@ -8,7 +8,6 @@ import { useSpatialCache } from "@/features/spatial-cache/use-spatial-cache.hook
 
 import { GooglePLacesApiIncludedTypes } from "@/api/google/places";
 import { googlePlacesApiResponseMapper } from "@/infrastructure/google/mappers";
-import { googlePlacesApiResponseTransformer } from "@/infrastructure/google/transformers";
 
 import { MapInternalConfig } from "@/components/shared/map/types";
 import { GooglePlacesApiResponse } from "@/api/google/places/types";
@@ -38,7 +37,6 @@ export function useLocationPickerMap(placesInit: GooglePlacesApiResponse) {
     const { fetchSpatialData, precacheSpatialData } = useSpatialCache(map.provider.current, {
         prefetchedData: !confirmationStore.point ? placesInit : undefined,
         queryBuilder: GetNearbyPlacesQueryBuilder,
-        queryResultProcessor: googlePlacesApiResponseTransformer.filterClosePoints,
     });
 
     const handleViewportChange = useCallback((viewState: MapInternalConfig.IViewStateConfig) => {
