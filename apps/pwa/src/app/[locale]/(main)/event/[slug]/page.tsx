@@ -15,6 +15,7 @@ export default function Page() {
         <>
             <EventDrawerRoot>
                 <EventDrawerContent
+                    variant="host"
                     poster={"/assets/temp/poster5.png"}
                     primaryColor={"#AB002F"}
                     title={"Happy Valentine's Day Party"}

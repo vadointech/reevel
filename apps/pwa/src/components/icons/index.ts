@@ -19,14 +19,15 @@ export * from "./fire";
 export * from "./lock";
 export * from "./star";
 export * from "./report";
-export * from "./clock"
-export * from "./dark"
-export * from "./notification"
-export * from "./lightning"
+export * from "./clock";
+export * from "./dark";
+export * from "./notification";
+export * from "./lightning";
+export * from "./cycle";
 
-export * from "./ukraine"
-export * from "./england"
-export * from "./system-country"
+export * from "./ukraine";
+export * from "./england";
+export * from "./system-country";
 export * from "./clock";
 
 export * from "./instagram";

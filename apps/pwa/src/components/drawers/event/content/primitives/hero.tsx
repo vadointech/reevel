@@ -8,13 +8,15 @@ import { useDrawerContentDragYProgress } from "../../config/motion-values";
 import { HERO_SECTION_OFFSET } from "../../config/snap-points";
 
 import { EventDrawerContentDescription } from "./description";
-import { IconCalendar, IconEllipsisHorizontal, IconLocation, IconShare, IconTicket } from "@/components/icons";
+import { IconCalendar, IconLocation } from "@/components/icons";
 import { AttendersSection } from "@/components/shared/attenders";
 import { UserProfileEntity } from "@/entities/profile";
 
 import styles from "../styles.module.scss";
-import cx from "classnames";
 import { formatDate } from "@/utils/time";
+
+import { EventDrawerHeroButtons } from "./buttons";
+import { Variant } from "../../types";
 
 export namespace EventDrawerContentHero {
     export type Data = {
@@ -27,7 +29,11 @@ export namespace EventDrawerContentHero {
         attendees: UserProfileEntity[];
         description: string;
     };
-    export type Props = Data;
+
+
+    export type Props = Data & {
+        variant?: Variant;
+    };
 }
 
 export const EventDrawerContentHero = ({
@@ -39,6 +45,7 @@ export const EventDrawerContentHero = ({
     currency,
     attendees,
     description,
+    variant = "public",
 }: EventDrawerContentHero.Props) => {
     const drawerContentDragYProgress = useDrawerContentDragYProgress();
 
@@ -58,6 +65,7 @@ export const EventDrawerContentHero = ({
             0,
         ],
     );
+
 
     return (
         <div
@@ -87,57 +95,26 @@ export const EventDrawerContentHero = ({
             </div>
             <motion.div style={{ opacity: titleOpacity }}>
                 <h1 className={styles.hero__title}>
-                    { title }
+                    {title}
                 </h1>
             </motion.div>
 
             <div className={styles.hero__date}>
                 <div className={styles.hero__date_item}>
                     <IconLocation />
-                    { location }
+                    {location}
                 </div>
                 <div className={styles.hero__date_item}>
                     <IconCalendar />
-                    { formattedDate }
+                    {formattedDate}
                 </div>
             </div>
-
-            <div className={styles.hero__price}>
-                { price } { currency }
-                <AttendersSection users={attendees} />
-            </div>
-
             <div className={styles.hero__buttons}>
-                <button
-                    className={cx(
-                        styles.hero__button,
-                        styles.hero__button_primary,
-                        styles.hero__button_join,
-                    )}
-                >
-                    <IconTicket />
-                    Join
-                </button>
-
-                <button
-                    className={cx(
-                        styles.hero__button,
-                        styles.hero__button_share,
-                    )}
-                >
-                    <IconShare />
-                    Share
-                </button>
-
-                <button
-                    className={cx(
-                        styles.hero__button,
-                        styles.hero__button_more,
-                    )}
-                >
-                    <IconEllipsisHorizontal />
-                    More
-                </button>
+                <EventDrawerHeroButtons variant={variant} />
+            </div>
+            <div className={styles.hero__price}>
+                {price} {currency}
+                <AttendersSection users={attendees} />
             </div>
 
             <EventDrawerContentDescription>
