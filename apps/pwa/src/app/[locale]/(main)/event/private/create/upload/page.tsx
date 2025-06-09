@@ -1,10 +1,7 @@
-import { UploadCropperView } from "@/components/screens/upload";
-import { UploadPosterCropper } from "@/app/[locale]/(main)/event/_components";
+import { CreateEventPosterUploadPage } from "@/flows/create-event/pages";
 
-export default function CreateEventUploadPage() {
+export default function Page() {
     return (
-        <UploadCropperView callbackUrl={"/event/private/create/preview"}>
-            <UploadPosterCropper callbackUrl={"/event/private/create/preview"} />
-        </UploadCropperView>
+        <CreateEventPosterUploadPage callbackUrl={"/event/private/create/preview"} />
     );
 }

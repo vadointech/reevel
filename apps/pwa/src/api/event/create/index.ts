@@ -16,7 +16,7 @@ export namespace CreateEvent {
         endDate?: Date;
         interests?: string[];
     };
-    export type TOutput = EventEntity;
+    export type TOutput = EventEntity | null;
 
     export const queryKey = ["event/create"];
 }

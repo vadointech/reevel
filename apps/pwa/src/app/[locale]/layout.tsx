@@ -51,7 +51,6 @@ export default async function RootLayout({ children, params }: PropsWithChildren
         nextHeaders: await headers(),
     });
 
-
     return (
         <html lang={locale} suppressHydrationWarning>
             <head>

@@ -1,14 +1,12 @@
 import { PropsWithChildren } from "react";
-import { LocationPickerProvider } from "@/features/location/picker";
+import { CreateEventLocationPickerLayout } from "@/flows/create-event/layouts";
 
-export default function CreateEventLocationLayout({ children }: PropsWithChildren) {
+export default function Layout({ children }: PropsWithChildren) {
     return (
-        <LocationPickerProvider
-            syncFormField={"location"}
+        <CreateEventLocationPickerLayout
+            children={children}
             callbackUrl={"/event/private/create"}
             locationSearchUrl={"/event/private/create/location/search"}
-        >
-            { children }
-        </LocationPickerProvider>
+        />
     );
 }

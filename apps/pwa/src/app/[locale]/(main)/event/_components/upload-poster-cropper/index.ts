@@ -1,1 +1,0 @@
-export * from "./upload-poster-cropper.component";

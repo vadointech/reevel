@@ -94,8 +94,7 @@ export function useCreateEventPreview(params: Params = {}) {
         createEventMutation.mutate({
             ...formValues,
             poster: formValues.poster.fileUrl,
-            // posterFieldId: formValues.poster.id,
-            posterFieldId: "",
+            posterFieldId: formValues.poster.id,
             visibility,
             location,
             interests,

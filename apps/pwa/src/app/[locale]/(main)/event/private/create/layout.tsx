@@ -1,14 +1,11 @@
 import { PropsWithChildren } from "react";
-import { CreateEventFormProvider } from "@/features/event/create";
+import { CreateEventRootLayout } from "@/flows/create-event/layouts";
 import { EventVisibility } from "@/entities/event";
-import { ImageUploaderProvider } from "@/features/uploader/image";
 
-export default async function CreateEventLayout({ children }: PropsWithChildren) {
+export default function Layout({ children }: PropsWithChildren) {
     return (
-        <CreateEventFormProvider visibility={EventVisibility.PRIVATE}>
-            <ImageUploaderProvider>
-                { children }
-            </ImageUploaderProvider>
-        </CreateEventFormProvider>
+        <CreateEventRootLayout type={EventVisibility.PRIVATE}>
+            { children }
+        </CreateEventRootLayout>
     );
 }

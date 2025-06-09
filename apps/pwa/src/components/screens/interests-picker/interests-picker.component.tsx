@@ -3,7 +3,7 @@
 import { useEffect } from "react";
 import { reaction } from "mobx";
 
-import { AnimationControls, motion, Transition, useAnimation } from "motion/react";
+import { motion, Transition, useAnimation } from "motion/react";
 
 import { Container } from "@/components/ui";
 import { InterestsPickerSearch } from "./primitives/search.component";
