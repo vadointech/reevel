@@ -11,14 +11,14 @@ import { RefObject } from "react";
 import { BottomSheetExternalController } from "@/components/shared/_redesign/bottom-sheet/types";
 import { IconArrowLeft } from "@/components/icons";
 import { useLocationPicker } from "@/features/location/picker";
-import { GooglePlacesApiResponsePlace } from "@/api/google/places/types";
+import { PlaceLocationEntity } from "@/entities/place";
 
 import styles from "../styles.module.scss";
 
 export namespace LocationPickerConfirmationDrawer {
     export type Props = {
         controller?: BottomSheetExternalController;
-        dataRef: RefObject<GooglePlacesApiResponsePlace>;
+        dataRef: RefObject<Partial<PlaceLocationEntity> | undefined>;
         onClose?: () => void;
     };
 }
@@ -58,11 +58,11 @@ export const LocationPickerConfirmationDrawer = ({
                                         <div>
                                             <h1 className={styles.screen__title}>
                                                 {
-                                                    dataRef.current?.displayName?.text
+                                                    dataRef.current?.displayName
                                                 }
                                             </h1>
                                             <p className={styles.screen__subtitle}>
-                                                { dataRef.current?.primaryTypeDisplayName?.text }
+                                                { dataRef.current?.primaryTypeDisplayName }
                                             </p>
                                             <p className={styles.screen__subtitle}>
                                                 { dataRef.current?.formattedAddress }

@@ -5,7 +5,7 @@ import {
     IconBeach,
     IconBowlingAlley,
     IconCasino, IconCityHall,
-    IconCoffeeShop, IconDefaultMarker,
+    IconCoffeeShop,
     IconFastFoodRestaurant,
     IconGym,
     IconIceCreamShop,
@@ -23,9 +23,8 @@ import {
     IconTouristAttraction,
     IconUniversity,
     IconWater,
-    IconYogaStudio, IconZoo,
+    IconYogaStudio, IconZoo, MapPinIcon,
 } from "@/components/icons";
-import { IconPoint } from "@/components/shared/map/types";
 
 export type Icon = {
     icon: ReactNode;
@@ -33,7 +32,7 @@ export type Icon = {
     secondaryColor: string;
 };
 
-export const IncludedTypesMarker: Record<GooglePLacesApiIncludedTypes | "default" | "pin", Icon> = {
+export const IncludedTypesMarker: Record<GooglePLacesApiIncludedTypes | "default" | "street_address", Icon> = {
     /**
      * Food_and_drink
      */
@@ -312,20 +311,20 @@ export const IncludedTypesMarker: Record<GooglePLacesApiIncludedTypes | "default
     },
 
     /**
-     * Default
+     * Pin
      */
-    default: {
-        icon: <IconDefaultMarker />,
-        primaryColor: "#696969",
-        secondaryColor: "#A9A9A9",
+    street_address: {
+        icon: <MapPinIcon style={{ transform: "translateY(0.5px)"}} />,
+        primaryColor: "#483D8B",
+        secondaryColor: "#9370DB",
     },
 
     /**
-     * Pin
+     * Default
      */
-    pin: {
-        icon: <>1</>,
-        primaryColor: "red",
-        secondaryColor: "red",
+    default: {
+        icon: <MapPinIcon style={{ transform: "translateY(0.5px)"}} />,
+        primaryColor: "#696969",
+        secondaryColor: "#A9A9A9",
     },
 };

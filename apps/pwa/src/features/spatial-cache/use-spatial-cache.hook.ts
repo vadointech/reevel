@@ -8,10 +8,6 @@ import {
     MapProviderGL,
 } from "@/components/shared/map/types";
 
-interface IData {
-    places: unknown[]
-}
-
 type TFetchInput<TInput> = TInput & {
     viewState: MapInternalConfig.IViewStateConfig,
     placeType?: string,
@@ -39,7 +35,7 @@ interface ConfigParams<TData, TInput> {
     onDataFetchResponse?: (response: TData, input: TFetchInput<TInput>) => void;
 }
 
-export function useSpatialCache<TData extends IData, TInput extends object = Record<string, unknown>>(mapProvider: IMapProvider, {
+export function useSpatialCache<TData extends unknown[], TInput extends object = Record<string, unknown>>(mapProvider: IMapProvider, {
     queryBuilder,
     prefetchedData,
 }: ConfigParams<TData, TInput>) {
@@ -89,7 +85,7 @@ export function useSpatialCache<TData extends IData, TInput extends object = Rec
             zoom,
             placeType,
             timestamp: Date.now(),
-            pointsCount: response.places.length,
+            pointsCount: response.length,
         });
         // console.log(`✅ Cached ${response.places.length} places for ${regionId}`);
     }, []);

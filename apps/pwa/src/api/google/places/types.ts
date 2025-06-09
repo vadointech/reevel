@@ -32,13 +32,13 @@ export type GooglePlacesApiRequestBody = {
     pageToken?: string;
 };
 
-const _fieldMaskValues = [
+export const _fieldMaskValues = [
     "id", "displayName", "location",
     "primaryType", "primaryTypeDisplayName", "formattedAddress",
     "addressComponents", "googleMapsLinks", "googleMapsUri",
 ] as const;
 
-const _addressComponentsTypes = [
+export const _addressComponentsTypes = [
     "street_number", "route", "locality", "political",
     "administrative_area_level_1", "administrative_area_level_2",
     "country", "postal_code",
@@ -47,11 +47,6 @@ const _addressComponentsTypes = [
 export type GooglePlacesApiRequestParams = {
     imageMaxWidth?: number;
     imageMaxHeight?: number;
-};
-
-export type GoogleGeocodeRequestParams = {
-    latlng: string;
-    key: string;
 };
 
 export type GooglePlacesApiResponsePlace = {

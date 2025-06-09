@@ -6,11 +6,11 @@ import { LocationPickerConfirmationDrawer } from "./primitives/confirmation-draw
 
 import { useLocationPickerMap, useConfirmationDrawer } from "@/features/location/picker/hooks";
 
-import { GooglePlacesApiResponse } from "@/api/google/places/types";
+import { PlaceLocationEntity } from "@/entities/place";
 
 export namespace LocationPickerMapView {
     export type Data = {
-        placesInit: GooglePlacesApiResponse
+        placesInit: PlaceLocationEntity[]
     };
     export type Props = Data;
 }

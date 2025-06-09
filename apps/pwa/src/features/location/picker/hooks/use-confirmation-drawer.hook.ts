@@ -7,13 +7,13 @@ import { GetNearbyPlacesQueryBuilder, GetPlacesByCoordinatesQueryBuilder } from 
 
 import { usePersistentMap } from "@/components/shared/map";
 
-import { googlePlacesApiResponseMapper } from "@/infrastructure/google/mappers";
+import { placeLocationEntityMapper } from "@/entities/place/mapper";
 
 import { Point, IconPoint, MapInternalConfig } from "@/components/shared/map/types";
-import { GooglePlacesApiResponse, GooglePlacesApiResponsePlace } from "@/api/google/places/types";
 import { IBottomSheetRootController } from "@/components/shared/_redesign/bottom-sheet/types";
+import { PlaceLocationEntity } from "@/entities/place";
 
-export function useConfirmationDrawer(placesInit: GooglePlacesApiResponse) {
+export function useConfirmationDrawer(placesInit: PlaceLocationEntity[]) {
     const queryClient = useQueryClient();
     const map = usePersistentMap();
     const { confirmationStore } = useLocationPicker();
@@ -23,7 +23,7 @@ export function useConfirmationDrawer(placesInit: GooglePlacesApiResponse) {
     const pickerDrawerControls = useRef<IBottomSheetRootController>(null);
     const confirmationDrawerControls = useRef<IBottomSheetRootController>(null);
 
-    const confirmationDataRef = useRef<Partial<GooglePlacesApiResponsePlace>>(undefined);
+    const confirmationDataRef = useRef<Partial<PlaceLocationEntity>>(undefined);
 
     const isInsideBounds = useRef(true);
 
@@ -37,7 +37,7 @@ export function useConfirmationDrawer(placesInit: GooglePlacesApiResponse) {
 
             moveViewStateToPoint(point, false);
 
-            pointsBuffer.current = googlePlacesApiResponseMapper.toIconPoint(placesInit);
+            pointsBuffer.current = placeLocationEntityMapper.toIconPoint(placesInit);
             map.controller.current.setPoints([point]);
             map.controller.current.selectPoint(point.id);
             handleSelectPoint(point.id);
@@ -54,12 +54,12 @@ export function useConfirmationDrawer(placesInit: GooglePlacesApiResponse) {
     }, []);
 
     const getLocationPickerQueryData = (placeId: string) => {
-        const data = queryClient.getQueriesData<GooglePlacesApiResponse>({
+        const data = queryClient.getQueriesData<PlaceLocationEntity>({
             queryKey: GetNearbyPlacesQueryBuilder.queryKey(),
         });
 
-        const places = data.flatMap(([, data]) => data?.places || []);
-        return places.find(place => place.id === placeId);
+        const places = data.flatMap(([, data]) => data);
+        return places.find(place => place?.id === placeId);
     };
     const moveViewStateToPoint = (point: Point<IconPoint>, checkBuffer: boolean = true) => {
         const { bounds: defaultBounds } = map.provider.current.internalConfig.viewState;
@@ -129,7 +129,7 @@ export function useConfirmationDrawer(placesInit: GooglePlacesApiResponse) {
         const data = getLocationPickerQueryData(pointId);
         if(!data) return;
 
-        const [point] = googlePlacesApiResponseMapper.toIconPoint({ places: [data] });
+        const [point] = placeLocationEntityMapper.toIconPoint([data]);
         if(!point) return;
         confirmationStore.setPoint(point);
         moveViewStateToPoint(point);
@@ -158,19 +158,30 @@ export function useConfirmationDrawer(placesInit: GooglePlacesApiResponse) {
         if ("geolocation" in navigator) {
             navigator.geolocation.getCurrentPosition(
                 async({ coords }) => {
-                    const point = await queryClient.fetchQuery(
-                        GetPlacesByCoordinatesQueryBuilder({}),
-                    ).then(googlePlacesApiResponseMapper.toIconPoint).then(points => points[0]);
+                    const place = await queryClient.fetchQuery(
+                        GetPlacesByCoordinatesQueryBuilder({
+                            lng: coords.longitude,
+                            lat: coords.latitude,
+                        }),
+                    ).then(response => response[0]);
 
-                    if(point) {
+                    if(place) {
+                        const [point] = placeLocationEntityMapper.toIconPoint([place]);
+                        if(!point) return;
+
                         pickerDrawerControls.current?.setPositionBySnapIndex(1);
 
                         moveViewStateToPoint(point, false);
 
-                        pointsBuffer.current = googlePlacesApiResponseMapper.toIconPoint(placesInit);
+                        pointsBuffer.current = placeLocationEntityMapper.toIconPoint(placesInit);
                         map.controller.current.setPoints([point]);
                         map.controller.current.selectPoint(point.id);
-                        handleSelectPoint(point.id);
+
+                        confirmationStore.setPoint(point);
+
+                        confirmationDataRef.current = place;
+                        pickerDrawerControls.current?.setPositionBySnapIndex(1);
+                        confirmationDrawerControls.current?.open();
                     }
                 },
                 () => {

@@ -3,6 +3,9 @@ import { GOOGLE_PLACES_API_EXCLUDED_TYPES, GOOGLE_PLACES_API_INCLUDED_TYPES } fr
 import { getNearbyPlaces, GetNearbyPlaces } from "@/api/google/places";
 import { MapProviderGL } from "@/components/shared/map/types";
 import { googlePlacesApiResponseTransformer } from "@/infrastructure/google/transformers";
+import { googlePlacesApiResponseMapper } from "@/infrastructure/google/mappers";
+import { PlaceLocationEntity } from "@/entities/place";
+import { QueryBuilder } from "@/types/common";
 
 export namespace GetNearbyPlacesQueryBuilder {
     export type TInput = {
@@ -12,11 +15,13 @@ export namespace GetNearbyPlacesQueryBuilder {
         placeType?: string;
         signal?: AbortSignal;
     };
+
+    export type TOutput = PlaceLocationEntity[];
 }
 
-export const GetNearbyPlacesQueryBuilder = (
+export const GetNearbyPlacesQueryBuilder: QueryBuilder<GetNearbyPlacesQueryBuilder.TInput, GetNearbyPlacesQueryBuilder.TOutput> = (
     input: GetNearbyPlacesQueryBuilder.TInput,
-): FetchQueryOptions<GetNearbyPlaces.TOutput> => {
+): FetchQueryOptions<GetNearbyPlacesQueryBuilder.TOutput> => {
     return {
         queryKey: GetNearbyPlacesQueryBuilder.queryKey([input.regionId]),
         queryFn: () => getNearbyPlaces({
@@ -51,7 +56,8 @@ export const GetNearbyPlacesQueryBuilder = (
         })
             .then(response => response.data || { places: [] })
             .then(googlePlacesApiResponseTransformer.filterClosePoints)
-            .then(googlePlacesApiResponseTransformer.formatAddress),
+            .then(googlePlacesApiResponseTransformer.formatAddress)
+            .then(googlePlacesApiResponseMapper.toPlaceLocationEntity),
     };
 };
 

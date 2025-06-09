@@ -1,19 +1,12 @@
 import { fetcherClient } from "@/api/fetcher-client";
-import {
-    GoogleGeocodeRequestParams,
-    GooglePlacesApiRequestBody,
-    GooglePlacesApiResponse,
-    GooglePlacesApiRestrictionCircle,
-} from "../types";
+import { GoogleGeocodingApiRequestParameters, GoogleGeocodingApiResponse } from "./types";
 
 export namespace GetPlaceByCoordinates {
-    export type TInput = GooglePlacesApiRequestBody & {
-        locationRestriction?: GooglePlacesApiRestrictionCircle
-    };
+    export type TInput = never;
 
-    export type TParams = Partial<GoogleGeocodeRequestParams>;
+    export type TParams = Partial<GoogleGeocodingApiRequestParameters>;
 
-    export type TOutput = GooglePlacesApiResponse;
+    export type TOutput = GoogleGeocodingApiResponse;
 
     export const queryKey = ["google/places"];
 }
@@ -26,6 +19,7 @@ export const getPlaceByCoordinates = fetcherClient<GetPlaceByCoordinates.TInput,
 
         return fetcher.get("/geocode/json", {
             baseURL: "https://maps.googleapis.com/maps/api",
+            credentials: "omit",
             ...input,
         });
     },

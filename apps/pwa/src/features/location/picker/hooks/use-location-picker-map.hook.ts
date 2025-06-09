@@ -7,34 +7,34 @@ import { usePersistentMap } from "@/components/shared/map";
 import { useSpatialCache } from "@/features/spatial-cache/use-spatial-cache.hook";
 
 import { GooglePLacesApiIncludedTypes } from "@/api/google/places";
-import { googlePlacesApiResponseMapper } from "@/infrastructure/google/mappers";
+import { placeLocationEntityMapper } from "@/entities/place/mapper";
 
 import { MapInternalConfig } from "@/components/shared/map/types";
-import { GooglePlacesApiResponse } from "@/api/google/places/types";
+import { PlaceLocationEntity } from "@/entities/place";
 
 const PICKER_MAP_PADDING = {
     bottom: 260,
 };
 
-export function useLocationPickerMap(placesInit: GooglePlacesApiResponse) {
+export function useLocationPickerMap(placesInit: PlaceLocationEntity[]) {
     const map = usePersistentMap();
     const { filtersStore, confirmationStore } = useLocationPicker();
 
     const preventMapUpdate = useRef<boolean>(!!confirmationStore.point);
 
     const defaultPoints = useMemo(() => {
-        return googlePlacesApiResponseMapper.toIconPoint(placesInit);
+        return placeLocationEntityMapper.toIconPoint(placesInit);
     }, [placesInit]);
 
-    const appendResponse = (response?: GooglePlacesApiResponse) => {
-        map.controller.current.appendPoints(googlePlacesApiResponseMapper.toIconPoint(response));
+    const appendResponse = (response?: PlaceLocationEntity[]) => {
+        map.controller.current.appendPoints(placeLocationEntityMapper.toIconPoint(response));
     };
 
-    const replaceResponse = (response?: GooglePlacesApiResponse) => {
-        return map.controller.current.replacePoints(googlePlacesApiResponseMapper.toIconPoint(response));
+    const replaceResponse = (response?: PlaceLocationEntity[]) => {
+        return map.controller.current.replacePoints(placeLocationEntityMapper.toIconPoint(response));
     };
 
-    const { fetchSpatialData, precacheSpatialData } = useSpatialCache(map.provider.current, {
+    const { fetchSpatialData, precacheSpatialData } = useSpatialCache<PlaceLocationEntity[]>(map.provider.current, {
         prefetchedData: !confirmationStore.point ? placesInit : undefined,
         queryBuilder: GetNearbyPlacesQueryBuilder,
     });

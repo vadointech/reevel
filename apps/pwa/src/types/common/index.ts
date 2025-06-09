@@ -19,7 +19,7 @@ export interface MobxStore {
 }
 
 type QueryBuilderMethods = {
-    queryKey: (params: unknown[]) => unknown[];
+    queryKey: (params?: unknown[]) => unknown[];
 };
 export type QueryBuilder<
     Params extends object = Record<string, any>,
