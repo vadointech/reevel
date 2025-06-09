@@ -8,7 +8,8 @@ export namespace Section {
     export type Variant = Button.Variant;
     export type Data = {
         title?: string;
-        cta?: string | ReactNode
+        description?: string;
+        cta?: string | ReactNode;
     };
     export type Props = ComponentProps<"div"> & Data & {
         container?: boolean;
@@ -22,6 +23,7 @@ export const Section = ({
     className,
     children,
     title,
+    description,
     cta,
     variant = "text-primary",
     container = false,
@@ -40,23 +42,30 @@ export const Section = ({
             {
                 title ? (
                     <div className={styles.section__head}>
-                        <h2 className={styles.section__title}>
-                            { title }
-                        </h2>
+                        <div className={styles.section__wrapper}>
+                            <h2 className={styles.section__title}>
+                                {title}
+                            </h2>
+                            {
+                                cta ? (
+                                    <Button
+                                        size={"small"}
+                                        variant={variant}
+                                        style={{
+                                            width: "fit-content",
+                                            padding: 0,
+                                        }}
+                                        href={ctaHref}
+                                        onClick={onCtaClick}
+                                    >
+                                        {cta}
+                                    </Button>
+                                ) : null
+                            }
+                        </div>
                         {
-                            cta ? (
-                                <Button
-                                    size={"small"}
-                                    variant={variant}
-                                    style={{
-                                        width: "fit-content",
-                                        padding: 0,
-                                    }}
-                                    href={ctaHref}
-                                    onClick={onCtaClick}
-                                >
-                                    { cta }
-                                </Button>
+                            description ? (
+                                <div className={styles.section__description}>{description}</div>
                             ) : null
                         }
                     </div>
@@ -71,7 +80,7 @@ export const Section = ({
                             container && styles.section__content_container,
                         )}
                     >
-                        { children }
+                        {children}
                     </div>
                 ) : null
             }
