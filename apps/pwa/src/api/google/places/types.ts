@@ -1,6 +1,3 @@
-import { GooglePLacesApiIncludedTypes, GooglePLacesApiPrimaryIncludedTypes } from "./included-types.config";
-import { GooglePLacesApiExcludedTypes, GooglePLacesApiPrimaryExcludedTypes } from "./excluded-types.config";
-
 export type GooglePlacesApiRestrictionCircle = {
     circle: {
         center: {
@@ -11,29 +8,43 @@ export type GooglePlacesApiRestrictionCircle = {
     }
 };
 
-export type GooglePlacesApiRequestBody = {
-    includedTypes?: readonly GooglePLacesApiIncludedTypes[],
-    excludedTypes?: readonly GooglePLacesApiExcludedTypes[],
-    includedPrimaryTypes?: readonly GooglePLacesApiPrimaryIncludedTypes[],
-    excludedPrimaryTypes?: readonly GooglePLacesApiPrimaryExcludedTypes[]
-    maxResultCount?: number,
-    languageCode?: string;
+export type GooglePlacesApiRestrictionRectangle = {
+    rectangle: {
+        low: {
+            latitude: number,
+            longitude: number
+        },
+        high: {
+            latitude: number,
+            longitude: number
+        }
+    }
 };
 
-const _fieldMaskValues = [
-    "id", "displayName", "location", "photos",
-    "types", "primaryType", "primaryTypeDisplayName",
-    "formattedAddress", "addressComponents",
+export type GooglePlacesApiRequestBody = {
+    includedTypes?: readonly string[],
+    excludedTypes?: readonly string[],
+    includedPrimaryTypes?: readonly string[],
+    excludedPrimaryTypes?: readonly string[]
+    fieldMask?: Array<typeof _fieldMaskValues[number]> | "*";
+    maxResultCount?: number,
+    languageCode?: string;
+    pageToken?: string;
+};
+
+export const _fieldMaskValues = [
+    "id", "displayName", "location",
+    "primaryType", "primaryTypeDisplayName", "formattedAddress",
+    "addressComponents", "googleMapsLinks", "googleMapsUri",
 ] as const;
 
-const _addressComponentsTypes = [
+export const _addressComponentsTypes = [
     "street_number", "route", "locality", "political",
     "administrative_area_level_1", "administrative_area_level_2",
     "country", "postal_code",
 ];
 
 export type GooglePlacesApiRequestParams = {
-    fieldMask?: Array<typeof _fieldMaskValues[number]> | "*";
     imageMaxWidth?: number;
     imageMaxHeight?: number;
 };
@@ -54,9 +65,9 @@ export type GooglePlacesApiResponsePlace = {
         name: string;
         flagContentUri: string;
     }>;
-    types: string[];
+    googleMapsUri: string;
     primaryType: string;
-    primaryTypeDisplayName?: {
+    primaryTypeDisplayName: {
         text: string;
         languageCode: string;
     };
@@ -69,5 +80,6 @@ export type GooglePlacesApiResponsePlace = {
 };
 
 export type GooglePlacesApiResponse = {
-    places: Array<Partial<GooglePlacesApiResponsePlace>>
+    places: Array<Partial<GooglePlacesApiResponsePlace>>;
+    nextPageToken?: string;
 };

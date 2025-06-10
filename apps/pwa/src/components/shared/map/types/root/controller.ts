@@ -28,12 +28,13 @@ export interface IMapRootController {
      */
     detachMap(): void;
 
+    syncViewState(viewState: MapInternalConfig.IViewStateConfig, forceRefresh?: boolean): void;
+
     /**
-     * Selects a point based on the provided pointId.
-     * If the pointId is null, it may deselect or reset the selection.
+     * Selects a specific point by its identifier.
      *
-     * @param {string | null} pointId - The identifier of the point to select, or null to reset selection.
-     * @return {void} No return value.
+     * @param {string | null} pointId - The unique identifier of the point to be selected. If null, no specific point will be selected.
+     * @return {void} This method does not return a value.
      */
     selectPoint(pointId: string | null): void;
 

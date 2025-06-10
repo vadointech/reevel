@@ -1,22 +1,21 @@
 import { Injectable } from "@nestjs/common";
+import { SupportedFileCollections } from "@/modules/uploads/entities/uploads.entity";
 
-export const UploadsFileType = {
-    Events: "events",
-} as const;
-export type UploadsFileType = ObjectValues<typeof UploadsFileType>;
-
-type FilesRegister = Record<UploadsFileType, (...args: any[]) => string>;
+type FilesRegister = {
+    [key in SupportedFileCollections]: (...args: any[]) => string;
+};
 
 @Injectable()
-export class UploadsTagsRegister implements FilesRegister {
-    events(eventId: string): string {
-        return "event-" + eventId;
-    }
+export class UploadsTagsRegister {
+
 }
 
 @Injectable()
 export class UploadsFoldersRegister implements FilesRegister {
-    events(userId: string): string {
-        return userId + `/${UploadsFileType.Events}`;
+    [SupportedFileCollections.EVENT_POSTER](userId: string): string {
+        return userId + `/${SupportedFileCollections.EVENT_POSTER}`;
+    }
+    [SupportedFileCollections.UNKNOWN](userId: string): string {
+        return userId + `/${SupportedFileCollections.UNKNOWN}`;
     }
 }

@@ -1,4 +1,8 @@
-import { Context, createContext, PropsWithChildren, useContext } from "react";
+import { Context, createContext, PropsWithChildren, useContext, useEffect } from "react";
+
+interface IStore {
+    dispose(): void;
+}
 
 export function createMobxStore<Store extends object>(
     StoreClass: new () => Store,
@@ -10,13 +14,18 @@ export function createMobxStore<Store extends object>(
     return [useStoreContext] as const;
 }
 
-export function createMobxStoreProvider<Store extends object, Args extends unknown[]>(
+export function createMobxStoreProvider<Store extends IStore, Args extends unknown[]>(
     StoreClass: new (...args: Args) => Store,
 ) {
     const StoreContext = createContext<Store | null>(null);
 
     function StoreProvider({ children, init }: PropsWithChildren<{ init: Args }>) {
         const store = new StoreClass(...init);
+
+        useEffect(() => {
+            return () => store.dispose();
+        }, []);
+
         return (
             <StoreContext.Provider value={store}>
                 { children }

@@ -7,7 +7,7 @@ export * from "./navigation";
 export * from "./check";
 export * from "./location";
 export * from "./ellipsis";
-export * from "./world";
+export * from "./globe";
 export * from "./search";
 export * from "./calendar";
 export * from "./more";

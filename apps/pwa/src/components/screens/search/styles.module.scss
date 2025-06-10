@@ -1,0 +1,23 @@
+@use "@/theme/mixins";
+@use "@/theme/spacing";
+
+.search {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+
+    &__header {
+        padding-bottom: mixins.rem(22);
+        flex: 0 0 auto;
+    }
+
+    &__content {
+        flex: 1 1 auto;
+        overflow-y: auto;
+        position: relative;
+    }
+
+    &__more {
+        margin-top: mixins.rem(12);
+    }
+}

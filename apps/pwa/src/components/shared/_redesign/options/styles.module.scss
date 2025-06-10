@@ -3,6 +3,7 @@
 @use "@/theme/typography";
 
 .list {
+    position: relative;
     background: colors.$foreground;
     padding: 1rem mixins.rem(18);
     border-radius: mixins.rem(17);

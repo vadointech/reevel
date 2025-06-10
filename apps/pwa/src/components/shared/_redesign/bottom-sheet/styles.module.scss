@@ -28,6 +28,8 @@
         border-radius: mixins.rem(20) mixins.rem(20) 0 0;
         overflow: hidden;
 
+        padding-bottom: mixins.rem(24);
+
         & > * {
             flex: 0 0 auto;
         }

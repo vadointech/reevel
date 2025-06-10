@@ -1,7 +1,7 @@
 "use client";
 
 import ReactDOM from "react-dom";
-import { PropsWithChildren } from "react";
+import { PropsWithChildren, useEffect } from "react";
 import { observer } from "mobx-react-lite";
 
 import { useQuerySelectorContext } from "@/providers/query-selector.provider";
@@ -15,6 +15,14 @@ export namespace BottomSheetPortal {
 export const BottomSheetPortal = observer(({ children }: BottomSheetPortal.Props) => {
     const { modal, main } = useQuerySelectorContext();
     const { store, controller } = useBottomSheet();
+
+    useEffect(() => {
+        return () => {
+            if(main.current) {
+                main.current.style.pointerEvents = "";
+            }
+        };
+    }, []);
 
     if(!modal.current) return null;
 

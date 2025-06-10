@@ -1,6 +1,6 @@
 import { observer } from "mobx-react-lite";
 import { Header } from "@/components/shared/_redesign";
-import { useInterestsSearch } from "@/features/interests/picker/hooks/use-search.hook";
+import { useInterestsPickerContext } from "@/features/interests/picker";
 import styles from "../styles.module.scss";
 
 export namespace InterestsPickerSearch {
@@ -8,17 +8,14 @@ export namespace InterestsPickerSearch {
 }
 
 export const InterestsPickerSearch = observer((props: InterestsPickerSearch.Props) => {
-    const {
-        searchTerm,
-        handleChange,
-    } = useInterestsSearch();
+    const { store, config } = useInterestsPickerContext();
 
     return (
         <Header.Search
-            value={searchTerm}
+            value={store.searchTerm}
             className={styles.search__header}
-            controlHref={"/event/create"}
-            onChange={handleChange}
+            controlHref={config.callbackUrl}
+            onChange={(e) => store.setSearchTerm(e.target.value)}
             {...props}
         />
     );

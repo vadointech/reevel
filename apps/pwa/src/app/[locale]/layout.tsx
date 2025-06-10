@@ -51,7 +51,6 @@ export default async function RootLayout({ children, params }: PropsWithChildren
         nextHeaders: await headers(),
     });
 
-
     return (
         <html lang={locale} suppressHydrationWarning>
             <head>
@@ -81,7 +80,7 @@ export default async function RootLayout({ children, params }: PropsWithChildren
                                             <main id={"main"}>
                                                 {children}
                                             </main>
-                                            <div id="bottom-sheet-root" />
+                                            <div id={"modal-root"} />
                                         </QuerySelectorProvider>
                                     </StandaloneProvider>
                                 </ThemeProvider>

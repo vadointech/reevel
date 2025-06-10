@@ -1,41 +1,36 @@
-import { fetcherClient } from "@/api/fetcher-client";
 import {
+    GooglePlacesApiResponse,
     GooglePlacesApiRequestBody,
-    GooglePlacesApiRequestParams,
-    GooglePlacesApiResponse, GooglePlacesApiRestrictionCircle,
+    GooglePlacesApiRestrictionRectangle,
 } from "@/api/google/places/types";
+import { fetcherClient } from "@/api/fetcher-client";
+import { FetcherResponse } from "@/lib/fetcher/types";
+import { getGooglePlacesApiFieldMask } from "@/api/google/places/_internal/field-mask";
 
 export namespace SearchLocations {
-    export type TInput = Partial<GooglePlacesApiRequestBody> & {
+    export type TInput = GooglePlacesApiRequestBody & {
         textQuery: string;
-        locationBias?: GooglePlacesApiRestrictionCircle;
+        locationRestriction?: GooglePlacesApiRestrictionRectangle;
     };
-    export type TOutput = GooglePlacesApiResponse;
-    export type TParams = GooglePlacesApiRequestParams;
 
-    export const queryKey = ["places/search"];
+    export type TOutput = GooglePlacesApiResponse;
+
+    export const queryKey = ["google/places"];
 }
 
-export const searchLocations = fetcherClient<SearchLocations.TInput, SearchLocations.TOutput, SearchLocations.TParams>({
+export const searchLocations = fetcherClient<SearchLocations.TInput, SearchLocations.TOutput>({
     fetcherFunc: async(fetcher, input) => {
-        let fieldMask = "places.id,places.displayName,places.location";
+        const { fieldMask, body } = getGooglePlacesApiFieldMask(input?.body);
 
-        if(input?.params?.fieldMask) {
-            if(typeof input.params.fieldMask === "string") {
-                fieldMask = input.params.fieldMask;
-            } else {
-                fieldMask = input.params.fieldMask.map(mask => `places.${mask}`).join(",");
-            }
-        }
-
-        const result = await fetcher.post(":searchText", {
+        const result: FetcherResponse<SearchLocations.TOutput> = await fetcher.post(":searchText", {
             baseURL: "https://places.googleapis.com/v1/places",
             credentials: "omit",
             headers: {
                 "X-Goog-Api-Key": "AIzaSyAIfGyOk4VSltw4QnBr1r6wjK_2bkw1pU4",
-                "X-Goog-FieldMask": fieldMask,
+                "X-Goog-FieldMask": fieldMask + ",nextPageToken",
             },
-            body: input?.body,
+            body,
+            ...input,
         });
 
         if(result.data) {
@@ -44,7 +39,6 @@ export const searchLocations = fetcherClient<SearchLocations.TInput, SearchLocat
                 return result;
             }
         }
-
         return result;
     },
 });

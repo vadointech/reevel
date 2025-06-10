@@ -2,7 +2,7 @@ import { ComponentProps, ReactNode } from "react";
 import Image from "next/image";
 
 import { Badge } from "@/components/ui";
-import { IconLock, IconNavigation, IconWorld } from "@/components/icons";
+import { IconLock, IconNavigation, IconGlobe } from "@/components/icons";
 import { AttendersSection } from "../attenders";
 
 import { hexToRgba } from "@/utils/hex-to-rgba";
@@ -47,7 +47,7 @@ export const EventCard = ({
     ...props
 }: EventCard.Props) => {
     const icon: Record<EventCard.EventType, ReactNode> = {
-        Public: <IconWorld />,
+        Public: <IconGlobe />,
         Private: <IconLock />,
     };
 

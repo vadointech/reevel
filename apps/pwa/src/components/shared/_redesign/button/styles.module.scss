@@ -60,6 +60,7 @@
             }
 
             svg {
+                max-height: mixins.rem(20);
                 width: mixins.rem(20);
             }
         }

@@ -2,12 +2,15 @@ import { Injectable } from "@nestjs/common";
 import { UserRepository } from "./user.repository";
 import { ProfileInterestsRepository } from "@/modules/profile/repositories/profile-interests.repository";
 import { Session } from "@/types";
+import { GetUploadedFileParamsDto } from "@/modules/uploads/dto/get-image.dto";
+import { UploadsRepository } from "@/modules/uploads/repositories/uploads.repository";
 
 @Injectable()
 export class UserService {
     constructor(
         private readonly userRepository: UserRepository,
         private readonly profileInterestsRepository: ProfileInterestsRepository,
+        private readonly uploadsRepository: UploadsRepository,
     ) {}
 
     getUserSession(userId: string) {
@@ -21,5 +24,18 @@ export class UserService {
                 interest: true,
             },
         });
+    }
+
+    getUserUploads(session: Session, params: GetUploadedFileParamsDto) {
+        return this.uploadsRepository.findManyBy({
+            userId: session.user.id,
+            collection: params.collection,
+            fileType: params.fileType,
+            isDeleted: false,
+        });
+    }
+    async deleteUserUploadedFile(_: Session, fileId: string) {
+        await this.uploadsRepository.update({ id: fileId }, { isDeleted: true });
+        return true;
     }
 }

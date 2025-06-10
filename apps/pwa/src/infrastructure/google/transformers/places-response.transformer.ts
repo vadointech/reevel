@@ -61,6 +61,7 @@ class GooglePlacesApiResponseTransformer {
       }
 
       return {
+          ...input,
           places: filteredPoints.map(item => ({
               ...item.place,
               location: {
@@ -101,6 +102,7 @@ class GooglePlacesApiResponseTransformer {
 
     formatAddress(input: Input): Input {
         return {
+            ...input,
             places: input.places.map(place => {
                 let formattedAddress = place.formattedAddress;
 
