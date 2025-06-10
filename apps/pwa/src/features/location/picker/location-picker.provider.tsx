@@ -1,14 +1,14 @@
 "use client";
 
-import { PropsWithChildren, useRef } from "react";
+import { PropsWithChildren, useEffect, useMemo, useRef } from "react";
 import {
     LocationPickerConfirmationStore,
     LocationPickerFiltersStore,
     LocationPickerSearchStore,
 } from "./stores";
-import { LocationPickerController } from "./location-picker.controller";
 import { LocationPickerContext } from "./location-picker.context";
 import { LocationPickerRootConfigParams } from "./types";
+import { useFormContext } from "react-hook-form";
 
 export namespace LocationPickerProvider {
     export type Props = PropsWithChildren<LocationPickerRootConfigParams>;
@@ -18,22 +18,30 @@ export const LocationPickerProvider = ({
     children,
     ...config
 }: LocationPickerProvider.Props) => {
-
+    const form = useFormContext();
     const searchStore = useRef(new LocationPickerSearchStore()).current;
     const filtersStore = useRef(new LocationPickerFiltersStore()).current;
-    const confirmationStore = useRef(new LocationPickerConfirmationStore()).current;
 
-    const persistentCacheStore = useRef<Map<any, any>>(new Map()).current;
+    const initConfirmationStore: ConstructorParameters<typeof LocationPickerConfirmationStore> = useMemo(() => {
+        if(!config.syncFormField) return [];
 
-    const controller = useRef(
-        new LocationPickerController(
-            config,
-            searchStore,
-            filtersStore,
-            confirmationStore,
-            persistentCacheStore,
-        ),
-    );
+        const value = form.getValues(config.syncFormField);
+
+        return [
+            value,
+            (point) => {
+                form.setValue(config.syncFormField, point);
+            },
+        ];
+    }, [form, config.syncFormField]);
+
+    const confirmationStore = useRef(
+        new LocationPickerConfirmationStore(...initConfirmationStore),
+    ).current;
+
+    useEffect(() => {
+        return () => confirmationStore.dispose();
+    }, []);
 
     return (
         <LocationPickerContext.Provider
@@ -41,7 +49,7 @@ export const LocationPickerProvider = ({
                 searchStore,
                 filtersStore,
                 confirmationStore,
-                controller,
+                config,
             }}
         >
             { children }

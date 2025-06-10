@@ -1,5 +1,4 @@
 import { RefObject } from "react";
-import { LngLatBounds } from "mapbox-gl";
 import { MapRef } from "react-map-gl/mapbox";
 import {
     IMapProvider,
@@ -37,10 +36,11 @@ export class MapboxProvider<T extends MapRef = MapRef> extends MapRootProvider i
         }
 
         if(this._internalConfig.viewState.bounds) {
-            const { bounds, pitch, padding } = this._internalConfig.viewState;
+            // eslint-disable-next-line @typescript-eslint/no-unused-vars
+            const { bounds, zoom, ...state } = this._internalConfig.viewState;
+
             this.fitBounds(bounds, {
-                pitch,
-                padding,
+                ...state,
                 ...options,
             });
         } else {
@@ -49,6 +49,25 @@ export class MapboxProvider<T extends MapRef = MapRef> extends MapRootProvider i
                 ...options,
             });
         }
+    }
+
+    getViewState(): MapInternalConfig.IViewStateConfig {
+        if(!this.mapRef.current) return this._internalConfig.viewState;
+
+        const bounds = this.getBounds();
+        const center = bounds.getCenter();
+
+        const zoom = this.getZoom();
+        const padding = this.mapRef.current.getPadding();
+        const pitch = this.mapRef.current.getPitch();
+
+        return {
+            center,
+            bounds,
+            zoom,
+            pitch,
+            padding,
+        };
     }
 
     flyTo(options: MapProviderCameraState.EasingOptions): void {
@@ -60,9 +79,9 @@ export class MapboxProvider<T extends MapRef = MapRef> extends MapRootProvider i
         }
     }
 
-    fitBounds(bounds: MapProviderGL.LngLatBounds, options?: MapProviderCameraState.EasingOptions): void {
+    fitBounds(bounds: MapProviderGL.LngLatBounds, options?: MapProviderCameraState.EasingOptions) {
         if(this.mapRef.current) {
-            this.mapRef.current.fitBounds(bounds, {
+            return this.mapRef.current.fitBounds(bounds, {
                 pitch: this._internalConfig.viewState.pitch,
                 ...options,
             });
@@ -78,24 +97,14 @@ export class MapboxProvider<T extends MapRef = MapRef> extends MapRootProvider i
         }
     }
 
-    getBounds(): MapProviderGL.LngLatBounds | null {
-        if(!this.mapRef.current) return null;
-        return this.mapRef.current.getBounds();
+    getBounds(): MapProviderGL.LngLatBounds {
+        if(!this.mapRef.current) return this._internalConfig.viewState.bounds;
+        return this.mapRef.current.getBounds() || this._internalConfig.viewState.bounds;
     }
 
-    getBufferedBounds(bufferPercentage: number = 0.2): MapProviderGL.LngLatBounds | null {
-        const bounds = this.getBounds();
-        if(!bounds) return null;
-
-        const width = bounds.getEast() - bounds.getWest();
-        const height = bounds.getNorth() - bounds.getSouth();
-
-        const bufferX = width * bufferPercentage;
-        const bufferY = height * bufferPercentage;
-
-        return new LngLatBounds(
-            [bounds.getWest() + bufferX, bounds.getSouth() + bufferY], // Southwest point
-            [bounds.getEast() - bufferX, bounds.getNorth() - bufferY],  // Northeast point
-        );
+    getZoom(zoom?: number): number {
+        if(zoom) return  Math.round(zoom * 1000) / 1000;
+        if(!this.mapRef.current) return this._internalConfig.viewState.zoom;
+        return Math.round(this.mapRef.current.getZoom() * 1000) / 1000;
     }
 }

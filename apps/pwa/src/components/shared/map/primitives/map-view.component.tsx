@@ -18,6 +18,7 @@ export const MapView = ({
     viewState,
 
     onMapReady,
+    onMoveEnd,
     onPointSelect,
     onViewportChange,
 
@@ -35,6 +36,7 @@ export const MapView = ({
                 viewState,
                 handlers: {
                     onMapReady,
+                    onMoveEnd,
                     onPointSelect,
                     onViewportChange,
                 },

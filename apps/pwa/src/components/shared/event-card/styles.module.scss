@@ -64,7 +64,7 @@
         align-items: center;
 
         svg path {
-            fill: colors.$foreground;
+            fill: currentColor;
         }
 
         &_size {

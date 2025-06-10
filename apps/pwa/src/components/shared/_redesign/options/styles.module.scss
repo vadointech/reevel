@@ -3,6 +3,7 @@
 @use "@/theme/typography";
 
 .list {
+    position: relative;
     background: colors.$foreground;
     padding: 1rem mixins.rem(18);
     border-radius: mixins.rem(17);
@@ -31,7 +32,7 @@
 
     &_variant {
         &_avatar {
-            align-items: center;
+            align-items: start;
         }
     }
 
@@ -56,6 +57,9 @@
 
     &__title {
         color: colors.$primary;
+        display: flex;
+        align-items: center;
+        gap: 0.25rem;
 
         .listItem_weight_default & {
             @include typography.font("base", 400);
@@ -77,9 +81,15 @@
         color: colors.$secondary;
     }
 
+    &__status {
+        font-size: mixins.rem(14);
+        vertical-align: middle;
+        transform: translate(0,-3px);
+    }
+
     &__left {
         display: flex;
-
+        
         .listItem_size_default & {
             @include typography.font("4xl");
             svg {
@@ -145,5 +155,9 @@
                 fill: red;
             }
         }
+    }
+
+    &__bottom {
+        margin-top: 0.5rem;
     }
 }

@@ -28,6 +28,7 @@ export const MapboxComponent = memo(observer(forwardRef<MapRef, MapboxComponent.
         viewState,
         bounds,
         handleMapMove,
+        handleMapMoveEnd,
         handleMapLoad,
         handleSelectPoint,
     } = useMapbox(
@@ -53,6 +54,7 @@ export const MapboxComponent = memo(observer(forwardRef<MapRef, MapboxComponent.
             ref={ref}
             mapStyle={provider.current.internalConfig.mapStyle.styleLight}
             onMove={handleMapMove}
+            onMoveEnd={handleMapMoveEnd}
             onLoad={handleMapLoad}
             initialViewState={provider.current.internalConfig.viewState}
             mapboxAccessToken={provider.current.internalConfig.accessToken}

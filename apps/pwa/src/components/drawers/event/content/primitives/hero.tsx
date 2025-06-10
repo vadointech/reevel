@@ -15,6 +15,10 @@ import { UserProfileEntity } from "@/entities/profile";
 import styles from "../styles.module.scss";
 import cx from "classnames";
 import { formatDate } from "@/utils/time";
+import { Link } from "@/i18n/routing";
+
+import { EventDrawerHeroButtons } from "./buttons";
+import { Variant } from "../../types";
 
 export namespace EventDrawerContentHero {
     export type Data = {
@@ -27,7 +31,11 @@ export namespace EventDrawerContentHero {
         attendees: UserProfileEntity[];
         description: string;
     };
-    export type Props = Data;
+
+
+    export type Props = Data & {
+        variant?: Variant;
+    };
 }
 
 export const EventDrawerContentHero = ({
@@ -39,6 +47,7 @@ export const EventDrawerContentHero = ({
     currency,
     attendees,
     description,
+    variant = "public",
 }: EventDrawerContentHero.Props) => {
     const drawerContentDragYProgress = useDrawerContentDragYProgress();
 
@@ -58,6 +67,7 @@ export const EventDrawerContentHero = ({
             0,
         ],
     );
+
 
     return (
         <div
@@ -87,23 +97,25 @@ export const EventDrawerContentHero = ({
             </div>
             <motion.div style={{ opacity: titleOpacity }}>
                 <h1 className={styles.hero__title}>
-                    { title }
+                    {title}
                 </h1>
             </motion.div>
 
             <div className={styles.hero__date}>
                 <div className={styles.hero__date_item}>
                     <IconLocation />
-                    { location }
+                    {location}
                 </div>
                 <div className={styles.hero__date_item}>
                     <IconCalendar />
-                    { formattedDate }
+                    {formattedDate}
                 </div>
             </div>
-
+            <div className={styles.hero__buttons}>
+                <EventDrawerHeroButtons variant={variant} />
+            </div>
             <div className={styles.hero__price}>
-                { price } { currency }
+                {price} {currency}
                 <AttendersSection users={attendees} />
             </div>
 
@@ -119,15 +131,16 @@ export const EventDrawerContentHero = ({
                     Join
                 </button>
 
-                <button
+                <Link
                     className={cx(
                         styles.hero__button,
-                        styles.hero__button_share,
+                        styles.hero__button_share
                     )}
+                    href="/event/share"
                 >
                     <IconShare />
                     Share
-                </button>
+                </Link>
 
                 <button
                     className={cx(

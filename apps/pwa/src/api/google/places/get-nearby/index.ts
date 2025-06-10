@@ -4,7 +4,8 @@ import {
     GooglePlacesApiRequestParams,
     GooglePlacesApiResponse, GooglePlacesApiRestrictionCircle,
 } from "../types";
-import { FetcherResponse } from "@/lib/fetcher/types";
+import { getGooglePlacesApiFieldMask } from "@/api/google/places/_internal/field-mask";
+import { FetcherResponse } from "@/lib/fetcher/response";
 
 export namespace GetNearbyPlaces {
     export type TInput = GooglePlacesApiRequestBody & {
@@ -15,21 +16,14 @@ export namespace GetNearbyPlaces {
 
     export type TOutput = GooglePlacesApiResponse;
 
-    export const queryKey = ["places/nearby"];
+    export const queryKey = ["google/places"];
 }
 
 export const getNearbyPlaces = fetcherClient<GetNearbyPlaces.TInput, GetNearbyPlaces.TOutput, GetNearbyPlaces.TParams>({
     fetcherFunc: async(fetcher, input) => {
-        let fieldMask = "places.id,places.displayName,place.location";
 
-        if(input?.params?.fieldMask) {
-            if(typeof input.params.fieldMask === "string") {
-                fieldMask = input.params.fieldMask;
-            } else {
-                fieldMask = input.params.fieldMask.map(mask => `places.${mask}`).join(",");
-            }
-        }
-        
+        const { fieldMask, body } = getGooglePlacesApiFieldMask(input?.body);
+
         const result: FetcherResponse<GetNearbyPlaces.TOutput> = await fetcher.post(":searchNearby", {
             baseURL: "https://places.googleapis.com/v1/places",
             credentials: "omit",
@@ -37,7 +31,8 @@ export const getNearbyPlaces = fetcherClient<GetNearbyPlaces.TInput, GetNearbyPl
                 "X-Goog-Api-Key": "AIzaSyAIfGyOk4VSltw4QnBr1r6wjK_2bkw1pU4",
                 "X-Goog-FieldMask": fieldMask,
             },
-            body: input?.body,
+            body,
+            ...input,
         });
 
         if(result.data) {

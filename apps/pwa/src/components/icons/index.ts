@@ -7,7 +7,7 @@ export * from "./navigation";
 export * from "./check";
 export * from "./location";
 export * from "./ellipsis";
-export * from "./world";
+export * from "./globe";
 export * from "./search";
 export * from "./calendar";
 export * from "./more";
@@ -23,6 +23,8 @@ export * from "./clock";
 export * from "./dark";
 export * from "./notification";
 export * from "./lightning";
+export * from "./cycle";
+export * from "./important";
 export * from "./compas";
 export * from "./create";
 

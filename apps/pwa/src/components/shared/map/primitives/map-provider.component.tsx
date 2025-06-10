@@ -16,7 +16,7 @@ export const PersistentMapProvider = ({
     const persistentRootRef = useRef<HTMLDivElement | null>(null);
 
     const mapRef = useRef<any>(null);
-    const mapStore = useRef(new MapStore()).current;
+    const store = useRef(new MapStore()).current;
 
     const provider = useRef(
         new MapboxProvider(
@@ -30,7 +30,7 @@ export const PersistentMapProvider = ({
             mapContainerRef,
             persistentRootRef,
             provider,
-            mapStore,
+            store,
         ),
     );
 
@@ -38,7 +38,7 @@ export const PersistentMapProvider = ({
 
     return (
         <PersistentMapContext.Provider
-            value={ { controller, provider }}
+            value={{ controller, provider, store }}
         >
             { children }
             {/* Hidden container that holds the map when not in use */}
@@ -46,7 +46,7 @@ export const PersistentMapProvider = ({
                 <div ref={mapContainerRef} style={{ width: "100%", height: "100%" }}>
                     <MapboxComponent
                         ref={mapRef}
-                        store={mapStore}
+                        store={store}
                         provider={provider}
                         controller={controller}
                         onMapLoad={handleInitialize}

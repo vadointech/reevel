@@ -1,7 +1,7 @@
 import { MapEvent } from "mapbox-gl";
 import { RefObject, useCallback, useState } from "react";
 import { ViewStateChangeEvent } from "react-map-gl/mapbox";
-import { IMapProvider , IMapRootController, MapProviderCameraState } from "../types";
+import { IMapProvider, IMapRootController, MapProviderCameraState } from "../types";
 
 export function useMapbox(
     provider: RefObject<IMapProvider>,
@@ -28,15 +28,19 @@ export function useMapbox(
     };
   
     const handleMapMove = useCallback((e: ViewStateChangeEvent) => {
-        const { viewState, target } = e;
+        const { viewState } = e;
         setViewState(viewState);
         updateBounds(e);
 
-        const lngLatBounds = target.getBounds();
-
         controller.current.externalHandlers.onViewportChange?.(
-            { viewState: e.viewState, bounds: lngLatBounds },
+            provider.current.getViewState(),
         );
+    }, []);
+
+    const handleMapMoveEnd = useCallback(() => {
+        const viewState = provider.current.getViewState();
+        controller.current.syncViewState(viewState);
+        controller.current.externalHandlers.onMoveEnd?.(viewState);
     }, []);
 
     const updateBounds = useCallback((e: MapEvent) => {
@@ -55,6 +59,7 @@ export function useMapbox(
         bounds,
         handleMapLoad,
         handleMapMove,
+        handleMapMoveEnd,
         handleSelectPoint,
     };
 }

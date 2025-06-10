@@ -19,6 +19,16 @@ export class EventController {
     ) {
         return this.eventService.createEvent(session, body);
     }
+    
+    @Post("poster")
+    @UseInterceptors(FileUploadInterceptor)
+    async uploadPoster(
+        @Req() request: Express.Request,
+        @Session() session: ServerSession,
+    ) {
+        const files = request.files as Express.Multer.File[];
+        return this.eventService.uploadPoster(session, files);
+    }
 
     @Patch(":eventId")
     async updateEvent(
@@ -35,16 +45,5 @@ export class EventController {
         @Session() session: ServerSession,
     ) {
         return this.eventService.deleteEvent(session, eventId);
-    }
-
-    @Post(":eventId/poster")
-    @UseInterceptors(FileUploadInterceptor)
-    async uploadPoster(
-        @Req() request: Express.Request,
-        @Param("eventId") eventId: string,
-        @Session() session: ServerSession,
-    ) {
-        const files = request.files as Express.Multer.File[];
-        return this.eventService.uploadPoster(session, eventId, files);
     }
 }

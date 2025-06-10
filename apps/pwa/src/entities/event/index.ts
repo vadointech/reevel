@@ -2,17 +2,12 @@ import { UserProfileEntity } from "../profile";
 import { InterestEntity } from "../interests";
 import { Point, BasePoint } from "@/components/shared/map/types/point/point";
 
-export type EventEntity = {
-    id: string;
-    image?: string;
-};
-
 export enum EventVisibility {
     PUBLIC = "PUBLIC",
     PRIVATE = "PRIVATE",
 }
 
-export type Event = {
+export type EventEntity = {
     id: string;
     title: string;
     description: string;
@@ -25,10 +20,10 @@ export type Event = {
     dateTime: string;
     hosts: UserProfileEntity;
     interests: InterestEntity[];
-    tickets: Ticket[];
+    tickets: EventTicketEntity[];
 };
 
-export type Ticket = {
+export type EventTicketEntity = {
     id: string;
     eventId: string;
     userId: string;

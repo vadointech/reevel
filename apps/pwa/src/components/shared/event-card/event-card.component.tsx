@@ -2,7 +2,7 @@ import { ComponentProps, ReactNode } from "react";
 import Image from "next/image";
 
 import { Badge } from "@/components/ui";
-import { IconLock, IconNavigation, IconWorld } from "@/components/icons";
+import { IconLock, IconNavigation, IconGlobe } from "@/components/icons";
 import { AttendersSection } from "../attenders";
 
 import { hexToRgba } from "@/utils/hex-to-rgba";
@@ -47,7 +47,7 @@ export const EventCard = ({
     ...props
 }: EventCard.Props) => {
     const icon: Record<EventCard.EventType, ReactNode> = {
-        Public: <IconWorld />,
+        Public: <IconGlobe />,
         Private: <IconLock />,
     };
 
@@ -61,6 +61,7 @@ export const EventCard = ({
             {...props}
         >
             <Image
+                crossOrigin="anonymous"
                 fill
                 src={poster}
                 alt={title}
@@ -88,7 +89,7 @@ export const EventCard = ({
                     variant={"ghost"}
                     icon={icon[type]}
                 >
-                    { type }
+                    {type}
                 </Badge>
             </div>
 
@@ -114,7 +115,7 @@ export const EventCard = ({
                     )}
                 >
                     <IconNavigation />
-                    { location }
+                    {location}
                 </div>
                 <h3
                     className={cx(
@@ -122,7 +123,7 @@ export const EventCard = ({
                         styles[`card__title_size_${size}`],
                     )}
                 >
-                    { title }
+                    {title}
                 </h3>
                 <AttendersSection
                     size={size}

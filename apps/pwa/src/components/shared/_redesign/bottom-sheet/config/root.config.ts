@@ -15,9 +15,8 @@ export class BottomSheetRootConfig implements IBottomSheetInternalConfig {
     handleOnly: boolean = false;
     touchEvents: boolean = false;
 
-    onClose() {}
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    onSnapPointChange(snapPointIndex: number) {}
+    onClose: undefined;
+    onSnapPointChange: undefined;
 
     constructor(init: Partial<IBottomSheetConfigParams>) {
         initStore(this, init);

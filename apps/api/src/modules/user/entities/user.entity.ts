@@ -4,6 +4,7 @@ import { EventHostsEntity } from "@/modules/event/entities/event-hosts.entity";
 import { EventTicketsEntity } from "@/modules/event/entities/event-tickets.entity";
 import { PaymentsEntity } from "@/modules/payment/entities/payment.entity";
 import { SubscriptionEntity } from "@/modules/subscription/entities/subscription.entity";
+import { UserUploadsEntity } from "@/modules/uploads/entities/uploads.entity";
 
 @Entity("users")
 export class UserEntity {
@@ -27,4 +28,7 @@ export class UserEntity {
 
     @OneToOne(() => SubscriptionEntity, subscription => subscription.user)
     subscription: SubscriptionEntity;
+
+    @OneToMany(() => UserUploadsEntity, upload => upload.user)
+    uploads: UserUploadsEntity[];
 }

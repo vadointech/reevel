@@ -1,13 +1,19 @@
 import { BasePoint, Point } from "../point/point";
 
 export interface IMapStore {
-    initialized: boolean;
-
+    /**
+     * An array of points that are displayed on the map.
+     */
     points: Point<BasePoint>[];
+    /**
+     * A boolean variable that determines the visibility of ALL points on a map.
+     * When set to true, the points are visible; when set to false, the points are hidden.
+     */
     pointsVisible: boolean;
+    /**
+     * The identifier of the currently selected point.
+     */
     selectedPoint: string | null;
-
-    setInitialized(initialized: boolean): void;
 
     setPoints(points: Point<BasePoint>[]): void;
     setPointsVisible(visible: boolean): void;

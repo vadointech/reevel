@@ -17,6 +17,7 @@ import { IconClose } from "@/components/icons";
 import { UserProfileEntity } from "@/entities/profile";
 
 import styles from "./styles.module.scss";
+import { Variant } from "../types";
 
 export namespace EventDrawerContent {
     export type Data = {
@@ -36,8 +37,10 @@ export namespace EventDrawerContent {
         description: string;
     };
 
+
     export type Props = Data & {
         children: ReactNode;
+        variant: Variant;
     };
 }
 
@@ -46,6 +49,7 @@ export const EventDrawerContent = ({
     poster,
     primaryColor,
     title,
+    variant = "public",
     children,
     ...data
 }: EventDrawerContent.Props) => {
@@ -74,6 +78,7 @@ export const EventDrawerContent = ({
             >
                 <EventDrawerContentScroller>
                     <EventDrawerContentHero
+                        variant={variant}
                         primaryColor={primaryColor}
                         title={title}
                         {...data}

@@ -1,27 +1,11 @@
 import { Transition } from "motion";
 import { lerp } from "@/utils/normalize";
 
-export function generateBottomSheetExitTransitionParams(target: number): Transition {
-    const minDuration = 0.15;
-    const maxDuration = .35;
-    const duration = lerp(
-        minDuration,
-        maxDuration,
-        target,
-    );
-
-    return {
-        type: "tween",
-        duration: duration,
-        ease: "easeOut",
-    };
-}
-
-export function generateBottomSheetTransitionParams(start: number, target: number): Transition {
+export function generateBottomSheetTransitionParams(target: number, start: number = 0): Transition {
     const distance = Math.abs(target - start);
 
-    const minDuration = 0.15;
-    const maxDuration = .25;
+    const minDuration = 0.25;
+    const maxDuration = .45;
     const duration = lerp(
         minDuration,
         maxDuration,

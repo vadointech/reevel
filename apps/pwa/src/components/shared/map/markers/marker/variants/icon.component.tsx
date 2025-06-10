@@ -1,8 +1,9 @@
-import { getIncludedTypeMarker } from "@/features/location/picker/utils/get-marker-icon";
+import { memo } from "react";
+import { getIncludedTypeMarker } from "@/features/location/picker";
+
 import { IconPoint } from "../../../types";
 
 import styles from "../styles.module.scss";
-import { memo } from "react";
 
 export namespace IconPointMarker {
     export type Props = IconPoint;

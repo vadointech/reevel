@@ -1,8 +1,10 @@
+"use client";
+
 import { ComponentProps } from "react";
+import { useBottomSheet } from "@/components/shared/_redesign/bottom-sheet/bottom-sheet.context";
 
 import styles from "../styles.module.scss";
 import cx from "classnames";
-import { useBottomSheet } from "@/components/shared/_redesign/bottom-sheet/bottom-sheet.context";
 
 export namespace BottomSheetTrigger {
     export type Props = ComponentProps<"div">;

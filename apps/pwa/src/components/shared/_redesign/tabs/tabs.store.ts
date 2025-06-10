@@ -16,6 +16,8 @@ class TabsStore implements ITabsStore {
         initStore(this, init);
     }
 
+    dispose() {}
+
     setActiveTabIndex(tab: number) {
         this.activeTabIndex = tab;
     }

@@ -1,0 +1,127 @@
+@use "@/theme/colors";
+@use "@/theme/mixins";
+@use "@/theme/typography";
+
+
+
+
+.toast {
+    position: absolute;
+    left: 50%;
+    top: 30;
+    transform: translate(-50%);
+    width: mixins.rem(343);
+
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 0.75rem 1rem;
+
+    background-color: colors.$primary;
+    border-radius: 0.5rem;
+    overflow: hidden;
+    box-shadow: 
+        0 0.5rem mixins.rem(10) rgba(0, 0, 0, 0.2),
+        0 1rem 1.5rem rgba(0, 0, 0, 0.14);
+
+    &__icon {
+        position: relative;
+        width: 2.5rem;
+        height: 2.5rem;
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        z-index: 2;
+
+        .toast_variant_error & {
+            background-color: rgba(240, 66, 72, 0.2); 
+        }
+
+        
+        .toast_variant_info &{ 
+            background-color: rgba(255, 212, 38, 0.2)
+        }
+        
+        .toast_variant_success & {
+            background-color: rgba(240, 66, 72, 0.2); 
+        }
+        border-radius: mixins.rem(43);
+
+        &::after {
+            content: "";
+            position: absolute;
+            width: mixins.rem(240);
+            height: mixins.rem(240);
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+
+            .toast_variant_error & {
+                background: radial-gradient(
+                    circle farthest-side at center,
+                    rgba(240, 66, 72, 1) 0%,
+                    rgba(240, 66, 72, 0) 100%
+                );            
+            }
+
+            .toast_variant_info & {
+                background: radial-gradient(
+                    circle farthest-side at center,
+                    rgba(255, 212, 38, 1) 0%,
+                    rgba(240, 66, 72, 0) 100%
+                );      
+            }
+
+            .toast_variant_success & {
+                background: radial-gradient(
+                    circle farthest-side at center,
+                    rgba(0, 237, 81, 1) 0%,
+                    rgba(240, 66, 72, 0) 100%
+                );      
+            }
+            
+            z-index: -1;
+            border-radius: 50%;
+            opacity: 30%;
+        }
+
+        svg {
+            width: 1.5rem;
+            height: 1.5rem;
+            padding: 0.25rem;
+
+            .toast_variant_error & {
+                background-color: rgba(240, 66, 72, 1);
+            }
+            .toast_variant_info & {
+                background-color: rgba(255, 212, 38, 1)
+            }
+
+            .toast_variant_success & {
+                background-color: rgba(0, 237, 81, 1)
+            }
+
+            border-radius: 50%;
+
+            path {
+                width: 1rem;
+                height: 1rem;
+                stroke-width: mixins.rem(4);
+            }
+        }
+    }
+
+    &__text {
+        @include typography.font("base");
+        color: colors.$foreground;
+
+        display: flex;
+        flex-direction: column;
+
+        span {
+            font-size: 0.75rem;
+            color: colors.$secondary;
+        }
+    }
+}

@@ -11,7 +11,7 @@ export class ObjectUnique<T extends Record<string, any>> {
     }
 
     *[Symbol.iterator](): Iterator<T> {
-        for (const item of this.toArray()) {
+        for(const item of this.toArray()) {
             yield item;
         }
     }

@@ -34,6 +34,7 @@ export namespace Header {
         iconAfter?: ReactNode;
         controlBefore?: ReactNode;
         controlAfter?: ReactNode;
+        onControlBeforeClick?: (event: MouseEvent<HTMLDivElement>) => void;
     };
 
     export type SearchProps = VariantProps<typeof header> & InputSearch.Props & {
@@ -52,6 +53,7 @@ export const Header = ({
     controlBefore,
     controlAfter,
     className,
+    onControlBeforeClick,
     ...props
 }: Header.Props) => {
     return (
@@ -59,7 +61,10 @@ export const Header = ({
             className={header({ size, className })}
             {...props}
         >
-            <div className={styles.header__left}>
+            <div
+                className={styles.header__left}
+                onClick={onControlBeforeClick}
+            >
                 { iconBefore }
                 { controlBefore }
             </div>

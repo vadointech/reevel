@@ -1,5 +1,6 @@
 import { MapProviderCameraState } from "./camera";
 import { MapProviderGL } from "./gl";
+import { MapInternalConfig } from "@/components/shared/map/types";
 
 export interface IMapHandlers {
     /**
@@ -9,15 +10,33 @@ export interface IMapHandlers {
      *
      * @return {void} Does not return any value.
      */
-    onMapReady(): void;
+    onMapReady(viewState: MapInternalConfig.IViewStateConfig): void;
+
+
     /**
-     * A callback function that handles the changes in the map's viewport by updating the viewport information in the controller.
+     * Callback function that is triggered when the map is detached from the view or component.
+     * This method can be used to clean up any resources created during the map's initialization.
      *
-     * @param {MapHandlerViewport} viewport - The current state of the map's viewport, including dimensions, center point, zoom level, etc.
-     * @return {void} This method does not return a value.
+     * @return {void} Does not return a value.
+     */
+    onMapDetach(): void;
+
+    /**
+     * Handles the end of a move operation. This method is called when a move
+     * action is completed to finalize the operation.
+     * @param {Partial<MapProviderCameraState.Viewport>} viewState - The partial viewport state describing the camera's position.
+     * @return {void} Does not return a value.
+     */
+    onMoveEnd(viewState: MapInternalConfig.IViewStateConfig): void;
+
+    /**
+     * Handles changes to the viewport, including bounds and view state.
+     *
+     * @param {Partial<MapProviderCameraState.Viewport>} viewState - The partial viewport state describing the camera's position.
+     * @return {void} This method does not return a value; it processes viewport updates.
      */
     onViewportChange(
-        viewport: MapHandlerViewport,
+        viewState: Partial<MapProviderCameraState.Viewport>,
     ): void;
 
     /**
@@ -28,8 +47,3 @@ export interface IMapHandlers {
      */
     onPointSelect(pointId: string | null): void;
 }
-
-type MapHandlerViewport = {
-    viewState: Partial<MapProviderCameraState.Viewport>,
-    bounds: MapProviderGL.LngLatBounds | null,
-};

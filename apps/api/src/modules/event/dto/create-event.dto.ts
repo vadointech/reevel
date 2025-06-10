@@ -27,6 +27,10 @@ export class CreateEventDto {
     poster: string;
 
     @IsString()
+    @IsNotEmpty()
+    posterFieldId: string;
+
+    @IsString()
     @IsOptional()
     primaryColor?: string;
 
@@ -38,11 +42,11 @@ export class CreateEventDto {
     @Type(() => Number)
     location?: [number, number];
 
-    @IsNumber()
+    @IsString()
     @IsOptional()
     ticketsAvailable?: number;
 
-    @IsNumber()
+    @IsString()
     @IsOptional()
     ticketPrice?: number;
 
@@ -56,7 +60,11 @@ export class CreateEventDto {
 
     @IsNotEmpty()
     @IsDateString()
-    dateTime: Date;
+    startDate: Date;
+
+    @IsOptional()
+    @IsDateString()
+    endDate?: Date;
 
     @IsArray()
     @IsOptional()
