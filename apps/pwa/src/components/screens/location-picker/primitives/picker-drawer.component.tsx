@@ -69,7 +69,7 @@ export const LocationPickerDrawer = ({
                             <Header
                                 size={"small"}
                                 iconBefore={
-                                    <Link href={"/event/create"}>
+                                    <Link href={config.callbackUrl}>
                                         <IconArrowLeft />
                                     </Link>
                                 }

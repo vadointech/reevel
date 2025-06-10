@@ -10,8 +10,8 @@ import { OptionsList, OptionsListItem, Section } from "@/components/shared/_rede
 import {
     SearchScreen,
     SearchScreenContent,
+    SearchScreenSearchBar,
     SearchScreenLoadMoreButton,
-    SearchScreeSearchBar,
 } from "@/components/screens/search";
 import { IconLocation } from "@/components/icons";
 import { useLocationPickerSearch } from "@/features/location/picker/hooks";
@@ -38,7 +38,7 @@ export namespace LocationSearch {
 }
 
 export const LocationSearch = ({ placesInit }: LocationSearch.Props) => {
-    const { searchStore } = useLocationPicker();
+    const { searchStore, config } = useLocationPicker();
 
     const recommendedPoints = useMemo(() => {
         return googlePlacesApiResponseMapper.toIconPoint(placesInit);
@@ -52,8 +52,8 @@ export const LocationSearch = ({ placesInit }: LocationSearch.Props) => {
 
     return (
         <SearchScreen>
-            <SearchScreeSearchBar
-                controlHref={"/event/create/location"}
+            <SearchScreenSearchBar
+                controlHref={config.callbackUrl + "/location"}
                 onChange={(value) => searchStore.setSearchQuery(value)}
             />
             <SearchScreenContent>

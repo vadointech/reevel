@@ -4,17 +4,17 @@ import { Header } from "@/components/shared/_redesign";
 import styles from "../styles.module.scss";
 import cx from "classnames";
 
-export namespace SearchScreeSearchBar {
+export namespace SearchScreenSearchBar {
     export type Props = Omit<Header.SearchProps, "onChange"> & {
         onChange?: (value: string) => void;
     };
 }
 
-export const SearchScreeSearchBar = ({
+export const SearchScreenSearchBar = ({
     onChange,
     className,
     ...props
-}: SearchScreeSearchBar.Props) => {
+}: SearchScreenSearchBar.Props) => {
     const [value, setValue] = useState("");
 
     const handleChange = useCallback((e: ChangeEvent<HTMLInputElement>) => {
