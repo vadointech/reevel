@@ -14,9 +14,9 @@ import { EventsEntity } from "./entities/events.entity";
 
 import { CreateEventDto } from "./dto/create-event.dto";
 import { UpdateEventDto } from "./dto/update-event.dto";
-import { UploadsFileType } from "@/modules/uploads/uploads.register";
 
 import { Session } from "@/types";
+import { SupportedFileCollections } from "@/modules/uploads/entities/uploads.entity";
 
 @Injectable()
 export class EventService {
@@ -122,32 +122,24 @@ export class EventService {
         }
     }
 
-    async deleteEvent(session: Session, eventId: string) {
-        const deleteEventPromise = this.dataSource.transaction(async entityManager => {
+    async deleteEvent(_: Session, eventId: string) {
+        await this.dataSource.transaction(async entityManager => {
             await this.bookingService.reclaimTickets(eventId, entityManager);
             await this.eventRepository.delete({ id: eventId }, entityManager);
         });
 
-        const deleteFilesPromise = this.uploadService.deleteFiles(session.user.id, {
-            folder: UploadsFileType.Events,
-            tags: this.uploadService.tagRegister.events(eventId),
-        });
-
-        await Promise.all([
-            deleteEventPromise,
-            deleteFilesPromise,
-        ]);
-
         return true;
     }
 
-    async uploadPoster(session: Session, eventId: string, files: Express.Multer.File[]) {
-        return this.uploadService.uploadImages(files, {
-            folder: this.uploadService.folderRegister.events(session.user.id),
-            tags: [this.uploadService.tagRegister.events(eventId)],
-            colorPalette: {
-                preset: this.subscriptionRegistry.event.posterColor(session),
+    async uploadPoster(session: Session, files: Express.Multer.File[]) {
+        return this.uploadService.uploadImages(
+            session,
+            files,
+            SupportedFileCollections.EVENT_POSTER, {
+                colorPalette: {
+                    preset: this.subscriptionRegistry.event.posterColor(session),
+                },
             },
-        });
+        );
     }
 }

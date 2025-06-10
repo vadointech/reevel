@@ -1,17 +1,14 @@
 import { action, makeObservable, observable, reaction } from "mobx";
-import { createMobxStoreProvider, initStore } from "@/lib/mobx";
+import { initStore } from "@/lib/mobx";
 import { InterestEntity } from "@/entities/interests";
-import { ObjectUnique } from "@/utils/object-unique";
+import { IInterestsPickerStore } from "./types";
 
-interface IInterestsPickerStore {
-    interests: InterestEntity[];
-    selectedInterests: InterestEntity[];
-}
-
-class InterestsPickerStore implements IInterestsPickerStore {
+export class InterestsPickerStore implements IInterestsPickerStore {
     interests: InterestEntity[] = [];
     selectedInterests: InterestEntity[] = [];
+
     searchTerm: string = "";
+    nextPageToken: string | undefined = undefined;
 
     private readonly disposeReaction?: () => void;
 
@@ -23,15 +20,12 @@ class InterestsPickerStore implements IInterestsPickerStore {
             interests: observable.shallow,
             selectedInterests: observable.shallow,
             searchTerm: observable,
+            nextPageToken: observable,
 
             setInterests: action,
-            insertInterestsAt: action,
-            removeInterestsBy: action,
-            isInterestSelected: action,
-            addInterestToSelection: action,
-            removeInterestFromSelection: action,
             setSearchTerm: action,
         });
+
         initStore(this, init);
 
         if(syncSelectedInterests) {
@@ -47,38 +41,18 @@ class InterestsPickerStore implements IInterestsPickerStore {
     }
 
     setInterests(interests: InterestEntity[]) {
-        this.interests = [... new ObjectUnique(interests, "slug")];
+        this.interests = interests;
     }
 
-    insertInterestsAt(index: number, newInterests: readonly InterestEntity[]) {
-        this.setInterests([
-            ...this.interests.slice(0, index + 1),
-            ...newInterests,
-            ...this.interests.slice(index + 1),
-        ]);
-    }
-
-    removeInterestsBy(filterFunc: (item: InterestEntity) => boolean) {
-        this.interests = this.interests.filter(filterFunc);
-    }
-
-    isInterestSelected(slug: string) {
-        return this.selectedInterests.some(interest => interest.slug === slug);
-    }
-
-    addInterestToSelection(interest: InterestEntity) {
-        this.selectedInterests.push(interest);
-    }
-
-    removeInterestFromSelection(slug: string) {
-        this.selectedInterests = this.selectedInterests.filter(
-            interest => interest.slug !== slug,
-        );
+    setSelectedInterests(selectedInterests: InterestEntity[]) {
+        this.selectedInterests = selectedInterests;
     }
 
     setSearchTerm(searchTerm: string) {
         this.searchTerm = searchTerm;
     }
-}
 
-export const [InterestsPickerStoreProvider, useInterestsPickerStore] = createMobxStoreProvider(InterestsPickerStore);
+    setNextPageToken(pageToken: string | undefined) {
+        this.nextPageToken = pageToken;
+    }
+}

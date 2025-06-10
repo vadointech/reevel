@@ -26,6 +26,8 @@ class SessionStore implements State {
         this.initSession(init);
     }
 
+    dispose() {}
+
     get isAuthenticated() {
         return !!this.user;
     }

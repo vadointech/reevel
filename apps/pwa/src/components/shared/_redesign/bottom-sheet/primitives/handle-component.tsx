@@ -1,3 +1,5 @@
+"use client";
+
 import { ComponentProps, PointerEvent } from "react";
 import { useBottomSheet } from "@/components/shared/_redesign/bottom-sheet/bottom-sheet.context";
 

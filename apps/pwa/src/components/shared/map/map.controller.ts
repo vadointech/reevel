@@ -39,6 +39,7 @@ export class MapRootController implements IMapRootController {
                 this._provider.current.resetViewState(init.viewState, {
                     animate: false,
                 });
+
             }
 
             if(init.points) {
@@ -49,13 +50,34 @@ export class MapRootController implements IMapRootController {
                 this._externalHandlers = init.handlers;
             }
 
-            this._externalHandlers.onMapReady?.();
+            this.syncViewState(this._provider.current.internalConfig.viewState, true);
         }
     }
 
     detachMap() {
         if (this.mapContainerRef.current && this.persistentRootRef.current) {
             this.persistentRootRef.current.appendChild(this.mapContainerRef.current);
+
+            this._externalHandlers.onMapDetach?.();
+
+            this._externalHandlers = {};
+            this._store.setPoints([]);
+            this._provider.current.resetViewState(undefined, { animate: false });
+        }
+    }
+
+    syncViewState(viewState: MapInternalConfig.IViewStateConfig, forceRefresh = false): void {
+        if(viewState.zoom === this._provider.current.defaultConfig.viewState.zoom) return;
+
+        if(forceRefresh) {
+            this._provider.current.internalConfig.viewState = viewState;
+            this._externalHandlers.onMapReady?.(viewState);
+            return;
+        }
+
+        if(this._provider.current.internalConfig.viewState.zoom === this._provider.current.defaultConfig.viewState.zoom) {
+            this._provider.current.internalConfig.viewState = viewState;
+            this._externalHandlers.onMapReady?.(viewState);
         }
     }
 
@@ -70,10 +92,13 @@ export class MapRootController implements IMapRootController {
     }
 
     setPoints(points: Point<BasePoint>[]) {
-        this._store.setPoints(points);
+        this._store.setPoints([
+            ...new ObjectUnique(points, "id"),
+        ]);
     }
 
     appendPoints(point: Point<BasePoint>[]) {
+        if(point.length === 0) return;
         this._store.setPoints([
             ... new ObjectUnique(
                 [
@@ -84,12 +109,15 @@ export class MapRootController implements IMapRootController {
         ]);
     }
 
-    async replacePoints(points: Point<BasePoint>[], duration: number = 500): Promise<void> {
+    async replacePoints(points: Point<BasePoint>[], duration: number = 400): Promise<void> {
+        if(points.length === 0) return;
         this._store.setPointsVisible(false);
-        return new Promise((resolve) => setTimeout(() => {
-            this._store.setPoints(points);
-            this._store.setPointsVisible(true);
-            resolve(undefined);
-        }, duration));
+
+        await new Promise((resolve) => setTimeout(resolve, duration));
+        this._store.setPoints([]);
+        this._store.setPointsVisible(true);
+
+        await new Promise((resolve) => setTimeout(resolve, duration));
+        this._store.setPoints(points);
     }
 }

@@ -54,15 +54,6 @@ export class Repository<Entity extends ObjectLiteral> {
             repository.create(values),
         );
     }
-
-    async save(
-        values: DeepPartial<Entity>,
-        entityManager?: EntityManager,
-    ): Promise<Entity> {
-        const repository = this.getRepository(entityManager);
-        return repository.save(values);
-    }
-
     async createMany(
         values: DeepPartial<Entity>[],
         entityManager?: EntityManager,
@@ -71,6 +62,14 @@ export class Repository<Entity extends ObjectLiteral> {
         return repository.save(
             repository.create(values),
         );
+    }
+
+    async save(
+        values: DeepPartial<Entity>,
+        entityManager?: EntityManager,
+    ): Promise<Entity> {
+        const repository = this.getRepository(entityManager);
+        return repository.save(values);
     }
 
     async update(

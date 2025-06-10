@@ -1,0 +1,14 @@
+@use "@/theme/mixins";
+@use "@/theme/spacing";
+
+.handle {
+    margin-bottom: mixins.rem(22);
+}
+
+.cards {
+    display: flex;
+    flex-direction: column;
+    row-gap: mixins.rem(12);
+
+    padding-inline: spacing.$container;
+}

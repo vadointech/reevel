@@ -1,15 +1,10 @@
-import { UploadApiErrorResponse, UploadApiOptions, UploadApiResponse } from "cloudinary";
 import { ColorPaletteOptions } from "./vibrant/types";
+import { CloudinaryResponse, CloudinaryUploadOption } from "@/modules/uploads/cloudinary/types";
 
-type SuccessResponse = UploadApiResponse & {
+export type FileUploadResponse = CloudinaryResponse & {
     colorPalette?: string[];
-};
-type ErrorResponse = UploadApiErrorResponse;
+} | null;
 
-export type FileUploadResponse = SuccessResponse | ErrorResponse;
-
-export type FileUploadOptions = UploadApiOptions & {
-    folder?: string;
-    tags?: string[];
+export type FileUploadOptions = CloudinaryUploadOption & {
     colorPalette?: boolean | ColorPaletteOptions
 };

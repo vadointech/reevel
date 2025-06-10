@@ -1,30 +1,22 @@
+"use client";
+
 import { ComponentProps } from "react";
 
+import { Input } from "@/components/shared/_redesign";
 import { IconPicture } from "@/components/icons";
 
-import styles from "../styles.module.scss";
-import { cx } from "class-variance-authority";
-
 export namespace UploadFileButton {
-    export type Props = ComponentProps<"button">;
+    export type Props = ComponentProps<"input">;
 }
 
-export const UploadFileButton = ({
-    className,
-    ...props
-}: UploadFileButton.Props) => {
+export const UploadFileButton = (props: UploadFileButton.Props) => {
     return (
-        <div>
-            <button
-                className={cx(
-                    styles.upload__button,
-                    className,
-                )}
-                {...props}
-            >
-                <IconPicture />
-                Upload
-            </button>
-        </div>
+        <Input.File
+            label={"Upload"}
+            accept={"image/png, image/jpeg, image/webp"}
+            icon={<IconPicture />}
+            variant={"accent-muted"}
+            {...props}
+        />
     );
 };

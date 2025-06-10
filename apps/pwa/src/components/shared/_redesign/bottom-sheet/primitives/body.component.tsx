@@ -6,7 +6,9 @@ import { HTMLMotionProps, motion } from "motion/react";
 import { useOutsideEvent } from "@/hooks/use-outside-event";
 import { useBottomSheet } from "../bottom-sheet.context";
 import { useBottomSheetDrag } from "../hooks";
-import { generateBottomSheetExitTransitionParams } from "../config/transition.config";
+import {
+    generateBottomSheetTransitionParams,
+} from "../config/transition.config";
 
 import { BottomSheetOverlay } from "./overlay.component";
 
@@ -73,7 +75,7 @@ export const BottomSheetBody = ({
                 ref={bottomSheetRef}
                 dragControls={controller.current.dragControls}
                 dragListener={!controller.current.internalConfig.handleOnly}
-                transition={generateBottomSheetExitTransitionParams(0)}
+                transition={generateBottomSheetTransitionParams(0)}
                 initial={{ y: controller.current.internalConfig.clientHeight }}
                 exit={{ y: controller.current.internalConfig.clientHeight }}
                 animate={controller.current.animationControls}
