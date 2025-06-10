@@ -167,8 +167,16 @@
             background: colors.$foreground;
             color: colors.$primary;
 
-            svg {
-                fill: colors.$primary;
+            &_filled {
+                svg path {
+                    fill: colors.$primary;
+                }
+            }
+
+            &_outlined {
+                svg path {
+                    stroke: colors.$primary;
+                }
             }
         }
 
@@ -190,6 +198,47 @@
             svg {
                 margin-top: mixins.rem(6);
                 height: mixins.rem(4);
+                path {
+                    fill: colors.$foreground;
+                }
+            }
+        }
+
+        &_accept {
+            svg {
+                margin-top: mixins.rem(7);
+                height: mixins.rem(17);
+                path {
+                    stroke-width: mixins.rem(3);
+                    fill: colors.$foreground;
+                }
+            }
+        }
+        &_decline {
+            svg {
+                margin-top: mixins.rem(6);
+                height: mixins.rem(18);
+                path {
+                    stroke-width: mixins.rem(2);
+                    stroke: colors.$foreground;
+                }
+            }
+        }
+
+        &_suggest {
+            svg {
+                margin-top: mixins.rem(8);
+                height: mixins.rem(18);
+                path {
+                    stroke: colors.$foreground;
+                }
+            }
+        }
+
+        &_settings {
+            svg {
+                height: mixins.rem(19);
+
                 path {
                     fill: colors.$foreground;
                 }

@@ -1,6 +1,6 @@
 import { ComponentProps } from "react";
 
-import styles from "../styles.module.scss";
+import styles from "./styles.module.scss";
 import cx from "classnames";
 
 export namespace OptionsList {
