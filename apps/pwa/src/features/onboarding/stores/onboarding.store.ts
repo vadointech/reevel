@@ -47,6 +47,7 @@ class OnboardingStore implements IOnboardingStore {
         this.initialState = init || {};
     }
 
+    dispose() {}
 
     setName(name: string) {
         this.fullName = name;

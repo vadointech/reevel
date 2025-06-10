@@ -84,7 +84,7 @@ export interface IMapProvider extends IMapRootProvider {
      * @param {Options} [transitionOptions] - Optional settings to control the behavior of the fit operation, such as animation or padding.
      * @return {void} This method does not return any value.
      */
-    fitBounds(bounds: MapProviderGL.LngLatBounds, transitionOptions?: MapProviderCameraState.EasingOptions): void;
+    fitBounds(bounds: MapProviderGL.LngLatBoundsLike, transitionOptions?: MapProviderCameraState.EasingOptions): void;
 
     /**
      * Sets the padding for the map view.

@@ -31,7 +31,7 @@ export function useLocationConfirmation() {
                     lat: onboardingStore.locationCenter[1],
                 },
                 params: {
-                    access_token: provider.current.config.accessToken,
+                    access_token: provider.current.internalConfig.accessToken,
                     types: "place",
                     language: locale,
                 },
