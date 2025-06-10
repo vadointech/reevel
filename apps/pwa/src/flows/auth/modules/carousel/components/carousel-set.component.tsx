@@ -3,12 +3,12 @@
 import Image from "next/image";
 import { ComponentProps } from "react";
 import { StaticImport } from "next/dist/shared/lib/get-img-props";
-import { useLoginCarouselSet } from "./useSet";
+import { useAuthCarouselSet } from "../hooks";
 
-import styles from "./styles.module.scss";
+import styles from "../styles/carousel-set.module.scss";
 import cx from "classnames";
 
-export namespace LoginCarouselSet {
+export namespace AuthCarouselSet {
     export type Settings = {
         speed?: number;
         delay?: number;
@@ -26,14 +26,19 @@ export namespace LoginCarouselSet {
     };
 }
 
-export const LoginCarouselSet = ({ data, settings, className, ...props }: LoginCarouselSet.Props) => {
+export const AuthCarouselSet = ({
+    data,
+    settings,
+    className,
+    ...props
+}: AuthCarouselSet.Props) => {
 
     const delay = settings?.delay || 0;
     const speed = settings?.speed || 5000;
     const translate = settings?.translate || 0;
     const width = settings?.width || 100;
 
-    const [sliderRef] = useLoginCarouselSet({ delay, speed });
+    const [sliderRef] = useAuthCarouselSet({ delay, speed });
 
     return (
         <div

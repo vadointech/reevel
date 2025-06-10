@@ -1,13 +1,16 @@
 import { ComponentProps } from "react";
 
-import styles from "./styles.module.scss";
+import styles from "../styles/carousel-pagination.module.scss";
 import cx from "classnames";
 
-namespace LoginCarouselPagination {
+export namespace AuthCarouselPagination {
     export type Props = ComponentProps<"div">;
 }
 
-const LoginCarouselPagination = ({ className, ...props }: LoginCarouselPagination.Props) => {
+export const AuthCarouselPagination = ({
+    className,
+    ...props
+}: AuthCarouselPagination.Props) => {
     return (
         <div
             className={cx(
@@ -23,5 +26,3 @@ const LoginCarouselPagination = ({ className, ...props }: LoginCarouselPaginatio
         </div>
     );
 };
-
-export { LoginCarouselPagination };

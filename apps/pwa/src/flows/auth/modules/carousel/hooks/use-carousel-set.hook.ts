@@ -2,7 +2,7 @@ import useEmblaCarousel from "embla-carousel-react";
 import { useCallback, useEffect } from "react";
 import { EmblaCarouselType } from "embla-carousel";
 
-export function useLoginCarouselSet({ delay, speed }: {
+export function useAuthCarouselSet({ delay, speed }: {
     delay: number;
     speed: number;
 }) {

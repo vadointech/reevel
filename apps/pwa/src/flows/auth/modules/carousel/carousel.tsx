@@ -1,6 +1,5 @@
 
-import { ComponentProps } from "react";
-import { LoginCarouselSet } from "../carousel/set";
+import { AuthCarouselSet } from "./components";
 
 import image_1 from "@/../public/assets/temp/carousel1.jpg";
 import image_2 from "@/../public/assets/temp/carousel2.jpg";
@@ -10,13 +9,13 @@ import image_5 from "@/../public/assets/temp/carousel5.jpg";
 import image_6 from "@/../public/assets/temp/carousel6.jpg";
 import image_7 from "@/../public/assets/temp/carousel7.jpg";
 
-import styles from "./styles.module.scss";
+import styles from "./styles/carousel.module.scss";
 
-export namespace LoginCarousel {
-    export type Props = ComponentProps<"div">;
+export namespace AuthCarousel {
+    export type Props = never;
 }
 
-const data: LoginCarouselSet.Data[] = [
+const data: AuthCarouselSet.Data[] = [
     { src: image_1 },
     { src: image_2 },
     { src: image_3 },
@@ -26,19 +25,19 @@ const data: LoginCarouselSet.Data[] = [
     { src: image_7 },
 ];
 
-export const LoginCarousel = ({}: LoginCarousel.Props) => {
+export const AuthCarousel = () => {
     return (
         <div
             className={styles.grid}
         >
-            <LoginCarouselSet
+            <AuthCarouselSet
                 className={styles.first}
                 data={data}
                 settings={{
                     width: 120,
                 }}
             />
-            <LoginCarouselSet
+            <AuthCarouselSet
                 className={styles.second}
                 data={data}
                 settings={{
@@ -48,7 +47,7 @@ export const LoginCarousel = ({}: LoginCarousel.Props) => {
                 }}
             />
 
-            <LoginCarouselSet
+            <AuthCarouselSet
                 className={styles.third}
                 data={data}
                 settings={{
