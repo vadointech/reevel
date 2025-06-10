@@ -131,7 +131,7 @@
         }
         &_outline {
             background-color: transparent;
-            border: mixins.rem(1) colors.$foreground, solid;
+            border: mixins.rem(1) solid colors.$foreground;
             color: colors.$foreground;
 
             &:active {

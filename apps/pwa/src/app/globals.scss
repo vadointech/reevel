@@ -65,3 +65,8 @@ a {
 .mapboxgl-marker {
   pointer-events: inherit !important;
 }
+
+.invisible-for-image {
+  opacity: 0 !important;
+  pointer-events: none !important;
+}

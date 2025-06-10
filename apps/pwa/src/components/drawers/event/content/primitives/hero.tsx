@@ -8,12 +8,14 @@ import { useDrawerContentDragYProgress } from "../../config/motion-values";
 import { HERO_SECTION_OFFSET } from "../../config/snap-points";
 
 import { EventDrawerContentDescription } from "./description";
-import { IconCalendar, IconLocation } from "@/components/icons";
+import { IconCalendar, IconEllipsisHorizontal, IconLocation, IconShare, IconTicket } from "@/components/icons";
 import { AttendersSection } from "@/components/shared/attenders";
 import { UserProfileEntity } from "@/entities/profile";
 
 import styles from "../styles.module.scss";
+import cx from "classnames";
 import { formatDate } from "@/utils/time";
+import { Link } from "@/i18n/routing";
 
 import { EventDrawerHeroButtons } from "./buttons";
 import { Variant } from "../../types";
@@ -115,6 +117,40 @@ export const EventDrawerContentHero = ({
             <div className={styles.hero__price}>
                 {price} {currency}
                 <AttendersSection users={attendees} />
+            </div>
+
+            <div className={styles.hero__buttons}>
+                <button
+                    className={cx(
+                        styles.hero__button,
+                        styles.hero__button_primary,
+                        styles.hero__button_join,
+                    )}
+                >
+                    <IconTicket />
+                    Join
+                </button>
+
+                <Link
+                    className={cx(
+                        styles.hero__button,
+                        styles.hero__button_share
+                    )}
+                    href="/event/share"
+                >
+                    <IconShare />
+                    Share
+                </Link>
+
+                <button
+                    className={cx(
+                        styles.hero__button,
+                        styles.hero__button_more,
+                    )}
+                >
+                    <IconEllipsisHorizontal />
+                    More
+                </button>
             </div>
 
             <EventDrawerContentDescription>
