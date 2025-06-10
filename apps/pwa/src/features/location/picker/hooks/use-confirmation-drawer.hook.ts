@@ -1,0 +1,205 @@
+import { useCallback, useEffect, useMemo, useRef } from "react";
+
+import { useQueryClient } from "@tanstack/react-query";
+
+import { useLocationPicker } from "../location-picker.context";
+import { GetNearbyPlacesQueryBuilder, GetPlacesByCoordinatesQueryBuilder } from "../queries";
+
+import { usePersistentMap } from "@/components/shared/map";
+
+import { placeLocationEntityMapper } from "@/entities/place/mapper";
+
+import { Point, IconPoint, MapInternalConfig } from "@/components/shared/map/types";
+import { IBottomSheetRootController } from "@/components/shared/_redesign/bottom-sheet/types";
+import { PlaceLocationEntity } from "@/entities/place";
+
+export function useConfirmationDrawer(placesInit: PlaceLocationEntity[]) {
+    const queryClient = useQueryClient();
+    const map = usePersistentMap();
+    const { confirmationStore } = useLocationPicker();
+
+    const pointsBuffer = useRef<Point<IconPoint>[]>([]);
+
+    const pickerDrawerControls = useRef<IBottomSheetRootController>(null);
+    const confirmationDrawerControls = useRef<IBottomSheetRootController>(null);
+
+    const confirmationDataRef = useRef<Partial<PlaceLocationEntity>>(undefined);
+
+    const isInsideBounds = useRef(true);
+
+    const confirmationViewState = useRef<MapInternalConfig.IViewStateConfig>(undefined);
+
+    useEffect(() => {
+        const point = confirmationStore.point;
+
+        if(point) {
+            pickerDrawerControls.current?.setPositionBySnapIndex(1);
+
+            moveViewStateToPoint(point, false);
+
+            pointsBuffer.current = placeLocationEntityMapper.toIconPoint(placesInit);
+            map.controller.current.setPoints([point]);
+            map.controller.current.selectPoint(point.id);
+            handleSelectPoint(point.id);
+        }
+
+        return () => {
+            confirmationStore.setPoint(null);
+            map.controller.current.selectPoint(null);
+        };
+    }, []);
+
+    const pickerDrawerDefaultSnapIndex = useMemo(() => {
+        return confirmationStore.point ? 1 : 0; // 0 - fit-content, 1 - 0.14
+    }, []);
+
+    const getLocationPickerQueryData = (placeId: string) => {
+        const data = queryClient.getQueriesData<PlaceLocationEntity>({
+            queryKey: GetNearbyPlacesQueryBuilder.queryKey(),
+        });
+
+        const places = data.flatMap(([, data]) => data);
+        return places.find(place => place?.id === placeId);
+    };
+    const moveViewStateToPoint = (point: Point<IconPoint>, checkBuffer: boolean = true) => {
+        const { bounds: defaultBounds } = map.provider.current.internalConfig.viewState;
+
+        if(!defaultBounds.contains(point.geometry.coordinates)) {
+            isInsideBounds.current = false;
+            map.provider.current.flyTo({
+                center: point.geometry.coordinates,
+            });
+
+            return;
+        }
+
+        if(!checkBuffer) return;
+
+        confirmationViewState.current = map.provider.current.getViewState();
+        const { bounds, zoom } = confirmationViewState.current;
+
+        const bufferedBounds = map.provider.current.getBufferedBounds(bounds, .2);
+
+        if(!bufferedBounds.contains(point.geometry.coordinates)) {
+            isInsideBounds.current = false;
+
+            if(bounds.contains(point.geometry.coordinates)) {
+                const duration = map.provider.current.getDynamicDuration(
+                    bounds.getCenter(),
+                    point.geometry.coordinates,
+                );
+
+                map.provider.current.flyTo({
+                    center: point.geometry.coordinates,
+                    zoom,
+                    duration,
+                });
+            }
+        }
+    };
+
+    const resetViewState = (point: Point<IconPoint> | null) => {
+        isInsideBounds.current = true;
+
+        if(!point) return;
+
+        const { bounds } = map.provider.current.internalConfig.viewState; // Bounds for users' city
+
+        if(!bounds.contains(point.geometry.coordinates)) {
+            map.provider.current.resetViewState(); // Reset to our city default viewState
+        } else {
+            if(confirmationViewState.current) {
+                const duration = map.provider.current.getDynamicDuration(
+                    confirmationViewState.current.bounds.getCenter(),
+                    point.geometry.coordinates,
+                );
+                map.provider.current.resetViewState(undefined, {
+                    duration,
+                    ...confirmationViewState.current,
+                });
+            }
+        }
+    };
+
+    const handleSelectPoint = useCallback((pointId: string | null) => {
+        if(!pointId) {
+            return;
+        }
+
+        const data = getLocationPickerQueryData(pointId);
+        if(!data) return;
+
+        const [point] = placeLocationEntityMapper.toIconPoint([data]);
+        if(!point) return;
+        confirmationStore.setPoint(point);
+        moveViewStateToPoint(point);
+
+        confirmationDataRef.current = data;
+        pickerDrawerControls.current?.setPositionBySnapIndex(1);
+        confirmationDrawerControls.current?.open();
+    }, []);
+
+    const handleConfirmationClose = () => {
+        if(pointsBuffer.current.length > 0) {
+            map.controller.current.replacePoints(pointsBuffer.current, 100);
+            pointsBuffer.current = [];
+        }
+
+        if(!isInsideBounds.current) {
+            resetViewState(confirmationStore.point);
+        }
+
+        pickerDrawerControls.current?.setPositionBySnapIndex(0);
+        map.controller.current.selectPoint(null);
+        confirmationStore.setPoint(null);
+    };
+
+    const handleLocationAccessRequest = useCallback(() => {
+        if ("geolocation" in navigator) {
+            navigator.geolocation.getCurrentPosition(
+                async({ coords }) => {
+                    const place = await queryClient.fetchQuery(
+                        GetPlacesByCoordinatesQueryBuilder({
+                            lng: coords.longitude,
+                            lat: coords.latitude,
+                        }),
+                    ).then(response => response[0]);
+
+                    if(place) {
+                        const [point] = placeLocationEntityMapper.toIconPoint([place]);
+                        if(!point) return;
+
+                        pickerDrawerControls.current?.setPositionBySnapIndex(1);
+
+                        moveViewStateToPoint(point, false);
+
+                        pointsBuffer.current = placeLocationEntityMapper.toIconPoint(placesInit);
+                        map.controller.current.setPoints([point]);
+                        map.controller.current.selectPoint(point.id);
+
+                        confirmationStore.setPoint(point);
+
+                        confirmationDataRef.current = place;
+                        pickerDrawerControls.current?.setPositionBySnapIndex(1);
+                        confirmationDrawerControls.current?.open();
+                    }
+                },
+                () => {
+                    // TODO: Show modal "We're unable to get your location. (Enter it manually)"
+                },
+            );
+        } else {
+            // TODO: Show modal "We're unable to get your location. (Enter it manually)"
+        }
+    }, []);
+
+    return {
+        confirmationDataRef,
+        pickerDrawerControls,
+        confirmationDrawerControls,
+        pickerDrawerDefaultSnapIndex,
+        handleSelectPoint,
+        handleConfirmationClose,
+        handleLocationAccessRequest,
+    };
+}

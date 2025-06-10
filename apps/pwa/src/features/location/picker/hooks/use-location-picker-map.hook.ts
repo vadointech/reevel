@@ -1,148 +1,99 @@
-"use client";
+import { useCallback, useMemo, useRef } from "react";
 
-import { MapProviderGL } from "@/components/shared/map/types/provider/gl";
-import { calculateBoundsArea, calculateRadius, createBufferedBounds } from "../utils/map-dimentions";
-import { useFetchNearestLocations } from "@/infrastructure/google/hooks/use-fetch-nearest-locations.hook";
-import { googlePlacesApiResponseMapper } from "@/infrastructure/google/mappers";
-import { usePersistentMap } from "@/components/shared/map";
 import { useLocationPicker } from "../location-picker.context";
-import { GetNearbyPlaces, GooglePLacesApiIncludedTypes } from "@/api/google/places";
-import { useLocationPickerLocationRestrictions } from "./use-location-restrictions.hook";
-import { useDebouncedCallback } from "use-debounce";
-import { usePrefetchedQuery } from "@/lib/react-query";
-import { LngLat } from "mapbox-gl";
-import { useCallback } from "react";
+import { GetNearbyPlacesQueryBuilder } from "../queries";
 
-const MAP_TARGET_VIEWPORT_PADDING_BOTTOM: number = 260;
+import { usePersistentMap } from "@/components/shared/map";
+import { useSpatialCache } from "@/features/spatial-cache/use-spatial-cache.hook";
 
-export function useLocationPickerMap() {
-    const {
-        prevBoundsArr,
-        prevBoundsArea,
-        prevCenter,
-        prevRadius,
-        setInitialLocationRestriction,
-        resetLocationRestriction,
-    } = useLocationPickerLocationRestrictions();
+import { GooglePLacesApiIncludedTypes } from "@/api/google/places";
+import { placeLocationEntityMapper } from "@/entities/place/mapper";
 
-    usePrefetchedQuery<GetNearbyPlaces.TOutput>({
-        queryKey: [...GetNearbyPlaces.queryKey],
-        onSuccess: (data, cache) => {
-            const keys = cache.map(([key]) => key);
+import { MapInternalConfig } from "@/components/shared/map/types";
+import { PlaceLocationEntity } from "@/entities/place";
 
-            const lastKey = keys[keys.length - 1] as [string, string, string, number]; // [query key, circle lng, circle lat, circle radius],
+const PICKER_MAP_PADDING = {
+    bottom: 260,
+};
 
-            if(lastKey) {
-                const [query_key, circle_lng, circle_lat, circle_radius] = lastKey;
-                prevRadius.current = circle_radius;
-                // prevCenter.current = new LngLat(Number(circle_lng), Number(circle_lat));
-            }
-        },
+export function useLocationPickerMap(placesInit: PlaceLocationEntity[]) {
+    const map = usePersistentMap();
+    const { filtersStore, confirmationStore } = useLocationPicker();
+
+    const preventMapUpdate = useRef<boolean>(!!confirmationStore.point);
+
+    const defaultPoints = useMemo(() => {
+        return placeLocationEntityMapper.toIconPoint(placesInit);
+    }, [placesInit]);
+
+    const appendResponse = (response?: PlaceLocationEntity[]) => {
+        map.controller.current.appendPoints(placeLocationEntityMapper.toIconPoint(response));
+    };
+
+    const replaceResponse = (response?: PlaceLocationEntity[]) => {
+        return map.controller.current.replacePoints(placeLocationEntityMapper.toIconPoint(response));
+    };
+
+    const { fetchSpatialData, precacheSpatialData } = useSpatialCache<PlaceLocationEntity[]>(map.provider.current, {
+        prefetchedData: !confirmationStore.point ? placesInit : undefined,
+        queryBuilder: GetNearbyPlacesQueryBuilder,
     });
 
-    const persistentMap = usePersistentMap();
-    const { filtersStore } = useLocationPicker();
-    const { getPlacesByArea } = useFetchNearestLocations();
-
-    const fetchPlaces = useCallback(async(center: MapProviderGL.LngLat, radius: number) => {
-        const points = await getPlacesByArea(center, radius, filtersStore.locationType)
-            .then(googlePlacesApiResponseMapper.toIconPoint);
-
-        persistentMap.controller.current.appendPoints(points);
-    }, []);
-
-    const debouncedFetchPlaces = useDebouncedCallback(fetchPlaces, 1000);
-
-
-    const debouncedCheckInitialViewport = useDebouncedCallback(
-        (
-            bufferedRadius: number,
-        ) => {
-            if(bufferedRadius === prevRadius.current) return;
-        }, 1000,
-    );
-
-    const handleViewportChange = (bounds: MapProviderGL.LngLatBounds | null) => {
-        if (!bounds) return;
-
-        const center = bounds.getCenter();
-
-        const bufferedBounds = createBufferedBounds(bounds);
-
-        let bufferedRadius = calculateRadius(bounds, center);
-        bufferedRadius = Math.round(bufferedRadius);
-
-        if(bufferedRadius < 60) return;
-
-
-        const currentBoundsArea = calculateBoundsArea(bufferedBounds);
-
-        // debouncedCheckInitialViewport(center, bufferedRadius, bufferedBounds, currentBoundsArea);
-        // Initial config (always skip the first fetch)
-        if (prevBoundsArr.current.length === 0 || !prevCenter.current || prevRadius.current === 0) {
-            // debouncedFetchPlaces(center, bufferedRadius);
-            setInitialLocationRestriction(center, bufferedRadius, bufferedBounds, currentBoundsArea);
+    const handleViewportChange = useCallback((viewState: MapInternalConfig.IViewStateConfig) => {
+        if(confirmationStore.point) {
             return;
         }
 
-        // Only trigger a new fetch the center point is inside any of the
-        // previous bounds stored in the prevBoundsArr.
-        const isCenterInsidePreviousBounds = prevBoundsArr.current.some((b) =>
-            b.contains(center),
-        );
-
-        // Only trigger a new fetch when zooming in significantly
-        // A smaller area means we're zoomed in more
-        const zoomInThreshold = 0.5; // 50% reduction in area triggers a new fetch
-        const isSignificantZoomIn = currentBoundsArea <= prevBoundsArea.current * zoomInThreshold;
-
-        const shouldFetchNewData = !isCenterInsidePreviousBounds ||
-          (isCenterInsidePreviousBounds && isSignificantZoomIn);
-
-        if (shouldFetchNewData) {
-            debouncedFetchPlaces(center, bufferedRadius);
-
-            prevCenter.current = center;
-            prevRadius.current = bufferedRadius;
-            prevBoundsArea.current = currentBoundsArea;
-
-            // Only add to the bounds array if it's a new area (not a zoom)
-            if (!isCenterInsidePreviousBounds) {
-                prevBoundsArr.current.push(bufferedBounds);
-            } else {
-                // If it's a zoom operation, replace the last bounds with the new one
-                prevBoundsArr.current[prevBoundsArr.current.length - 1] = bufferedBounds;
-            }
+        if(preventMapUpdate.current) {
+            preventMapUpdate.current = false;
+            return;
         }
-    };
 
-    const handlePickLocationType = async(type: GooglePLacesApiIncludedTypes) => {
+        fetchSpatialData({
+            viewState,
+            placeType: filtersStore.locationType,
+        }).then(appendResponse);
+    }, [fetchSpatialData, filtersStore.locationType]);
 
-        const bounds = persistentMap.provider.current.getBounds();
-        if(!bounds) return;
-
+    const handleLocationTypePick = useCallback((type?: GooglePLacesApiIncludedTypes) => {
         const currentType = filtersStore.locationType;
-        const center = bounds.getCenter();
-        const radius = persistentMap.provider.current.getHorizontalRadius(bounds, center);
+        const viewState = map.provider.current.internalConfig.viewState;
+        const currentViewState = map.provider.current.getViewState();
 
         if(currentType === type) {
-            filtersStore.setLocationType(null);
-            const points = await getPlacesByArea(center, radius)
-                .then(googlePlacesApiResponseMapper.toIconPoint);
-            persistentMap.controller.current.replacePoints(points);
-            resetLocationRestriction();
+            filtersStore.setLocationType(undefined);
+            fetchSpatialData({ viewState }).then(replaceResponse);
         } else {
             filtersStore.setLocationType(type);
-            const points = await getPlacesByArea(center, radius, type)
-                .then(googlePlacesApiResponseMapper.toIconPoint);
-            persistentMap.controller.current.replacePoints(points);
-            resetLocationRestriction();
+            fetchSpatialData({ viewState, placeType: type }).then(replaceResponse);
         }
-    };
+
+        if(viewState.zoom !== currentViewState.zoom) {
+            map.provider.current.resetViewState();
+            preventMapUpdate.current = true;
+        }
+    }, [fetchSpatialData]);
+
+    const handlePickerSnapPointChange = useCallback((snapIndex: number) => {
+        preventMapUpdate.current = true;
+        switch(snapIndex) {
+            case 0: // fit-content
+                map.provider.current.setPadding(PICKER_MAP_PADDING);
+                break;
+            case 1: // 0.14
+                map.provider.current.setPadding({ bottom: 0 });
+                break;
+            default:
+                map.provider.current.setPadding({ bottom: 0 });
+        }
+    }, []);
 
     return {
-        MAP_TARGET_VIEWPORT_PADDING_BOTTOM,
+        PICKER_MAP_PADDING,
+        defaultPoints,
         handleViewportChange,
-        handlePickLocationType,
+        handleLocationTypePick,
+        handlePickerSnapPointChange,
+        handlePrecacheSpatialData: precacheSpatialData,
     };
 }

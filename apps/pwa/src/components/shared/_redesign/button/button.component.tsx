@@ -1,4 +1,4 @@
-import { ComponentProps, ReactNode } from "react";
+import { ComponentProps, HTMLAttributeAnchorTarget, ReactNode } from "react";
 
 import { UISize } from "@/types/common";
 
@@ -24,6 +24,7 @@ export namespace Button {
         iconAfter?: ReactNode;
         arrowAfter?: ReactNode;
         href?: string;
+        target?: HTMLAttributeAnchorTarget
     };
 }
 
@@ -37,6 +38,7 @@ export const Button = ({
     className,
     type = "button",
     href,
+    target,
     ...props
 }: Button.Props) => {
     const Component = () => {
@@ -69,7 +71,7 @@ export const Button = ({
 
     if(href) {
         return (
-            <Link href={href}>
+            <Link href={href} target={target}>
                 <Component />
             </Link>
         );

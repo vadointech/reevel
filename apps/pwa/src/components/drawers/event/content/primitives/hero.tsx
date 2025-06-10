@@ -17,6 +17,9 @@ import cx from "classnames";
 import { formatDate } from "@/utils/time";
 import { Link } from "@/i18n/routing";
 
+import { EventDrawerHeroButtons } from "./buttons";
+import { Variant } from "../../types";
+
 export namespace EventDrawerContentHero {
     export type Data = {
         primaryColor: string;
@@ -28,7 +31,11 @@ export namespace EventDrawerContentHero {
         attendees: UserProfileEntity[];
         description: string;
     };
-    export type Props = Data;
+
+
+    export type Props = Data & {
+        variant?: Variant;
+    };
 }
 
 export const EventDrawerContentHero = ({
@@ -40,6 +47,7 @@ export const EventDrawerContentHero = ({
     currency,
     attendees,
     description,
+    variant = "public",
 }: EventDrawerContentHero.Props) => {
     const drawerContentDragYProgress = useDrawerContentDragYProgress();
 
@@ -59,6 +67,7 @@ export const EventDrawerContentHero = ({
             0,
         ],
     );
+
 
     return (
         <div
@@ -102,7 +111,9 @@ export const EventDrawerContentHero = ({
                     {formattedDate}
                 </div>
             </div>
-
+            <div className={styles.hero__buttons}>
+                <EventDrawerHeroButtons variant={variant} />
+            </div>
             <div className={styles.hero__price}>
                 {price} {currency}
                 <AttendersSection users={attendees} />
@@ -130,7 +141,7 @@ export const EventDrawerContentHero = ({
                     <IconShare />
                     Share
                 </Link>
-                
+
                 <button
                     className={cx(
                         styles.hero__button,

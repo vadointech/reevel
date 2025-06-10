@@ -2,29 +2,32 @@
 
 import { observer } from "mobx-react-lite";
 
-import { useInterestsPicker, useInterestsPickerStore } from "@/features/interests/picker";
-import { useRelatedInterests } from "@/features/interests/picker/hooks/use-related.hook";
+import { useInterestsPickerContext } from "@/features/interests/picker";
+import { useInterestsPicker, useInterestsSearch, useRelatedInterests } from "@/features/interests/picker/hooks";
 
-import { OptionsList, Section } from "@/components/shared/_redesign";
-import { InterestsPickerScreenListItem } from "./list-item.component";
-
+import { Button, Checkbox, OptionsList, OptionsListItem, Section } from "@/components/shared/_redesign";
 import { InterestEntity } from "@/entities/interests";
+
+import styles from "@/components/screens/search/styles.module.scss";
 
 export namespace SearchInterestsAll {
     export type Props = never;
 
     export type ListProps = {
-        handleSelect: (item: InterestEntity) => void
+        onSelect: (item: InterestEntity) => void
+        onLoadMore: () => void;
     };
 }
 
 export const SearchInterestsAll = () => {
-    const interestsPickerStore = useInterestsPickerStore();
+    const { store } = useInterestsPickerContext();
 
     const {
         isExist,
         getRelated,
     } = useRelatedInterests();
+
+    const { handleLoadMore } = useInterestsSearch();
 
     const {
         handleToggleInterest,
@@ -32,11 +35,11 @@ export const SearchInterestsAll = () => {
         onSelect: async({ slug }) => {
             const related = await getRelated(slug);
             if(isExist(related)) {
-                interestsPickerStore.setSearchTerm("");
+                store.setSearchTerm("");
             }
         },
         onRemove: () => {
-            interestsPickerStore.setSearchTerm("");
+            store.setSearchTerm("");
         },
     });
 
@@ -44,28 +47,45 @@ export const SearchInterestsAll = () => {
         <Section
             title={"All interests"}
         >
-            <OptionsList style={{ gap: 0 }}>
-                <List handleSelect={handleToggleInterest} />
-            </OptionsList>
+            <List
+                onLoadMore={handleLoadMore}
+                onSelect={handleToggleInterest}
+            />
         </Section>
     );
 };
 
-const List = observer(({ handleSelect }: SearchInterestsAll.ListProps) => {
-    const { interests, selectedInterests } = useInterestsPickerStore();
+const List = observer(({ onSelect, onLoadMore }: SearchInterestsAll.ListProps) => {
+    const { store } = useInterestsPickerContext();
 
     return (
         <>
-            {
-                interests.map((interest) => (
-                    <InterestsPickerScreenListItem
-                        key={interest.slug}
-                        interest={interest}
-                        selected={selectedInterests.some((item) => item.slug === interest.slug)}
-                        onClick={() => handleSelect(interest)}
-                    />
-                ))
-            }
+            <OptionsList>
+                {
+                    store.interests.length > 0 ? (
+                        store.interests.map((interest) => (
+                            <OptionsListItem
+                                key={interest.slug}
+                                label={interest.title_en}
+                                contentLeft={interest.icon}
+                                contentRight={
+                                    <Checkbox checked={store.selectedInterests.some((item) => item.slug === interest.slug)} />
+                                }
+                                onClick={() => onSelect(interest)}
+                            />
+                        ))
+                    ) : <>No interests found. Try another search query.</>
+                }
+            </OptionsList>
+            <Button
+                size={"small"}
+                variant={"text-primary"}
+                className={styles.search__more}
+                onClick={onLoadMore}
+            >
+                Load more
+            </Button>
         </>
     );
+
 });

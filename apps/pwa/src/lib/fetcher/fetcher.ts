@@ -1,9 +1,10 @@
+import { FetcherResponse } from "./response";
 import {
     FetcherInitDefaults,
-    FetcherRequestConfig,
-    FetcherResponse,
     IFetcher,
+    IFetcherRequestConfig,
 } from "./types";
+import { FetcherError } from "@/lib/fetcher/error";
 
 export class Fetcher implements IFetcher {
     private readonly defaults: FetcherInitDefaults;
@@ -12,30 +13,37 @@ export class Fetcher implements IFetcher {
         this.defaults = defaults;
     }
 
-    async get<Input extends null = null, Output = any, Params extends Record<string, any> = object>(url: string, config: FetcherRequestConfig<Input, Params> = {}): Promise<FetcherResponse<Output>> {
+    async get<Input extends null = null, Output = any, Params extends Record<string, any> = object>(url: string, config: Partial<IFetcherRequestConfig<Input, Params>> = {}): Promise<FetcherResponse<Output>> {
         return this.request<Output>(url, {
             ...config,
             method: "GET",
         });
     }
 
-    async post<Input = any, Output = any, Params extends Record<string, any> = object>(url: string, config: FetcherRequestConfig<Input, Params> = {}): Promise<FetcherResponse<Output>> {
+    async post<Input = any, Output = any, Params extends Record<string, any> = object>(url: string, config: Partial<IFetcherRequestConfig<Input, Params>> = {}): Promise<FetcherResponse<Output>> {
         return this.request<Output>(url, {
             ...config,
             method: "POST",
         });
     }
 
-    async patch<Input = any, Output = any, Params extends Record<string, any> = object>(url: string, config: FetcherRequestConfig<Input, Params> = {}): Promise<FetcherResponse<Output>> {
+    async patch<Input = any, Output = any, Params extends Record<string, any> = object>(url: string, config: Partial<IFetcherRequestConfig<Input, Params>> = {}): Promise<FetcherResponse<Output>> {
         return this.request<Output>(url, {
             ...config,
             method: "PATCH",
         });
     }
 
+    async delete<Input extends null = null, Output = any, Params extends Record<string, any> = object>(url: string, config: Partial<IFetcherRequestConfig<Input, Params>> = {}): Promise<FetcherResponse<Output>> {
+        return this.request<Output>(url, {
+            ...config,
+            method: "DELETE",
+        });
+    }
+
     private async request<Output = any>(
         url: string,
-        config: FetcherRequestConfig = {},
+        config: Partial<IFetcherRequestConfig> = {},
     ): Promise<FetcherResponse<Output>> {
         const {
             method = "GET",
@@ -83,14 +91,11 @@ export class Fetcher implements IFetcher {
 
         const response = await fetch(fullURL.toString(), requestOptions);
         return this.parseResponse(response);
-
-        // return { data: null }
-
     }
 
 
     private async parseResponse<Output>(response: Response): Promise<FetcherResponse<Output>> {
-        const fetcherResponse: FetcherResponse<Output> = {
+        const fetcherResponse = new FetcherResponse<Output>({
             data: null,
             url: response.url,
             ok: response.ok,
@@ -99,9 +104,11 @@ export class Fetcher implements IFetcher {
             headers: response.headers,
             type: response.type,
             redirected: response.redirected,
-        };
+        });
 
-        if (!response.ok) return fetcherResponse;
+        if (!response.ok) {
+            return new FetcherResponse(fetcherResponse);
+        }
 
         const contentType = response.headers.get("Content-Type");
 

@@ -1,0 +1,30 @@
+@use "@/theme/mixins";
+@use "@/theme/spacing";
+
+.screen {
+    &__container {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        height: 100%;
+        padding-inline: spacing.$container;
+
+        & > * {
+            flex: 1 0 auto;
+            min-height: 474px;
+            max-height: 516px;
+        }
+
+        &_center {
+            align-items: center;
+        }
+    }
+
+    &__buttons {
+        margin-top: auto;
+        display: flex;
+        flex-direction: column;
+        row-gap: mixins.rem(12);
+        padding-inline: spacing.$container;
+    }
+}

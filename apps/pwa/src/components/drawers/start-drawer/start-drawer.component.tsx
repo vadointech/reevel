@@ -2,9 +2,9 @@ import { ComponentProps } from "react";
 
 import { Drawer, DrawerBody, DrawerContent } from "@/components/shared/drawer";
 import { OnboardingTextBlock } from "@/app/[locale]/(main)/onboarding/_components";
-import { VisibilityCard } from "./visibility-card";
+import { VisibilityCard } from "../create-event/visibility-card";
 
-import styles from "./styles.module.scss";
+import styles from "../create-event/styles.module.scss";
 
 
 export namespace StartDrawer {

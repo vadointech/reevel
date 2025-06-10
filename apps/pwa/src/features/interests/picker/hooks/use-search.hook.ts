@@ -1,41 +1,65 @@
-import { ChangeEvent, useEffect, useRef } from "react";
-import { useInterestsPickerStore } from "../interests-picker.store";
-import { useDebounce } from "@/lib/hooks";
-import { GetInterestsByTitle, getInterestsByTitle } from "@/api/interests";
+import { useCallback, useEffect, useRef } from "react";
+import { reaction } from "mobx";
+import { useInterestsPickerContext } from "../interests-picker.context";
 import { InterestEntity } from "@/entities/interests";
-import { useFetchQuery } from "@/lib/react-query";
+import { RequestDebouncer } from "@/lib/debouncer";
+import { useQueryClient } from "@tanstack/react-query";
+import { SearchInterestsQueryBuilder } from "@/features/interests/picker/queries";
+import { GetInterestsByTitle } from "@/api/interests";
 
 export function useInterestsSearch() {
-    const interestsPickerStore = useInterestsPickerStore();
-    const fetchInterests = useFetchQuery();
-    const debounceSearchValue = useDebounce(interestsPickerStore.searchTerm);
+    const queryClient = useQueryClient();
+    const { store, controller } = useInterestsPickerContext();
 
-    const interestsSnapshot = useRef<InterestEntity[]>(interestsPickerStore.interests);
+    const debouncer = useRef(new RequestDebouncer());
 
-    useEffect(() => {
-        if(debounceSearchValue.length > 0) {
-            interestsSnapshot.current = interestsPickerStore.interests;
-            fetchInterests({
-                queryKey: [...GetInterestsByTitle.queryKey, debounceSearchValue],
-                queryFn: () => getInterestsByTitle({ params: { title_en: debounceSearchValue } })
-                    .then(res => res.data || []),
-            }).then(res => {
-                interestsPickerStore.setInterests(res);
-            });
-        } else {
-            interestsPickerStore.setInterests([
-                ...interestsSnapshot.current,
-                ...interestsPickerStore.selectedInterests,
-            ]);
-        }
-    }, [debounceSearchValue]);
+    const interestsSnapshot = useRef<InterestEntity[]>(store.interests);
 
-    const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
-        interestsPickerStore.setSearchTerm(e.target.value);
+    const handleFetchData = useCallback((query: string, forceRefresh: boolean = false) => {
+        return debouncer.current.debounceRequest(async() => {
+            if(query.length > 1) {
+                if(!forceRefresh) {
+                    if(store.interests.length > 0) {
+                        interestsSnapshot.current = store.interests;
+                    }
+                    const localResults = interestsSnapshot.current.filter(item => item.title_en.toLowerCase().includes(query.toLowerCase()));
+                    if(localResults.length > 0) return localResults;
+                }
+
+                return queryClient.fetchQuery(
+                    SearchInterestsQueryBuilder({ query }),
+                );
+            } else {
+                return [
+                    ...interestsSnapshot.current,
+                    ...store.selectedInterests,
+                ];
+            }
+        }, 700);
+    }, []);
+
+    const setSearchResults = (response: GetInterestsByTitle.TOutput) => {
+        controller.setInterests(response);
+    };
+    const appendSearchResults = (response: GetInterestsByTitle.TOutput) => {
+        controller.appendInterests(response);
     };
 
+    useEffect(() => {
+        const disposer = reaction(
+            () => store.searchTerm,
+            (query) => handleFetchData(query).then(setSearchResults),
+        );
+          
+        return () => disposer();
+    }, [store, handleFetchData]);
+
+
+    const handleLoadMore = useCallback(() => {
+        handleFetchData(store.searchTerm, true).then(appendSearchResults);
+    }, [handleFetchData]);
+
     return {
-        searchTerm: interestsPickerStore.searchTerm,
-        handleChange,
+        handleLoadMore,
     };
 }

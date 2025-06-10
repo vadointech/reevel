@@ -1,11 +1,12 @@
 import { Link } from "@/i18n/routing";
+import { CreateEventDrawer } from "@/components/drawers/create-event";
 
 export default function Home() {
     return (
         <div>
-            <Link href={"/event/create"}>
-                To event
-            </Link>
+            <CreateEventDrawer>
+                Create event
+            </CreateEventDrawer>
             <Link href={"/profile"}>
                 To profile
             </Link>

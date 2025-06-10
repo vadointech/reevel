@@ -15,4 +15,8 @@
     &__list {
         overflow-y: auto;
     }
+
+    &__more {
+        margin-top: mixins.rem(12);
+    }
 }

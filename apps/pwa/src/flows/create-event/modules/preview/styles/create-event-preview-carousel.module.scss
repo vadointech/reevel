@@ -1,0 +1,13 @@
+@use "@/theme/mixins";
+
+.carousel {
+    height: 100%;
+    display: flex;
+    column-gap: mixins.rem(26);
+    align-items: center;
+
+    & > * {
+        flex-shrink: 0;
+        height: 100%;
+    }
+}

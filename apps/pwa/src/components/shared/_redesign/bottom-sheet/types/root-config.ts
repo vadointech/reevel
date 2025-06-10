@@ -2,7 +2,7 @@ import { IBottomSheetHandlers } from "./handlers";
 
 export type BottomSheetSnapPoint = number | "fit-content";
 
-export interface IBottomSheetConfigParams extends IBottomSheetHandlers {
+export interface IBottomSheetConfigParams extends Partial<IBottomSheetHandlers> {
     snapPoints: BottomSheetSnapPoint[];
     defaultOpen: boolean;
     defaultSnapPointIndex: number;

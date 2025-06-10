@@ -1,16 +1,17 @@
 import { GooglePLacesApiIncludedTypes } from "@/api/google/places";
-import { makeObservable, observable } from "mobx";
+import { action, makeObservable, observable } from "mobx";
 
 export class LocationPickerFiltersStore {
-    locationType: GooglePLacesApiIncludedTypes | null = null;
+    locationType?: GooglePLacesApiIncludedTypes;
 
     constructor() {
         makeObservable(this, {
             locationType: observable,
+            setLocationType: action,
         });
     }
 
-    setLocationType(type: GooglePLacesApiIncludedTypes | null) {
+    setLocationType(type?: GooglePLacesApiIncludedTypes) {
         this.locationType = type;
     }
 }

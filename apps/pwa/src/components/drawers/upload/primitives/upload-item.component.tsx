@@ -8,17 +8,19 @@ import { CloseButton } from "@/components/shared/_redesign/close-button";
 
 export namespace UploadFileItem {
     type Data = {
-        image: string;
+        imageUrl: string;
     };
     export type Props = ComponentProps<"div"> & Data & {
         selected?: boolean;
+        onDelete?: () => void;
     };
 }
 
 export const UploadFileItem = ({
-    className,
+    imageUrl,
     selected = false,
-    image,
+    onDelete,
+    className,
     ...props
 }: UploadFileItem.Props) => {
     return (
@@ -28,17 +30,19 @@ export const UploadFileItem = ({
                 selected && styles.upload__file_selected,
                 className,
             )}
-            {...props}
         >
-            <div className={styles.upload__file_wrapper}>
+            <div
+                className={styles.upload__file_wrapper}
+                {...props}
+            >
                 <Image
                     fill
-                    src={image}
+                    src={imageUrl}
                     alt={"poster"}
                 />
-                <div>
-                    <CloseButton size={"small"} />
-                </div>
+            </div>
+            <div className={styles.upload__file_delete} onClick={onDelete}>
+                <CloseButton size={"small"} />
             </div>
         </div>
     );

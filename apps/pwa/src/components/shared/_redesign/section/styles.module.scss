@@ -8,16 +8,27 @@
 
     &__head {
         display: flex;
-        align-items: center;
-        justify-content: space-between;
+        align-items: space-between;
+        flex-direction: column;
 
         margin-bottom: mixins.rem(12);
+    }
+
+    &__wrapper {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
     }
 
     &__title {
         color: colors.$primary;
         flex-grow: 1;
-        @include typography.font("lg", 500)
+        @include typography.font("xl", 500);
+    }
+
+    &__description {
+        @include typography.font("sm");
+        color:colors.$secondary;
     }
 
     &__content {
