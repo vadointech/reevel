@@ -1,6 +1,6 @@
 "use client";
 
-import { Children, ComponentProps, ReactNode, useCallback, useRef } from "react";
+import { ComponentProps, ReactNode, useCallback, useRef } from "react";
 
 import {
     BottomSheetBody,
