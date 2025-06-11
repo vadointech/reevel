@@ -21,12 +21,27 @@
         color:colors.$secondary;
 
         &_active {
+            transition: color 5s;
+
             color: colors.$primary;
         
             .bar__icon {
               color: colors.$primary;
+
+                path[data-part="body"] {
+                    fill: colors.$primary;
+                }
             }
-          }        
+            
+            &_compas {
+                color: colors.$primary;
+
+                svg path {
+                    stroke: colors.$primary;
+                    fill: colors.$primary;
+                }
+            }
+        }        
     }
 
     &__list {
@@ -52,12 +67,17 @@
     &__icon {
         height: mixins.rem(24);
         color:colors.$secondary;
+        stroke-width: 1.5;
 
         &_compas {
-             path {
-                fill:none;
-                stroke-width: mixins.rem(1.5);
-            }
+            path {
+                fill: colors.$foreground;
+              }
         }
     }
+
+}
+
+.hide {
+    opacity: 0;
 }
