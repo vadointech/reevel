@@ -1,15 +1,15 @@
 "use client";
 
-import { Avatar } from "@/components/ui";
 import { useOnboardingAvatarPickerCarousel } from "@/features/onboarding/hooks";
 import { CircularCarousel } from "@/components/shared";
 import { ActiveScale } from "@/components/shared/circular-carousel/plugins";
 import { useCircularCarousel } from "@/components/shared/circular-carousel/hooks";
+import { Avatar } from "@/components/shared/_redesign";
 
 import styles from "../styles/avatar-picker-carousel.module.scss";
 
 const SliderItem = ({ src }: { src?: string }) => {
-    return <Avatar src={src} size={100} />;
+    return <Avatar image={src} size={100} />;
 };
 
 export namespace OnboardingAvatarPickerCarousel {

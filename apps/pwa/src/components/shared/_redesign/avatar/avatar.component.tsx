@@ -9,13 +9,16 @@ export namespace Avatar {
     export type Props = ComponentProps<"div"> & {
         image?: string;
         variant?: Variant;
+        size?: number;
     };
 }
 
 export const Avatar = ({
     image,
     variant = "default",
+    size,
     className,
+    style,
     ...props
 }: Avatar.Props) => {
     return (
@@ -25,6 +28,7 @@ export const Avatar = ({
                 styles[`avatar__variant_${variant}`],
                 className,
             )}
+            style={{ height: size, ...style }}
             {...props}
         >
             <Image

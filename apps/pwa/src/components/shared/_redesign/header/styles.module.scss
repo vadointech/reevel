@@ -1,10 +1,16 @@
 @use "@/theme/mixins";
+@use "@/theme/colors";
 @use "@/theme/typography";
+
 .header {
     display: grid;
     grid-template-columns: 1fr 5fr 1fr;
     align-items: center;
     padding-inline: 1rem;
+
+    svg path {
+        fill: colors.$primary
+    }
 
     &_size {
         &_small {

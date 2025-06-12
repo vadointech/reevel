@@ -1,13 +1,15 @@
-import { getInitialInterests } from "@/api/interests";
 import { headers } from "next/headers";
+
+import { getInitialInterests } from "@/api/interests";
+import { getCurrentUserInterests } from "@/api/user/get-interests";
 import { ButtonsBlock } from "@/components/shared/_redesign";
 
 import { OnboardingNextStepButton, OnboardingProgressBar } from "../modules/progress";
 import { OnboardingTextBlock } from "../modules/text-block";
 import { OnboardingInterestsPicker } from "../modules/interests-picker";
+import { InterestsPickerProvider } from "@/features/interests/picker";
 
 import styles from "../styles/interests-picker-page.module.scss";
-import { InterestsPickerProvider } from "@/features/interests/picker";
 
 export namespace OnboardingInterestsPickerPage {
     export type Props = never;
@@ -16,6 +18,10 @@ export namespace OnboardingInterestsPickerPage {
 export async function OnboardingInterestsPickerPage() {
 
     const { data } = await getInitialInterests({
+        nextHeaders: await headers(),
+    });
+
+    const { data: interests } = await getCurrentUserInterests({
         nextHeaders: await headers(),
     });
 
@@ -31,6 +37,7 @@ export async function OnboardingInterestsPickerPage() {
                 />
                 <InterestsPickerProvider
                     interests={data || []}
+                    selectedInterests={interests?.map(item => item.interest)}
                     callbackUrl={"/onboarding/interests"}
                 >
                     <OnboardingInterestsPicker />

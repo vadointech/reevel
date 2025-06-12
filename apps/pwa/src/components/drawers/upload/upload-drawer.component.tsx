@@ -33,6 +33,7 @@ export namespace UploadDrawer {
         onImageDelete: (upload: UserUploadsEntity) => void;
         selectedImageUrl: string | undefined;
         cropperPageUrl?: string;
+        onFileSelected?: (src: string) => void;
         controller?: BottomSheetExternalController;
         gridVariant?: UploadFileGrid.Variants["variant"]
     };
@@ -47,14 +48,14 @@ export const UploadDrawer = ({
     children,
     cropperPageUrl,
     gridVariant,
+    onFileSelected,
 }: UploadDrawer.Props) => {
     const router = useRouter();
 
     const { handleSelectFile } = useImageUploader({
-        onFileSelected: () => {
-            if(cropperPageUrl) {
-                router.push(cropperPageUrl);
-            }
+        onFileSelected: (src) => {
+            onFileSelected?.(src);
+            if(cropperPageUrl) router.push(cropperPageUrl);
         },
     });
 

@@ -5,7 +5,6 @@ import { usePathname, useRouter } from "@/i18n/routing";
 import { useLogout } from "@/features/session";
 import { useMutation } from "@tanstack/react-query";
 import { updateProfile } from "@/api/profile/update-profile";
-import { useSearchParams } from "next/navigation";
 
 export function useOnboardingProgress() {
 
@@ -15,7 +14,6 @@ export function useOnboardingProgress() {
 
     const router = useRouter();
     const pathname = usePathname();
-    const searchParams = useSearchParams();
 
     const step = OnboardingStepPath.indexOf(pathname as OnboardingStepPath);
 
@@ -47,8 +45,9 @@ export function useOnboardingProgress() {
 
     function updateOnboardingProgress(step: OnboardingStepPath | number) {
         const { stepIndex } = getOnboardingProgress(step);
-        router.push(OnboardingStepPath[stepIndex] + "?" + new URLSearchParams(searchParams).toString());
+        router.push(OnboardingStepPath[stepIndex]);
     }
+
 
     const handleNextStep = () => {
         return updateOnboardingProgress(step + 1);

@@ -6,16 +6,13 @@ import { useQueryClient } from "@tanstack/react-query";
 import { useLocationSearchContext } from "@/features/location/search";
 import { usePersistentMap } from "@/components/shared/map";
 import { PlaceLocationEntity } from "@/entities/place";
-import { usePathname, useRouter } from "@/i18n/routing";
-import { useSearchParams } from "next/navigation";
+import {  useRouter } from "@/i18n/routing";
 
 export function useLocationSearch(resultsInit: PlaceLocationEntity[] = []) {
     const router = useRouter();
     const queryClient = useQueryClient();
     const map = usePersistentMap();
     const { store, config } = useLocationSearchContext();
-    const searchParams = useSearchParams();
-    const pathname = usePathname();
 
     const debouncer = useRef(new RequestDebouncer());
 
@@ -61,10 +58,9 @@ export function useLocationSearch(resultsInit: PlaceLocationEntity[] = []) {
     }, []);
 
     const handleLocationSelect = useCallback((place: PlaceLocationEntity) => {
-        const params = new URLSearchParams();
-        params.set(config.confirmationParam, place.id);
-        router.push(config.confirmUrl + "?" + params.toString());
-    }, []);
+        store.setLocationToConfirm(place);
+        router.push(config.confirmUrl);
+    }, [store]);
 
     const containerRef = useCallback((element: HTMLElement | null) => {
         if(!element) return;
@@ -73,7 +69,7 @@ export function useLocationSearch(resultsInit: PlaceLocationEntity[] = []) {
         if(!list) return;
         if(list.childNodes.length === 0) return;
 
-        const prevPlaceId = searchParams.get(config.confirmationParam);
+        const prevPlaceId = store.locationToConfirm?.id;
         if(!prevPlaceId) return;
 
 
@@ -98,8 +94,6 @@ export function useLocationSearch(resultsInit: PlaceLocationEntity[] = []) {
                 }
             }
         }
-
-        router.replace(pathname);
     }, []);
 
     return {

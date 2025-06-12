@@ -24,7 +24,6 @@ export namespace UploadFileGrid {
 export const UploadFileGrid = ({
     variant,
     className,
-    children,
     ...props
 }: UploadFileGrid.Props) => {
 
@@ -32,19 +31,6 @@ export const UploadFileGrid = ({
         <div
             className={fileGrid({ variant, className })}
             {...props}
-        >
-            { children }
-            {/*<UploadFileItem image={"/assets/temp/poster6.png"} />*/}
-            {/*<UploadFileItem selected image={"/assets/temp/poster6.png"} />*/}
-            {/*<UploadFileItem image={"/assets/temp/poster6.png"} />*/}
-            {/*<UploadFileItem image={"/assets/temp/poster6.png"} />*/}
-            {/*<UploadFileItem image={"/assets/temp/poster6.png"} />*/}
-            {/*<UploadFileItem image={"/assets/temp/poster6.png"} />*/}
-            {/*<UploadFileItem image={"/assets/temp/poster6.png"} />*/}
-            {/*<UploadFileItem image={"/assets/temp/poster6.png"} />*/}
-            {/*<UploadFileItem image={"/assets/temp/poster6.png"} />*/}
-            {/*<UploadFileItem image={"/assets/temp/poster6.png"} />*/}
-            {/*<UploadFileItem image={"/assets/temp/poster6.png"} />*/}
-        </div>
+        />
     );
 };

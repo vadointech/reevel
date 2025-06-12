@@ -45,7 +45,7 @@ export class InterestsService {
             },
         });
 
-        if (userProfile) {
+        if(userProfile) {
             const userInterests = userProfile.interests.map(item => item.interestId);
             slugs.push(...userInterests);
         }

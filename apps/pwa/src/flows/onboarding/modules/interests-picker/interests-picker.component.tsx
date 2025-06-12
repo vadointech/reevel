@@ -50,7 +50,7 @@ export const OnboardingInterestsPicker = () => {
 const List = observer(({ onSelect }: OnboardingInterestsPicker.ListProps) => {
     const { store } = useInterestsPickerContext();
 
-    return  store.interests.map((interest, index) => (
+    return store.interests.map((interest, index) => (
         <motion.div
             key={interest.slug}
             layout

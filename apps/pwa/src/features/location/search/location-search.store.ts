@@ -7,6 +7,7 @@ export class LocationSearchStore implements ILocationSearchStore {
     searchQuery: string = "";
     nextPageToken: string | undefined = undefined;
     searchResults: PlaceLocationEntity[] | null = null;
+    locationToConfirm: PlaceLocationEntity | null = null;
 
     constructor(init?: Partial<ILocationSearchStore>) {
         makeObservable(this, {
@@ -28,6 +29,10 @@ export class LocationSearchStore implements ILocationSearchStore {
 
     setSearchResults(searchResults: PlaceLocationEntity[] | null) {
         this.searchResults = searchResults;
+    }
+
+    setLocationToConfirm(locationToConfirm: PlaceLocationEntity | null) {
+        this.locationToConfirm = locationToConfirm;
     }
 
     setNextPageToken(nextPageToken?: string) {

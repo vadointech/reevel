@@ -29,9 +29,6 @@ class OnboardingStore implements IOnboardingStore {
             setPicture: action,
             setBio: action,
             addInterest: action,
-            removeInterest: action,
-            setLocationQuery: action,
-            setLocation: action,
         });
 
         initStore(this, init);
@@ -54,19 +51,6 @@ class OnboardingStore implements IOnboardingStore {
 
     addInterest(slug: string): void {
         this.interests.push(slug);
-    }
-
-    removeInterest(slug: string): void {
-        this.interests = this.interests.filter(item => item !== slug);
-    }
-
-    setLocationQuery(query: string) {
-        this.locationQuery = query;
-    }
-
-    setLocation(center?: [number, number], bbox?: [number, number, number, number]) {
-        this.locationCenter = center;
-        this.locationBbox = bbox;
     }
 }
 

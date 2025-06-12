@@ -15,7 +15,6 @@ export const LocationSearchProvider = ({
     children,
     callbackUrl,
     confirmUrl,
-    confirmationParam = "place",
     ...storeInit
 }: LocationSearchProvider.Props) => {
 
@@ -28,7 +27,6 @@ export const LocationSearchProvider = ({
                 config: {
                     callbackUrl,
                     confirmUrl,
-                    confirmationParam,
                 },
             }}
         >

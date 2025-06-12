@@ -9,7 +9,7 @@ import { useLocationSearchContext } from "@/features/location/search";
 export function useOnboardingLocationAccessRequest() {
     const router = useRouter();
     const { provider } = usePersistentMap();
-    const { config } = useLocationSearchContext();
+    const { store, config } = useLocationSearchContext();
 
     return useLocationAccessRequest({
         queryBuilder: GetLocationByCoordinatesQueryBuilder({
@@ -18,9 +18,8 @@ export function useOnboardingLocationAccessRequest() {
             language: "uk",
         }),
         onSuccess: (place) => {
-            const params = new URLSearchParams();
-            params.set(config.confirmationParam, place.id);
-            router.replace(config.confirmUrl + "?" + params.toString());
+            store.setLocationToConfirm(place);
+            router.replace(config.confirmUrl);
         },
     });
 }
