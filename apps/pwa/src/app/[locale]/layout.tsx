@@ -68,12 +68,7 @@ export default async function RootLayout({ children, params }: PropsWithChildren
                                     user: data,
                                 }]}
                             >
-                                <ThemeProvider
-                                    attribute="class"
-                                    defaultTheme="system"
-                                    enableSystem
-                                    disableTransitionOnChange
-                                >
+                                <ThemeProvider enableSystem>
                                     <ThemeColorManager />
                                     <StandaloneProvider>
                                         <QuerySelectorProvider>

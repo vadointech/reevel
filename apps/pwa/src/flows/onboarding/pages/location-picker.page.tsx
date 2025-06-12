@@ -1,10 +1,9 @@
-import { getPlaceByName } from "@/api/mapbox/get-place-by-name";
-import { MapboxFeatureResponse } from "@/api/mapbox/types";
-import { mapboxFeatureResponseTransformer } from "@/features/mapbox";
-import { OnboardingLocationPickerHeader, OnboardingLocationPickerSearch } from "../modules/location-picker";
-import { Locale } from "@/types/common";
+import { QueryClient } from "@tanstack/react-query";
 
-import styles from "../styles/location-picker-page.module.scss";
+import { LocationSearchScreen } from "@/components/screens/location-search";
+import { GetBatchLocationByNameQueryBuilder } from "@/features/location/search/queries";
+
+import { Locale } from "@/types/common";
 
 const cities = [
     "Вінниця", "Дніпро", "Донецьк", "Житомир", "Запоріжжя", "Івано-Франківськ",
@@ -19,34 +18,23 @@ export namespace OnboardingLocationPickerPage {
     };
 }
 
-export async function OnboardingLocationPickerPage({ locale }: OnboardingLocationPickerPage.Props) {
+export async function OnboardingLocationPickerPage() {
+    const queryClient = new QueryClient();
 
-    const result = await Promise.all(
-        cities.map(name => (
-            getPlaceByName({
-                body: {
-                    name,
-                },
-                params: {
-                    access_token: process.env.MAPBOX_SECRET_ACCESS_TOKEN,
-                    language: locale,
-                    types: "place",
-                    country: "ua",
-                    limit: 1,
-                },
-            })
-        )),
+    const places = await queryClient.fetchQuery(
+        GetBatchLocationByNameQueryBuilder({
+            accessToken: process.env.MAPBOX_SECRET_ACCESS_TOKEN!,
+            request: cities.map(item => ({
+                q: item,
+                limit: 1,
+                types: "place",
+                country: "ua",
+                language: "uk",
+            })),
+        }),
     );
 
-    const data: MapboxFeatureResponse[] =
-    result.map(item => item.data?.features[0])
-        .filter(item => item !== undefined)
-        .map(mapboxFeatureResponseTransformer.toLocationList);
-
     return (
-        <div className={styles.page}>
-            <OnboardingLocationPickerHeader />
-            <OnboardingLocationPickerSearch data={data} />
-        </div>
+        <LocationSearchScreen initialResults={places} />
     );
 }

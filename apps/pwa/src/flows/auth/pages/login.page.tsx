@@ -1,8 +1,9 @@
-import { getGoogleOAuthLink } from "@/api/auth/get-google-oauth-link";
 import { headers } from "next/headers";
-import { Button, Container, Hint, Title } from "@/components/ui";
+import { getGoogleOAuthLink } from "@/api/auth/get-google-oauth-link";
 import { IconApple, IconGoogle } from "@/components/icons";
-import { AuthCarousel, AuthCarouselPagination } from "@/flows/auth/modules/carousel";
+import { AuthCarousel } from "@/flows/auth/modules/carousel";
+import { Button, ButtonsBlock } from "@/components/shared/_redesign";
+import { Container } from "@/components/ui";
 
 import styles from "../styles/login-page.module.scss";
 
@@ -21,41 +22,29 @@ export async function AuthLoginPage() {
             <AuthCarousel />
             <Container className={styles.content}>
                 <div className={styles.content__info}>
-                    <Title
-                        align="center"
-                        size="3xl"
-                        weight={500}
-                        className={styles.content__title}
-                    >
+                    <h1 className={styles.content__title}>
                         Make Every Moment Count
-                    </Title>
+                    </h1>
 
-                    <Hint
-                        className={styles.content__subtitle}
-                    >
+                    <p className={styles.content__subtitle}>
                         Easily bring people together. Reevel turns simple moments into lasting memories.
-                    </Hint>
-
-                    <AuthCarouselPagination />
+                    </p>
                 </div>
 
-                <div className={styles.content__buttons}>
+                <ButtonsBlock container={false}>
                     <Button
-                        variant="default"
-                        iconColor={"initial"}
+                        variant={"secondary-muted"}
                         iconBefore={<IconGoogle />}
                         href={data?.link}
                     >
                         Sign in with Google
                     </Button>
                     <Button
-                        variant="primary"
-                        iconColor={"initial"}
                         iconBefore={<IconApple />}
                     >
                         Sign in with Apple
                     </Button>
-                </div>
+                </ButtonsBlock>
             </Container>
         </div>
     );

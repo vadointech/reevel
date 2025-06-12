@@ -1,11 +1,10 @@
 "use client";
 
 import { Avatar } from "@/components/ui";
-import { useAvatarPicker } from "@/features/onboarding";
+import { useOnboardingAvatarPickerCarousel } from "@/features/onboarding/hooks";
 import { CircularCarousel } from "@/components/shared";
 import { ActiveScale } from "@/components/shared/circular-carousel/plugins";
 import { useCircularCarousel } from "@/components/shared/circular-carousel/hooks";
-import { observer } from "mobx-react-lite";
 
 import styles from "../styles/avatar-picker-carousel.module.scss";
 
@@ -19,14 +18,14 @@ export namespace OnboardingAvatarPickerCarousel {
     };
 }
 
-export const OnboardingAvatarPickerCarousel = observer(({
+export const OnboardingAvatarPickerCarousel = ({
     defaultAvatars,
 }: OnboardingAvatarPickerCarousel.Props) => {
 
     const {
         avatars,
         handleSetAvatar,
-    } = useAvatarPicker(defaultAvatars);
+    } = useOnboardingAvatarPickerCarousel(defaultAvatars);
 
     const slides = avatars.map((item) => (
         <SliderItem key={item} src={item} />
@@ -55,8 +54,8 @@ export const OnboardingAvatarPickerCarousel = observer(({
         >
             <div className={styles.picker__circle} />
             <div className={styles.picker__options}>
-                <CircularCarousel carousel={carousel} />
+                <CircularCarousel carousel={carousel} />;
             </div>
         </div>
     );
-});
+};

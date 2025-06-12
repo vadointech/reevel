@@ -5,12 +5,16 @@ import { ProfileInterestsEntity } from "@/modules/profile/entities/profile-inter
 import { ProfileRepository } from "@/modules/profile/repositories/profile.repository";
 import { ProfileLocationRepository } from "@/modules/profile/repositories/profile-location.repository";
 import { ProfileLocationsEntity } from "@/modules/profile/entities/profile-location.entity";
+import { Session } from "@/types";
+import { SupportedFileCollections } from "@/modules/uploads/entities/uploads.entity";
+import { UploadsService } from "@/modules/uploads/uploads.service";
 
 @Injectable()
 export class ProfileService {
     constructor(
         private readonly profileRepository: ProfileRepository,
         private readonly profileLocationsRepository: ProfileLocationRepository,
+        private readonly uploadsService: UploadsService,
 
         private dataSource: DataSource,
     ) { }
@@ -103,4 +107,11 @@ export class ProfileService {
         return newProfile;
     }
 
+    async uploadAvatar(session: Session, files: Express.Multer.File[]) {
+        return this.uploadsService.uploadImages(
+            session,
+            files,
+            SupportedFileCollections.PROFILE_PICTURE,
+        );
+    }
 }

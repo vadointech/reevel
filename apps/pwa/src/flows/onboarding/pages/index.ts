@@ -1,5 +1,6 @@
 export * from "./root.page";
 export * from "./avatar-picker.page";
+export * from "./avatar-upload.page";
 export * from "./bio.page";
 export * from "./interests-picker.page";
 

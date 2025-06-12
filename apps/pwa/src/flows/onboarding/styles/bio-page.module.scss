@@ -10,21 +10,12 @@
         gap: mixins.rem(40);
     }
 
-    &__circle {
-        margin-top: mixins.rem(52);
+    &__avatar {
+        height: mixins.rem(140);
 
-        position: relative;
-
-        &::before {
-            content: "";
-            position: absolute;
-            width: mixins.rem(164);
-            height: mixins.rem(164);
-            border-radius: 50%;
-            border: 1.5px solid colors.$secondary;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
+        & > * {
+            outline-offset: .5rem;
+            outline-color: colors.$primary;
         }
     }
 

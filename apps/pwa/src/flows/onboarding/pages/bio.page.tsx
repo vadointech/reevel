@@ -1,8 +1,9 @@
 "use client";
 
-import { Avatar, Container } from "@/components/ui";
-import { ArrowBack } from "@/components/icons";
+import { Container } from "@/components/ui";
 import { useOnboardingStore } from "@/features/onboarding";
+
+import { Avatar, ButtonsBlock } from "@/components/shared/_redesign";
 
 import { OnboardingNextStepButton, OnboardingProgressBar } from "../modules/progress";
 import { OnboardingTextBlock } from "../modules/text-block";
@@ -19,13 +20,11 @@ export function OnboardingBioPage() {
   
     return (
         <>
-            <Container>
-                <OnboardingProgressBar step={1} />
-            </Container>
+            <OnboardingProgressBar step={1} />
             <Container>
                 <div className={styles.page__info}>
-                    <div className={styles.page__circle}>
-                        <Avatar src={onboardingStore.picture} size={140} />
+                    <div className={styles.page__avatar}>
+                        <Avatar image={onboardingStore.picture} variant={"outline"} />
                     </div>
                     <OnboardingTextBlock
                         title={"Tell us About Yourself"}
@@ -35,14 +34,11 @@ export function OnboardingBioPage() {
                 <OnboardingBioForm />
             </Container>
 
-            <Container className={styles.page__buttons}>
-                <OnboardingNextStepButton
-                    variant={"primary"}
-                    iconAfter={<ArrowBack />}
-                >
+            <ButtonsBlock>
+                <OnboardingNextStepButton>
                     Next step
                 </OnboardingNextStepButton>
-            </Container>
+            </ButtonsBlock>
         </>
     );
 }

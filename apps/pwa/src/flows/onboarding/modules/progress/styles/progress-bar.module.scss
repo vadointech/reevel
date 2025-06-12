@@ -1,0 +1,21 @@
+@use "@/theme/mixins";
+@use "@/theme/fonts";
+@use "@/theme/colors";
+
+.indicator {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    column-gap: mixins.rem(12);
+
+    &__item {
+        height: mixins.rem(4);
+        background: colors.$secondary-muted;
+        width: mixins.rem(38);
+        border-radius: mixins.rem(4);
+
+        &_active {
+            background: colors.$primary;
+        }
+    }
+}

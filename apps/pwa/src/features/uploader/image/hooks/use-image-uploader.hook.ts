@@ -1,14 +1,26 @@
 import { ChangeEvent, useCallback } from "react";
-import { UseMutationOptions } from "@tanstack/react-query";
+import { useRouter } from "@/i18n/routing";
+import { useMutation, UseMutationOptions } from "@tanstack/react-query";
 import { useImageUploaderContext } from "../image-uploader.context";
-import { UploadFile } from "@/api/upload";
+import { FetcherError } from "@/lib/fetcher/error";
+import { UserUploadsEntity } from "@/entities/uploads";
 
-type Params = Partial<Omit<UseMutationOptions<UploadFile.TOutput, unknown, UploadFile.TInput>, "mutationFn">> & {
-    onFileSelected?: (src: string) => void;
+type TMutationInput = {
+    file: Blob;
 };
 
-export function useImageUploader(params: Params = {}) {
+type ConfigParams = UseMutationOptions<UserUploadsEntity | null, FetcherError, TMutationInput> & {
+    onFileSelected?: (src: string) => void;
+    callbackUrl?: string;
+};
+
+export function useImageUploader({
+    onFileSelected,
+    callbackUrl,
+    ...mutation
+}: ConfigParams = {}) {
     const imageUploader = useImageUploaderContext();
+    const router = useRouter();
 
     const handleSelectFile = useCallback((e: ChangeEvent<HTMLInputElement>) => {
         if (e.target.files && e.target.files.length > 0) {
@@ -16,40 +28,27 @@ export function useImageUploader(params: Params = {}) {
             reader.addEventListener("load", () => {
                 const src = reader.result?.toString() || "";
                 imageUploader.controller.setImageSrc(src);
-                params.onFileSelected?.(src);
+                onFileSelected?.(src);
             });
             reader.readAsDataURL(e.target.files[0]);
         }
     }, []);
-    //
-    // const uploadFileMutation = useMutation<UploadFile.TOutput, unknown, UploadFile.TInput>({
-    //     mutationKey: UploadFile.queryKey,
-    //     mutationFn: (body) =>
-    //         uploadFile({ body })
-    //             .then(response => response.data),
-    //     onMutate: (...args) => {
-    //         fileUploader.store.setLoading(true);
-    //         params.onMutate?.(...args);
-    //     },
-    //     onSettled: (data, ...args) => {
-    //         fileUploader.store.setLoading(false);
-    //         if(data) {
-    //             if(!isUploadErrorResponse(data[0])) {
-    //                 fileUploader.store.setUploadResponse(data[0]);
-    //             } else {
-    //                 fileUploader.store.setUploadErrorResponse(data[0]);
-    //             }
-    //         }
-    //         params.onSettled?.(data, ...args);
-    //     },
-    //     ...params,
-    // });
-    //
-    // const handleUploadFile = useCallback((file: Blob | null) => {
-    //     if(file) uploadFileMutation.mutateAsync({ file });
-    // }, [uploadFileMutation]);
+
+    const uploadFileMutation = useMutation({
+        ...mutation,
+        onSuccess: (upload, ...args) => {
+            if(!upload) return;
+            mutation.onSuccess?.(upload, ...args);
+            if(callbackUrl) router.push(callbackUrl);
+        },
+    });
+
+    const handleFileUpload = useCallback((file?: Blob | null) => {
+        if(file) uploadFileMutation.mutateAsync({ file });
+    }, []);
 
     return {
         handleSelectFile,
+        handleFileUpload,
     };
 }

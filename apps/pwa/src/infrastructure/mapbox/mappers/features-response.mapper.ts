@@ -1,6 +1,6 @@
+import { MapboxFeaturesResponse } from "@/api/mapbox/v6/types";
 import { IconPoint, Point } from "@/components/shared/map/types";
-import { MapboxFeaturesResponse } from "@/api/mapbox/types";
-import { LocationPickerPlace } from "@/features/location/picker/stores/places";
+import { PlaceLocationEntity } from "@/entities/place";
 
 export class MapboxFeaturesResponseMapper<T extends MapboxFeaturesResponse = MapboxFeaturesResponse> {
     toIconPoint(input?: T): Point<IconPoint>[] {
@@ -28,13 +28,28 @@ export class MapboxFeaturesResponseMapper<T extends MapboxFeaturesResponse = Map
         return points;
     }
 
-    toLocationPickerPlaces(input?: T): LocationPickerPlace[] {
-        const places: LocationPickerPlace[] = [];
+    toPlaceLocationEntity(input?: T): PlaceLocationEntity[] {
+        const output: PlaceLocationEntity[] = [];
 
-        if(!input) return places;
+        if(!input) return output;
 
-        
-        return places;
+        for(const feature of input.features) {
+            output.push({
+                id: feature.id,
+                location: {
+                    longitude: feature.properties.coordinates.longitude,
+                    latitude: feature.properties.coordinates.latitude,
+                },
+                bbox: feature.properties.bbox,
+                displayName: feature.properties.name,
+                primaryType: "street_address",
+                primaryTypeDisplayName: "Адреса", // "Address",
+                formattedAddress: feature.properties.full_address,
+                googleMapsUri: `https://www.google.com/maps?q=${feature.properties.coordinates.latitude},${feature.properties.coordinates.longitude}`,
+            });
+        }
+
+        return output;
     }
 }
 

@@ -3,6 +3,7 @@ import { getUserProfile } from "@/api/profile/get-one";
 import { headers } from "next/headers";
 import { redirect } from "@/i18n/routing";
 import { OnboardingStoreProvider } from "@/features/onboarding";
+import { ImageUploaderProvider } from "@/features/uploader/image";
 import { Locale } from "@/types/common";
 
 import styles from "../styles/root-layout.module.scss";
@@ -37,9 +38,11 @@ export async function OnboardingRootLayout({ locale, children }: OnboardingRootL
                 locationCenter: data?.location?.center?.coordinates,
             }]}
         >
-            <div className={styles.layout}>
-                { children }
-            </div>
+            <ImageUploaderProvider>
+                <div className={styles.layout}>
+                    { children }
+                </div>
+            </ImageUploaderProvider>
         </OnboardingStoreProvider>
     );
 }

@@ -1,9 +1,9 @@
-import { MapboxFeaturesResponse } from "@/api/mapbox/types";
+import { MapboxFeaturesResponse } from "@/api/mapbox/v6/types";
 
 type Input = MapboxFeaturesResponse;
 
 class MapboxFeaturesResponseTransformer {
-    toLocationPickerData(input: Input): MapboxFeaturesResponse {
+    formatAddress(input: Input): MapboxFeaturesResponse {
         console.log(input);
         return input;
     }

@@ -1,29 +1,39 @@
 "use client";
 
+import { useCallback } from "react";
+import { GetPlacesByCoordinatesQueryBuilder } from "@/features/location/picker/queries";
+import { useQueryClient } from "@tanstack/react-query";
+
 type Callback = {
-    onSuccess: (coords: GeolocationCoordinates) => void;
+    onSuccess: (place: GetPlacesByCoordinatesQueryBuilder.TOutput[number]) => void;
     onFailure: () => void;
 };
 
 export function useLocationAccess(callbacks: Partial<Callback> = {}) {
-    const handleRequestLocation = () => {
+    const queryClient = useQueryClient();
+
+    const handleRequestLocationAccess = useCallback(() => {
         if ("geolocation" in navigator) {
             navigator.geolocation.getCurrentPosition(
-                ({ coords }) => {
-                    callbacks.onSuccess?.(coords);
+                async({ coords }) => {
+                    const place = await queryClient.fetchQuery(
+                        GetPlacesByCoordinatesQueryBuilder({
+                            lng: coords.longitude,
+                            lat: coords.latitude,
+                        }),
+                    ).then(response => response[0]);
+
+                    if(place) return callbacks.onSuccess?.(place);
+                    return callbacks.onFailure?.();
                 },
-                () => {
-                    // TODO: Show modal "We're unable to get your location. (Enter it manually)"
-                    callbacks.onFailure?.();
-                },
+                () => callbacks.onFailure?.(),
             );
         } else {
-            // TODO: Show modal "We're unable to get your location. (Enter it manually)"
             callbacks.onFailure?.();
         }
-    };
+    }, []);
 
     return {
-        handleRequestLocation,
+        handleRequestLocationAccess,
     };
 }

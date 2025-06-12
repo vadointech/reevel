@@ -53,6 +53,7 @@ export const OptionsListItem = ({
     description,
     iconType = "filled",
     href,
+    relativeTime,
     className,
     ...props
 }: OptionsListItem.Props) => {
@@ -66,7 +67,7 @@ export const OptionsListItem = ({
                 label={label}
                 description={description}
                 status={status}
-                relativeTime="1h"
+                relativeTime={relativeTime}
                 contentBottom={contentBottom}
             />
             <OptionsListItemRight

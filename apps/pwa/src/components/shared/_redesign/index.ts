@@ -7,7 +7,6 @@ export * from "./stars";
 export * from "./button";
 export * from "./input";
 export * from "./check-box";
-export * from "./drawer";
 export * from "./catendar";
 export * from "./header";
 export * from "./tabs";

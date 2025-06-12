@@ -3,7 +3,7 @@
 import { ComponentProps } from "react";
 import { observer } from "mobx-react-lite";
 import { Input } from "@/components/shared/_redesign";
-import { useOnboardingStore } from "@/features/onboarding/stores/onboarding.store";
+import { useOnboardingStore } from "@/features/onboarding/onboarding.store";
 
 import cx from "classnames";
 import styles from "./styles.module.scss";

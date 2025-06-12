@@ -1,18 +1,18 @@
 "use client";
 
-import { Button } from "@/components/ui";
-import { useLocationAccess } from "@/features/onboarding";
+import { Button } from "@/components/shared/_redesign";
+import { useOnboardingLocationAccessRequest } from "@/features/onboarding/hooks";
 
 export const OnboardingLocationRequest = () => {
 
     const {
-        handleRequestLocation,
-    } = useLocationAccess();
+        handleRequestLocationAccess,
+    } = useOnboardingLocationAccessRequest();
 
     return (
         <Button
-            variant={"primary"}
-            onClick={handleRequestLocation}
+            variant={"accent"}
+            onClick={handleRequestLocationAccess}
         >
             Allow Location Access
         </Button>

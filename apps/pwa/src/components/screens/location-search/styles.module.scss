@@ -1,0 +1,15 @@
+@use "@/theme/mixins";
+
+.search {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+
+    &__header {
+        padding-bottom: mixins.rem(22);
+    }
+
+    &__list {
+        overflow-y: auto;
+    }
+}

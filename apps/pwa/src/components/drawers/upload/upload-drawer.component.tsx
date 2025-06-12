@@ -13,9 +13,9 @@ import {
     BottomSheetRoot,
     BottomSheetTrigger,
 } from "@/components/shared/_redesign/bottom-sheet";
-import { UploadFileButton, UploadFileGrid } from "./primitives";
+import { UploadFileGrid } from "./primitives";
 import { ScrollArea } from "@/components/shared/_redesign/scroll-area/scroll-area.component";
-import { IconArrowLeft } from "@/components/icons";
+import { IconArrowLeft, IconPicture } from "@/components/icons";
 
 import { UserUploadsEntity } from "@/entities/uploads";
 import { BottomSheetExternalController } from "@/components/shared/_redesign/bottom-sheet/types";
@@ -31,9 +31,10 @@ export namespace UploadDrawer {
         uploads?: GetUserUploads.TOutput;
         onImagePick: (upload: UserUploadsEntity) => void;
         onImageDelete: (upload: UserUploadsEntity) => void;
-        selectedImageUrl?: string;
+        selectedImageUrl: string | undefined;
         cropperPageUrl?: string;
-        controller?: BottomSheetExternalController
+        controller?: BottomSheetExternalController;
+        gridVariant?: UploadFileGrid.Variants["variant"]
     };
 }
 
@@ -45,6 +46,7 @@ export const UploadDrawer = ({
     controller,
     children,
     cropperPageUrl,
+    gridVariant,
 }: UploadDrawer.Props) => {
     const router = useRouter();
 
@@ -89,10 +91,16 @@ export const UploadDrawer = ({
                             >
                                 <TabsContent>
                                     <ScrollArea>
-                                        <UploadFileGrid
-                                            variant={"vertical"}
-                                        >
-                                            <UploadFileButton onChange={handleSelectFile} />
+                                        <UploadFileGrid variant={gridVariant}>
+                                            <div>
+                                                <Input.File
+                                                    label={"Upload"}
+                                                    accept={"image/png, image/jpeg, image/webp"}
+                                                    icon={<IconPicture />}
+                                                    variant={"accent-muted"}
+                                                    onChange={handleSelectFile}
+                                                />
+                                            </div>
                                             {
                                                 uploads.map(item => (
                                                     <UploadFileItem
@@ -109,17 +117,17 @@ export const UploadDrawer = ({
                                 </TabsContent>
                                 <TabsContent>
                                     <ScrollArea>
-                                        <UploadFileGrid variant={"vertical"} />
+                                        <UploadFileGrid variant={gridVariant} />
                                     </ScrollArea>
                                 </TabsContent>
                                 <TabsContent>
                                     <ScrollArea>
-                                        <UploadFileGrid variant={"vertical"} />
+                                        <UploadFileGrid variant={gridVariant} />
                                     </ScrollArea>
                                 </TabsContent>
                                 <TabsContent>
                                     <ScrollArea>
-                                        <UploadFileGrid variant={"vertical"} />
+                                        <UploadFileGrid variant={gridVariant} />
                                     </ScrollArea>
                                 </TabsContent>
                             </TabsBody>

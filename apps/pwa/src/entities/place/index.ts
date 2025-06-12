@@ -9,4 +9,5 @@ export type PlaceLocationEntity = {
     primaryTypeDisplayName: string;
     formattedAddress: string;
     googleMapsUri: string;
+    bbox?: [number, number, number, number]
 };

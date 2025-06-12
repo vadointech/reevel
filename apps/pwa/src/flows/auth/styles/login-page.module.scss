@@ -1,10 +1,9 @@
-@use "@/theme/fonts";
 @use "@/theme/colors";
 @use "@/theme/mixins";
+@use "@/theme/typography";
 
 .page {
     height: 100%;
-
     position: relative;
 
     &:before {
@@ -19,31 +18,31 @@
 }
 
 .content {
-    z-index: 1;
     position: absolute;
+    z-index: 1;
     left: 0;
     right: 0;
     bottom: 0;
 
-    &__buttons {
-        display: flex;
-        flex-direction: column;
-        row-gap: 1rem;
-    }
+    display: flex;
+    flex-direction: column;
+    row-gap: 4rem;
 
     &__info {
         display: flex;
         flex-direction: column;
         align-items: center;
-
-        margin-bottom: mixins.rem(64);
     }
 
     &__title {
         margin-bottom: 1rem;
+        text-align: center;
+        @include typography.font("4xl", 500);
     }
 
     &__subtitle {
-        margin-bottom: 2rem;
+        @include typography.font("sm");
+        color: colors.$secondary;
+        text-align: center;
     }
 }

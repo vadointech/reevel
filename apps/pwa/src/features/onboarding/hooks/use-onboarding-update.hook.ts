@@ -1,10 +1,12 @@
 "use client";
 
-import { IOnboardingStore, useOnboardingProgress, useOnboardingStore } from "@/features/onboarding";
+import { useOnboardingProgress } from "./use-onboarding-progress.hook";
 import { UpdateProfile, updateProfile } from "@/api/profile/update-profile";
 import { useMutation } from "@tanstack/react-query";
 import { revalidateCachedTag } from "@/features/cache";
 import { GetSession } from "@/api/auth/get-session";
+import { useOnboardingStore } from "../onboarding.store";
+import { IOnboardingStore } from "../types";
 
 export function useOnboardingUpdate() {
     const onboardingStore = useOnboardingStore();

@@ -34,6 +34,6 @@ export const GetPlacesByCoordinatesQueryBuilder: QueryBuilder<GetPlacesByCoordin
     };
 };
 
-GetPlacesByCoordinatesQueryBuilder.queryKey = (params) => {
+GetPlacesByCoordinatesQueryBuilder.queryKey = (params = []) => {
     return [...GetPlaceByCoordinates.queryKey, ...params];
 };

@@ -63,7 +63,7 @@ export const SearchLocationQueryBuilder: QueryBuilder<SearchLocationQueryBuilder
     };
 };
 
-SearchLocationQueryBuilder.queryKey = (params) => {
+SearchLocationQueryBuilder.queryKey = (params = []) => {
     return [...SearchLocations.queryKey, ...params];
 };
 

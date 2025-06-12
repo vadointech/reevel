@@ -8,13 +8,21 @@
     padding: 1rem mixins.rem(18);
     border-radius: mixins.rem(17);
 
-    display: flex;
-    flex-direction: column;
-    gap: 2rem;
+    &_spacing {
+        &_gap {
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+        }
 
-    & > * {
-        &:last-child {
-            margin-bottom: 0 !important;
+        &_padding {
+            & > * {
+                padding-bottom: 2rem;
+
+                &:last-child {
+                    padding-bottom: 0;
+                }
+            }
         }
     }
 }

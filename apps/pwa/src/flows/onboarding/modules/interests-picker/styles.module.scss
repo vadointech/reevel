@@ -1,8 +1,6 @@
 @use "@/theme/mixins";
 
 .picker {
-    margin-top: mixins.rem(32);
-
     display: flex;
     flex-wrap: wrap;
     align-items: center;

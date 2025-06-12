@@ -3,6 +3,7 @@ import { Container } from "@/components/ui";
 import { OnboardingTextBlock } from "../modules/text-block";
 import { OnboardingProgressBar } from "../modules/progress";
 import { OnboardingEnterLocationManually, OnboardingLocationRequest } from "../modules/location-picker";
+import { ButtonsBlock } from "@/components/shared/_redesign";
 
 import styles from "../styles/location-access-request-page.module.scss";
 
@@ -13,13 +14,9 @@ export namespace OnboardingLocationAccessRequestPage {
 export function OnboardingLocationAccessRequestPage() {
     return (
         <>
+            <OnboardingProgressBar step={3} />
             <Container>
-                <OnboardingProgressBar step={3} />
-            </Container>
-            <Container>
-                <div
-                    className={styles.icon}
-                >
+                <div className={styles.icon}>
                     <span>
                         📍
                     </span>
@@ -27,15 +24,13 @@ export function OnboardingLocationAccessRequestPage() {
                 <OnboardingTextBlock
                     title={"What is Your Location?"}
                     subtitle={"To find nearby events share your location with us"}
-                    className={styles.page__text}
                 />
             </Container>
 
-
-            <Container className={styles.page__buttons}>
+            <ButtonsBlock>
                 <OnboardingEnterLocationManually />
                 <OnboardingLocationRequest />
-            </Container>
+            </ButtonsBlock>
         </>
     );
 }

@@ -61,6 +61,6 @@ export const GetNearbyPlacesQueryBuilder: QueryBuilder<GetNearbyPlacesQueryBuild
     };
 };
 
-GetNearbyPlacesQueryBuilder.queryKey = (params: unknown[] = []) => {
+GetNearbyPlacesQueryBuilder.queryKey = (params = []) => {
     return [...GetNearbyPlaces.queryKey, ...params];
 };

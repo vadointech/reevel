@@ -4,7 +4,7 @@ import {
     GooglePlacesApiRestrictionRectangle,
 } from "@/api/google/places/types";
 import { fetcherClient } from "@/api/fetcher-client";
-import { FetcherResponse } from "@/lib/fetcher/types";
+import { FetcherResponse } from "@/lib/fetcher/response";
 import { getGooglePlacesApiFieldMask } from "@/api/google/places/_internal/field-mask";
 
 export namespace SearchLocations {

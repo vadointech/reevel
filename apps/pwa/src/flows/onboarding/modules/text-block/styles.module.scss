@@ -8,8 +8,7 @@
     &__title {
         margin-bottom: spacing.spacing("md");
 
-        @include typography.font("2xl");
-        font-weight: bold;
+        @include typography.font("3xl", 700);
         color: colors.$primary;
     }
 

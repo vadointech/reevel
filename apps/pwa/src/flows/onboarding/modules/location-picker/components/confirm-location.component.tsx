@@ -1,8 +1,8 @@
 "use client";
 
-import { Button } from "@/components/ui";
-import { ArrowBack } from "@/components/icons";
-import { useOnboardingUpdate } from "@/features/onboarding";
+import { ArrowNext } from "@/components/icons";
+import { Button } from "@/components/shared/_redesign";
+import { useOnboardingUpdate } from "@/features/onboarding/hooks";
 
 export const OnboardingConfirmLocation = () => {
 
@@ -12,8 +12,8 @@ export const OnboardingConfirmLocation = () => {
 
     return (
         <Button
-            variant={"primary"}
-            iconAfter={<ArrowBack />}
+            variant={"accent"}
+            arrowAfter={<ArrowNext />}
             onClick={handleUpdateProfile}
         >
             Yes, browse events

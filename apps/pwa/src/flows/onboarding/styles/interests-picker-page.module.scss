@@ -1,17 +1,18 @@
 @use "@/theme/colors";
 @use "@/theme/mixins";
+@use "@/theme/spacing";
+
 
 .page {
-    &__info {
+    &__content {
         margin-top: mixins.rem(48);
-    }
 
-    &__buttons {
-        position: sticky;
-        bottom: 0;
-
+        flex: 1;
         display: flex;
-        justify-content: center;
         flex-direction: column;
+        row-gap: 2rem;
+        overflow: hidden;
+
+        padding-inline: spacing.$container;
     }
 }

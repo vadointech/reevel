@@ -10,8 +10,6 @@ export namespace InterestCard {
     };
 }
 
-
-
 export const InterestCard = memo(({
     icon,
     text,
@@ -26,15 +24,13 @@ export const InterestCard = memo(({
                 className,
             )}
         >
-
             <div className={styles.label__wrapper}>
                 <input
-                    type="checkbox"
-                    className={styles.label__input}
+                    type={"checkbox"}
                     checked={selected}
                     {...props}
                 />
-                <p className={styles.icon}>{icon}</p>
+                <span className={styles.icon}>{icon}</span>
             </div>
 
             <span className={styles.text}>{text}</span>

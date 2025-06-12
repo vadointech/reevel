@@ -21,6 +21,6 @@ export const SearchInterestsQueryBuilder: QueryBuilder<SearchInterestsQueryBuild
     };
 };
 
-SearchInterestsQueryBuilder.queryKey = (params) => {
+SearchInterestsQueryBuilder.queryKey = (params = []) => {
     return [...GetInterestsByTitle.queryKey, ...params];
 };

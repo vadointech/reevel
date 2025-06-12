@@ -8,7 +8,7 @@ import { uploadEventPoster, UploadEventPoster } from "@/api/event/upload-poster"
 import { useFormContext } from "react-hook-form";
 import { CreateEventFormSchemaValues } from "@/features/event/create";
 import { revalidateCachedTag } from "@/features/cache";
-import { GetUserUploads } from "../../../../api/user/uploads/get-uploads";
+import { GetUserUploads } from "@/api/user/uploads";
 
 type Params = Partial<Omit<UseMutationOptions<UploadEventPoster.TOutput, unknown, UploadEventPoster.TInput>, "mutationFn">> & {
     callbackUrl?: string;
@@ -26,7 +26,10 @@ export function useCreateEventPosterUpload(params: Params = {}) {
         ...params,
         onSuccess: (data, ...args) => {
             if(data && data[0]) {
-                form.setValue("poster", data[0].fileUrl);
+                form.setValue("poster", {
+                    id: data[0].id,
+                    fileUrl: data[0].fileUrl,
+                });
                 form.setValue("primaryColor", data[0].colorPalette[0]);
                 revalidateCachedTag(GetUserUploads.queryKey);
             }

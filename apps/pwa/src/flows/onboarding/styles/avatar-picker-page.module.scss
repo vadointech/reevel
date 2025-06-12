@@ -1,17 +1,12 @@
 @use "@/theme/mixins";
+@use "@/theme/spacing";
 @use "@/theme/colors";
 
-.page {
-    &__text {
-        margin-bottom: mixins.rem(32);
-    }
+.text {
+    margin-bottom: mixins.rem(32);
+}
 
-    &__buttons {
-        z-index: 1;
-
-        background: colors.$background;
-        display: flex;
-        flex-direction: column;
-        row-gap: 1rem;
-    }
+.buttons {
+    z-index: 1;
+    background: colors.$background;
 }

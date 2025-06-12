@@ -1,5 +1,4 @@
 import { MapProviderCameraState } from "./camera";
-import { MapProviderGL } from "./gl";
 import { MapInternalConfig } from "@/components/shared/map/types";
 
 export interface IMapHandlers {

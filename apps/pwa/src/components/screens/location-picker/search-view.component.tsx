@@ -18,16 +18,16 @@ import { useLocationPickerSearch } from "@/features/location/picker/hooks";
 
 import { useLocationPicker } from "@/features/location/picker";
 
-import { GooglePlacesApiResponse } from "@/api/google/places/types";
-import { googlePlacesApiResponseMapper } from "@/infrastructure/google/mappers";
+import { placeLocationEntityMapper } from "@/entities/place/mapper";
 
 import { IconPoint, Point } from "@/components/shared/map/types";
+import { PlaceLocationEntity } from "@/entities/place";
 
 import styles from "./styles.module.scss";
 
 export namespace LocationSearch {
     export type Props = ComponentProps<"div"> & {
-        placesInit: GooglePlacesApiResponse;
+        placesInit: PlaceLocationEntity[];
     };
     export type ListProps = {
         points?: Point<IconPoint>[] | null;
@@ -41,7 +41,7 @@ export const LocationSearch = ({ placesInit }: LocationSearch.Props) => {
     const { searchStore, config } = useLocationPicker();
 
     const recommendedPoints = useMemo(() => {
-        return googlePlacesApiResponseMapper.toIconPoint(placesInit);
+        return placeLocationEntityMapper.toIconPoint(placesInit);
     }, [placesInit]);
 
     const {
@@ -59,7 +59,7 @@ export const LocationSearch = ({ placesInit }: LocationSearch.Props) => {
             <SearchScreenContent>
 
                 {
-                    placesInit.places.length > 0 && (
+                    placesInit.length > 0 && (
                         <RecommendedList
                             points={recommendedPoints}
                             onLocationPick={handleLocationPick}

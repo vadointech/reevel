@@ -1,26 +1,16 @@
 @use "@/theme/colors";
 @use "@/theme/mixins";
 
-.page {
-    &__buttons {
-        background: colors.$background;
-        display: flex;
-        flex-direction: column;
-        row-gap: 1rem;
-    }
-    &__text {
-        margin-top: mixins.rem(32);
-    }
-}
-
 .icon {
     width: mixins.rem(140);
     height: mixins.rem(140);
 
-    background-color: colors.$background-muted;
+    background-color: colors.$foreground;
     border-radius: 100%;
 
-    margin: 0 auto;
+    justify-self: center;
+    margin-bottom: mixins.rem(32);
+
     display: flex;
     align-items: center;
     justify-content: center;
