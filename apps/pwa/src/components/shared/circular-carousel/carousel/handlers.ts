@@ -1,10 +1,9 @@
 import { Carousel } from "./types";
 
-export const onPointerUp = ({ api, wheel }: Carousel) => {
+export const onPointerUp = ({ api }: Carousel) => {
     const { scrollTo, target, location } = api.internalEngine();
     const diffToTarget = target.get() - location.get();
-    const factor = Math.abs(diffToTarget) < wheel.itemWidth / 2.5 ? 10 : 0.1;
-    const distance = diffToTarget * factor;
+    const distance = diffToTarget * 0.1;
     scrollTo.distance(distance, true);
 };
 
