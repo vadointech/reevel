@@ -1,1 +1,1 @@
-export * from "./appearance-drawer.module"
+export * from "./appearance-drawer.module";

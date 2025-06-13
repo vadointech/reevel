@@ -1,4 +1,4 @@
-import { Button } from "@/components/shared/_redesign";
+import { Button } from "@/components/ui";
 
 import styles from "../styles.module.scss";
 import cx from "classnames";

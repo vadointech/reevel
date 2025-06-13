@@ -5,18 +5,20 @@ import { observer } from "mobx-react-lite";
 import { AnimatePresence, HTMLMotionProps, motion } from "motion/react";
 
 import { useMotionRef } from "@/lib/motion";
+import { useLocationPickerSearch } from "@/features/location/picker/hooks";
+import { useLocationPicker } from "@/features/location/picker";
 
-import { OptionsList, OptionsListItem, Section } from "@/components/shared/_redesign";
 import {
     SearchScreen,
     SearchScreenContent,
     SearchScreenSearchBar,
     SearchScreenLoadMoreButton,
 } from "@/components/screens/search";
-import { IconLocation } from "@/components/icons";
-import { useLocationPickerSearch } from "@/features/location/picker/hooks";
 
-import { useLocationPicker } from "@/features/location/picker";
+import { IconLocation } from "@/components/icons";
+import { Section } from "@/components/sections";
+import { OptionsList, OptionsListItem } from "@/components/ui";
+
 
 import { placeLocationEntityMapper } from "@/entities/place/mapper";
 

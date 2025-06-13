@@ -1,9 +1,9 @@
 import { headers } from "next/headers";
 import { getGoogleOAuthLink } from "@/api/auth/get-google-oauth-link";
+
 import { IconApple, IconGoogle } from "@/components/icons";
+import { Button, ButtonsBlock, Container } from "@/components/ui";
 import { AuthCarousel } from "@/flows/auth/modules/carousel";
-import { Button, ButtonsBlock } from "@/components/shared/_redesign";
-import { Container } from "@/components/ui";
 
 import styles from "../styles/login-page.module.scss";
 

@@ -1,11 +1,12 @@
-import { Container } from "@/components/ui";
+import { headers } from "next/headers";
+
+import { getUserUploads } from "@/api/user/uploads";
+
 import { OnboardingProgressBar, OnboardingNextStepButton } from "../modules/progress";
 import { OnboardingAvatarPickerCarousel, OnboardingPhotoUploader } from "../modules/avatar-picker";
 import { OnboardingTextBlock } from "../modules/text-block";
-import { ButtonsBlock } from "@/components/shared/_redesign";
+import { ButtonsBlock, Container } from "@/components/ui";
 
-import { getUserUploads } from "@/api/user/uploads";
-import { headers } from "next/headers";
 import { SupportedFileCollections } from "@/entities/uploads";
 
 import styles from "../styles/avatar-picker-page.module.scss";

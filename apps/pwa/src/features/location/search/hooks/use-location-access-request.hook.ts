@@ -2,7 +2,7 @@
 
 import { useCallback } from "react";
 import { useQueryClient } from "@tanstack/react-query";
-import { QueryBuilderQuery } from "@/types/query";
+import { QueryBuilderQuery } from "@/lib/react-query/types";
 
 interface IQueryBuilderResponse {
     id: string;

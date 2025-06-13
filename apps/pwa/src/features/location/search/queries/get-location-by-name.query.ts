@@ -1,8 +1,9 @@
-import { QueryBuilder } from "@/types/common";
 import { FetchQueryOptions } from "@tanstack/react-query";
-import { getPlaceByName, GetPlaceByName } from "@/api/mapbox/v6/get-location-by-name";
+import { getPlaceByName, GetPlaceByName } from "@/api/mapbox/get-location-by-name";
 import { mapboxFeaturesResponseMapper } from "@/infrastructure/mapbox/mappers";
+
 import { PlaceLocationEntity } from "@/entities/place";
+import { QueryBuilderQuery } from "@/lib/react-query";
 
 export namespace GetLocationByNameQueryBuilder {
     export type TInput = Omit<GetPlaceByName.TParams, "q" | "access_token"> & {
@@ -12,7 +13,7 @@ export namespace GetLocationByNameQueryBuilder {
     };
 }
 
-export const GetLocationByNameQueryBuilder: QueryBuilder<GetLocationByNameQueryBuilder.TInput, PlaceLocationEntity[]> = (
+export const GetLocationByNameQueryBuilder: QueryBuilderQuery<GetLocationByNameQueryBuilder.TInput, PlaceLocationEntity[]> = (
     { signal, ...input }: GetLocationByNameQueryBuilder.TInput,
 ): FetchQueryOptions<PlaceLocationEntity[]> => {
     return {

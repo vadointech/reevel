@@ -1,1 +1,1 @@
-export * from "./language-drawer.component"
+export * from "./language-drawer.component";

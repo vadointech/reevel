@@ -5,7 +5,9 @@ import { observer } from "mobx-react-lite";
 import { useInterestsPickerContext } from "@/features/interests/picker";
 import { useInterestsPicker, useInterestsSearch, useRelatedInterests } from "@/features/interests/picker/hooks";
 
-import { Button, Checkbox, OptionsList, OptionsListItem, Section } from "@/components/shared/_redesign";
+import { Section } from "@/components/sections";
+import { Button, Checkbox, OptionsList, OptionsListItem } from "@/components/ui";
+
 import { InterestEntity } from "@/entities/interests";
 
 import styles from "@/components/screens/search/styles.module.scss";

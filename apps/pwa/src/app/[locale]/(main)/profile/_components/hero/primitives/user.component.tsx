@@ -1,22 +1,24 @@
 "use client";
 
-import { ComponentProps } from "react";
-
-import styles from "../styles.module.scss";
 import { motion, useTransform } from "motion/react";
-import { Avatar } from "@/components/shared/_redesign";
-import { IconLocation, IconVerified } from "@/components/icons";
+
+import { useProfileContentDragYProgress } from "../../motion-values";
+
 import {
     PROFILE_PAGE_COVER_HEIGHT,
     PROFILE_PAGE_HEADER_HEIGHT,
-} from "@/app/[locale]/(main)/profile/_components/config";
-import { useProfileContentDragYProgress } from "@/app/[locale]/(main)/profile/_components/motion-values";
+} from "../../config";
+
+import { IconLocation, IconVerified } from "@/components/icons";
+
+import styles from "../styles.module.scss";
+import { Avatar } from "@/components/ui";
 
 export namespace ProfileHeroUser {
-    export type Props = ComponentProps<"div">;
+    export type Props = never;
 }
 
-export const ProfileHeroUser = ({ ...props }: ProfileHeroUser.Props) => {
+export const ProfileHeroUser = () => {
     const profileContentDragYPx = useProfileContentDragYProgress();
 
     const avatarScale = useTransform(
@@ -101,9 +103,7 @@ export const ProfileHeroUser = ({ ...props }: ProfileHeroUser.Props) => {
                 }}
                 className={styles.hero__avatar}
             >
-                <Avatar
-                    image={"/assets/temp/avatar.png"}
-                />
+                <Avatar image={"/assets/temp/avatar.png"} />
             </motion.div>
             <motion.div
                 style={{

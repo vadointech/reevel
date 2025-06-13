@@ -3,7 +3,7 @@ import { Container } from "@/components/ui";
 import { OnboardingTextBlock } from "../modules/text-block";
 import { OnboardingProgressBar } from "../modules/progress";
 import { OnboardingEnterLocationManually, OnboardingLocationRequest } from "../modules/location-picker";
-import { ButtonsBlock } from "@/components/shared/_redesign";
+import { ButtonsBlock } from "@/components/ui";
 
 import styles from "../styles/location-access-request-page.module.scss";
 

@@ -1,4 +1,4 @@
-import { MapboxBatchFeaturesResponse } from "@/api/mapbox/v6/types";
+import { MapboxBatchFeaturesResponse } from "@/api/mapbox/types";
 import { PlaceLocationEntity } from "@/entities/place";
 
 export class MapboxBatchFeaturesResponseMapper<T extends MapboxBatchFeaturesResponse = MapboxBatchFeaturesResponse> {

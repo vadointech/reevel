@@ -1,9 +1,11 @@
 import { PropsWithChildren } from "react";
-import { getUserProfile } from "@/api/profile/get-one";
 import { headers } from "next/headers";
 import { redirect } from "@/i18n/routing";
+
+import { getUserProfile } from "@/api/profile";
 import { OnboardingStoreProvider } from "@/features/onboarding";
 import { ImageUploaderProvider } from "@/features/uploader/image";
+
 import { Locale } from "@/types/common";
 
 import styles from "../styles/root-layout.module.scss";

@@ -1,17 +1,18 @@
 import { useCallback, useEffect, useMemo, useRef } from "react";
 
 import { useQueryClient } from "@tanstack/react-query";
-
-import { useLocationPicker } from "../location-picker.context";
-import { GetNearbyPlacesQueryBuilder } from "../queries";
-
 import { usePersistentMap } from "@/components/shared/map";
-import { useLocationAccess } from "./use-location-access.hook";
+import { useLocationPicker } from "../location-picker.context";
+import { useLocationAccessRequest } from "@/features/location/search/hooks";
+
+import { GetNearbyPlacesQueryBuilder } from "../queries";
+import { GetLocationByCoordinatesQueryBuilder } from "@/features/location/search/queries";
+
 
 import { placeLocationEntityMapper } from "@/entities/place/mapper";
 
 import { Point, IconPoint, MapInternalConfig } from "@/components/shared/map/types";
-import { IBottomSheetRootController } from "@/components/shared/_redesign/bottom-sheet/types";
+import { IBottomSheetRootController } from "@/components/shared/bottom-sheet/types";
 import { PlaceLocationEntity } from "@/entities/place";
 
 export function useConfirmationDrawer(placesInit: PlaceLocationEntity[]) {
@@ -155,7 +156,12 @@ export function useConfirmationDrawer(placesInit: PlaceLocationEntity[]) {
         confirmationStore.setPoint(null);
     };
 
-    const { handleRequestLocationAccess } = useLocationAccess({
+    const { handleRequestLocationAccess } = useLocationAccessRequest({
+        queryBuilder: GetLocationByCoordinatesQueryBuilder({
+            accessToken: map.provider.current.internalConfig.accessToken,
+            types: "place",
+            language: "uk",
+        }),
         onSuccess: (place) => {
             const [point] = placeLocationEntityMapper.toIconPoint([place]);
             if(!point) return;

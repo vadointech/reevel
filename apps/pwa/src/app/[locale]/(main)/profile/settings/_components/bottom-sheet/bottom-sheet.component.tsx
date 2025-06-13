@@ -1,6 +1,6 @@
 "use client";
 
-import { PropsWithChildren, ReactNode, MouseEvent } from "react";
+import { PropsWithChildren, ReactNode } from "react";
 
 import {
     BottomSheetBody,
@@ -9,10 +9,9 @@ import {
     BottomSheetPortal,
     BottomSheetRoot,
     BottomSheetTrigger,
-} from "@/components/shared/_redesign/bottom-sheet";
-import { Header } from "@/components/shared/_redesign";
+} from "@/components/shared/bottom-sheet";
 
-import { Container } from "@/components/ui";
+import { Container, Header } from "@/components/ui";
 import { UISize } from "@/types/common";
 
 import styles from "./styles.module.scss";

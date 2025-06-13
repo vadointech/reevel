@@ -1,11 +1,13 @@
-import { QueryBuilder } from "@/types/common";
 import { FetchQueryOptions } from "@tanstack/react-query";
 import { searchLocations, SearchLocations } from "@/api/google/places/search";
-import { MapProviderGL } from "@/components/shared/map/types";
-import { GooglePlacesApiRestrictionRectangle } from "@/api/google/places/types";
+
 import { googlePlacesApiResponseTransformer } from "@/infrastructure/google/transformers";
-import { PlaceLocationEntity } from "@/entities/place";
 import { googlePlacesApiResponseMapper } from "@/infrastructure/google/mappers";
+
+import { PlaceLocationEntity } from "@/entities/place";
+import { MapProviderGL } from "@/components/shared/map/types";
+import { IQueryBuilderMethods, QueryBuilderQuery } from "@/lib/react-query";
+import { GooglePlacesApiRestrictionRectangle } from "@/api/google/places/types";
 
 export namespace SearchLocationQueryBuilder {
     export type TInput = {
@@ -14,14 +16,17 @@ export namespace SearchLocationQueryBuilder {
         locationRestrictions?: GooglePlacesApiRestrictionRectangle;
     };
 
-    export type TOutput = PlaceLocationEntity[];
-
-    export type Methods = {
-        getLocationRestrictions: (bounds?: MapProviderGL.LngLatBounds) => GooglePlacesApiRestrictionRectangle | undefined
+    export type TOutput = {
+        nextPageToken?: string;
+        places: PlaceLocationEntity[]
     };
+
+    export interface Methods extends IQueryBuilderMethods {
+        getLocationRestrictions: (bounds?: MapProviderGL.LngLatBounds) => GooglePlacesApiRestrictionRectangle | undefined
+    }
 }
 
-export const SearchLocationQueryBuilder: QueryBuilder<SearchLocationQueryBuilder.TInput, SearchLocationQueryBuilder.TOutput, SearchLocationQueryBuilder.Methods> = ({
+export const SearchLocationQueryBuilder: QueryBuilderQuery<SearchLocationQueryBuilder.TInput, SearchLocationQueryBuilder.TOutput, SearchLocationQueryBuilder.Methods> = ({
     query,
     nextPageToken,
     locationRestrictions,
@@ -59,7 +64,12 @@ export const SearchLocationQueryBuilder: QueryBuilder<SearchLocationQueryBuilder
         })
             .then(response => response.data || { places: [] })
             .then(googlePlacesApiResponseTransformer.formatAddress)
-            .then(googlePlacesApiResponseMapper.toPlaceLocationEntity),
+            .then((response) => {
+                return {
+                    nextPageToken: response.nextPageToken,
+                    places: googlePlacesApiResponseMapper.toPlaceLocationEntity(response),
+                };
+            }),
     };
 };
 

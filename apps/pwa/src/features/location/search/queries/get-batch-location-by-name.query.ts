@@ -1,8 +1,8 @@
-import { QueryBuilder } from "@/types/common";
 import { FetchQueryOptions } from "@tanstack/react-query";
 import { mapboxBatchFeaturesResponseMapper } from "@/infrastructure/mapbox/mappers";
+import { GetBatchPlaceByName, getBatchPlaceByName } from "@/api/mapbox/get-batch-location-by-name";
 import { PlaceLocationEntity } from "@/entities/place";
-import { GetBatchPlaceByName, getBatchPlaceByName } from "@/api/mapbox/v6/get-batch-location-by-name";
+import { QueryBuilderQuery } from "@/lib/react-query";
 
 export namespace GetBatchLocationByNameQueryBuilder {
     export type TInput = {
@@ -12,7 +12,7 @@ export namespace GetBatchLocationByNameQueryBuilder {
     };
 }
 
-export const GetBatchLocationByNameQueryBuilder: QueryBuilder<GetBatchLocationByNameQueryBuilder.TInput, PlaceLocationEntity[]> = (
+export const GetBatchLocationByNameQueryBuilder: QueryBuilderQuery<GetBatchLocationByNameQueryBuilder.TInput, PlaceLocationEntity[]> = (
     { signal, ...input }: GetBatchLocationByNameQueryBuilder.TInput,
 ): FetchQueryOptions<PlaceLocationEntity[]> => {
     return {

@@ -1,13 +1,10 @@
 import { ProfileHero, ProfilePageContent, ProfilePageHeader, ProfilePageLayout } from "./_components";
 
-import { Container } from "@/components/ui";
+import { Button, Container, EventCard, InterestButton } from "@/components/ui";
 import { ReviewsSection, ScrollSection } from "@/components/sections";
-import { Button, InterestButton } from "@/components/shared/_redesign";
-import { EventCard } from "@/components/shared/event-card";
 
 import styles from "./styles.module.scss";
 import cx from "classnames";
-import { UploadDrawer } from "@/components/drawers/upload";
 
 export default function PrivateProfilePage() {
     return (
@@ -31,11 +28,9 @@ export default function PrivateProfilePage() {
                             styles.content__gap,
                         )}
                     >
-                        <UploadDrawer>
-                            <Button variant={"secondary-muted"} size={"small"}>
-                                Edit profile
-                            </Button>
-                        </UploadDrawer>
+                        <Button variant={"secondary-muted"} size={"small"}>
+                            Edit profile
+                        </Button>
                         <Button variant={"secondary-muted"} size={"small"}>
                             Share profile
                         </Button>

@@ -1,8 +1,5 @@
 import { Context, createContext, PropsWithChildren, useContext, useEffect } from "react";
-
-interface IStore {
-    dispose(): void;
-}
+import { IMobxStore } from "./types";
 
 export function createMobxStore<Store extends object>(
     StoreClass: new () => Store,
@@ -14,7 +11,7 @@ export function createMobxStore<Store extends object>(
     return [useStoreContext] as const;
 }
 
-export function createMobxStoreProvider<Store extends IStore, Args extends unknown[]>(
+export function createMobxStoreProvider<Store extends IMobxStore, Args extends unknown[]>(
     StoreClass: new (...args: Args) => Store,
 ) {
     const StoreContext = createContext<Store | null>(null);

@@ -1,10 +1,13 @@
-"use client"
+"use client";
 
-import { OptionsList, OptionsListItem } from "@/components/shared/_redesign"
-import { Back, IconDark, IconWorld } from "@/components/icons"
-import { ProfileSettingsBottomSheet, ProfileSettingsBottomSheetContent, ProfileSettingsBottomSheetTrigger } from "../../bottom-sheet"
-import { AppearanceContent } from "./primitives/appearance-content.component";
-
+import { OptionsList, OptionsListItem } from "@/components/ui";
+import { Back, IconDark } from "@/components/icons";
+import {
+    ProfileSettingsBottomSheet,
+    ProfileSettingsBottomSheetContent,
+    ProfileSettingsBottomSheetTrigger,
+} from "../../bottom-sheet";
+import { AppearanceContent } from "./primitives";
 
 export namespace AppearanceDrawer {
     export type Props = never;
@@ -32,6 +35,6 @@ export const AppearanceDrawer = () => {
                 <AppearanceContent />
             </ProfileSettingsBottomSheetContent>
         </ProfileSettingsBottomSheet>
-    )
-}
+    );
+};
 

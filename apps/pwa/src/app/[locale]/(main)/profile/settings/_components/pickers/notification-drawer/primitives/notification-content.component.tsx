@@ -1,21 +1,19 @@
-"use client"
+"use client";
 
-import { ComponentProps } from "react"
+import { useNotificationDrawer } from "@/features/profile/settings/hooks";
 
-import styles from "../styles.module.scss"
-import { OptionsList, OptionsListItem } from "@/components/shared/_redesign"
-import { Toggle } from "@/components/shared/toggle"
-import { useNotificationDrawer } from "@/features/profile/settings/hooks"
-import { Checkbox } from "@/components/shared/checkbox"
+import { OptionsList, OptionsListItem, Checkbox, Toggle } from "@/components/ui";
 
-import cx from "classnames"
+import styles from "../styles.module.scss";
+
+import cx from "classnames";
 
 export namespace NotificationContent {
-    export type Props = ComponentProps<"div">
+    export type Props = never;
 }
 
-export const NotificationContent = ({ ...props }: NotificationContent.Props) => {
-    const { settings, handleSettingChange } = useNotificationDrawer()
+export const NotificationContent = () => {
+    const { settings, handleSettingChange } = useNotificationDrawer();
 
     return (
         <>
@@ -25,7 +23,7 @@ export const NotificationContent = ({ ...props }: NotificationContent.Props) => 
                     description="Disable all notifications from this app."
                     contentRight={
                         <Toggle
-                            setToggled={() => handleSettingChange('blocked', !settings.blocked)}
+                            setToggled={() => handleSettingChange("blocked", !settings.blocked)}
                             toggled={settings.blocked}
                         />
                     }
@@ -33,15 +31,15 @@ export const NotificationContent = ({ ...props }: NotificationContent.Props) => 
                 </OptionsListItem>
             </OptionsList>
             <OptionsList className={cx(
-                settings.blocked && styles.options_blured
+                settings.blocked && styles.options_blured,
             )}>
                 <OptionsListItem
                     label="Recommendations"
                     description="You've got 3 new events in your city"
                     contentRight={
                         <Checkbox
-                            setSelected={() => handleSettingChange('recommendations', !settings.recommendations)}
-                            selected={settings.recommendations}
+                            onChange={() => handleSettingChange("recommendations", !settings.recommendations)}
+                            checked={settings.recommendations}
                         />
                     }
                 >
@@ -52,13 +50,13 @@ export const NotificationContent = ({ ...props }: NotificationContent.Props) => 
                     description="Your subscription expires in 7 days"
                     contentRight={
                         <Checkbox
-                            setSelected={() => handleSettingChange('expiredNotification', !settings.expiredNotification)}
-                            selected={settings.expiredNotification}
+                            onChange={() => handleSettingChange("expiredNotification", !settings.expiredNotification)}
+                            checked={settings.expiredNotification}
                         />
                     }
                 >
                 </OptionsListItem>
             </OptionsList>
         </>
-    )
-}
+    );
+};

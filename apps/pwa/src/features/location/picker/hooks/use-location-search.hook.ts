@@ -1,13 +1,16 @@
 import { useCallback, useEffect, useMemo, useRef } from "react";
-import { useRouter } from "@/i18n/routing";
-import { useLocationPicker } from "@/features/location/picker";
-import { googlePlacesApiResponseMapper } from "@/infrastructure/google/mappers";
-import { usePersistentMap } from "@/components/shared/map";
 import { useQueryClient } from "@tanstack/react-query";
-import { SearchLocationQueryBuilder } from "@/features/location/picker/queries";
 import { IReactionDisposer, reaction } from "mobx";
+import { useRouter } from "@/i18n/routing";
+
+import { useLocationPicker } from "@/features/location/picker";
+import { usePersistentMap } from "@/components/shared/map";
+
+import { SearchLocationQueryBuilder } from "@/features/location/picker/queries";
+
+import { placeLocationEntityMapper } from "@/entities/place/mapper";
+
 import { RequestDebouncer } from "@/lib/debouncer";
-import { GooglePlacesApiResponse } from "@/api/google/places/types";
 import { IconPoint, Point } from "@/components/shared/map/types";
 
 export function useLocationPickerSearch() {
@@ -36,7 +39,7 @@ export function useLocationPickerSearch() {
         }, 700);
     }, [queryClient]);
 
-    const setSearchResults = (response?: GooglePlacesApiResponse) => {
+    const setSearchResults = (response?: SearchLocationQueryBuilder.TOutput) => {
         searchStore.setNextPageToken(response?.nextPageToken);
 
         if(response && response.places.length === 0) {
@@ -44,12 +47,12 @@ export function useLocationPickerSearch() {
             return;
         }
 
-        searchStore.setSearchResults(googlePlacesApiResponseMapper.toIconPoint(response));
+        searchStore.setSearchResults(placeLocationEntityMapper.toIconPoint(response?.places));
     };
 
-    const appendSearchResults = (response?: GooglePlacesApiResponse) => {
+    const appendSearchResults = (response?: SearchLocationQueryBuilder.TOutput) => {
         searchStore.setNextPageToken(response?.nextPageToken);
-        searchStore.appendSearchResults(googlePlacesApiResponseMapper.toIconPoint(response));
+        searchStore.appendSearchResults(placeLocationEntityMapper.toIconPoint(response?.places));
     };
 
     useEffect(() => {

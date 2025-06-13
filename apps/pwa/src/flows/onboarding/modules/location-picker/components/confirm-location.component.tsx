@@ -1,8 +1,9 @@
 "use client";
 
-import { ArrowNext } from "@/components/icons";
-import { Button } from "@/components/shared/_redesign";
 import { useOnboardingUpdate } from "@/features/onboarding/hooks";
+
+import { ArrowNext } from "@/components/icons";
+import { Button } from "@/components/ui";
 
 export const OnboardingConfirmLocation = () => {
 

@@ -2,13 +2,14 @@
 
 import { observer } from "mobx-react-lite";
 import { AnimatePresence, motion } from "motion/react";
-import { InterestCard } from "@/components/shared";
 
 import { useInterestsPickerContext } from "@/features/interests/picker";
 import { useInterestsPicker, useRelatedInterests } from "@/features/interests/picker/hooks";
-import { InterestEntity } from "@/entities/interests";
-
 import { useOnboardingStore } from "@/features/onboarding";
+
+import { InterestCard } from "@/components/ui";
+
+import { InterestEntity } from "@/entities/interests";
 
 import styles from "./styles.module.scss";
 

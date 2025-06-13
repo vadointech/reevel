@@ -1,13 +1,16 @@
 import { ComponentType } from "react";
 
-import { getCurrentUserInterests } from "@/api/user/get-interests";
 import { headers } from "next/headers";
-import { InterestEntity } from "@/entities/interests";
-import { getInitialInterests } from "@/api/interests";
-import { Header } from "@/components/shared/_redesign";
 import { Link } from "@/i18n/routing";
+
+import { getInitialInterests } from "@/api/interests";
+import { getCurrentUserInterests } from "@/api/user/get-interests";
+
+import { Header } from "@/components/ui";
 import { IconArrowLeft } from "@/components/icons";
+
 import { EventVisibility } from "@/entities/event";
+import { InterestEntity } from "@/entities/interests";
 
 import styles from "../styles/page.module.scss";
 

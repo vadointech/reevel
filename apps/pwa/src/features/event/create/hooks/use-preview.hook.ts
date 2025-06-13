@@ -10,7 +10,7 @@ import { createEventFormSchema, CreateEventFormSchemaValues } from "@/features/e
 import { indexedDbService } from "@/lib/indexed-db.service";
 import { useSessionStore } from "@/features/session";
 import { UserUploadsEntity } from "@/entities/uploads";
-import { IBottomSheetRootController } from "@/components/shared/_redesign/bottom-sheet/types";
+import { IBottomSheetRootController } from "@/components/shared/bottom-sheet/types";
 import { DeleteUploadedFile, deleteUploadedFile, GetUserUploads } from "@/api/user/uploads";
 import { revalidateCachedTag } from "@/features/cache";
 import { FetcherError } from "@/lib/fetcher/error";

@@ -1,20 +1,21 @@
-"use client"
+"use client";
 
-import { ComponentProps, useState } from "react"
-import { OptionsList, OptionsListItem } from "@/components/shared/_redesign"
-import { Checkbox } from "@/components/shared/checkbox"
-import { IconEngland, IconSystemCounty, IconUkraine } from "@/components/icons"
-import { Locale } from "@/types/common"
+import { useState } from "react";
+
+import { OptionsList, OptionsListItem, Checkbox } from "@/components/ui";
+import { IconEngland, IconSystemCounty, IconUkraine } from "@/components/icons";
+
+import { Locale } from "@/types/common";
 
 export namespace LanguageContent {
-    export type Language = Locale | 'system';
+    export type Language = Locale | "system";
 
-    export type Props = ComponentProps<"div">
+    export type Props = never;
 }
 
-export const LanguageContent = ({ ...props }: LanguageContent.Props) => {
+export const LanguageContent = () => {
 
-    const [selectedLanguage, setSelectedLanguage] = useState<LanguageContent.Language>('uk');
+    const [selectedLanguage, setSelectedLanguage] = useState<LanguageContent.Language>("uk");
 
     const handleLanguageSelect = (language: LanguageContent.Language) => {
         setSelectedLanguage(language);
@@ -26,12 +27,13 @@ export const LanguageContent = ({ ...props }: LanguageContent.Props) => {
                 <OptionsListItem
                     label="English"
                     contentLeft={<IconEngland width={22} height={22} />}
-                    contentRight={<Checkbox
-                        setSelected={() => handleLanguageSelect('en')}
-                        selected={selectedLanguage === 'en'}
-                    />}
+                    contentRight={
+                        <Checkbox
+                            onChange={() => handleLanguageSelect("en")}
+                            checked={selectedLanguage === "en"}
+                        />
+                    }
                     iconType="outlined"
-                    disabled={true}
                 />
 
                 <OptionsListItem
@@ -39,8 +41,8 @@ export const LanguageContent = ({ ...props }: LanguageContent.Props) => {
                     contentLeft={<IconUkraine width={22} height={22} />}
                     contentRight={
                         <Checkbox
-                            setSelected={() => handleLanguageSelect('uk')}
-                            selected={selectedLanguage === 'uk'}
+                            onChange={() => handleLanguageSelect("uk")}
+                            checked={selectedLanguage === "uk"}
                         />
                     }
                     iconType="outlined"
@@ -52,14 +54,13 @@ export const LanguageContent = ({ ...props }: LanguageContent.Props) => {
                     contentLeft={<IconSystemCounty width={22} height={22} />}
                     contentRight={
                         <Checkbox
-                            setSelected={() => handleLanguageSelect('system')}
-                            selected={selectedLanguage === 'system'}
+                            onChange={() => handleLanguageSelect("system")}
+                            checked={selectedLanguage === "system"}
                         />
                     }
                     iconType="outlined"
-                    disabled={true}
                 />
             </OptionsList>
         </>
-    )
-}
+    );
+};

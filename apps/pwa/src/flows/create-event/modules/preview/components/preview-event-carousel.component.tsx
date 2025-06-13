@@ -1,5 +1,7 @@
 import useEmblaCarousel from "embla-carousel-react";
+
 import { CreateEventPreviewCard } from "./preview-event-card.component";
+
 import { CreateEventFormSchemaValues } from "@/features/event/create";
 import { UserProfileEntity } from "@/entities/profile";
 

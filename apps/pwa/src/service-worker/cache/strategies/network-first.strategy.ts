@@ -30,7 +30,7 @@ export class NetworkFirst implements IStrategy {
                 // Race network against timeout
                 return await Promise.race([networkPromise, timeoutPromise]);
             } catch {
-                console.log(`Network request failed, falling back to cache for: ${event.request.url}`);
+                // console.log(`Network request failed, falling back to cache for: ${event.request.url}`);
                 return this.getFromCache(event.request, params);
             } finally {
                 if (timeoutId) {
@@ -38,11 +38,11 @@ export class NetworkFirst implements IStrategy {
                 }
             }
         } else {
-            // No timeout, simply try network with cache fallback
+            // No timeout, try network with cache fallback
             try {
                 return await networkPromise;
             } catch {
-                console.log(`Network request failed, falling back to cache for: ${event.request.url}`);
+                // console.log(`Network request failed, falling back to cache for: ${event.request.url}`);
                 return this.getFromCache(event.request, params);
             }
         }
@@ -59,8 +59,8 @@ export class NetworkFirst implements IStrategy {
                 .then(cache => {
                     this.cacheService.addOne(cache, request, responseClone, params);
                 })
-                .catch(error => {
-                    console.error(`Failed to cache response for: ${request.url}`, error);
+                .catch(() => {
+                    // console.error(`Failed to cache response for: ${request.url}`, error);
                 });
         }
 
@@ -76,7 +76,7 @@ export class NetworkFirst implements IStrategy {
             return cachedResponse;
         }
 
-        // If nothing in cache, throw error to be consistent with network failures
+        // If nothing in cache, throw an error to be consistent with network failures
         throw new Error(`No cached response found for: ${request.url}`);
     }
 }

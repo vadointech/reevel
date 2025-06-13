@@ -1,10 +1,13 @@
 "use client";
 
-import { Button } from "@/components/shared/_redesign";
-import { useOnboardingAvatarUploader } from "@/features/onboarding/hooks";
-import { UploadDrawer } from "@/components/drawers/upload";
-import { GetUserUploads } from "@/api/user/uploads";
 import { observer } from "mobx-react-lite";
+
+import { useOnboardingAvatarUploader } from "@/features/onboarding/hooks";
+
+import { UploadDrawer } from "@/components/drawers/upload";
+import { Button } from "@/components/ui";
+
+import { GetUserUploads } from "@/api/user/uploads";
 
 export namespace OnboardingPhotoUploader {
     export type Props = {

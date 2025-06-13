@@ -1,7 +1,7 @@
-import { getLocationByCoordinates, GetLocationByCoordinates } from "@/api/mapbox/v6/get-location-by-coords";
-import { PlaceLocationEntity } from "@/entities/place";
+import { getLocationByCoordinates, GetLocationByCoordinates } from "@/api/mapbox/get-location-by-coords";
 import { mapboxFeaturesResponseMapper } from "@/infrastructure/mapbox/mappers";
-import { QueryBuilder } from "@/types/query";
+import { PlaceLocationEntity } from "@/entities/place";
+import { QueryBuilder } from "@/lib/react-query/types";
 
 export namespace GetLocationByCoordinatesQueryBuilder {
     export type TInput = Omit<GetLocationByCoordinates.TParams, "access_token"> & {

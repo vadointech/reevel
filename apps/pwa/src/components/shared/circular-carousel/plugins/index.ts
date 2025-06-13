@@ -1,2 +1,2 @@
 export * from "./active-scale";
-export * from "./active-opacity"
+export * from "./active-opacity";

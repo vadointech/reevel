@@ -1,82 +1,46 @@
-@use "@/theme/mixins";
 @use "@/theme/colors";
+@use "@/theme/mixins";
 @use "@/theme/typography";
-
-
 
 .badge {
     display: flex;
     align-items: center;
     justify-content: center;
+    column-gap: mixins.rem(4);
 
     width: fit-content;
-    border-radius: 1rem;
+    border-radius: mixins.rem(76);
     border: mixins.rem(1) transparent solid;
 
-    &__size {
-        &_default {
-            height: mixins.rem(26);
-            padding-inline: mixins.rem(10);
-            gap: mixins.rem(4);
-            @include typography.font("xs");
-            line-height: 1;
-
-            svg {
-                width: mixins.rem(10);
-                height: mixins.rem(10);
-            }
-        }
-
+    &_size {
+        &_default {}
         &_small {
-            height: mixins.rem(22);
-            padding-inline: mixins.rem(6);
-            gap: mixins.rem(4);
+            height: mixins.rem(23);
+            padding-inline: mixins.rem(8);
+
             @include typography.font("xxs");
-            line-height: 1;
+
+            span {
+                margin-bottom: mixins.rem(-1.5);
+            }
 
             svg {
-                width: mixins.rem(10);
-                height: mixins.rem(10);
+                width: mixins.rem(11);
+                height: mixins.rem(11);
             }
+
         }
+        &_large {}
     }
 
-    &__variant {
+    &_variant {
+        &_default {}
         &_ghost {
             background-color: rgba(#F5F6F7, .4);
             border-color: rgba(#F5F6F7, .4);
             color: colors.$foreground;
             svg path {
                 fill: colors.$foreground;
-            }
-        }
-
-
-
-        &_default {
-            background-color: colors.$background;
-            color: colors.$secondary;
-            border-color: colors.$border;
-            svg path {
-                fill: colors.$secondary;
-            }
-        }
-
-        &_primary {
-            background-color: colors.$primary;
-            color: colors.$foreground;
-            border-color: colors.$border;
-            svg path {
-                fill: colors.$foreground;
-            }
-        }
-
-        &_fire {
-            background-color: #FFAE00;
-            border-color: unset;
-            color: colors.$foreground;
-            svg path {
-                fill: colors.$foreground
             }
         }
     }

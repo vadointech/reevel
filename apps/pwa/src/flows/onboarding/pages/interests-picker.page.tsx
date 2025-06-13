@@ -2,12 +2,14 @@ import { headers } from "next/headers";
 
 import { getInitialInterests } from "@/api/interests";
 import { getCurrentUserInterests } from "@/api/user/get-interests";
-import { ButtonsBlock } from "@/components/shared/_redesign";
+
 
 import { OnboardingNextStepButton, OnboardingProgressBar } from "../modules/progress";
 import { OnboardingTextBlock } from "../modules/text-block";
 import { OnboardingInterestsPicker } from "../modules/interests-picker";
 import { InterestsPickerProvider } from "@/features/interests/picker";
+
+import { ButtonsBlock } from "@/components/ui";
 
 import styles from "../styles/interests-picker-page.module.scss";
 

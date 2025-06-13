@@ -1,6 +1,8 @@
 import { observer } from "mobx-react-lite";
-import { Header } from "@/components/shared/_redesign";
 import { useInterestsPickerContext } from "@/features/interests/picker";
+
+import { Header } from "@/components/ui";
+
 import styles from "../styles.module.scss";
 
 export namespace InterestsPickerSearch {

@@ -1,14 +1,11 @@
 import { EventDrawerRoot, EventDrawerContent } from "@/components/drawers/event";
 
+import { Avatar, Button, Container, OptionsList, OptionsListItem } from "@/components/ui";
+import { Section } from "@/components/sections/section.component";
+
 import styles from "./styles.module.scss";
-// import cx from "classnames";
-import { Avatar, Button, OptionsList, OptionsListItem, Section } from "@/components/shared/_redesign";
-import { Container } from "@/components/ui";
 
 export default function Page() {
-    // Я би це все робив на 1 пейджі в 1 компоненті, зробив би перевірки що це за подія (моя, запрошений, хост) і в залежності від цього
-    // вибирав який контент показувати. Виніс би його в окрему папку де було б 3 варіанти (host,invited,public)
-
     return (
         <>
             <EventDrawerRoot>

@@ -1,1 +1,1 @@
-export * from "./account-drawer.component"
+export * from "./account-drawer.component";

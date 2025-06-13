@@ -1,5 +1,5 @@
 import { motion } from "motion/react";
-import { Checkbox, OptionsListItem } from "@/components/shared/_redesign";
+import { Checkbox, OptionsListItem } from "@/components/ui";
 import { InterestEntity } from "@/entities/interests";
 
 const listItemVariants = {

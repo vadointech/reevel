@@ -7,8 +7,8 @@ import { motion, useTransform } from "motion/react";
 import { PROFILE_PAGE_COVER_HEIGHT, PROFILE_PAGE_HEADER_HEIGHT } from "../config";
 import { useProfileContentDragYProgress } from "../motion-values";
 
-import { Avatar } from "@/components/shared/_redesign";
 import { IconArrowLeft, IconEllipsisVertical, IconSettings, IconVerified } from "@/components/icons";
+import { Avatar } from "@/components/ui";
 
 import styles from "./styles.module.scss";
 import cx from "classnames";
@@ -65,9 +65,7 @@ export const ProfilePageHeader = ({
             >
                 <IconArrowLeft />
                 <div className={styles.header__info}>
-                    <Avatar
-                        image={"/assets/temp/avatar.png"}
-                    />
+                    <Avatar image={"/assets/temp/avatar.png"} />
                     <div className={styles.header__user}>
                         <h2 className={styles.header__name}>
                             Jimmy Smith

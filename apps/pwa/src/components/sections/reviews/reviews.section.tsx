@@ -1,6 +1,7 @@
+
+import { Section } from "../section.component";
 import { ScrollSection } from "../scroll";
-import { RatingCard } from "@/components/shared/rating-card";
-import { Section, Stars } from "@/components/shared/_redesign";
+import { RatingCard, Stars } from "@/components/ui";
 
 import styles from "./styles.module.scss";
 

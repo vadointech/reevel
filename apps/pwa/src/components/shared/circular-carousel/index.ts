@@ -1,1 +1,2 @@
-export { CircularCarousel } from "./circular-carousel.component";
+export * from "./circular-carousel.component";
+export { useCircularCarousel } from "./hooks";

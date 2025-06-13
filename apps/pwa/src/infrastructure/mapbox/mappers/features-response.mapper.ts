@@ -1,4 +1,4 @@
-import { MapboxFeaturesResponse } from "@/api/mapbox/v6/types";
+import { MapboxFeaturesResponse } from "@/api/mapbox/types";
 import { IconPoint, Point } from "@/components/shared/map/types";
 import { PlaceLocationEntity } from "@/entities/place";
 

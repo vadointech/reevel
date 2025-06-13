@@ -1,11 +1,14 @@
-"use client"
+"use client";
 
-import { ComponentProps } from "react"
-import { OptionsListItem } from "@/components/shared/_redesign"
-import { Back, IconWorld } from "@/components/icons"
-import { LanguageContent } from "./primitives/language-content.component"
-import { ProfileSettingsBottomSheet, ProfileSettingsBottomSheetContent, ProfileSettingsBottomSheetTrigger } from "../../bottom-sheet"
+import { OptionsListItem } from "@/components/ui";
+import { Back, IconGlobe } from "@/components/icons";
+import {
+    ProfileSettingsBottomSheet,
+    ProfileSettingsBottomSheetContent,
+    ProfileSettingsBottomSheetTrigger,
+} from "../../bottom-sheet";
 
+import { LanguageContent } from "./primitives";
 
 export namespace LanguageDrawer {
     export type Props = never;
@@ -19,7 +22,7 @@ export const LanguageDrawer = () => {
                 <OptionsListItem
                     label="Application language"
                     description={"System"}
-                    contentLeft={<IconWorld width={22} height={22} />}
+                    contentLeft={<IconGlobe width={22} height={22} />}
                     contentRight={<Back width={7} height={14} style={{ rotate: "180deg" }} />}
                 />
             </ProfileSettingsBottomSheetTrigger>
@@ -31,6 +34,6 @@ export const LanguageDrawer = () => {
                 <LanguageContent />
             </ProfileSettingsBottomSheetContent>
         </ProfileSettingsBottomSheet>
-    )
-}
+    );
+};
 

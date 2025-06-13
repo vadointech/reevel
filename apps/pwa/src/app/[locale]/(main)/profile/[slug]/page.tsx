@@ -1,9 +1,7 @@
 import { ProfileHero, ProfilePageContent, ProfilePageHeader, ProfilePageLayout } from "../_components";
 
-import { Container } from "@/components/ui";
+import { Container, EventCard, InterestButton } from "@/components/ui";
 import { ReviewsSection, ScrollSection } from "@/components/sections";
-import { InterestButton } from "@/components/shared/_redesign";
-import { EventCard } from "@/components/shared/event-card";
 
 import styles from "../styles.module.scss";
 
@@ -27,7 +25,7 @@ export default function ProfilePage() {
                         size={"small"}
                         title={"Common Interests"}
                         cta={"See all"}
-                        variant={"text-area-accent"}
+                        variant={"text-accent"}
                         className={styles.content__gap}
                     >
                         {
@@ -45,7 +43,7 @@ export default function ProfilePage() {
                     <ScrollSection
                         title={"Top Events"}
                         cta={"See all"}
-                        variant={"text-area-accent"}
+                        variant={"text-accent"}
                         className={styles.content__gap}
                     >
                         <EventCard
@@ -77,7 +75,7 @@ export default function ProfilePage() {
                     <ReviewsSection
                         title={"Rating & reviews"}
                         cta={"See all"}
-                        variant={"text-area-accent"}
+                        variant={"text-accent"}
                         rating={4.5}
                         count={578}
                     />

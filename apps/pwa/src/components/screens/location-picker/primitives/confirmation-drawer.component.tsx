@@ -1,17 +1,18 @@
 "use client";
 
+import { RefObject } from "react";
+
+import { useLocationPicker } from "@/features/location/picker";
+
 import {
     BottomSheetBody,
     BottomSheetContent, BottomSheetHandle, BottomSheetPortal, BottomSheetRoot,
-} from "@/components/shared/_redesign/bottom-sheet";
+} from "@/components/shared/bottom-sheet";
 
-import { Container } from "@/components/ui";
-import { Button, Header } from "@/components/shared/_redesign";
-import { RefObject } from "react";
-import { BottomSheetExternalController } from "@/components/shared/_redesign/bottom-sheet/types";
+import { Button, Container, Header } from "@/components/ui";
 import { IconArrowLeft } from "@/components/icons";
-import { useLocationPicker } from "@/features/location/picker";
 import { PlaceLocationEntity } from "@/entities/place";
+import { BottomSheetExternalController } from "@/components/shared/bottom-sheet/types";
 
 import styles from "../styles.module.scss";
 

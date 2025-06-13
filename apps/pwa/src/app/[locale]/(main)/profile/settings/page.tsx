@@ -1,12 +1,11 @@
-import styles from "./styles.module.scss";
 
-import { Header } from "@/components/shared/header";
-import { Container } from "@/components/ui";
-
-import { OptionsList, OptionsListItem, Section } from "@/components/shared/_redesign";
-import { SubscriptionDrawer } from "@/components/drawers/subscription-drawer";
-import { IconExit } from "@/components/icons/exit";
+import { Container, Header, OptionsList, OptionsListItem } from "@/components/ui";
+import { SubscriptionDrawer } from "@/components/drawers/subscription";
+import { Section } from "@/components/sections";
+import { IconExit } from "@/components/icons";
 import { AccountDrawer, NotificationDrawer, LanguageDrawer, AppearanceDrawer } from "./_components";
+
+import styles from "./styles.module.scss";
 
 export default function PrivateProfileSettingsPage() {
 
@@ -38,7 +37,6 @@ export default function PrivateProfileSettingsPage() {
                     label="Log out"
                     contentLeft={<IconExit width={20} height={22} fill="#F62816" />}
                     contentRight={false}
-                    variant={"warn"}
                 />
             </OptionsList>
         </Container>

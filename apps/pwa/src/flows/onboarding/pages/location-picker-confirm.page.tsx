@@ -1,19 +1,21 @@
 "use client";
 
-import { MapView } from "@/components/shared/map";
 
+import { useLocationSearchConfirmation } from "@/features/location/search/hooks";
+
+import { MapView } from "@/components/shared/map";
 import { OnboardingTextBlock } from "../modules/text-block";
 import { OnboardingProgressBar } from "../modules/progress";
 import { OnboardingConfirmLocation } from "../modules/location-picker";
+
 import {
     BottomSheetBody,
     BottomSheetContent, BottomSheetHandle,
     BottomSheetPortal,
     BottomSheetRoot,
-} from "@/components/shared/_redesign/bottom-sheet";
-import { ButtonsBlock } from "@/components/shared/_redesign";
-import { Container } from "@/components/ui";
-import { useLocationSearchConfirmation } from "@/features/location/search/hooks";
+} from "@/components/shared/bottom-sheet";
+
+import { ButtonsBlock, Container } from "@/components/ui";
 
 import styles from "../styles/location-picker-confirm.module.scss";
 

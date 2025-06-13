@@ -3,9 +3,11 @@
 import { Container } from "@/components/ui";
 import { observer } from "mobx-react-lite";
 import { useLocationSearchContext } from "@/features/location/search";
-import { Header, OptionsList, OptionsListItem } from "@/components/shared/_redesign";
-import { IconNavigation } from "@/components/icons";
 import { useLocationSearch } from "@/features/location/search/hooks";
+
+import { Header, OptionsList, OptionsListItem } from "@/components/ui";
+import { IconNavigation } from "@/components/icons";
+
 import { PlaceLocationEntity } from "@/entities/place";
 
 import styles from "./styles.module.scss";

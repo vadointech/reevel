@@ -1,10 +1,10 @@
 "use client";
 
 import { useOnboardingAvatarPickerCarousel } from "@/features/onboarding/hooks";
-import { CircularCarousel } from "@/components/shared";
+import { CircularCarousel, useCircularCarousel } from "@/components/shared/circular-carousel";
 import { ActiveScale } from "@/components/shared/circular-carousel/plugins";
-import { useCircularCarousel } from "@/components/shared/circular-carousel/hooks";
-import { Avatar } from "@/components/shared/_redesign";
+
+import { Avatar } from "@/components/ui";
 
 import styles from "../styles/avatar-picker-carousel.module.scss";
 

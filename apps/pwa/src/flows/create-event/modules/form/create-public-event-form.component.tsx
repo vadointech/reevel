@@ -3,6 +3,8 @@
 import { ComponentProps } from "react";
 import { Controller } from "react-hook-form";
 
+import { CreateEventFormSchemaValues, useCreateEventForm } from "@/features/event/create";
+
 import {
     CreateEventFormPricePicker,
     CreateEventFormTicketsPicker,
@@ -11,12 +13,10 @@ import {
     CreateEventFormInterestsPicker,
 } from "./components";
 
-import {
-    ArrowNext,
-    IconNavigation,
-} from "@/components/icons";
-import { Button, FormField, Input, OptionsList, OptionsListItem, Section } from "@/components/shared/_redesign";
-import { CreateEventFormSchemaValues, useCreateEventForm } from "@/features/event/create";
+import { ArrowNext, IconNavigation } from "@/components/icons";
+import { Button, FormField, Input, OptionsList, OptionsListItem } from "@/components/ui";
+import { Section } from "@/components/sections";
+
 import { InterestEntity } from "@/entities/interests";
 
 import styles from "./styles/create-event-form.module.scss";

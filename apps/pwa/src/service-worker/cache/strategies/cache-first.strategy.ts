@@ -31,8 +31,8 @@ export class CacheFirst implements IStrategy {
                             return networkResponse;
                         });
                 })
-                .catch(error => {
-                    console.error("Fetch failed:", error);
+                .catch(() => {
+                    // console.error("Fetch failed:", error);
 
                     // TODO: Return a custom offline page
                     // return caches.match('/offline.html');

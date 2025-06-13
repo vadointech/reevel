@@ -1,29 +1,24 @@
-"use client"
+"use client";
 
-import { ComponentProps, useState } from "react"
-import { OptionsList, OptionsListItem } from "@/components/shared/_redesign"
-import { Checkbox } from "@/components/shared/checkbox"
-import { IconEngland, IconSystemCounty, IconUkraine } from "@/components/icons"
-import { Locale, UIMode } from "@/types/common"
-import { useTheme } from "next-themes"
+import { useState } from "react";
+import { useTheme } from "next-themes";
+
+import { OptionsList, OptionsListItem, Checkbox } from "@/components/ui";
+
+import { UIMode } from "@/types/common";
 
 export namespace AppearanceContent {
-
-    export type Props = ComponentProps<"div">
+    export type Props = never;
 }
 
-export const AppearanceContent = ({ ...props }: AppearanceContent.Props) => {
-    const { theme, setTheme } = useTheme()
+export const AppearanceContent = () => {
+    const { theme, setTheme } = useTheme();
     const [selectedMode, setSelectedMode] = useState(theme ?? "system");
 
     const handleModeSelect = (mode: UIMode) => {
         setSelectedMode(mode);
-        setTheme(mode)
+        setTheme(mode);
     };
-
-    console.log(theme)
-    console.log(selectedMode)
-
 
     return (
         <>
@@ -31,8 +26,8 @@ export const AppearanceContent = ({ ...props }: AppearanceContent.Props) => {
                 <OptionsListItem
                     label="System"
                     contentRight={<Checkbox
-                        setSelected={() => handleModeSelect("system")}
-                        selected={selectedMode === "system"}
+                        onChange={() => handleModeSelect("system")}
+                        checked={selectedMode === "system"}
                     />}
                     iconType="outlined"
                 />
@@ -41,8 +36,8 @@ export const AppearanceContent = ({ ...props }: AppearanceContent.Props) => {
                     label="Dark"
                     contentRight={
                         <Checkbox
-                            setSelected={() => handleModeSelect("dark")}
-                            selected={selectedMode === "dark"}
+                            onChange={() => handleModeSelect("dark")}
+                            checked={selectedMode === "dark"}
                         />
                     }
                     iconType="outlined"
@@ -53,13 +48,13 @@ export const AppearanceContent = ({ ...props }: AppearanceContent.Props) => {
                     label="Light"
                     contentRight={
                         <Checkbox
-                            setSelected={() => handleModeSelect("light")}
-                            selected={selectedMode === "light"}
+                            onChange={() => handleModeSelect("light")}
+                            checked={selectedMode === "light"}
                         />
                     }
                     iconType="outlined"
                 />
             </OptionsList>
         </>
-    )
-}
+    );
+};

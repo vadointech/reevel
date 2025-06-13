@@ -57,8 +57,7 @@ export class ImageUploaderController implements IImageUploaderController {
         try {
             return this.canvasPreview(this._store.completedCrop)
                 .then(() => this.getCroppedImage(this._store.completedCrop));
-        } catch (e) {
-            console.error("Error cropping image:", e);
+        } catch {
             return null;
         }
     }

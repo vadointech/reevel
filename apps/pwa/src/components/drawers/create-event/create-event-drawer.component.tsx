@@ -9,10 +9,10 @@ import {
     BottomSheetPortal,
     BottomSheetRoot,
     BottomSheetTrigger,
-} from "@/components/shared/_redesign/bottom-sheet";
+} from "@/components/shared/bottom-sheet";
 
-import { Header, OptionsList, OptionsListItem } from "@/components/shared/_redesign";
-import { IBottomSheetRootController } from "@/components/shared/_redesign/bottom-sheet/types";
+import { Header, OptionsList, OptionsListItem } from "@/components/ui";
+import { IBottomSheetRootController } from "@/components/shared/bottom-sheet/types";
 
 import styles from "./styles.module.scss";
 

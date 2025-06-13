@@ -1,7 +1,10 @@
-import { getSession } from "@/api/auth/get-session";
 import { headers } from "next/headers";
 import { redirect } from "@/i18n/routing";
+
+import { getSession } from "@/api/auth/get-session";
+
 import { OnboardingStepPath } from "@/features/onboarding";
+
 import { Locale } from "@/types/common";
 
 export namespace OnboardingRootPage {

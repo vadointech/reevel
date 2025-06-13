@@ -4,7 +4,7 @@ import { useCallback, useRef } from "react";
 import { UserUploadsEntity } from "@/entities/uploads";
 import { useImageUploader } from "@/features/uploader/image/hooks";
 import { uploadProfileAvatar } from "@/api/profile/upload-avatar";
-import { IBottomSheetRootController } from "@/components/shared/_redesign/bottom-sheet/types";
+import { IBottomSheetRootController } from "@/components/shared/bottom-sheet/types";
 
 export function useOnboardingAvatarUploader(callbackUrl?: string) {
     const sessionStore = useSessionStore();

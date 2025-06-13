@@ -107,7 +107,7 @@ export class Fetcher implements IFetcher {
         });
 
         if (!response.ok) {
-            return new FetcherResponse(fetcherResponse);
+            throw new FetcherError(fetcherResponse);
         }
 
         const contentType = response.headers.get("Content-Type");

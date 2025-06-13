@@ -1,9 +1,10 @@
 "use client";
 
 import { useMemo } from "react";
-import { IconArrowLeft, IconClose } from "@/components/icons";
-import { Button, Header } from "@/components/shared/_redesign";
 import { useOnboardingProgress } from "@/features/onboarding/hooks";
+
+import { IconArrowLeft, IconClose } from "@/components/icons";
+import { Button, Header } from "@/components/ui";
 
 import styles from "./styles/progress-bar.module.scss";
 import { cx } from "class-variance-authority";

@@ -1,13 +1,12 @@
 "use client";
 
-import { Container } from "@/components/ui";
-import { useOnboardingStore } from "@/features/onboarding";
 
-import { Avatar, ButtonsBlock } from "@/components/shared/_redesign";
+import { useOnboardingStore } from "@/features/onboarding";
 
 import { OnboardingNextStepButton, OnboardingProgressBar } from "../modules/progress";
 import { OnboardingTextBlock } from "../modules/text-block";
 import { OnboardingBioForm } from "../modules/form";
+import { Avatar, ButtonsBlock, Container } from "@/components/ui";
 
 import styles from "../styles/bio-page.module.scss";
 

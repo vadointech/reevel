@@ -1,11 +1,15 @@
-"use client"
+"use client";
 
-import { ComponentProps } from "react"
-import { OptionsListItem } from "@/components/shared/_redesign"
-import { Back, IconNotification } from "@/components/icons"
+import { OptionsListItem } from "@/components/ui";
+import { Back, IconNotification } from "@/components/icons";
 
-import { NotificationContent } from "./primitives/notification-content.component"
-import { ProfileSettingsBottomSheet, ProfileSettingsBottomSheetTrigger, ProfileSettingsBottomSheetContent } from "../../bottom-sheet"
+import {
+    ProfileSettingsBottomSheet,
+    ProfileSettingsBottomSheetTrigger,
+    ProfileSettingsBottomSheetContent,
+} from "../../bottom-sheet";
+
+import { NotificationContent } from "./primitives";
 
 export namespace NotificationDrawer {
     export type Props = never;
@@ -32,5 +36,5 @@ export const NotificationDrawer = () => {
 
             </ProfileSettingsBottomSheetContent>
         </ProfileSettingsBottomSheet>
-    )
-}
+    );
+};

@@ -15,10 +15,8 @@ export function useCreateEventForm(params: Params) {
     const router = useRouter();
     const form = useFormContext<CreateEventFormSchemaValues>();
 
-    const handleSubmit = form.handleSubmit((values: CreateEventFormSchemaValues) => {
+    const handleSubmit = form.handleSubmit(() => {
         router.push(params.nextStepUrl);
-        // indexedDbService.setItem("event_form_values", values)
-        //     .then(() =>  router.push(params.nextStepUrl));
     });
 
     useEffect(() => {

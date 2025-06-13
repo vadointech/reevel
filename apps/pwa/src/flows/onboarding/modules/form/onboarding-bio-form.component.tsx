@@ -2,11 +2,13 @@
 
 import { ComponentProps } from "react";
 import { observer } from "mobx-react-lite";
-import { Input } from "@/components/shared/_redesign";
+
 import { useOnboardingStore } from "@/features/onboarding/onboarding.store";
 
-import cx from "classnames";
+import { Input } from "@/components/ui";
+
 import styles from "./styles.module.scss";
+import cx from "classnames";
 
 export namespace OnboardingBioForm {
     export type Props = ComponentProps<"form">;

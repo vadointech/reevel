@@ -1,14 +1,17 @@
 import { ComponentProps } from "react";
 import Image from "next/image";
-import { IconCalendar, IconGlobe, IconLock } from "@/components/icons";
+
 import {
     CreateEventFormSchemaValues,
     useCreateEventFormFieldFormatter,
 } from "@/features/event/create";
 import { hexToRgba } from "@/utils/hex-to-rgba";
-import { Avatar, Badge } from "@/components/shared/_redesign";
-import { UserProfileEntity } from "@/entities/profile";
+
+import { Avatar, Badge } from "@/components/ui";
+import { IconCalendar, IconGlobe, IconLock } from "@/components/icons";
+
 import { EventVisibility } from "@/entities/event";
+import { UserProfileEntity } from "@/entities/profile";
 
 import styles from "../styles/preview-event-card.module.scss";
 import cx from "classnames";

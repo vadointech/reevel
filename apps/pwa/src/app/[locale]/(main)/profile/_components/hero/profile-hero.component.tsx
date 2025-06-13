@@ -1,7 +1,5 @@
 "use client";
 
-import { ComponentProps } from "react";
-
 import { motion, useTransform } from "motion/react";
 
 import { useProfileContentDragYProgress } from "../motion-values";
@@ -12,10 +10,10 @@ import { ProfileHeroCover, ProfileHeroLinks, ProfileHeroUser } from "./primitive
 import styles from "./styles.module.scss";
 
 export namespace ProfileHero {
-    export type Props = ComponentProps<"div">;
+    export type Props = never;
 }
 
-export const ProfileHero = ({ ...props }: ProfileHero.Props) => {
+export const ProfileHero = () => {
     const profileContentDragYPx = useProfileContentDragYProgress();
 
     const contentHeight = useTransform(

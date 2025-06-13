@@ -1,24 +1,24 @@
-import { ReactScan } from "@/lib/react-scan";
-import { type Metadata, Viewport } from "next";
 import { PropsWithChildren } from "react";
-import { type ParamsWithLocale } from "@/types/common";
-import { getMessages, setRequestLocale } from "next-intl/server";
-import { fonts } from "@/fonts.config";
+import { type Metadata, Viewport } from "next";
+import { headers } from "next/headers";
 import { NextIntlClientProvider } from "next-intl";
-import { ServiceWorkerProvider } from "@/service-worker/client/provider";
-import { getSession } from "@/api/auth/get-session";
+import { getMessages, setRequestLocale } from "next-intl/server";
+
+import { getSession } from "@/api/auth";
+
+import { locales } from "@/i18n/locales";
+import { fonts } from "@/fonts.config";
+
+import { ServiceWorkerProvider } from "@/service-worker/client";
 import { ReactQueryClientProvider } from "@/providers/react-query-provider";
 import { StandaloneProvider } from "@/providers/standalone.provider";
+import { QuerySelectorProvider } from "@/providers/query-selector.provider";
 import { SessionStoreProvider } from "@/features/session";
-import { locales } from "@/i18n/locales";
-import { headers } from "next/headers";
+import { ThemeProvider } from "@/providers/theme.provider";
+
+import { type ParamsWithLocale } from "@/types/common";
 
 import "../globals.scss";
-import { QuerySelectorProvider } from "@/providers/query-selector.provider";
-import { ThemeProvider } from "@/providers/theme.provider";
-import { ThemeColorManager } from "@/providers/theme-color-manager";
-
-
 
 export const metadata: Metadata = {
     title: "Reevel",
@@ -53,9 +53,6 @@ export default async function RootLayout({ children, params }: PropsWithChildren
 
     return (
         <html lang={locale} suppressHydrationWarning>
-            <head>
-                <ReactScan />
-            </head>
             <body className={fonts} >
                 <ServiceWorkerProvider register={process.env.SERVICE_WORKER === "true"}>
                     <NextIntlClientProvider
@@ -69,7 +66,6 @@ export default async function RootLayout({ children, params }: PropsWithChildren
                                 }]}
                             >
                                 <ThemeProvider enableSystem>
-                                    <ThemeColorManager />
                                     <StandaloneProvider>
                                         <QuerySelectorProvider>
                                             <main id={"main"}>

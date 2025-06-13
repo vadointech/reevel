@@ -1,13 +1,17 @@
 import { Controller, UseControllerReturn } from "react-hook-form";
-import { Input, OptionsListItem } from "@/components/shared/_redesign";
-import { IconTicketTilted } from "@/components/icons";
+
+import { useCreateEventFormFieldFormatter } from "@/features/event/create";
+
 import {
     CreateEventFormBottomSheet,
     CreateEventFormBottomSheetTrigger,
     CreateEventFormBottomSheetContent,
     CreateEventFormBottomSheetBody,
 } from "./bottom-sheet.component";
-import { useCreateEventFormFieldFormatter } from "@/features/event/create";
+
+import { Input, OptionsListItem } from "@/components/ui";
+import { IconTicketTilted } from "@/components/icons";
+
 
 export namespace CreateEventFormTicketsPicker {
     export type Props = never;

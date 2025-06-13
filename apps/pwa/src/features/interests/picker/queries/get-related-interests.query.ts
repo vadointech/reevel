@@ -1,6 +1,6 @@
-import { QueryBuilder } from "@/types/common";
 import { FetchQueryOptions } from "@tanstack/react-query";
 import { getRelatedInterests, GetRelatedInterests } from "@/api/interests";
+import { QueryBuilderQuery } from "@/lib/react-query";
 
 export namespace GetRelatedInterestsQueryBuilder {
     export type TInput = {
@@ -9,7 +9,7 @@ export namespace GetRelatedInterestsQueryBuilder {
     export type TOutput = GetRelatedInterests.TOutput;
 }
 
-export const GetRelatedInterestsQueryBuilder: QueryBuilder<GetRelatedInterestsQueryBuilder.TInput, GetRelatedInterestsQueryBuilder.TOutput> = (
+export const GetRelatedInterestsQueryBuilder: QueryBuilderQuery<GetRelatedInterestsQueryBuilder.TInput, GetRelatedInterestsQueryBuilder.TOutput> = (
     input: GetRelatedInterestsQueryBuilder.TInput,
 ): FetchQueryOptions<GetRelatedInterestsQueryBuilder.TOutput> => {
     return {

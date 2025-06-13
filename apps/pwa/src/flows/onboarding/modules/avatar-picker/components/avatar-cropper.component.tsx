@@ -1,6 +1,7 @@
 "use client";
 
-import { Button, Input } from "@/components/shared/_redesign";
+import { Button, Input } from "@/components/ui";
+
 import { useImageCropper } from "@/features/uploader/image/hooks";
 import { useOnboardingAvatarUploader } from "@/features/onboarding/hooks";
 

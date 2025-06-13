@@ -1,10 +1,11 @@
 "use client";
 
 import { ComponentProps } from "react";
-import {
-    Header, Input, TabsBody,
-    TabsContent, TabsRoot,
-} from "@/components/shared/_redesign";
+
+import { useRouter } from "@/i18n/routing";
+
+import { useImageUploader } from "@/features/uploader/image/hooks";
+
 import {
     BottomSheetBody,
     BottomSheetContent,
@@ -12,19 +13,21 @@ import {
     BottomSheetPortal,
     BottomSheetRoot,
     BottomSheetTrigger,
-} from "@/components/shared/_redesign/bottom-sheet";
-import { UploadFileGrid } from "./primitives";
-import { ScrollArea } from "@/components/shared/_redesign/scroll-area/scroll-area.component";
+} from "@/components/shared/bottom-sheet";
+
+import { TabsBody, TabsContent, TabsRoot } from "@/components/shared/tabs";
+import { ScrollArea } from "@/components/shared/scroll-area";
+
+import { Header, Input } from "@/components/ui";
 import { IconArrowLeft, IconPicture } from "@/components/icons";
 
+import { UploadFileGrid, UploadFileItem } from "./primitives";
+
 import { UserUploadsEntity } from "@/entities/uploads";
-import { BottomSheetExternalController } from "@/components/shared/_redesign/bottom-sheet/types";
-import { UploadFileItem } from "@/components/drawers/upload/primitives/upload-item.component";
 import { GetUserUploads } from "@/api/user/uploads";
+import { BottomSheetExternalController } from "@/components/shared/bottom-sheet/types";
 
 import styles from "./styles.module.scss";
-import { useRouter } from "@/i18n/routing";
-import { useImageUploader } from "@/features/uploader/image/hooks";
 
 export namespace UploadDrawer {
     export type Props = ComponentProps<"div"> & {

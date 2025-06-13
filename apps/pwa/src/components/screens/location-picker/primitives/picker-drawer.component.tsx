@@ -2,10 +2,12 @@
 
 import { useEffect } from "react";
 import { Link } from "@/i18n/routing";
+import { observer } from "mobx-react-lite";
 
 import {
     GOOGLE_PLACES_API_INCLUDED_TYPES, useLocationPicker,
 } from "@/features/location/picker";
+import { GooglePLacesApiIncludedTypes } from "@/api/google/places";
 
 import {
     BottomSheetBody,
@@ -13,14 +15,12 @@ import {
     BottomSheetHandle,
     BottomSheetPortal,
     BottomSheetRoot,
-} from "@/components/shared/_redesign/bottom-sheet";
+} from "@/components/shared/bottom-sheet";
 import { Container, Scroll } from "@/components/ui";
-import { Button, Header, InterestButton } from "@/components/shared/_redesign";
+import { Button, Header, InterestButton } from "@/components/ui";
 import { IconArrowLeft } from "@/components/icons";
 
-import { observer } from "mobx-react-lite";
-import { GooglePLacesApiIncludedTypes } from "@/api/google/places";
-import { BottomSheetExternalController } from "@/components/shared/_redesign/bottom-sheet/types";
+import { BottomSheetExternalController } from "@/components/shared/bottom-sheet/types";
 
 import styles from "../styles.module.scss";
 
