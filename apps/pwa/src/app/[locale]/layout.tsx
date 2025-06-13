@@ -1,10 +1,7 @@
 import { PropsWithChildren } from "react";
 import { type Metadata, Viewport } from "next";
-import { headers } from "next/headers";
 import { NextIntlClientProvider } from "next-intl";
 import { getMessages, setRequestLocale } from "next-intl/server";
-
-import { getSession } from "@/api/auth";
 
 import { locales } from "@/i18n/locales";
 import { fonts } from "@/fonts.config";
@@ -13,7 +10,6 @@ import { ServiceWorkerProvider } from "@/service-worker/client";
 import { ReactQueryClientProvider } from "@/providers/react-query-provider";
 import { StandaloneProvider } from "@/providers/standalone.provider";
 import { QuerySelectorProvider } from "@/providers/query-selector.provider";
-import { SessionStoreProvider } from "@/features/session";
 import { ThemeProvider } from "@/providers/theme.provider";
 
 import { type ParamsWithLocale } from "@/types/common";
@@ -47,10 +43,6 @@ export default async function RootLayout({ children, params }: PropsWithChildren
     setRequestLocale(locale);
     const messages = await getMessages();
 
-    const { data } = await getSession({
-        nextHeaders: await headers(),
-    });
-
     return (
         <html lang={locale} suppressHydrationWarning>
             <body className={fonts} >
@@ -60,22 +52,16 @@ export default async function RootLayout({ children, params }: PropsWithChildren
                         messages={messages}
                     >
                         <ReactQueryClientProvider>
-                            <SessionStoreProvider
-                                init={[{
-                                    user: data,
-                                }]}
-                            >
-                                <ThemeProvider enableSystem>
-                                    <StandaloneProvider>
-                                        <QuerySelectorProvider>
-                                            <main id={"main"}>
-                                                {children}
-                                            </main>
-                                            <div id={"modal-root"} />
-                                        </QuerySelectorProvider>
-                                    </StandaloneProvider>
-                                </ThemeProvider>
-                            </SessionStoreProvider>
+                            <ThemeProvider enableSystem>
+                                <StandaloneProvider>
+                                    <QuerySelectorProvider>
+                                        <main id={"main"}>
+                                            {children}
+                                        </main>
+                                        <div id={"modal-root"} />
+                                    </QuerySelectorProvider>
+                                </StandaloneProvider>
+                            </ThemeProvider>
                         </ReactQueryClientProvider>
                     </NextIntlClientProvider>
                 </ServiceWorkerProvider>
