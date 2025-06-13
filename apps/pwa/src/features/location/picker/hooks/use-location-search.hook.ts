@@ -36,7 +36,7 @@ export function useLocationPickerSearch() {
             } else {
                 return undefined;
             }
-        }, 700);
+        });
     }, [queryClient]);
 
     const setSearchResults = (response?: SearchLocationQueryBuilder.TOutput) => {
@@ -103,7 +103,7 @@ export function useLocationPickerSearch() {
 
     const handleLocationPick = useCallback((point: Point<IconPoint>) => {
         confirmationStore.setPoint(point);
-        router.push(config.callbackUrl);
+        router.push(config.callbackUrl + "/location");
     }, []);
 
     return {

@@ -7,7 +7,7 @@ import { cva, VariantProps } from "class-variance-authority";
 import { Link } from "@/i18n/routing";
 import { OptionsListItemLeft, OptionsListItemContent, OptionsListItemRight } from "./primitives";
 
-const listItem = cva(styles.listItem, {
+export const listItem = cva(styles.listItem, {
     variants: {
         weight: {
             default: styles.listItem_weight_default,
@@ -38,6 +38,7 @@ export namespace OptionsListItem {
         contentBottom?: ReactNode;
         iconType?: "filled" | "outlined";
         href?: string;
+        index?: number;
     };
 }
 

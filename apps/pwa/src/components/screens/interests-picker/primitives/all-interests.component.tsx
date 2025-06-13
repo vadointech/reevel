@@ -5,12 +5,15 @@ import { observer } from "mobx-react-lite";
 import { useInterestsPickerContext } from "@/features/interests/picker";
 import { useInterestsPicker, useInterestsSearch, useRelatedInterests } from "@/features/interests/picker/hooks";
 
+import {
+    Checkbox,
+    MotionOptionsList,
+    MotionOptionsListItem,
+} from "@/components/ui";
 import { Section } from "@/components/sections";
-import { Button, Checkbox, OptionsList, OptionsListItem } from "@/components/ui";
+import { SearchScreenLoadMoreButton } from "@/components/screens/search";
 
 import { InterestEntity } from "@/entities/interests";
-
-import styles from "@/components/screens/search/styles.module.scss";
 
 export namespace SearchInterestsAll {
     export type Props = never;
@@ -46,9 +49,7 @@ export const SearchInterestsAll = () => {
     });
 
     return (
-        <Section
-            title={"All interests"}
-        >
+        <Section title={"All interests"}>
             <List
                 onLoadMore={handleLoadMore}
                 onSelect={handleToggleInterest}
@@ -62,11 +63,12 @@ const List = observer(({ onSelect, onLoadMore }: SearchInterestsAll.ListProps) =
 
     return (
         <>
-            <OptionsList>
+            <MotionOptionsList>
                 {
                     store.interests.length > 0 ? (
-                        store.interests.map((interest) => (
-                            <OptionsListItem
+                        store.interests.map((interest, index) => (
+                            <MotionOptionsListItem
+                                index={index}
                                 key={interest.slug}
                                 label={interest.title_en}
                                 contentLeft={interest.icon}
@@ -78,15 +80,10 @@ const List = observer(({ onSelect, onLoadMore }: SearchInterestsAll.ListProps) =
                         ))
                     ) : <>No interests found. Try another search query.</>
                 }
-            </OptionsList>
-            <Button
-                size={"small"}
-                variant={"text-primary"}
-                className={styles.search__more}
+            </MotionOptionsList>
+            <SearchScreenLoadMoreButton
                 onClick={onLoadMore}
-            >
-                Load more
-            </Button>
+            />
         </>
     );
 
