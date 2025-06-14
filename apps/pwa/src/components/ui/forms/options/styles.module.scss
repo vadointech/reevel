@@ -32,6 +32,8 @@
     display: flex;
     column-gap: mixins.rem(18);
 
+    padding: mixins.rem(2.5) 0;
+
     &_disabled {
         opacity: 0.5;
         pointer-events: none;
@@ -39,9 +41,8 @@
     }
 
     &_variant {
-        &_avatar {
-            align-items: start;
-        }
+        &_avatar {}
+        &_danger {}
     }
 
     &_weight {
@@ -65,9 +66,6 @@
 
     &__title {
         color: colors.$primary;
-        display: flex;
-        align-items: center;
-        gap: 0.25rem;
 
         .listItem_weight_default & {
             @include typography.font("base", 400);
@@ -79,8 +77,8 @@
             line-height: 1;
         }
 
-        .listItem_variant_warn & {
-            color: red;
+        .listItem_variant_danger & {
+            color: colors.$danger;
         }
     }
 
@@ -97,7 +95,7 @@
 
     &__left {
         display: flex;
-        
+
         .listItem_size_default & {
             @include typography.font("4xl");
             svg {
@@ -117,17 +115,18 @@
         .listItem_variant_avatar & {
             width: mixins.rem(44);
             height: mixins.rem(44);
-        }
 
-        .listItem_variant_warn & {
-            svg path {
-                fill: red;
+            & > * {
+                height: 100%;
+                aspect-ratio: 1;
+                flex-shrink: 0;
             }
         }
 
-        svg {
-            width: mixins.rem(22);
-            height: mixins.rem(22);
+        .listItem_variant_danger & {
+            svg path {
+                fill: colors.$danger;
+            }
         }
 
         &_icon {

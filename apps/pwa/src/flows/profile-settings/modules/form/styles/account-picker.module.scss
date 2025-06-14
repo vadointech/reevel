@@ -1,0 +1,20 @@
+@use "@/theme/mixins";
+@use "@/theme/colors";
+
+
+.plus  {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 50%;
+
+    background-color: colors.$accent-muted;
+
+    svg {
+        margin-top: 0;
+        path {
+            stroke: colors.$accent;
+        }
+    }
+}

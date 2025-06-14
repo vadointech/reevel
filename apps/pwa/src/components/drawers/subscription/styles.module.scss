@@ -13,22 +13,7 @@
     }
 }
 .buttons {
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    width: 100%;
-    z-index: 999;
-
-    height: mixins.rem(104);
-    background: linear-gradient(
-        to top,
-        colors.$background 65%,
-        transparent 100%,
-    );
-    &__button {
-        margin-top: 1rem;
-    }
+    margin-top: mixins.rem(24);
 }
 
 

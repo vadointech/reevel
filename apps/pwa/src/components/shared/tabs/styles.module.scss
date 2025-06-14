@@ -18,8 +18,7 @@ $content-height: calc($button-height + $control-offest * 2);
     height: 100%;
     width: 100%;
     flex-shrink: 0;
-    padding-inline: 1rem;
-    //overflow-y: auto;
+    //padding-inline: 1rem;
     overflow-y: hidden;
     position: relative;
 }

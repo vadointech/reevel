@@ -8,13 +8,15 @@
 
     &__head {
         display: flex;
-        align-items: space-between;
-        flex-direction: column;
+        align-items: center;
+        justify-content: space-between;
 
         margin-bottom: mixins.rem(12);
+        padding-inline: spacing.$container;
     }
 
     &__wrapper {
+        flex: 1;
         display: flex;
         align-items: center;
         justify-content: space-between;
@@ -28,7 +30,7 @@
 
     &__description {
         @include typography.font("sm");
-        color:colors.$secondary;
+        color: colors.$secondary;
     }
 
     &__content {

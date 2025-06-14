@@ -7,10 +7,12 @@ import { ComponentProps, useCallback, useState } from "react";
 import styles from "./styles.module.scss";
 
 export namespace ScrollArea {
-    export type Props = HTMLMotionProps<"div">;
+    export type Props = HTMLMotionProps<"div"> & {
+        delta?: number;
+    };
 }
 
-export const ScrollArea = ({ ...props }: ScrollArea.Props) => {
+export const ScrollArea = ({ delta = 0, ...props }: ScrollArea.Props) => {
     const [scrollAreaDragBounds, setScrollAreaDragBounds] = useState<Partial<BoundingBox> | null>(null);
     const containerRefHandler = useCallback((element: HTMLDivElement | null) => {
         if(!element) return;
@@ -22,7 +24,7 @@ export const ScrollArea = ({ ...props }: ScrollArea.Props) => {
         if(offset >= 0) return;
 
         setScrollAreaDragBounds({
-            top: offset,
+            top: offset + delta,
             bottom: 0,
         });
     }, []);

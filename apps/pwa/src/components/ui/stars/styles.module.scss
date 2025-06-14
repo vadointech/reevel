@@ -1,4 +1,5 @@
 @use "@/theme/mixins";
+@use "@/theme/colors";
 
 .stars {
     position: relative;
@@ -23,6 +24,10 @@
 
     &__star {
         position: relative;
+
+        svg path {
+            fill: colors.$secondary-muted;
+        }
     }
 
     &__overlay {

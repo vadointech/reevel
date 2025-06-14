@@ -27,7 +27,7 @@ export const Section = ({
     description,
     cta,
     variant = "text-primary",
-    container = false,
+    container = true,
     onCtaClick,
     ctaHref,
     ...props
@@ -45,7 +45,7 @@ export const Section = ({
                     <div className={styles.section__head}>
                         <div className={styles.section__wrapper}>
                             <h2 className={styles.section__title}>
-                                {title}
+                                { title }
                             </h2>
                             {
                                 cta ? (

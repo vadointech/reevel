@@ -1,11 +1,11 @@
 import { ComponentProps, ReactNode } from "react";
+import { Link } from "@/i18n/routing";
 
+import { OptionsListItemLeft, OptionsListItemContent, OptionsListItemRight } from "./primitives";
 import { IconArrowRight } from "@/components/icons";
 
 import styles from "./styles.module.scss";
 import { cva, VariantProps } from "class-variance-authority";
-import { Link } from "@/i18n/routing";
-import { OptionsListItemLeft, OptionsListItemContent, OptionsListItemRight } from "./primitives";
 
 export const listItem = cva(styles.listItem, {
     variants: {
@@ -15,6 +15,7 @@ export const listItem = cva(styles.listItem, {
         },
         variant: {
             avatar: styles.listItem_variant_avatar,
+            danger: styles.listItem_variant_danger,
         },
         size: {
             default: styles.listItem_size_default,

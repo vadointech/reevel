@@ -10,9 +10,8 @@ import {
 } from "@/components/shared/bottom-sheet";
 
 import { TabsBody, TabsContent, TabsRoot } from "@/components/shared/tabs";
-import { ScrollArea } from "@/components/shared/scroll-area";
 
-import { Button, Container, OptionsListItem } from "@/components/ui";
+import { Button, ButtonsBlock, Header, OptionsListItem } from "@/components/ui";
 import { Back, IconStar } from "@/components/icons";
 
 import { Plan } from "./components/plan";
@@ -112,50 +111,45 @@ export namespace SubscriptionDrawer {
 
 export const SubscriptionDrawer = () => {
 
-
     return (
-        <>
-            <BottomSheetRoot handleOnly fadeThreshold={0}>
-                <BottomSheetTrigger>
-                    <OptionsListItem
-                        label="Subscription"
-                        description="Standart"
-                        contentRight={<Back width={7} height={14} style={{ rotate: "180deg" }} />}
-                        contentLeft={<IconStar width={22} height={22} className={styles.test} />}>
-                    </OptionsListItem>
-                </BottomSheetTrigger>
-                <BottomSheetPortal>
-                    <BottomSheetBody>
-                        <BottomSheetContent className={styles.content}>
-                            <BottomSheetHandle>
-                                <Container>
-                                    <div className={styles.drawer__title}>Upgrade Plan</div>
-                                </Container>
-                            </BottomSheetHandle>
-                            <TabsRoot>
-                                <TabsBody
-                                    items={data.map(item => item.title)}
-                                >
-                                    {data.map((item, i) => (
+        <BottomSheetRoot snapPoints={[.95, .6]} defaultSnapPointIndex={1} handleOnly fadeThreshold={0}>
+            <BottomSheetTrigger>
+                <OptionsListItem
+                    label="Subscription"
+                    description="Standart"
+                    contentRight={<Back width={7} height={14} style={{ rotate: "180deg" }} />}
+                    contentLeft={<IconStar width={22} height={22} className={styles.test} />}>
+                </OptionsListItem>
+            </BottomSheetTrigger>
+            <BottomSheetPortal>
+                <BottomSheetBody style={{ height: "100%" }}>
+                    <BottomSheetContent className={styles.content}>
+                        <BottomSheetHandle>
+                            <Header size={"large"}>
+                                Upgrade Plan
+                            </Header>
+                        </BottomSheetHandle>
+                        <TabsRoot>
+                            <TabsBody
+                                items={data.map(item => item.title)}
+                            >
+                                {
+                                    data.map((item, i) => (
                                         <TabsContent key={i}>
-                                            <>
-                                                <ScrollArea>
-                                                    <Plan data={item} />
-                                                </ScrollArea>
-                                                <Container className={styles.buttons}>
-                                                    <Button className={styles.buttons__button}>
-                                                        Upgrade for {item.price} €/m
-                                                    </Button>
-                                                </Container>
-                                            </>
+                                            <Plan data={item} />
+                                            <ButtonsBlock className={styles.buttons}>
+                                                <Button>
+                                                    Upgrade for {item.price} €/m
+                                                </Button>
+                                            </ButtonsBlock>
                                         </TabsContent>
-                                    ))}
-                                </TabsBody>
-                            </TabsRoot>
-                        </BottomSheetContent>
-                    </BottomSheetBody>
-                </BottomSheetPortal>
-            </BottomSheetRoot>
-        </>
+                                    ))
+                                }
+                            </TabsBody>
+                        </TabsRoot>
+                    </BottomSheetContent>
+                </BottomSheetBody>
+            </BottomSheetPortal>
+        </BottomSheetRoot>
     );
 };
