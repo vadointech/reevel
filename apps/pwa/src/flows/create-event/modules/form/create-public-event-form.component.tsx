@@ -43,21 +43,21 @@ export const CreatePublicEventForm = ({
             {...props}
         >
             <div className={styles.form__content}>
-                <div className={styles.form__gap_sm}>
-                    <Controller
-                        name={"title"}
-                        render={({ field, fieldState }) => (
-                            <FormField gap={"small"} state={fieldState}>
-                                <Input
-                                    {...field}
-                                    label={"Title"}
-                                    placeholder={"Enter title"}
-                                />
-                            </FormField>
-                        )}
-                    />
-                </div>
-                <div className={styles.form__gap}>
+                <Section className={styles.form__gap}>
+                    <div className={styles.form__gap_sm}>
+                        <Controller
+                            name={"title"}
+                            render={({ field, fieldState }) => (
+                                <FormField gap={"small"} state={fieldState}>
+                                    <Input
+                                        {...field}
+                                        label={"Title"}
+                                        placeholder={"Enter title"}
+                                    />
+                                </FormField>
+                            )}
+                        />
+                    </div>
                     <Controller
                         name={"description"}
                         render={({ field, fieldState }) => (
@@ -70,57 +70,55 @@ export const CreatePublicEventForm = ({
                             </FormField>
                         )}
                     />
-                </div>
+                </Section>
 
-                <div>
-                    <Section
-                        title={"Interests"}
-                        cta={"See all"}
-                        ctaHref={"/event/public/create/interests"}
-                    >
-                        <CreateEventFormInterestsPicker interests={interests} />
-                    </Section>
+                <Section
+                    title={"Interests"}
+                    cta={"See all"}
+                    ctaHref={"/event/public/create/interests"}
+                >
+                    <CreateEventFormInterestsPicker interests={interests} />
+                </Section>
 
-                    <div className={styles.form__gap}>
-                        <Controller<CreateEventFormSchemaValues, "location">
-                            name={"location"}
-                            render={({ field, fieldState }) => (
-                                <FormField
-                                    state={fieldState}
-                                >
-                                    <OptionsList>
-                                        <OptionsListItem
-                                            label={"Location"}
-                                            description={(() => {
-                                                if(!field.value) return "Required";
-                                                return `${field.value.properties.label} • ${field.value.properties.address}`;
-                                            })()}
-                                            contentLeft={<IconNavigation />}
-                                            href={"/event/public/create/location"}
-                                        />
-                                    </OptionsList>
-                                </FormField>
-                            )}
-                        />
-                    </div>
+                <Section className={styles.form__gap}>
+                    <Controller<CreateEventFormSchemaValues, "location">
+                        name={"location"}
+                        render={({ field, fieldState }) => (
+                            <FormField
+                                state={fieldState}
+                            >
+                                <OptionsList>
+                                    <OptionsListItem
+                                        label={"Location"}
+                                        description={(() => {
+                                            if(!field.value) return "Required";
+                                            return `${field.value.properties.label} • ${field.value.properties.address}`;
+                                        })()}
+                                        contentLeft={<IconNavigation />}
+                                        href={"/event/public/create/location"}
+                                    />
+                                </OptionsList>
+                            </FormField>
+                        )}
+                    />
+                </Section>
 
-                    <Section
-                        title={"Pricing"}
-                        className={styles.form__gap}
-                    >
-                        <OptionsList>
-                            <CreateEventFormTicketsPicker />
-                            <CreateEventFormPricePicker />
-                        </OptionsList>
-                    </Section>
+                <Section
+                    title={"Pricing"}
+                    className={styles.form__gap}
+                >
+                    <OptionsList>
+                        <CreateEventFormTicketsPicker />
+                        <CreateEventFormPricePicker />
+                    </OptionsList>
+                </Section>
 
-                    <Section title={"Date"}>
-                        <OptionsList>
-                            <CreateEventFormDatePicker />
-                            <CreateEventFormTimePicker />
-                        </OptionsList>
-                    </Section>
-                </div>
+                <Section title={"Date"}>
+                    <OptionsList>
+                        <CreateEventFormDatePicker />
+                        <CreateEventFormTimePicker />
+                    </OptionsList>
+                </Section>
             </div>
 
             <div className={styles.form__submit}>

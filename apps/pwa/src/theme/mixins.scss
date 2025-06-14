@@ -1,5 +1,5 @@
 @use 'sass:math';
-@use "fonts";
+@use "typography";
 
 /*
 Converts a pixel value to rem units based on a base font size.
@@ -13,7 +13,7 @@ Usage example:
 */
 @function rem($pixel) {
     @if math.is-unitless($pixel) {
-        @return math.div($pixel, math.div(fonts.$base-font-size, 1px)) + rem;
+        @return math.div($pixel, math.div(typography.$base-font-size, 1px)) + rem;
     } @else {
         @warn 'Use untiless numbers to use the rem() function';
     }

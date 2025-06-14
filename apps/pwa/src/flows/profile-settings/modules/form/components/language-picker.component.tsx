@@ -11,7 +11,6 @@ import {
 } from "../../bottom-sheet";
 import { Locale } from "@/types/common";
 
-
 export namespace ProfileSettingsLanguagePicker {
     export type Language = Locale | "system";
     export type Props = never;
@@ -23,7 +22,7 @@ export const ProfileSettingsLanguagePicker = () => {
         <ProfileSettingsBottomSheet>
             <ProfileSettingsBottomSheetTrigger>
                 <OptionsListItem
-                    label="Application language"
+                    label="Language"
                     description={"System"}
                     contentLeft={<IconGlobe width={22} height={22} />}
                     contentRight={<Back width={7} height={14} style={{ rotate: "180deg" }} />}

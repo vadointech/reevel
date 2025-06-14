@@ -1,6 +1,6 @@
 @use "@/theme/mixins";
 @use "@/theme/colors";
-@use "@/theme/fonts";
+@use "@/theme/typography";
 
 .content {
     height: 100%;
@@ -8,14 +8,13 @@
 
 .drawer {
     &__title {
-        @include fonts.font-creata('lg',500,mixins.rem(26));
+        @include typography.font("lg", 500);
         text-align: center;
     }
 }
 .buttons {
     margin-top: mixins.rem(24);
 }
-
 
 .test {
     svg path {

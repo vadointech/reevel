@@ -10,7 +10,6 @@ import { ServiceWorkerProvider } from "@/service-worker/client";
 import { ReactQueryClientProvider } from "@/providers/react-query-provider";
 import { StandaloneProvider } from "@/providers/standalone.provider";
 import { QuerySelectorProvider } from "@/providers/query-selector.provider";
-import { ThemeProvider } from "@/providers/theme.provider";
 
 import { type ParamsWithLocale } from "@/types/common";
 
@@ -52,16 +51,14 @@ export default async function RootLayout({ children, params }: PropsWithChildren
                         messages={messages}
                     >
                         <ReactQueryClientProvider>
-                            <ThemeProvider enableSystem>
-                                <StandaloneProvider>
-                                    <QuerySelectorProvider>
-                                        <main id={"main"}>
-                                            {children}
-                                        </main>
-                                        <div id={"modal-root"} />
-                                    </QuerySelectorProvider>
-                                </StandaloneProvider>
-                            </ThemeProvider>
+                            <StandaloneProvider>
+                                <QuerySelectorProvider>
+                                    <main id={"main"}>
+                                        {children}
+                                    </main>
+                                    <div id={"modal-root"} />
+                                </QuerySelectorProvider>
+                            </StandaloneProvider>
                         </ReactQueryClientProvider>
                     </NextIntlClientProvider>
                 </ServiceWorkerProvider>

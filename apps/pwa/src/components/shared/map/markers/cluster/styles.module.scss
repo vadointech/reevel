@@ -1,5 +1,5 @@
 @use "@/theme/colors";
-@use "@/theme/fonts";
+@use "@/theme/typography";
 
 .cluster {
     display: flex;
@@ -11,6 +11,6 @@
 
     &__text {
         color: colors.$foreground;
-        @include fonts.font-creata("sm");
+        @include typography.font("sm");
     }
 }
