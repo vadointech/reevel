@@ -11,7 +11,7 @@ import {
     CreateEventFormInterestsPicker,
 } from "./components";
 
-import { ArrowNext, IconNavigation } from "@/components/icons";
+import { IconArrowNext, IconLocation } from "@/components/icons";
 import { Button, FormField, Input, OptionsList, OptionsListItem } from "@/components/ui";
 import { Section } from "@/components/sections";
 
@@ -92,7 +92,7 @@ export const CreatePrivateEventForm = ({
                                             if(!field.value) return "Required";
                                             return `${field.value.properties.label} • ${field.value.properties.address}`;
                                         })()}
-                                        contentLeft={<IconNavigation />}
+                                        contentLeft={<IconLocation />}
                                         href={"/event/private/create/location"}
                                     />
                                 </OptionsList>
@@ -112,7 +112,7 @@ export const CreatePrivateEventForm = ({
             <div className={styles.form__submit}>
                 <Button
                     type={"submit"}
-                    arrowAfter={<ArrowNext />}
+                    arrowAfter={<IconArrowNext />}
                 >
                     Next step
                 </Button>

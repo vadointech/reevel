@@ -5,7 +5,7 @@ import { observer } from "mobx-react-lite";
 import { useOnboardingUpdate } from "@/features/onboarding/hooks";
 
 import { Button } from "@/components/ui";
-import { ArrowNext } from "@/components/icons";
+import { IconArrowNext } from "@/components/icons";
 
 export const OnboardingNextStepButton = observer((props: Button.Props) => {
 
@@ -16,7 +16,7 @@ export const OnboardingNextStepButton = observer((props: Button.Props) => {
     return (
         <Button
             variant={"accent"}
-            arrowAfter={<ArrowNext />}
+            arrowAfter={<IconArrowNext />}
             onClick={handleUpdateProfile}
             {...props}
         />

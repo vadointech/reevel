@@ -3,7 +3,7 @@ import Image from "next/image";
 import { hexToRgba } from "@/utils/hex-to-rgba";
 
 import { Badge } from "@/components/ui";
-import { IconLock, IconNavigation, IconGlobe } from "@/components/icons";
+import { IconLock, IconLocation, IconGlobe } from "@/components/icons";
 import { AttendersSection } from "../../attenders";
 
 
@@ -114,7 +114,7 @@ export const EventCard = ({
                         styles[`card__location_size_${size}`],
                     )}
                 >
-                    <IconNavigation />
+                    <IconLocation />
                     {location}
                 </div>
                 <h3

@@ -1,7 +1,7 @@
 import { headers } from "next/headers";
 import { getGoogleOAuthLink } from "@/api/auth/get-google-oauth-link";
 
-import { IconApple, IconGoogle } from "@/components/icons";
+import { IconLogoApple, IconLogoGoogle } from "@/components/icons";
 import { Button, ButtonsBlock, Container } from "@/components/ui";
 import { AuthCarousel } from "@/flows/auth/modules/carousel";
 
@@ -34,13 +34,13 @@ export async function AuthLoginPage() {
                 <ButtonsBlock container={false}>
                     <Button
                         variant={"secondary-muted"}
-                        iconBefore={<IconGoogle />}
+                        iconBefore={<IconLogoGoogle />}
                         href={data?.link}
                     >
                         Sign in with Google
                     </Button>
                     <Button
-                        iconBefore={<IconApple />}
+                        iconBefore={<IconLogoApple />}
                     >
                         Sign in with Apple
                     </Button>

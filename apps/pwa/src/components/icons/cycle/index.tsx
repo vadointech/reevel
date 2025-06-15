@@ -2,8 +2,8 @@ import { ComponentProps } from "react";
 
 export const IconCycle = (props: ComponentProps<"svg">) => (
     <svg
-        viewBox="0 0 16 18"
         fill="none"
+        viewBox="0 0 16 18"
         xmlns="http://www.w3.org/2000/svg"
         {...props}
     >

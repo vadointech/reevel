@@ -30,9 +30,9 @@
         border-radius: 1rem;
         z-index: -2;
         background: linear-gradient(
-        260deg,
-            rgba(#F7F7F7,0) 0%,           
-            rgba(#212529,1) 51%,                  
+            260deg,
+            rgba(#F7F7F7, 0) 0%,
+            rgba(#212529, 1) 51%,
           );
 
           rotate: -21deg !important;
@@ -44,29 +44,32 @@
         display: flex;
         align-items: center;
         justify-content: space-between;
-    
-        span {
-            @include typography.font('xl',600);
-            color:colors.$foreground;
-        }
+    }
 
-        div {
-            padding: mixins.rem(3.25) mixins.rem(10);
+    &__title {
+        @include typography.font('xl',600);
+        color: colors.$foreground;
+    }
 
-            display: flex;
-            align-items: center;
-            gap: 0.25rem;
+    &__badge {
+        display: flex;
+        align-items: center;
+        gap: mixins.rem(4);
 
-            border-radius:mixins.rem(100);
-            background-color: colors.$foreground;
+        padding: mixins.rem(7) mixins.rem(10);
+        border-radius: mixins.rem(100);
+        background-color: colors.$foreground;
 
-            @include typography.font('xs',400);
-            color:colors.$primary;
+        @include typography.font('xs',400);
+        color: colors.$primary;
+
+        svg {
+            height: mixins.rem(14);
         }
     }
 
     &__meta {
-        color:colors.$foreground;
+        color: colors.$foreground;
         @include typography.font('base',400);
 
         p {

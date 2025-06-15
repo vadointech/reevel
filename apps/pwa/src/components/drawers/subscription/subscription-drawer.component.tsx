@@ -12,7 +12,7 @@ import {
 import { TabsBody, TabsContent, TabsRoot } from "@/components/shared/tabs";
 
 import { Button, ButtonsBlock, Header, OptionsListItem } from "@/components/ui";
-import { Back, IconStar } from "@/components/icons";
+import { IconStar } from "@/components/icons";
 
 import { Plan } from "./components/plan";
 
@@ -117,7 +117,6 @@ export const SubscriptionDrawer = () => {
                 <OptionsListItem
                     label="Subscription"
                     description="Standart"
-                    contentRight={<Back width={7} height={14} style={{ rotate: "180deg" }} />}
                     contentLeft={<IconStar width={22} height={22} className={styles.test} />}>
                 </OptionsListItem>
             </BottomSheetTrigger>

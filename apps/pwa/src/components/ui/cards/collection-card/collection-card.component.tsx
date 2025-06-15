@@ -1,5 +1,5 @@
 import { ComponentProps } from "react";
-import { ArrowBack } from "@/components/icons";
+import { IconArrowNext } from "@/components/icons";
 
 import styles from "./styles.module.scss";
 import cx from "classnames";
@@ -50,7 +50,7 @@ export const CollectionCard = ({
 
             <div className={styles.card__detailed}>
                 <div className={styles.card__detailed__icon}>
-                    <ArrowBack width={7} height={6} strokeWidth={0.3} />
+                    <IconArrowNext />
                 </div>
                 <span>
                     SHOW ME

@@ -6,7 +6,7 @@ import { useLocationSearchContext } from "@/features/location/search";
 import { useLocationSearch } from "@/features/location/search/hooks";
 
 import { Header, OptionsList, OptionsListItem } from "@/components/ui";
-import { IconNavigation } from "@/components/icons";
+import { IconLocation } from "@/components/icons";
 
 import { PlaceLocationEntity } from "@/entities/place";
 
@@ -65,7 +65,7 @@ export const List = observer(({ onSelect, initialResults }: LocationSearchScreen
                 data-location={place.id}
                 label={place.displayName}
                 description={place.formattedAddress}
-                contentLeft={<IconNavigation />}
+                contentLeft={<IconLocation />}
                 onClick={() => onSelect(place)}
             />
         ));
@@ -81,7 +81,7 @@ export const List = observer(({ onSelect, initialResults }: LocationSearchScreen
             size={"small"}
             label={place.displayName}
             description={place.formattedAddress}
-            contentLeft={<IconNavigation />}
+            contentLeft={<IconLocation />}
             onClick={() => onSelect(place)}
         />
     ));

@@ -1,9 +1,10 @@
 import { ComponentProps } from "react";
 
-import styles from "./styles.module.scss";
-import cx from "classnames";
 import { IconLightning } from "@/components/icons";
 import { CardCarousel } from "./_components/carousel/card-carousel";
+
+import styles from "./styles.module.scss";
+import cx from "classnames";
 
 export namespace SubscriptionCard {
     export type Props = ComponentProps<"div"> & {
@@ -24,12 +25,16 @@ export const SubscriptionCard = ({
     return (
         <div className={cx(styles.card, className)}>
             <div className={styles.card__info}>
-                <span>{title}</span>
-                {type &&
-                    <div>
-                        <IconLightning />
-                        <p>{type}</p>
-                    </div>
+                <span className={styles.card__title}>
+                    { title }
+                </span>
+                {
+                    type && (
+                        <div className={styles.card__badge}>
+                            <IconLightning />
+                            <p>{ type }</p>
+                        </div>
+                    )
                 }
             </div>
             <div className={styles.card__meta}>

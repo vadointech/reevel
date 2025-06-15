@@ -20,6 +20,7 @@ export const listItem = cva(styles.listItem, {
         size: {
             default: styles.listItem_size_default,
             small: styles.listItem_size_small,
+            large: styles.listItem_size_large,
         },
     },
     defaultVariants: {

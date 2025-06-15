@@ -3,7 +3,7 @@
 import { useState } from "react";
 
 import { Checkbox, OptionsList, OptionsListItem } from "@/components/ui";
-import { Back, IconDark } from "@/components/icons";
+import { IconDark } from "@/components/icons";
 import {
     ProfileSettingsBottomSheet,
     ProfileSettingsBottomSheetContent,
@@ -25,7 +25,6 @@ export const ProfileSettingsAppearancePicker = () => {
                     <OptionsListItem
                         label="Dark mode"
                         contentLeft={<IconDark width={22} height={22} />}
-                        contentRight={<Back width={7} height={14} style={{ rotate: "180deg" }} />}
                     />
                 </OptionsList>
             </ProfileSettingsBottomSheetTrigger>

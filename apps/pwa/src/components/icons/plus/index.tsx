@@ -2,8 +2,8 @@ import { ComponentProps } from "react";
 
 export const IconPlus = (props: ComponentProps<"svg">) => (
     <svg
-        viewBox="0 0 20 21"
         fill="none"
+        viewBox="0 0 20 21"
         xmlns="http://www.w3.org/2000/svg"
         {...props}
     >

@@ -3,7 +3,7 @@
 import { useNotificationDrawer } from "@/features/profile/settings/hooks";
 
 import { Checkbox, OptionsList, OptionsListItem, Toggle } from "@/components/ui";
-import { Back, IconNotification } from "@/components/icons";
+import { IconNotification } from "@/components/icons";
 
 import {
     ProfileSettingsBottomSheet,
@@ -27,7 +27,6 @@ export const ProfileSettingsNotificationPicker = () => {
                     label="Notifications"
                     description="All"
                     contentLeft={<IconNotification width={22} height={22} />}
-                    contentRight={<Back width={7} height={14} style={{ rotate: "180deg" }} />}
                 />
             </ProfileSettingsBottomSheetTrigger>
 

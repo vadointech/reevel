@@ -3,7 +3,7 @@
 import { useState } from "react";
 
 import { Checkbox, OptionsList, OptionsListItem } from "@/components/ui";
-import { Back, IconEngland, IconGlobe, IconSystemCounty, IconUkraine } from "@/components/icons";
+import { IconFlagEngland, IconGlobe, IconFlagSystem, IconFlagUkraine } from "@/components/icons";
 import {
     ProfileSettingsBottomSheet,
     ProfileSettingsBottomSheetContent,
@@ -25,7 +25,6 @@ export const ProfileSettingsLanguagePicker = () => {
                     label="Language"
                     description={"System"}
                     contentLeft={<IconGlobe width={22} height={22} />}
-                    contentRight={<Back width={7} height={14} style={{ rotate: "180deg" }} />}
                 />
             </ProfileSettingsBottomSheetTrigger>
 
@@ -52,7 +51,8 @@ const Content = () => {
             <OptionsList>
                 <OptionsListItem
                     label="English"
-                    contentLeft={<IconEngland width={22} height={22} />}
+                    size={"large"}
+                    contentLeft={<IconFlagEngland />}
                     contentRight={
                         <Checkbox
                             onChange={() => handleLanguageSelect("en")}
@@ -64,7 +64,8 @@ const Content = () => {
 
                 <OptionsListItem
                     label="Ukrainian"
-                    contentLeft={<IconUkraine width={22} height={22} />}
+                    size={"large"}
+                    contentLeft={<IconFlagUkraine />}
                     contentRight={
                         <Checkbox
                             onChange={() => handleLanguageSelect("uk")}
@@ -77,7 +78,8 @@ const Content = () => {
 
                 <OptionsListItem
                     label="System"
-                    contentLeft={<IconSystemCounty width={22} height={22} />}
+                    size={"large"}
+                    contentLeft={<IconFlagSystem />}
                     contentRight={
                         <Checkbox
                             onChange={() => handleLanguageSelect("system")}
