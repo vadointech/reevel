@@ -2,16 +2,16 @@
 
 import { useEffect, useState } from "react";
 import { reaction } from "mobx";
-import { useSessionStore } from "@/features/session";
+import { useSessionContext } from "@/features/session";
 import { useOnboardingStore } from "@/features/onboarding";
 
 export function useOnboardingAvatarPickerCarousel(defaultAvatars: string[]) {
-    const sessionStore = useSessionStore();
+    const session = useSessionContext();
     const onboardingStore = useOnboardingStore();
 
     const [avatars, setAvatars] = useState<string[]>(() => {
-        if(sessionStore.user?.profile.picture) {
-            return [sessionStore.user.profile.picture, ...defaultAvatars, sessionStore.user.profile.picture, ...defaultAvatars];
+        if(session.store.user?.profile.picture) {
+            return [session.store.user.profile.picture, ...defaultAvatars, session.store.user.profile.picture, ...defaultAvatars];
         }
 
         return defaultAvatars;
@@ -21,7 +21,7 @@ export function useOnboardingAvatarPickerCarousel(defaultAvatars: string[]) {
 
     useEffect(() => {
         const disposer = reaction(
-            () => sessionStore.user,
+            () => session.store.user,
             (user) => {
                 const picture = user?.profile.picture;
                 if(picture) {

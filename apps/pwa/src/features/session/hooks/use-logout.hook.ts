@@ -1,17 +1,17 @@
 import { useMutation } from "@tanstack/react-query";
-import { useSessionStore } from "@/features/session";
 import { logout } from "@/api/auth/logout";
 import { useRouter } from "@/i18n/routing";
+import { useSessionContext } from "../session.context";
 
 export function useLogout() {
-    const sessionStore = useSessionStore();
+    const session = useSessionContext();
     const router = useRouter();
 
     const { mutate } = useMutation({
         mutationFn: logout,
         onSuccess: () => {
-            sessionStore.logout();
-            router.replace("/login");
+            session.cleanSession()
+                .then(() => router.replace("/login"));
         },
     });
 

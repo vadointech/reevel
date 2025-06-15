@@ -2,12 +2,11 @@ import { Section } from "@/components/sections";
 import {
     ProfileSettingsAccountPicker,
     ProfileSettingsAppearancePicker,
-    ProfileSettingsLanguagePicker,
+    ProfileSettingsLanguagePicker, ProfileSettingsLogout,
     ProfileSettingsNotificationPicker,
 } from "./components";
-import { OptionsList, OptionsListItem } from "@/components/ui";
+import { OptionsList } from "@/components/ui";
 import { SubscriptionDrawer } from "@/components/drawers/subscription";
-import { IconExit } from "@/components/icons";
 
 import styles from "./styles.module.scss";
 
@@ -35,14 +34,7 @@ export const ProfileSettingsForm = () => {
             </Section>
 
             <Section>
-                <OptionsList>
-                    <OptionsListItem
-                        variant={"danger"}
-                        label={"Log out"}
-                        contentLeft={<IconExit />}
-                        contentRight={false}
-                    />
-                </OptionsList>
+                <ProfileSettingsLogout />
             </Section>
         </>
     );

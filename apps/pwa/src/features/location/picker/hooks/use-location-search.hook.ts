@@ -36,7 +36,7 @@ export function useLocationPickerSearch() {
             } else {
                 return undefined;
             }
-        });
+        }, 700);
     }, [queryClient]);
 
     const setSearchResults = (response?: SearchLocationQueryBuilder.TOutput) => {

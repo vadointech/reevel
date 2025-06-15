@@ -1,4 +1,4 @@
-import { useSessionStore } from "@/features/session";
+import { useSessionContext } from "@/features/session";
 import { useUploadedFileDelete } from "@/features/uploader/hooks";
 import { useCallback, useRef } from "react";
 import { UserUploadsEntity } from "@/entities/uploads";
@@ -7,7 +7,7 @@ import { uploadProfileAvatar } from "@/api/profile/upload-avatar";
 import { IBottomSheetRootController } from "@/components/shared/bottom-sheet/types";
 
 export function useOnboardingAvatarUploader(callbackUrl?: string) {
-    const sessionStore = useSessionStore();
+    const session = useSessionContext();
 
     const uploadDrawerController = useRef<IBottomSheetRootController>(null);
 
@@ -16,12 +16,11 @@ export function useOnboardingAvatarUploader(callbackUrl?: string) {
     } = useUploadedFileDelete();
 
     const handleAvatarPick = useCallback((upload: UserUploadsEntity) => {
-        sessionStore.updateSession({
+        session.updateSession({
             profile: {
                 picture: upload.fileUrl,
             },
-        });
-        uploadDrawerController.current?.close();
+        }).then(() => uploadDrawerController.current?.close());
     }, []);
 
     const { handleSelectFile, handleFileUpload } = useImageUploader({
@@ -35,7 +34,7 @@ export function useOnboardingAvatarUploader(callbackUrl?: string) {
     });
 
     return {
-        sessionStore,
+        session,
         handleSelectFile,
         handleFileUpload,
         handleAvatarPick,

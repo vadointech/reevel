@@ -20,7 +20,7 @@ export const metadata: Metadata = {
     description: "Easily bring people together. Reevel turns simple moments into lasting memories.",
     appleWebApp: {
         capable: true,
-        statusBarStyle: "black-translucent", // або ""
+        statusBarStyle: "black-translucent", // or ""
         title: "Reevel",
     },
 };

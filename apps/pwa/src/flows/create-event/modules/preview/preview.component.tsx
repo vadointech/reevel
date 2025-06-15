@@ -47,7 +47,7 @@ export const CreateEventPreview = ({
                 {
                     formValues ? (
                         // <CreateEventPreviewCarousel host={session.user?.profile} event={formValues} />
-                        <CreateEventPreviewCard host={session.user?.profile} event={formValues} />
+                        <CreateEventPreviewCard host={session.store.user?.profile} event={formValues} />
                     ) : null
                 }
             </div>

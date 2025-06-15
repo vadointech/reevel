@@ -1,3 +1,2 @@
-export * from "./stores/session.store";
-
-export * from "./hooks/use-logout.hook";
+export * from "./session.provider";
+export { useSessionContext } from "./session.context";

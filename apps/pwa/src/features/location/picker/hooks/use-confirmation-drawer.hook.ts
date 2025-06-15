@@ -5,9 +5,8 @@ import { usePersistentMap } from "@/components/shared/map";
 import { useLocationPicker } from "../location-picker.context";
 import { useLocationAccessRequest } from "@/features/location/search/hooks";
 
-import { GetNearbyPlacesQueryBuilder } from "../queries";
+import { GetNearbyPlacesQueryBuilder, SearchLocationQueryBuilder } from "../queries";
 import { GetLocationByCoordinatesQueryBuilder } from "@/features/location/search/queries";
-
 
 import { placeLocationEntityMapper } from "@/entities/place/mapper";
 
@@ -56,12 +55,18 @@ export function useConfirmationDrawer(placesInit: PlaceLocationEntity[]) {
     }, []);
 
     const getLocationPickerQueryData = (placeId: string) => {
-        const data = queryClient.getQueriesData<PlaceLocationEntity>({
+        const nearbyData = queryClient.getQueriesData<PlaceLocationEntity>({
             queryKey: GetNearbyPlacesQueryBuilder.queryKey(),
-        });
+        }).flatMap(([, data]) => data);
 
-        const places = data.flatMap(([, data]) => data);
-        return places.find(place => place?.id === placeId);
+        const place = nearbyData.find(place => place?.id === placeId);
+        if(place) return place;
+
+        const searchData = queryClient.getQueriesData<SearchLocationQueryBuilder.TOutput>({
+            queryKey: SearchLocationQueryBuilder.queryKey(),
+        }).flatMap(([, data]) => data?.places);
+
+        return searchData.find(place => place?.id === placeId);
     };
     const moveViewStateToPoint = (point: Point<IconPoint>, checkBuffer: boolean = true) => {
         const { bounds: defaultBounds } = map.provider.current.internalConfig.viewState;

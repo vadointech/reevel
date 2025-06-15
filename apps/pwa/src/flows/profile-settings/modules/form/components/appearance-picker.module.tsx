@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useTheme } from "@/features/theme/hooks";
 
 import { Checkbox, OptionsList, OptionsListItem } from "@/components/ui";
 import { IconDark } from "@/components/icons";
@@ -10,21 +10,20 @@ import {
     ProfileSettingsBottomSheetTrigger,
 } from "../../bottom-sheet";
 
-import { UIMode } from "@/types/common";
+import { Theme } from "@/features/theme";
 
 export namespace ProfileSettingsAppearancePicker {
     export type Props = never;
 }
 
 export const ProfileSettingsAppearancePicker = () => {
-
     return (
         <ProfileSettingsBottomSheet>
             <ProfileSettingsBottomSheetTrigger>
                 <OptionsList>
                     <OptionsListItem
                         label="Dark mode"
-                        contentLeft={<IconDark width={22} height={22} />}
+                        contentLeft={<IconDark />}
                     />
                 </OptionsList>
             </ProfileSettingsBottomSheetTrigger>
@@ -40,22 +39,17 @@ export const ProfileSettingsAppearancePicker = () => {
 };
 
 const Content = () => {
-    const [selectedMode, setSelectedMode] = useState("system");
-
-    const handleModeSelect = (mode: UIMode) => {
-        setSelectedMode(mode);
-    // setTheme(mode);
-    };
+    const { theme, setTheme } = useTheme();
 
     return (
         <>
             <OptionsList>
                 <OptionsListItem
                     label="System"
-                    onClick={() => handleModeSelect("system")}
+                    onClick={() => setTheme(Theme.SYSTEM)}
                     contentRight={
                         <Checkbox
-                            checked={selectedMode === "system"}
+                            checked={theme === Theme.SYSTEM}
                         />
                     }
                     iconType="outlined"
@@ -63,10 +57,10 @@ const Content = () => {
 
                 <OptionsListItem
                     label="Dark"
-                    onClick={() => handleModeSelect("dark")}
+                    onClick={() => setTheme(Theme.DARK)}
                     contentRight={
                         <Checkbox
-                            checked={selectedMode === "dark"}
+                            checked={theme === Theme.DARK}
                         />
                     }
                     iconType="outlined"
@@ -75,10 +69,10 @@ const Content = () => {
 
                 <OptionsListItem
                     label="Light"
-                    onClick={() => handleModeSelect("light")}
+                    onClick={() => setTheme(Theme.LIGHT)}
                     contentRight={
                         <Checkbox
-                            checked={selectedMode === "light"}
+                            checked={theme === Theme.LIGHT}
                         />
                     }
                     iconType="outlined"

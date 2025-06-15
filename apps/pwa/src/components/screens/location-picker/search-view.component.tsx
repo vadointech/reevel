@@ -59,7 +59,6 @@ export const LocationSearch = ({ placesInit }: LocationSearch.Props) => {
                 onChange={(value) => searchStore.setSearchQuery(value)}
             />
             <SearchScreenContent>
-
                 {
                     placesInit.length > 0 && (
                         <RecommendedList

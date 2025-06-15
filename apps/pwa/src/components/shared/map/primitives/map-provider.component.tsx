@@ -2,8 +2,7 @@
 
 import { PropsWithChildren, useCallback, useMemo, useRef } from "react";
 
-import { useMediaQuery } from "@uidotdev/usehooks";
-import { useTheme } from "next-themes";
+import { useTheme } from "@/features/theme/hooks";
 
 import { MapRootController } from "../map.controller";
 import { PersistentMapContext } from "../map.context";
@@ -11,7 +10,7 @@ import { MapStore } from "../map.store";
 import { MapConfig } from "../types";
 
 import { MapboxComponent, MapboxProvider } from "../providers";
-import { Theme } from "@/entities/theme";
+import { Theme } from "@/features/theme";
 
 export const PersistentMapProvider = ({
     children,
@@ -41,21 +40,18 @@ export const PersistentMapProvider = ({
 
     const handleInitialize = useCallback(() => provider.current.initialize(mapRef), []);
 
-    const { theme } = useTheme();
-    const prefersLight = useMediaQuery("(prefers-color-scheme: light)");
-
+    const { resolvedTheme } = useTheme();
 
     const mapStyle = useMemo(() => {
-        switch(theme) {
+        switch(resolvedTheme) {
             case Theme.LIGHT:
                 return provider.current.internalConfig.mapStyle.styleLight;
             case Theme.DARK:
                 return provider.current.internalConfig.mapStyle.styleDark;
             default:
-                if(prefersLight) return provider.current.internalConfig.mapStyle.styleLight;
-                return provider.current.internalConfig.mapStyle.styleDark;
+                return provider.current.internalConfig.mapStyle.styleLight;
         }
-    }, [theme, prefersLight]);
+    }, [resolvedTheme]);
 
     return (
         <PersistentMapContext.Provider

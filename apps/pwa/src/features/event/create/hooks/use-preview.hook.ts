@@ -8,7 +8,7 @@ import { createEvent, CreateEvent } from "@/api/event/create";
 import { useFormContext } from "react-hook-form";
 import { createEventFormSchema, CreateEventFormSchemaValues } from "@/features/event/create";
 import { indexedDbService } from "@/lib/indexed-db.service";
-import { useSessionStore } from "@/features/session";
+import { useSessionContext } from "@/features/session";
 import { UserUploadsEntity } from "@/entities/uploads";
 import { IBottomSheetRootController } from "@/components/shared/bottom-sheet/types";
 import { DeleteUploadedFile, deleteUploadedFile, GetUserUploads } from "@/api/user/uploads";
@@ -22,7 +22,7 @@ type Params = Partial<Omit<UseMutationOptions<CreateEvent.TOutput, unknown, Crea
 export function useCreateEventPreview(params: Params = {}) {
     const form = useFormContext<CreateEventFormSchemaValues>();
     const router = useRouter();
-    const session = useSessionStore();
+    const session = useSessionContext();
     
     const uploadDrawerController = useRef<IBottomSheetRootController>(null);
 

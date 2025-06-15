@@ -3,4 +3,3 @@ export enum Theme {
     LIGHT = "light",
     SYSTEM = "system",
 }
-export type TTheme = EnumValues<typeof Theme>;

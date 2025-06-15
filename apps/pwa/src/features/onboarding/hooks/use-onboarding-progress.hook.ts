@@ -2,15 +2,13 @@
 
 import { OnboardingStepPath } from "@/features/onboarding";
 import { usePathname, useRouter } from "@/i18n/routing";
-import { useLogout } from "@/features/session";
+import { useLogout } from "@/features/session/hooks";
 import { useMutation } from "@tanstack/react-query";
 import { updateProfile } from "@/api/profile/update-profile";
 
 export function useOnboardingProgress() {
 
-    const {
-        handleLogout,
-    } = useLogout();
+    const { handleLogout } = useLogout();
 
     const router = useRouter();
     const pathname = usePathname();
