@@ -111,7 +111,13 @@ export class Repository<Entity extends ObjectLiteral> {
         entityManager?: EntityManager,
     ): Promise<Entity | null> {
         const repository = this.getRepository(entityManager);
-        return repository.findOne(options);
+        // const response: Entity | null = null;
+        try {
+            return repository.findOne(options);
+        } catch {
+            return null;
+        }
+        // return response;
     }
 
     async findOneBy(
@@ -119,7 +125,11 @@ export class Repository<Entity extends ObjectLiteral> {
         entityManager?: EntityManager,
     ): Promise<Entity | null> {
         const repository = this.getRepository(entityManager);
-        return repository.findOneBy(options);
+        try {
+            return repository.findOneBy(options);
+        } catch {
+            return null;
+        }
     }
 
     async delete(

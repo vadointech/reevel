@@ -1,0 +1,11 @@
+@use "@/theme/spacing";
+
+.buttons {
+    display: flex;
+    flex-direction: column;
+    row-gap: 1rem;
+
+    &_container {
+        padding-inline: spacing.$container;
+    }
+}

@@ -1,7 +1,7 @@
-import { MobxStore } from "@/types/common";
 import { Crop, PixelCrop } from "react-image-crop";
+import { IMobxStore } from "@/lib/mobx/types";
 
-export interface IImageUploaderStore extends MobxStore {
+export interface IImageUploaderStore extends IMobxStore {
     imageSrc?: string;
     crop?: Crop;
     completedCrop?: PixelCrop;

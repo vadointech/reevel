@@ -23,6 +23,7 @@ export class InterestsPickerStore implements IInterestsPickerStore {
             nextPageToken: observable,
 
             setInterests: action,
+            setSelectedInterests: action,
             setSearchTerm: action,
         });
 

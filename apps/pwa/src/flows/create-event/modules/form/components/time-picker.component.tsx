@@ -1,18 +1,21 @@
 "use client";
 
+import { Controller } from "react-hook-form";
+
+import {
+    useCreateEventFormFieldFormatter,
+    useCreateEventFormTimePicker,
+} from "@/features/event/create";
+
 import {
     CreateEventFormBottomSheet, CreateEventFormBottomSheetBody,
     CreateEventFormBottomSheetContent,
     CreateEventFormBottomSheetTrigger,
 } from "./bottom-sheet.component";
-import { OptionsListItem } from "@/components/shared/_redesign";
+
+import { OptionsListItem } from "@/components/ui";
 import { TimePicker } from "@/components/shared/time-picker";
 import { IconClock } from "@/components/icons";
-import {
-    useCreateEventFormFieldFormatter,
-    useCreateEventFormTimePicker,
-} from "@/features/event/create";
-import { Controller } from "react-hook-form";
 
 import styles from "../styles/time-picker.module.scss";
 

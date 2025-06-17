@@ -1,4 +1,4 @@
-import { Controller, Delete, Get, Param, Patch, Query } from "@nestjs/common";
+import { Controller, Delete, Get, Param, Query } from "@nestjs/common";
 import { UserService } from "./user.service";
 import { Session } from "@/decorators";
 import { ServerSession } from "@/modules/auth/dto/jwt.dto";

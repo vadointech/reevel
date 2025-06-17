@@ -1,11 +1,13 @@
 import { FetchQueryOptions } from "@tanstack/react-query";
-import { GOOGLE_PLACES_API_EXCLUDED_TYPES, GOOGLE_PLACES_API_INCLUDED_TYPES } from "../config/places.config";
 import { getNearbyPlaces, GetNearbyPlaces } from "@/api/google/places";
-import { MapProviderGL } from "@/components/shared/map/types";
+
+import { GOOGLE_PLACES_API_EXCLUDED_TYPES, GOOGLE_PLACES_API_INCLUDED_TYPES } from "../config/places.config";
 import { googlePlacesApiResponseTransformer } from "@/infrastructure/google/transformers";
 import { googlePlacesApiResponseMapper } from "@/infrastructure/google/mappers";
+
+import { MapProviderGL } from "@/components/shared/map/types";
 import { PlaceLocationEntity } from "@/entities/place";
-import { QueryBuilder } from "@/types/common";
+import { QueryBuilderQuery } from "@/lib/react-query";
 
 export namespace GetNearbyPlacesQueryBuilder {
     export type TInput = {
@@ -19,7 +21,7 @@ export namespace GetNearbyPlacesQueryBuilder {
     export type TOutput = PlaceLocationEntity[];
 }
 
-export const GetNearbyPlacesQueryBuilder: QueryBuilder<GetNearbyPlacesQueryBuilder.TInput, GetNearbyPlacesQueryBuilder.TOutput> = (
+export const GetNearbyPlacesQueryBuilder: QueryBuilderQuery<GetNearbyPlacesQueryBuilder.TInput, GetNearbyPlacesQueryBuilder.TOutput> = (
     input: GetNearbyPlacesQueryBuilder.TInput,
 ): FetchQueryOptions<GetNearbyPlacesQueryBuilder.TOutput> => {
     return {
@@ -61,6 +63,6 @@ export const GetNearbyPlacesQueryBuilder: QueryBuilder<GetNearbyPlacesQueryBuild
     };
 };
 
-GetNearbyPlacesQueryBuilder.queryKey = (params: unknown[] = []) => {
+GetNearbyPlacesQueryBuilder.queryKey = (params = []) => {
     return [...GetNearbyPlaces.queryKey, ...params];
 };

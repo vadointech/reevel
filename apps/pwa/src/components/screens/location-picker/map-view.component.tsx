@@ -33,7 +33,7 @@ export const LocationPickerMapView = ({ placesInit }: LocationPickerMapView.Prop
         pickerDrawerDefaultSnapIndex,
         handleSelectPoint,
         handleConfirmationClose,
-        handleLocationAccessRequest,
+        handleRequestLocationAccess,
     } = useConfirmationDrawer(placesInit);
 
     return (
@@ -52,7 +52,7 @@ export const LocationPickerMapView = ({ placesInit }: LocationPickerMapView.Prop
                 defaultSnapIndex={pickerDrawerDefaultSnapIndex}
                 onLocationTypePick={handleLocationTypePick}
                 onSnapPointChange={handlePickerSnapPointChange}
-                onLocationAccessRequest={handleLocationAccessRequest}
+                onLocationAccessRequest={handleRequestLocationAccess}
             />
             <LocationPickerConfirmationDrawer
                 controller={confirmationDrawerControls}

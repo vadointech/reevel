@@ -1,5 +1,6 @@
 import { ChangeEvent, useCallback, useState } from "react";
-import { Header } from "@/components/shared/_redesign";
+
+import { Header } from "@/components/ui";
 
 import styles from "../styles.module.scss";
 import cx from "classnames";

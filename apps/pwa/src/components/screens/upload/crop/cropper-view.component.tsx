@@ -1,9 +1,10 @@
 import { ComponentProps } from "react";
 import { Link } from "@/i18n/routing";
 
-import { Header } from "@/components/shared/_redesign";
+import { Header } from "@/components/ui";
 import { IconArrowLeft } from "@/components/icons";
-import { ImageCropper } from "@/components/shared/_redesign/cropper";
+
+import { ImageCropper } from "@/components/shared/cropper";
 
 import styles from "./styles.module.scss";
 

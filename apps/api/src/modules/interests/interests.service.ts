@@ -6,6 +6,7 @@ import { InterestRelationsEntity } from "@/modules/interests/entities/interest-r
 import { ProfileEntity } from "@/modules/profile/entities/profile.entity";
 import { InterestsRepository } from "./repositories/interests.repository";
 import { InterestsFilterParamsDto } from "@/modules/interests/dto/interests-filter-params.dto";
+import { ProfileRepository } from "@/modules/profile/repositories/profile.repository";
 
 @Injectable()
 export class InterestsService {
@@ -14,8 +15,7 @@ export class InterestsService {
         private readonly interestsRepository: InterestsRepository,
         @InjectRepository(InterestRelationsEntity)
         private readonly interestsRelationsRepository: Repository<InterestRelationsEntity>,
-        @InjectRepository(ProfileEntity)
-        private readonly profileRepository: Repository<ProfileEntity>,
+        private readonly profileRepository: ProfileRepository,
     ) { }
 
     async getInitialInterests(userId: string): Promise<InterestsEntity[]> {
@@ -45,7 +45,7 @@ export class InterestsService {
             },
         });
 
-        if (userProfile) {
+        if(userProfile) {
             const userInterests = userProfile.interests.map(item => item.interestId);
             slugs.push(...userInterests);
         }

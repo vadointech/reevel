@@ -2,10 +2,12 @@
 
 import { ComponentProps } from "react";
 
-import { Button } from "@/components/shared/_redesign";
+import { useCreateEventPreview } from "@/features/event/create/hooks";
+
+import { Button } from "@/components/ui";
 import { CreateEventPreviewCard } from "./components/preview-event-card.component";
 import { UploadDrawer } from "@/components/drawers/upload";
-import { useCreateEventPreview } from "@/features/event/create/hooks";
+
 import { GetUserUploads } from "@/api/user/uploads";
 
 import styles from "./styles/create-event-preview.module.scss";
@@ -45,7 +47,7 @@ export const CreateEventPreview = ({
                 {
                     formValues ? (
                         // <CreateEventPreviewCarousel host={session.user?.profile} event={formValues} />
-                        <CreateEventPreviewCard host={session.user?.profile} event={formValues} />
+                        <CreateEventPreviewCard host={session.store.user?.profile} event={formValues} />
                     ) : null
                 }
             </div>

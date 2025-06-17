@@ -1,0 +1,41 @@
+@use "@/theme/mixins";
+@use "@/theme/colors";
+
+.stars {
+    position: relative;
+    display: flex;
+
+    &_size {
+        &_default {
+            column-gap: mixins.rem(6);
+            svg {
+                width: mixins.rem(17);
+                height: mixins.rem(16);
+            }
+        }
+        &_small {
+            column-gap: mixins.rem(4);
+            svg {
+                width: mixins.rem(14);
+                height: mixins.rem(13);
+            }
+        }
+    }
+
+    &__star {
+        position: relative;
+
+        svg path {
+            fill: colors.$secondary-muted;
+        }
+    }
+
+    &__overlay {
+        position: absolute;
+        inset: 0;
+        overflow: hidden;
+        svg path {
+            fill: #FFC93F
+        }
+    }
+}

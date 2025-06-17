@@ -1,0 +1,48 @@
+@use "@/theme/colors";
+@use "@/theme/mixins";
+@use "@/theme/typography";
+
+.page {
+    height: 100%;
+    position: relative;
+
+    &:before {
+        content: "";
+        position: absolute;
+        z-index: 1;
+        inset: 0;
+
+        background: colors.$background;
+        mask-image: linear-gradient(to top, rgba(0, 0, 0, 1), rgba(0, 0, 0, 1), rgba(0, 0, 0, 1), rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0));
+    }
+}
+
+.content {
+    position: absolute;
+    z-index: 1;
+    left: 0;
+    right: 0;
+    bottom: 0;
+
+    display: flex;
+    flex-direction: column;
+    row-gap: 4rem;
+
+    &__info {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    &__title {
+        margin-bottom: 1rem;
+        text-align: center;
+        @include typography.font("4xl", 500);
+    }
+
+    &__subtitle {
+        @include typography.font("sm");
+        color: colors.$secondary;
+        text-align: center;
+    }
+}

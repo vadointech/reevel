@@ -79,7 +79,7 @@ export class MapboxProvider<T extends MapRef = MapRef> extends MapRootProvider i
         }
     }
 
-    fitBounds(bounds: MapProviderGL.LngLatBounds, options?: MapProviderCameraState.EasingOptions) {
+    fitBounds(bounds: MapProviderGL.LngLatBoundsLike, options?: MapProviderCameraState.EasingOptions) {
         if(this.mapRef.current) {
             return this.mapRef.current.fitBounds(bounds, {
                 pitch: this._internalConfig.viewState.pitch,

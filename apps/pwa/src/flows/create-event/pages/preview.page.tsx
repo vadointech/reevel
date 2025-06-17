@@ -1,10 +1,13 @@
-import { getUserUploads } from "@/api/user/uploads";
 import { headers } from "next/headers";
-import { SupportedFileCollections } from "@/entities/uploads";
-import { Header } from "@/components/shared/_redesign";
 import { Link } from "@/i18n/routing";
+
+import { getUserUploads } from "@/api/user/uploads";
+
+import { Header } from "@/components/ui";
 import { IconArrowLeft } from "@/components/icons";
 import { CreateEventPreview } from "@/flows/create-event/modules/preview";
+
+import { SupportedFileCollections } from "@/entities/uploads";
 
 import styles from "../styles/page.module.scss";
 

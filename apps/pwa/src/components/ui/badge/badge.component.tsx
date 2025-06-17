@@ -1,37 +1,46 @@
 import { ComponentProps, ReactNode } from "react";
+
 import styles from "./styles.module.scss";
-import cx from "classnames";
+import { cva, VariantProps } from "class-variance-authority";
+
+const badge = cva(styles.badge, {
+    variants: {
+        variant: {
+            default: styles.badge_variant_default,
+            ghost: styles.badge_variant_ghost,
+        },
+        size: {
+            default: styles.badge_size_default,
+            small: styles.badge_size_small,
+        },
+    },
+    defaultVariants: {
+        variant: "default",
+        size: "default",
+    },
+});
 
 export namespace Badge {
-    export type Variant = "default" | "primary" | "ghost" | "date" | "fire";
-    export type Size = "default" | "small";
-    export type Props = ComponentProps<"div"> & {
-        variant?: Variant;
-        size?: Size;
-        icon?: ReactNode;
+    export type Props = ComponentProps<"div"> & VariantProps<typeof badge> & {
+        iconBefore?: ReactNode;
     };
 }
 
 export const Badge = ({
-    variant = "default",
-    size = "default",
-    icon,
+    size,
+    variant,
+    iconBefore,
     className,
     children,
     ...props
 }: Badge.Props) => {
     return (
         <div
-            className={cx(
-                styles.badge,
-                styles[`badge__variant_${variant}`],
-                styles[`badge__size_${size}`],
-                className,
-            )}
+            className={badge({ size, variant, className })}
             {...props}
         >
-            { icon ? icon : null }
-            { children }
+            { iconBefore }
+            <span>{ children }</span>
         </div>
     );
 };

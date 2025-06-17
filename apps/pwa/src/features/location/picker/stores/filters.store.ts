@@ -2,7 +2,7 @@ import { GooglePLacesApiIncludedTypes } from "@/api/google/places";
 import { action, makeObservable, observable } from "mobx";
 
 export class LocationPickerFiltersStore {
-    locationType?: GooglePLacesApiIncludedTypes;
+    locationType: GooglePLacesApiIncludedTypes | undefined = undefined;
 
     constructor() {
         makeObservable(this, {

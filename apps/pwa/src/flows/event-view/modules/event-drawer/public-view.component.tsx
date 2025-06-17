@@ -1,9 +1,6 @@
 import { EventDrawerContent, EventDrawerRoot } from "@/components/drawers/event";
-import { ReviewsSection, ScrollSection } from "@/components/sections";
-import { InterestButton, Section } from "@/components/shared/_redesign";
-import { CollectionCard } from "@/components/shared/collection-card";
-import { EventCard } from "@/components/shared/event-card";
-import { OptionItem, Options } from "@/components/shared/options";
+import { CollectionCard, EventCard, InterestButton, OptionsList, OptionsListItem } from "@/components/ui";
+import { ReviewsSection, ScrollSection, Section } from "@/components/sections";
 import { IconReport } from "@/components/icons";
 
 import styles from "./styles/event-drawer.module.scss";
@@ -17,6 +14,7 @@ export const EventDrawerPublicView = () => {
     return (
         <EventDrawerRoot>
             <EventDrawerContent
+                variant={"public"}
                 poster={"/assets/temp/poster5.png"}
                 primaryColor={"#AB002F"}
                 title={"Happy Valentine's Day Party"}
@@ -130,13 +128,12 @@ export const EventDrawerPublicView = () => {
                 />
 
                 <Section container>
-                    <Options>
-                        <OptionItem
-                            danger
-                            icon={<IconReport />}
+                    <OptionsList>
+                        <OptionsListItem
                             label={"Report"}
+                            contentLeft={<IconReport />}
                         />
-                    </Options>
+                    </OptionsList>
                 </Section>
             </EventDrawerContent>
         </EventDrawerRoot>

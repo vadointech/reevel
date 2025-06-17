@@ -2,8 +2,8 @@ import { ComponentProps } from "react";
 
 export const IconCheck = (props: ComponentProps<"svg">) => (
     <svg
-        viewBox="0 0 30 22"
         fill="none"
+        viewBox="0 0 30 22"
         xmlns="http://www.w3.org/2000/svg"
         {...props}
     >

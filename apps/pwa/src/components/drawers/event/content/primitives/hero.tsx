@@ -9,7 +9,7 @@ import { HERO_SECTION_OFFSET } from "../../config/snap-points";
 
 import { EventDrawerContentDescription } from "./description";
 import { IconCalendar, IconEllipsisHorizontal, IconLocation, IconShare, IconTicket } from "@/components/icons";
-import { AttendersSection } from "@/components/shared/attenders";
+import { AttendersSection } from "@/components/ui/attenders";
 import { UserProfileEntity } from "@/entities/profile";
 
 import styles from "../styles.module.scss";
@@ -134,7 +134,7 @@ export const EventDrawerContentHero = ({
                 <Link
                     className={cx(
                         styles.hero__button,
-                        styles.hero__button_share
+                        styles.hero__button_share,
                     )}
                     href="/event/share"
                 >

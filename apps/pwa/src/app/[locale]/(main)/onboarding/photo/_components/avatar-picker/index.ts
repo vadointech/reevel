@@ -1,1 +1,0 @@
-export { OnboardingAvatarPicker } from "./avatar-picker.component";

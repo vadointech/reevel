@@ -1,14 +1,15 @@
 "use client";
 
+import { useRef } from "react";
 import { InterestEntity } from "@/entities/interests";
 import { useQueryClient } from "@tanstack/react-query";
-import { getRelatedInterests, GetRelatedInterests } from "@/api/interests";
 import { useInterestsPickerContext } from "../interests-picker.context";
-import { useFetchQuery } from "@/lib/react-query";
+import { RequestDebouncer } from "@/lib/debouncer";
+import { GetRelatedInterestsQueryBuilder } from "../queries";
 
 export function useRelatedInterests() {
     const { controller, store } = useInterestsPickerContext();
-    const fetchRelatedInterests = useFetchQuery();
+    const debouncer = useRef(new RequestDebouncer());
     const queryClient = useQueryClient();
 
     function isExist(related: InterestEntity | InterestEntity[]) {
@@ -37,9 +38,9 @@ export function useRelatedInterests() {
     }
 
     function removeRelated(key: string) {
-        const queryKey = [...GetRelatedInterests.queryKey, key];
+        const queryKey = GetRelatedInterestsQueryBuilder.queryKey([key]);
 
-        const related = queryClient.getQueryData(queryKey) as GetRelatedInterests.TOutput;
+        const related = queryClient.getQueryData(queryKey) as GetRelatedInterestsQueryBuilder.TOutput;
         if (!related) return;
 
         const selected = related.some(item => controller.isInterestSelected(item.slug));
@@ -51,13 +52,13 @@ export function useRelatedInterests() {
     }
 
     async function getRelated(key: string) {
-        const response = await fetchRelatedInterests({
-            queryKey: [...GetRelatedInterests.queryKey, key],
-            queryFn: () => getRelatedInterests({ body: { slug: key } })
-                .then(res => res.data || []),
-        });
-        insertInterestsAfter(key, response);
-        return response;
+        const interests = await debouncer.current.debounceRequest(() =>
+            queryClient.fetchQuery(
+                GetRelatedInterestsQueryBuilder({ slug: key }),
+            ),
+        );
+        insertInterestsAfter(key, interests);
+        return interests;
     }
 
     return {

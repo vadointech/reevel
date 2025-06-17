@@ -1,20 +1,10 @@
 import { PropsWithChildren } from "react";
-import { ParamsWithLocale } from "@/types/common";
+import { ProfileLayout } from "@/flows/profile/layouts";
 
-
-import styles from "./styles.module.scss";
-import { ProfileSettingsStoreProvider } from "@/features/profile/settings";
-
-
-export default async function ProfileLayout({ children, params }: PropsWithChildren<ParamsWithLocale>) {
+export default async function Layout({ children }: PropsWithChildren) {
     return (
-        <ProfileSettingsStoreProvider
-            init={[{
-            }]}
-        >
-            <div className={styles.layout}>
-                {children}
-            </div>
-        </ProfileSettingsStoreProvider>
+        <ProfileLayout>
+            { children }
+        </ProfileLayout>
     );
 }

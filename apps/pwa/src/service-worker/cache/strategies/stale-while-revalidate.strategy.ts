@@ -17,8 +17,8 @@ export class StaleWhileRevalidate implements IStrategy {
                         }
                         return networkResponse;
                     })
-                    .catch((error) => {
-                        console.error("Fetch failed:", error);
+                    .catch(() => {
+                        // console.error("Fetch failed:", error);
 
                         return cachedResponse || new Response("Network request failed", {
                             status: 503,

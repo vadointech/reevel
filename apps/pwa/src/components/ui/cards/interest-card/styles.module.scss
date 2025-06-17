@@ -1,0 +1,50 @@
+@use "@/theme/mixins";
+@use "@/theme/colors";
+@use "@/theme/motions";
+@use "@/theme/typography";
+
+.label {
+    width: mixins.rem(72);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: mixins.rem(8);
+
+    input {
+        all: unset;
+
+        position: absolute;
+        inset: 0;
+
+        background-color: colors.$foreground;
+        border-radius: 50%;
+
+        border: mixins.rem(1.5) solid transparent;
+        transition: border-color motions.$motion-duration-mid motions.$motion-ease-in;
+        -webkit-tap-highlight-color: transparent;
+
+        &:checked {
+            border: mixins.rem(1.5) solid colors.$primary;
+        }
+    }
+
+    &__wrapper {
+        position: relative;
+        width: mixins.rem(72);
+        height: mixins.rem(72);
+    }
+}
+
+.icon {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 2rem;
+    pointer-events: none;
+}
+
+.text {
+    text-align: center;
+    @include typography.font("xs");
+}

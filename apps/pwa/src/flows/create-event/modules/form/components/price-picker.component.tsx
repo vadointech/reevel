@@ -1,13 +1,16 @@
 import { Controller, UseControllerReturn } from "react-hook-form";
-import { Input, OptionsListItem } from "@/components/shared/_redesign";
-import { IconDollar } from "@/components/icons";
+
+import { useCreateEventFormFieldFormatter } from "@/features/event/create";
+
 import {
     CreateEventFormBottomSheet,
     CreateEventFormBottomSheetBody,
     CreateEventFormBottomSheetContent,
     CreateEventFormBottomSheetTrigger,
 } from "./bottom-sheet.component";
-import { useCreateEventFormFieldFormatter } from "@/features/event/create";
+
+import { Input, OptionsListItem } from "@/components/ui";
+import { IconDollar } from "@/components/icons";
 
 export namespace CreateEventFormPricePicker {
     export type Props = never;

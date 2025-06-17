@@ -1,57 +1,30 @@
 @use "@/theme/mixins";
 @use "@/theme/colors";
 
-
 .avatar {
-    position: relative;
+    height: 100%;
     aspect-ratio: 1;
+    flex-shrink: 0;
+
+    position: relative;
+
     border-radius: 50%;
     overflow: hidden;
 
     img {
+        position: absolute;
+        inset: 0;
         object-fit: cover;
     }
 
     &__variant {
-        &_default {
-
+        &_bordered {
+            border: mixins.rem(1) colors.$foreground solid;
         }
 
-        &_outline,
-        &_profile {
-            width: fit-content;
-            height: fit-content;
-            position: relative;
-
-            &::before {
-                content: "";
-                position: absolute;
-                width: 120%;
-                height: 120%;
-                border-radius: 50%;
-                border: 1.5px solid;
-                top: 50%;
-                left: 50%;
-                transform: translate(-50%, -50%);
-            }
-        }
-
-        &_outline::before {
-            border-color: colors.$foreground;
-        }
-
-        &_profile::before {
-            border-color: colors.$secondary;
-        }
-    }
-
-    &__size {
-        &_default {
-
-        }
-
-        &_large {
-
+        &_outline {
+            outline: mixins.rem(1.5) colors.$foreground solid;
+            outline-offset: mixins.rem(3);
         }
     }
 }

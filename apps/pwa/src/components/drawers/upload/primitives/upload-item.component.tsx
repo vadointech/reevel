@@ -4,7 +4,7 @@ import Image from "next/image";
 
 import styles from "../styles.module.scss";
 import { cx } from "class-variance-authority";
-import { CloseButton } from "@/components/shared/_redesign/close-button";
+import { CloseButton } from "@/components/ui/buttons/close-button";
 
 export namespace UploadFileItem {
     type Data = {

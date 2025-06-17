@@ -1,0 +1,63 @@
+@use "@/theme/mixins";
+@use "@/theme/colors";
+@use "@/theme/typography";
+@use "@/theme/motions";
+
+$button-height: 38;
+$control-offest: 16;
+
+$content-height: calc($button-height + $control-offest * 2);
+
+.tabs {
+    width: 100%;
+    height: 100%;
+    display: flex;
+}
+
+.content {
+    height: 100%;
+    width: 100%;
+    flex-shrink: 0;
+    //padding-inline: 1rem;
+    overflow-y: hidden;
+    position: relative;
+}
+
+.controls {
+    position: relative;
+    height: mixins.rem($content-height);
+
+    display: flex;
+    align-items: center;
+    column-gap: .5rem;
+
+    &__overlay {
+        position: absolute;
+        z-index: 0;
+        top: mixins.rem($control-offest);
+        bottom: mixins.rem($control-offest);
+        background-color: colors.$foreground;
+        border-radius: mixins.rem(100);
+    }
+
+    &__item {
+        all: unset;
+        border-radius: mixins.rem(100);
+        padding-inline: mixins.rem(18);
+        height: mixins.rem($content-height);
+
+        position: relative;
+        z-index: 1;
+
+        -webkit-tap-highlight-color: transparent;
+
+        @include typography.font("sm");
+        color: colors.$secondary;
+
+        transition: color motions.$motion-duration-slow motions.$motion-ease-in;
+
+        &_active {
+            color: colors.$primary;
+        }
+    }
+}
