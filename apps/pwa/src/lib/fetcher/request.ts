@@ -10,7 +10,6 @@ export class FetcherRequest<Input = any, Params extends Record<string, any> = ob
     body: Input | undefined = undefined;
     params: Params | undefined = undefined;
     credentials: RequestCredentials | undefined = undefined;
-    next: NextFetchRequestConfig | undefined = undefined;
     cache: RequestCache | undefined = undefined;
     signal: AbortSignal | undefined | null = undefined;
 

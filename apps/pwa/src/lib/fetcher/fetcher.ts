@@ -53,7 +53,6 @@ export class Fetcher implements IFetcher {
             body,
             baseURL = this.defaults.baseURL || "",
             credentials = this.defaults.credentials,
-            next = this.defaults.next,
             cache = this.defaults.cache,
         } = config;
 
@@ -76,7 +75,6 @@ export class Fetcher implements IFetcher {
             method,
             headers: mergedHeaders,
             credentials,
-            next,
             cache,
         };
 

@@ -15,14 +15,8 @@ export namespace GetUserUploads {
     export const queryKey = ["user/uploads"];
 }
 
-export const getUserUploads = fetcherClient<GetUserUploads.TInput, GetUserUploads.TOutput, GetUserUploads.TParams>({
+export const getCurrentUserUploads = fetcherClient<GetUserUploads.TInput, GetUserUploads.TOutput, GetUserUploads.TParams>({
     fetcherFunc: (fetcher, input) => {
-        return fetcher.get("/users/me/uploads", {
-            ...input,
-            next: {
-                revalidate: false,
-                tags: GetUserUploads.queryKey,
-            },
-        });
+        return fetcher.get("/users/me/uploads", input);
     },
 });

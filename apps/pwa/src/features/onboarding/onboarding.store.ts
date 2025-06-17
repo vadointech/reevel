@@ -28,7 +28,7 @@ class OnboardingStore implements IOnboardingStore {
             setName: action,
             setPicture: action,
             setBio: action,
-            addInterest: action,
+            setInterests: action,
         });
 
         initStore(this, init);
@@ -49,8 +49,8 @@ class OnboardingStore implements IOnboardingStore {
         this.bio = bio;
     }
 
-    addInterest(slug: string): void {
-        this.interests.push(slug);
+    setInterests(interests: string[]): void {
+        this.interests = interests;
     }
 }
 

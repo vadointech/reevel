@@ -3,12 +3,14 @@
 import { useOnboardingProgress } from "./use-onboarding-progress.hook";
 import { UpdateProfile, updateProfile } from "@/api/profile/update-profile";
 import { useMutation } from "@tanstack/react-query";
-import { revalidateCachedTag } from "@/features/cache";
-import { GetSession } from "@/api/auth/get-session";
+import { revalidateSessionTag } from "@/features/cache";
 import { useOnboardingStore } from "../onboarding.store";
 import { IOnboardingStore } from "../types";
+import { useSessionContext } from "@/features/session";
+import { GetCurrentUserInterests } from "@/api/user";
 
 export function useOnboardingUpdate() {
+    const session = useSessionContext();
     const onboardingStore = useOnboardingStore();
 
     const {
@@ -25,10 +27,16 @@ export function useOnboardingUpdate() {
                     ...Object.fromEntries(input),
                     completed: onboardingStatus,
                 },
-            })
-                .then(() => revalidateCachedTag(GetSession.queryKey))
-                .then(handleNextStep);
+            });
         },
+        onSuccess: (_data, variables) => {
+            for(const [key] of variables) {
+                if(key === "interests") {
+                    return revalidateSessionTag(session.store.user?.sessions, GetCurrentUserInterests.queryKey);
+                }
+            }
+        },
+        onSettled: handleNextStep,
     });
 
     const handleUpdateProfile = () => {

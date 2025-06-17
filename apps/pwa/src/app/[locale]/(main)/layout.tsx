@@ -1,7 +1,7 @@
 import { PropsWithChildren } from "react";
 import { headers } from "next/headers";
 import { PersistentMapProvider } from "@/components/shared/map";
-import { getSession } from "@/api/auth";
+import { getSession } from "@/api/auth/server";
 import { SessionProvider } from "@/features/session";
 import { ThemeProvider } from "@/features/theme";
 

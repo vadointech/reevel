@@ -3,7 +3,6 @@ import { InjectRepository } from "@nestjs/typeorm";
 import { InterestsEntity } from "./entities/interests.entity";
 import { In, Repository } from "typeorm";
 import { InterestRelationsEntity } from "@/modules/interests/entities/interest-relations.entity";
-import { ProfileEntity } from "@/modules/profile/entities/profile.entity";
 import { InterestsRepository } from "./repositories/interests.repository";
 import { InterestsFilterParamsDto } from "@/modules/interests/dto/interests-filter-params.dto";
 import { ProfileRepository } from "@/modules/profile/repositories/profile.repository";
@@ -18,7 +17,7 @@ export class InterestsService {
         private readonly profileRepository: ProfileRepository,
     ) { }
 
-    async getInitialInterests(userId: string): Promise<InterestsEntity[]> {
+    async getInitialInterests(): Promise<InterestsEntity[]> {
         const slugs = [
             "reading",
             "cooking",
@@ -37,18 +36,6 @@ export class InterestsService {
             "pet-care",
             "shopping",
         ];
-
-        const userProfile = await this.profileRepository.findOne({
-            where: { userId },
-            relations: {
-                interests: true,
-            },
-        });
-
-        if(userProfile) {
-            const userInterests = userProfile.interests.map(item => item.interestId);
-            slugs.push(...userInterests);
-        }
 
         return this.interestsRepository.findManyBy({ slug: In(slugs) });
     }

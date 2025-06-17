@@ -1,19 +1,11 @@
 "use server";
 
 import cache from "next/cache";
+import { UserSessionEntity } from "@/entities/session";
 
-export async function revalidateCachedTag(tag: string | string[]) {
-    if(Array.isArray(tag)) {
-        tag.forEach(cache.revalidateTag);
-    } else {
-        cache.revalidateTag(tag);
-    }
-}
-
-export async function revalidateCachedPath(path: string | string[], type?: "layout" | "page") {
-    if(Array.isArray(path)) {
-        path.forEach(item => cache.revalidatePath(item, type));
-    } else {
-        cache.revalidatePath(path, type);
+export async function revalidateSessionTag(sessions: UserSessionEntity[] | undefined, tags: string[]) {
+    if(!sessions) return;
+    for(const session of sessions) {
+        cache.revalidateTag([...tags, session.id].join("/"));
     }
 }

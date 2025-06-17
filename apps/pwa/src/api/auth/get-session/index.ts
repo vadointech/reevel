@@ -10,13 +10,6 @@ export namespace GetSession {
 
 export const getSession = fetcherClient<GetSession.TInput, GetSession.TOutput>({
     fetcherFunc: async(fetcher, input) => {
-        return await fetcher.get("/users/me", {
-            ...input,
-            cache: "force-cache",
-            next: {
-                tags: GetSession.queryKey,
-                revalidate: false,
-            },
-        });
+        return await fetcher.get("/users/me", input);
     },
 });

@@ -11,8 +11,7 @@ import { indexedDbService } from "@/lib/indexed-db.service";
 import { useSessionContext } from "@/features/session";
 import { UserUploadsEntity } from "@/entities/uploads";
 import { IBottomSheetRootController } from "@/components/shared/bottom-sheet/types";
-import { DeleteUploadedFile, deleteUploadedFile, GetUserUploads } from "@/api/user/uploads";
-import { revalidateCachedTag } from "@/features/cache";
+import { DeleteUploadedFile, deleteUploadedFile } from "@/api/user/uploads";
 import { FetcherError } from "@/lib/fetcher/error";
 
 type Params = Partial<Omit<UseMutationOptions<CreateEvent.TOutput, unknown, CreateEvent.TInput>, "mutationFn">> & {
@@ -135,7 +134,6 @@ export function useCreateEventPreview(params: Params = {}) {
         }
 
         deleteUploadedFileMutation.mutateAsync({ fileId: upload.id });
-        revalidateCachedTag(GetUserUploads.queryKey);
     }, [formValues]);
 
     return {

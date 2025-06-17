@@ -1,7 +1,7 @@
 import { headers } from "next/headers";
 
-import { getInitialInterests } from "@/api/interests";
-import { getCurrentUserInterests } from "@/api/user";
+import { getInitialInterests } from "@/api/interests/server";
+import { getCurrentUserInterests } from "@/api/user/server";
 
 import { InterestsPickerProvider } from "@/features/interests/picker";
 import { InterestsPickerContent } from "@/components/screens/interests-picker";

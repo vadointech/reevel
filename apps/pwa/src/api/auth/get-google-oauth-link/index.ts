@@ -11,13 +11,6 @@ export namespace GetGoogleOAuthLink {
 
 export const getGoogleOAuthLink = fetcherClient<GetGoogleOAuthLink.TInput, GetGoogleOAuthLink.TOutput>({
     fetcherFunc: (fetcher, input) => {
-        return fetcher.get("/auth/google", {
-            ...input,
-            cache: "force-cache",
-            next: {
-                tags: GetGoogleOAuthLink.queryKey,
-                revalidate: false,
-            },
-        });
+        return fetcher.get("/auth/google", input);
     },
 });

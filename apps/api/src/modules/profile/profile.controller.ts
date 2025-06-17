@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Patch, Post, Req, UseInterceptors } from "@nestjs/common";
+import { Body, Controller, Patch, Post, Req, UseInterceptors } from "@nestjs/common";
 import { ProfileService } from "./profile.service";
 import { UpdateProfileDto } from "@/modules/profile/dto/update-profile.dto";
 import { Session } from "@/decorators";
@@ -9,14 +9,7 @@ import { FileUploadInterceptor } from "@/modules/uploads/uploads.interceptor";
 export class ProfileController {
     constructor(
         private readonly profileService: ProfileService,
-    ) { }
-
-    @Get()
-    async getProfile(
-        @Session() session: ServerSession,
-    ) {
-        return this.profileService.getProfile(session.user.id);
-    }
+    ) {}
 
     @Patch()
     async updateProfile(

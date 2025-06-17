@@ -32,11 +32,11 @@ export const OnboardingInterestsPicker = () => {
     const {
         handleToggleInterest,
     } = useInterestsPicker({
-        onSelect: ({ slug }) => {
-            onboardingStore.addInterest(slug);
-            getRelated(slug);
-        },
+        onSelect: ({ slug }) => getRelated(slug),
         onRemove: ({ slug }) => removeRelated(slug),
+        onChange: (interests) => {
+            onboardingStore.setInterests(interests.map(item => item.slug));
+        },
     });
 
     return (

@@ -1,76 +1,103 @@
 import authConfig from "@/modules/auth/auth.config";
 import { JwtService } from "@nestjs/jwt";
-import { BadRequestException, Injectable } from "@nestjs/common";
+import {
+    Injectable,
+    InternalServerErrorException,
+    Logger,
+    UnauthorizedException,
+} from "@nestjs/common";
 import { Request, Response } from "express";
 import { CookieService } from "@/services/cookie.service";
 import { UserEntity } from "@/modules/user/entities/user.entity";
 import {
-    AccessJwtTokenPayload,
-    RefreshJwtTokenPayload,
     JwtSession,
+    ServerSession,
+    AccessJwtTokenPayload,
+    SessionJwtTokenPayload,
 } from "../dto/jwt.dto";
-import { UserRepository } from "@/modules/user/user.repository";
+import { UserSessionRepository } from "@/modules/user/repositories/user-session.repository";
+
+import bcrypt from "bcryptjs";
+import crypto from "crypto";
 
 @Injectable()
 export class JwtStrategy {
+    private logger = new Logger(JwtStrategy.name);
+
     constructor(
         private readonly jwtService: JwtService,
         private readonly cookieService: CookieService,
-        private readonly userRepository: UserRepository,
+        private readonly sessionRepository: UserSessionRepository,
     ) {}
 
-    async generateSession(user: UserEntity): Promise<JwtSession> {
-        const payload: AccessJwtTokenPayload = {
+    async createSession(user: UserEntity): Promise<JwtSession> {
+        const initialRefreshTokenHash = crypto.randomBytes(8).toString();
+
+        const session = await this.sessionRepository.create({
+            userId: user.id,
+            refreshTokenHash: initialRefreshTokenHash,
+        });
+
+        if(!session) {
+            this.logger.error("Unexpected error creating session: Could not create session.");
+            throw new InternalServerErrorException();
+        }
+
+        const tokens = await this.generateTokens({
             sub: user.id,
+            sid: session.id,
             email: user.email,
             completed: user.profile.completed,
             subscription: user.subscription.type,
-        };
+        });
 
-        const [access_token, refresh_token] = await Promise.all([
-            this.generateAccessToken(payload),
-            this.generateRefreshToken({
-                sub: payload.sub,
-                email: payload.email,
-            }),
-        ]);
+        const sessionTokenHash = await bcrypt.hash(tokens.refresh_token, 10);
+        await this.sessionRepository.updateSessionToken(session.id, sessionTokenHash, authConfig.session.expiresIn);
 
-        return {
-            tokens: { access_token, refresh_token },
-            payload,
-        };
+        return tokens;
+    }
+
+    async refreshSession(refreshToken: string, payload: SessionJwtTokenPayload): Promise<JwtSession> {
+        const session = await this.sessionRepository.findOneBy({ id: payload.sid });
+        if(!session || new Date() > session.expiresAt) {
+            throw new UnauthorizedException();
+        }
+
+        const isTokenMatching = await bcrypt.compare(refreshToken, session.refreshTokenHash);
+        if(!isTokenMatching) {
+            await this.sessionRepository.delete({ id: payload.sid });
+            throw new UnauthorizedException();
+        }
+
+        const tokens = await this.generateTokens(payload);
+
+        const refreshTokenHash = await bcrypt.hash(tokens.refresh_token, 10);
+        await this.sessionRepository.updateSessionToken(session.id, refreshTokenHash, authConfig.session.expiresIn);
+
+        return tokens;
     }
 
     setServerSession(request: Request, payload: AccessJwtTokenPayload) {
         request["user"] = {
             user: {
                 id: payload.sub,
+                sid: payload.sid,
                 email: payload.email,
                 subscription: payload.subscription,
             },
-        };
+        } satisfies ServerSession;
     }
 
-    setJwtSession(response: Response, { tokens }: JwtSession) {
-        this.cookieService.setHttpCookie(response, authConfig.accessToken.cookieKey, tokens.access_token);
-        this.cookieService.setHttpCookie(response, authConfig.refreshToken.cookieKey, tokens.refresh_token);
+    setJwtSession(response: Response, session: JwtSession) {
+        this.cookieService.setHttpCookie(response, authConfig.session.cookieKey, session.session_id);
+        this.cookieService.setHttpCookie(response, authConfig.accessToken.cookieKey, session.access_token);
+        this.cookieService.setHttpCookie(response, authConfig.refreshToken.cookieKey, session.refresh_token);
     }
 
     clearJwtSession(response: Response) {
+        this.cookieService.clearHttpCookie(response, authConfig.session.cookieKey);
         this.cookieService.clearHttpCookie(response, authConfig.accessToken.cookieKey);
         this.cookieService.clearHttpCookie(response, authConfig.refreshToken.cookieKey);
-    }
-
-    async refreshSession(request: Request, response: Response, payload: RefreshJwtTokenPayload) {
-        const dbUser = await this.userRepository.getByID(payload.sub);
-
-        if(!dbUser) {
-            throw new BadRequestException("Refresh session: User does not exists");
-        }
-
-        const session=  await this.generateSession(dbUser);
-        this.setJwtSession(response, session);
-        this.setServerSession(request, session.payload);
     }
 
     async validateAccessToken(token: string): Promise<{
@@ -90,7 +117,7 @@ export class JwtStrategy {
 
     async validateRefreshToken(token: string): Promise<{
         valid: boolean;
-        payload?: AccessJwtTokenPayload;
+        payload?: SessionJwtTokenPayload;
     }> {
         try {
             const payload = await this.jwtService.verify(token, {
@@ -103,13 +130,36 @@ export class JwtStrategy {
         }
     }
 
+    private async generateTokens(payload: AccessJwtTokenPayload): Promise<JwtSession> {
+
+        const accessTokenPayload: AccessJwtTokenPayload = {
+            sub: payload.sub,
+            sid: payload.sid,
+            email: payload.email,
+            completed: payload.completed,
+            subscription: payload.subscription,
+        };
+        const refreshTokenPayload: SessionJwtTokenPayload = { ...accessTokenPayload };
+
+        const [access_token, refresh_token] = await Promise.all([
+            this.generateAccessToken(accessTokenPayload),
+            this.generateRefreshToken(refreshTokenPayload),
+        ]);
+
+        return {
+            payload: accessTokenPayload,
+            session_id: payload.sid,
+            access_token,
+            refresh_token,
+        };
+    }
     private async generateAccessToken(payload: AccessJwtTokenPayload) {
         return this.jwtService.sign(payload, {
             secret: authConfig.accessToken.secret,
             expiresIn: authConfig.accessToken.expiresIn,
         });
     }
-    private async generateRefreshToken(payload: RefreshJwtTokenPayload) {
+    private async generateRefreshToken(payload: SessionJwtTokenPayload) {
         return this.jwtService.sign(payload, {
             secret: authConfig.refreshToken.secret,
             expiresIn: authConfig.refreshToken.expiresIn,

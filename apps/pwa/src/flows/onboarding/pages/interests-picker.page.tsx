@@ -1,8 +1,9 @@
 import { headers } from "next/headers";
 
-import { getInitialInterests } from "@/api/interests";
-import { getCurrentUserInterests } from "@/api/user/get-interests";
+import { getInitialInterests } from "@/api/interests/server";
+import { getCurrentUserInterests } from "@/api/user/server";
 
+import { ObjectUnique } from "@/utils/object-unique";
 
 import { OnboardingNextStepButton, OnboardingProgressBar } from "../modules/progress";
 import { OnboardingTextBlock } from "../modules/text-block";
@@ -19,13 +20,22 @@ export namespace OnboardingInterestsPickerPage {
 
 export async function OnboardingInterestsPickerPage() {
 
-    const { data } = await getInitialInterests({
+    const initialInterestsResponse = await getInitialInterests({
         nextHeaders: await headers(),
     });
+    const initialInterests = initialInterestsResponse.data || [];
 
-    const { data: interests } = await getCurrentUserInterests({
+    const currentInterestsResponse= await getCurrentUserInterests({
         nextHeaders: await headers(),
     });
+    const currentInterests = currentInterestsResponse.data?.map(item => item.interest) || [];
+
+    const interests = [
+        ...new ObjectUnique([
+            ...initialInterests,
+            ...currentInterests,
+        ], "slug"),
+    ];
 
     return (
         <>
@@ -38,8 +48,8 @@ export async function OnboardingInterestsPickerPage() {
                     className={styles.page__info}
                 />
                 <InterestsPickerProvider
-                    interests={data || []}
-                    selectedInterests={interests?.map(item => item.interest)}
+                    interests={interests}
+                    selectedInterests={currentInterests}
                     callbackUrl={"/onboarding/interests"}
                 >
                     <OnboardingInterestsPicker />

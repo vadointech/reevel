@@ -1,7 +1,5 @@
 import { Controller, Get, Param, Query } from "@nestjs/common";
 import { InterestsService } from "./interests.service";
-import { Session } from "@/decorators";
-import { ServerSession } from "@/modules/auth/dto/jwt.dto";
 import { InterestsFilterParamsDto } from "./dto/interests-filter-params.dto";
 
 @Controller("interests")
@@ -18,10 +16,8 @@ export class InterestsController {
     }
 
     @Get("initials")
-    async getInitials(
-        @Session() session: ServerSession,
-    ) {
-        return this.interestsService.getInitialInterests(session.user.id);
+    async getInitials() {
+        return this.interestsService.getInitialInterests();
     }
 
     @Get("related/:slug")

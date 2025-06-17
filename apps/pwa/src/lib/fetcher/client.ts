@@ -1,12 +1,6 @@
 import { Fetcher } from "./fetcher";
-import { IFetcherRequestConfig, IFetcherResponse } from "./types";
+import { FetcherFunc, IFetcherRequestConfig, IFetcherResponse } from "./types";
 import { FetcherRequest } from "@/lib/fetcher/request";
-
-type FetcherFunc<
-    Input,
-    Output,
-    Params extends Record<string, any>,
->  = (input?: Partial<IFetcherRequestConfig<Input, Params>>) => Promise<IFetcherResponse<Output>>;
 
 type Options<
     Input,

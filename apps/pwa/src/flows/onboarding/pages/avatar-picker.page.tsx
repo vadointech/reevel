@@ -1,6 +1,6 @@
 import { headers } from "next/headers";
 
-import { getUserUploads } from "@/api/user/uploads";
+import { getCurrentUserUploads } from "@/api/user/server";
 
 import { OnboardingProgressBar, OnboardingNextStepButton } from "../modules/progress";
 import { OnboardingAvatarPickerCarousel, OnboardingPhotoUploader } from "../modules/avatar-picker";
@@ -26,7 +26,7 @@ export namespace OnboardingAvatarPickerPage {
 }
 
 export async function OnboardingAvatarPickerPage({ cropperPageUrl }: OnboardingAvatarPickerPage.Props) {
-    const { data } = await getUserUploads({
+    const { data } = await getCurrentUserUploads({
         nextHeaders: await headers(),
         params: {
             collection: SupportedFileCollections.PROFILE_PICTURE,

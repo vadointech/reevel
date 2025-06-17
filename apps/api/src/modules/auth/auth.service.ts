@@ -5,7 +5,7 @@ import { GoogleOAuthService } from "@/modules/google/services/oauth.service";
 import { JwtStrategy } from "./strategies/jwt.strategy";
 import { JwtSession } from "./dto/jwt.dto";
 import { GoogleOAuthUserInfo } from "./dto/auth.dto";
-import { UserRepository } from "@/modules/user/user.repository";
+import { UserRepository } from "@/modules/user/repositories/user.repository";
 import { ProfileRepository } from "@/modules/profile/repositories/profile.repository";
 import { SubscriptionRepository } from "@/modules/subscription/subscription.repository";
 
@@ -61,7 +61,7 @@ export class AuthService {
 
     async registerUser(oauthUser: GoogleOAuthUserInfo): Promise<JwtSession> {
         const user = await this.createAccount(oauthUser);
-        return this.jwtStrategy.generateSession(user);
+        return this.jwtStrategy.createSession(user);
     }
 
     async loginUser(email: string): Promise<JwtSession> {
@@ -71,7 +71,7 @@ export class AuthService {
             throw new NotFoundException();
         }
 
-        return this.jwtStrategy.generateSession(user);
+        return this.jwtStrategy.createSession(user);
     }
 
     async createAccount(oauthUser: GoogleOAuthUserInfo) {

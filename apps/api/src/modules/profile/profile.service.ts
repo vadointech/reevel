@@ -17,18 +17,7 @@ export class ProfileService {
         private readonly uploadsService: UploadsService,
 
         private dataSource: DataSource,
-    ) { }
-
-    async getProfile(userId: string) {
-        return this.profileRepository.findOne({
-            where: { userId },
-            relations: {
-                interests: {
-                    interest: true,
-                },
-            },
-        });
-    }
+    ) {}
 
     async updateProfile(userId: string, input: UpdateProfileDto) {
         const dbProfile = await this.profileRepository.findOne({
