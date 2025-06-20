@@ -8,7 +8,7 @@ export namespace GetCurrentUserInterests {
     export const queryKey = ["user/interests"];
 }
 
-export const getCurrentUserInterests = fetcherClient<GetCurrentUserInterests.TInput, GetCurrentUserInterests.TOutput>({
+export const getCurrentUserInterests = fetcherClient.fetch<GetCurrentUserInterests.TInput, GetCurrentUserInterests.TOutput>({
     fetcherFunc: (fetcher, input) => {
         return fetcher.get("/users/me/interests", {
             ...input,

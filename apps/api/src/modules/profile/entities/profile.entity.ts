@@ -17,7 +17,11 @@ export class ProfileEntity {
     @Column({ nullable: true })
     picture?: string;
 
-    @OneToOne(() => ProfileLocationsEntity, location => location.profile, { nullable: true, onDelete: "SET NULL" })
+    @OneToOne(() => ProfileLocationsEntity, location => location.profile, {
+        cascade: true,
+        nullable: true,
+        onDelete: "SET NULL",
+    })
     location?: ProfileLocationsEntity;
 
     @Column({ nullable: true })
@@ -29,6 +33,8 @@ export class ProfileEntity {
     @OneToOne(() => UserEntity, user => user.profile, { onDelete: "CASCADE" })
     user: UserEntity;
 
-    @OneToMany(() => ProfileInterestsEntity, interests => interests.profile)
+    @OneToMany(() => ProfileInterestsEntity, interests => interests.profile, {
+        cascade: true,
+    })
     interests: ProfileInterestsEntity[];
 }

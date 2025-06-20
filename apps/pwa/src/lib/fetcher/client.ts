@@ -1,21 +1,53 @@
+import { unstable_cache } from "next/cache";
 import { Fetcher } from "./fetcher";
-import { FetcherFunc, IFetcherRequestConfig, IFetcherResponse } from "./types";
-import { FetcherRequest } from "@/lib/fetcher/request";
+import { FetcherRequest } from "./request";
+import { FetcherCacheManager } from "./cache";
 
-type Options<
-    Input,
-    Output,
-    Params extends Record<string, any>,
-> = {
-    fetcherFunc: (fetcher: Fetcher, input: Partial<IFetcherRequestConfig<Input, Params>>) => Promise<IFetcherResponse<Output>>;
-};
+import {
+    FetcherClientCacheOptions,
+    FetcherClientFetchOptions,
+    FetcherFetchFunc,
+    IFetcherClient,
+} from "./types";
 
-export function createFetcherClient(defaultConfig: Partial<IFetcherRequestConfig> = {}) {
-    const fetcher = new Fetcher(defaultConfig);
+export class FetcherClient implements IFetcherClient {
+    private readonly _fetcher: Fetcher;
+    private readonly _cacheManager: FetcherCacheManager;
 
-    return function fetcherClient<Input = any, Output = any, Params extends Record<string, any> = object>({ fetcherFunc }: Options<Input, Output, Params>): FetcherFunc<Input, Output, Params> {
-        return async(input = new FetcherRequest({})) => {
-            return fetcherFunc(fetcher, input);
+    constructor(defaultConfig: Partial<FetcherRequest> = {}) {
+        this._fetcher = new Fetcher(defaultConfig);
+        this._cacheManager = new FetcherCacheManager(this._fetcher);
+    }
+
+    fetch<Input = any, Output = any, Params extends Record<string, any> = object>({ fetcherFunc }: FetcherClientFetchOptions<Input, Output, Params>): FetcherFetchFunc<Input, Output, Params> {
+        return (input = new FetcherRequest({})) => {
+            return fetcherFunc(this._fetcher, input);
         };
-    };
+    }
+
+    cache<Input = any, Output = any, Params extends Record<string, any> = object>(options: FetcherClientCacheOptions<Input, Output, Params>): FetcherFetchFunc<Input, Output, Params> {
+        return (input = new FetcherRequest({})) => {
+            const cacheKeys = this._cacheManager.newRequestCacheKey(input, options.queryKey);
+
+            return unstable_cache(
+                () => options.fetchFunc(input),
+                cacheKeys, {
+                    tags: cacheKeys,
+                    revalidate: input.cacheRevalidate,
+                },
+            )();
+        };
+    }
+
+    persist<Input = any, Output = any, Params extends Record<string, any> = object>(options: FetcherClientCacheOptions<Input, Output, Params>): FetcherFetchFunc<Input, Output, Params> {
+        return (input = new FetcherRequest({})) => {
+            return unstable_cache(
+                () => options.fetchFunc(input),
+                options.queryKey, {
+                    tags: options.queryKey,
+                    revalidate: input.cacheRevalidate,
+                },
+            )();
+        };
+    }
 }

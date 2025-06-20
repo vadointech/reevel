@@ -1,7 +1,7 @@
 import { headers } from "next/headers";
 import { redirect } from "@/i18n/routing";
 
-import { getSession } from "@/api/auth/server";
+import { getSession } from "@/api/user/server";
 
 import { OnboardingStepPath } from "@/features/onboarding";
 

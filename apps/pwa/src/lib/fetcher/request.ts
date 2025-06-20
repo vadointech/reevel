@@ -11,6 +11,9 @@ export class FetcherRequest<Input = any, Params extends Record<string, any> = ob
     params: Params | undefined = undefined;
     credentials: RequestCredentials | undefined = undefined;
     cache: RequestCache | undefined = undefined;
+    userAwareCacheKey: string | undefined = undefined;
+    cacheTags: string[] | undefined = undefined;
+    cacheRevalidate: number | undefined = undefined;
     signal: AbortSignal | undefined | null = undefined;
 
     constructor(params: Partial<IFetcherRequestConfig<Input, Params>> = {}) {

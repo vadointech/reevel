@@ -5,7 +5,6 @@ import { AnimatePresence, motion } from "motion/react";
 
 import { useInterestsPickerContext } from "@/features/interests/picker";
 import { useInterestsPicker, useRelatedInterests } from "@/features/interests/picker/hooks";
-import { useOnboardingStore } from "@/features/onboarding";
 
 import { InterestCard } from "@/components/ui";
 
@@ -22,8 +21,6 @@ export namespace OnboardingInterestsPicker {
 }
 
 export const OnboardingInterestsPicker = () => {
-    const onboardingStore = useOnboardingStore();
-
     const {
         getRelated,
         removeRelated,
@@ -34,9 +31,6 @@ export const OnboardingInterestsPicker = () => {
     } = useInterestsPicker({
         onSelect: ({ slug }) => getRelated(slug),
         onRemove: ({ slug }) => removeRelated(slug),
-        onChange: (interests) => {
-            onboardingStore.setInterests(interests.map(item => item.slug));
-        },
     });
 
     return (

@@ -30,15 +30,13 @@ export class AuthJwtTokens implements IAuthJwtTokens {
     session_id: string;
 }
 
-export interface AccessJwtTokenPayload {
+export interface SessionJwtTokenPayload {
     sub: string;
     sid: string;
     email: string;
     completed: string;
     subscription: SubscriptionType;
 }
-
-export type SessionJwtTokenPayload = AccessJwtTokenPayload;
 
 export interface JwtSession extends AuthJwtTokens {
     payload: SessionJwtTokenPayload;

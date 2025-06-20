@@ -1,11 +1,11 @@
 "use server";
 
 import cache from "next/cache";
-import { UserSessionEntity } from "@/entities/session";
+import { FetcherCacheManager } from "@/lib/fetcher/cache";
+import { UserEntity } from "@/entities/user";
 
-export async function revalidateSessionTag(sessions: UserSessionEntity[] | undefined, tags: string[]) {
-    if(!sessions) return;
-    for(const session of sessions) {
-        cache.revalidateTag([...tags, session.id].join("/"));
-    }
+export async function revalidateSessionTag(session: Maybe<UserEntity>, queryKey: string[]) {
+    if(!session) return;
+    const tags = FetcherCacheManager.newCacheTag(queryKey, session);
+    tags.forEach(cache.revalidateTag);
 }

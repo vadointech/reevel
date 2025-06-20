@@ -1,11 +1,13 @@
 import { z } from "zod";
 
+export const coordinates = z.array(z.number());
+
 export const point = z.object({
     id: z.string(),
     type: z.literal("Feature"),
     geometry: z.object({
         type: z.literal("Point"),
-        coordinates: z.array(z.number()),
+        coordinates: coordinates,
     }),
 });
 

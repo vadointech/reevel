@@ -8,6 +8,7 @@ export namespace OnboardingLocationPickerLayout {
 export function OnboardingLocationPickerLayout({ children }: PropsWithChildren) {
     return (
         <LocationSearchProvider
+            syncFormField={"location"}
             callbackUrl={"/onboarding/location"}
             confirmUrl={"/onboarding/location/confirm"}
         >

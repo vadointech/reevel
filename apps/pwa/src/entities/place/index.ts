@@ -1,13 +1,17 @@
-export type PlaceLocationEntity = {
-    id: string;
-    location: {
-        latitude: number,
-        longitude: number,
-    }
-    displayName: string;
-    primaryType: string;
-    primaryTypeDisplayName: string;
-    formattedAddress: string;
-    googleMapsUri: string;
-    bbox?: [number, number, number, number]
-};
+import { z } from "zod";
+
+export const placeLocationEntity = z.object({
+    id: z.string(),
+    location: z.object({
+        latitude: z.number(),
+        longitude: z.number(),
+    }),
+    displayName: z.string(),
+    primaryType: z.string(),
+    primaryTypeDisplayName: z.string(),
+    formattedAddress: z.string(),
+    googleMapsUri: z.string(),
+    bbox: z.array(z.number()).optional(),
+});
+
+export type PlaceLocationEntity = z.infer<typeof placeLocationEntity>;

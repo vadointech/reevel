@@ -2,9 +2,7 @@ import authConfig from "@/modules/auth/auth.config";
 import { JwtService } from "@nestjs/jwt";
 import {
     Injectable,
-    InternalServerErrorException,
     Logger,
-    UnauthorizedException,
 } from "@nestjs/common";
 import { Request, Response } from "express";
 import { CookieService } from "@/services/cookie.service";
@@ -12,13 +10,8 @@ import { UserEntity } from "@/modules/user/entities/user.entity";
 import {
     JwtSession,
     ServerSession,
-    AccessJwtTokenPayload,
     SessionJwtTokenPayload,
 } from "../dto/jwt.dto";
-import { UserSessionRepository } from "@/modules/user/repositories/user-session.repository";
-
-import bcrypt from "bcryptjs";
-import crypto from "crypto";
 
 @Injectable()
 export class JwtStrategy {
@@ -27,57 +20,57 @@ export class JwtStrategy {
     constructor(
         private readonly jwtService: JwtService,
         private readonly cookieService: CookieService,
-        private readonly sessionRepository: UserSessionRepository,
+        // private readonly sessionRepository: UserSessionRepository,
     ) {}
 
     async createSession(user: UserEntity): Promise<JwtSession> {
-        const initialRefreshTokenHash = crypto.randomBytes(8).toString();
+        // const initialRefreshTokenHash = crypto.randomBytes(8).toString();
 
-        const session = await this.sessionRepository.create({
-            userId: user.id,
-            refreshTokenHash: initialRefreshTokenHash,
-        });
+        // const session = await this.sessionRepository.create({
+        //     userId: user.id,
+        //     refreshTokenHash: initialRefreshTokenHash,
+        // });
 
-        if(!session) {
-            this.logger.error("Unexpected error creating session: Could not create session.");
-            throw new InternalServerErrorException();
-        }
+        // if(!session) {
+        //     this.logger.error("Unexpected error creating session: Could not create session.");
+        //     throw new InternalServerErrorException();
+        // }
 
         const tokens = await this.generateTokens({
             sub: user.id,
-            sid: session.id,
+            sid: user.id,
             email: user.email,
             completed: user.profile.completed,
             subscription: user.subscription.type,
         });
 
-        const sessionTokenHash = await bcrypt.hash(tokens.refresh_token, 10);
-        await this.sessionRepository.updateSessionToken(session.id, sessionTokenHash, authConfig.session.expiresIn);
+        // const sessionTokenHash = await bcrypt.hash(tokens.refresh_token, 10);
+        // await this.sessionRepository.updateSessionToken(session.id, sessionTokenHash, authConfig.session.expiresIn);
 
         return tokens;
     }
 
     async refreshSession(refreshToken: string, payload: SessionJwtTokenPayload): Promise<JwtSession> {
-        const session = await this.sessionRepository.findOneBy({ id: payload.sid });
-        if(!session || new Date() > session.expiresAt) {
-            throw new UnauthorizedException();
-        }
+        // const session = await this.sessionRepository.findOneBy({ id: payload.sid });
+        // if(!session || new Date() > session.expiresAt) {
+        //     throw new UnauthorizedException("Session expired");
+        // }
 
-        const isTokenMatching = await bcrypt.compare(refreshToken, session.refreshTokenHash);
-        if(!isTokenMatching) {
-            await this.sessionRepository.delete({ id: payload.sid });
-            throw new UnauthorizedException();
-        }
+        // const isTokenMatching = await bcrypt.compare(refreshToken, session.refreshTokenHash);
+        // if(!isTokenMatching) {
+        //     await this.sessionRepository.delete({ id: payload.sid });
+        //     throw new UnauthorizedException("Invalid refresh token");
+        // }
 
         const tokens = await this.generateTokens(payload);
 
-        const refreshTokenHash = await bcrypt.hash(tokens.refresh_token, 10);
-        await this.sessionRepository.updateSessionToken(session.id, refreshTokenHash, authConfig.session.expiresIn);
+        // const refreshTokenHash = await bcrypt.hash(tokens.refresh_token, 10);
+        // await this.sessionRepository.updateSessionToken(session.id, refreshTokenHash, authConfig.session.expiresIn);
 
         return tokens;
     }
 
-    setServerSession(request: Request, payload: AccessJwtTokenPayload) {
+    setServerSession(request: Request, payload: SessionJwtTokenPayload) {
         request["user"] = {
             user: {
                 id: payload.sub,
@@ -102,7 +95,7 @@ export class JwtStrategy {
 
     async validateAccessToken(token: string): Promise<{
         valid: boolean;
-        payload?: AccessJwtTokenPayload;
+        payload?: SessionJwtTokenPayload;
     }> {
         try {
             const payload = await this.jwtService.verify(token, {
@@ -130,9 +123,9 @@ export class JwtStrategy {
         }
     }
 
-    private async generateTokens(payload: AccessJwtTokenPayload): Promise<JwtSession> {
+    private async generateTokens(payload: SessionJwtTokenPayload): Promise<JwtSession> {
 
-        const accessTokenPayload: AccessJwtTokenPayload = {
+        const accessTokenPayload: SessionJwtTokenPayload = {
             sub: payload.sub,
             sid: payload.sid,
             email: payload.email,
@@ -153,7 +146,7 @@ export class JwtStrategy {
             refresh_token,
         };
     }
-    private async generateAccessToken(payload: AccessJwtTokenPayload) {
+    private async generateAccessToken(payload: SessionJwtTokenPayload) {
         return this.jwtService.sign(payload, {
             secret: authConfig.accessToken.secret,
             expiresIn: authConfig.accessToken.expiresIn,

@@ -1,24 +1,25 @@
 "use client";
 
-import { observer } from "mobx-react-lite";
-
-import { useOnboardingUpdate } from "@/features/onboarding/hooks";
-
 import { Button } from "@/components/ui";
 import { IconArrowNext } from "@/components/icons";
+import { useOnboardingUpdate } from "@/features/onboarding/hooks";
 
-export const OnboardingNextStepButton = observer((props: Button.Props) => {
+export namespace OnboardingNextStepButton {
+    export type Props = Button.Props & {
+        revalidateQueryOnSuccess?: string[]
+    };
+}
 
-    const {
-        handleUpdateProfile,
-    } = useOnboardingUpdate();
+export const OnboardingNextStepButton = ({ revalidateQueryOnSuccess, ...props }: OnboardingNextStepButton.Props) => {
+
+    const handleUpdate = useOnboardingUpdate({ revalidateQueryOnSuccess });
 
     return (
         <Button
             variant={"accent"}
             arrowAfter={<IconArrowNext />}
-            onClick={handleUpdateProfile}
+            onClick={handleUpdate}
             {...props}
         />
     );
-});
+};

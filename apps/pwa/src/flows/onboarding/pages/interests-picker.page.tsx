@@ -3,12 +3,13 @@ import { headers } from "next/headers";
 import { getInitialInterests } from "@/api/interests/server";
 import { getCurrentUserInterests } from "@/api/user/server";
 
-import { ObjectUnique } from "@/utils/object-unique";
+import { ObjectUnique } from "@/utils/object";
 
 import { OnboardingNextStepButton, OnboardingProgressBar } from "../modules/progress";
 import { OnboardingTextBlock } from "../modules/text-block";
 import { OnboardingInterestsPicker } from "../modules/interests-picker";
 import { InterestsPickerProvider } from "@/features/interests/picker";
+import { GetCurrentUserInterests } from "@/api/user";
 
 import { ButtonsBlock } from "@/components/ui";
 
@@ -49,6 +50,7 @@ export async function OnboardingInterestsPickerPage() {
                 />
                 <InterestsPickerProvider
                     interests={interests}
+                    syncFormField={"interests"}
                     selectedInterests={currentInterests}
                     callbackUrl={"/onboarding/interests"}
                 >
@@ -57,7 +59,9 @@ export async function OnboardingInterestsPickerPage() {
             </div>
 
             <ButtonsBlock>
-                <OnboardingNextStepButton>
+                <OnboardingNextStepButton
+                    revalidateQueryOnSuccess={GetCurrentUserInterests.queryKey}
+                >
                     Next step
                 </OnboardingNextStepButton>
             </ButtonsBlock>

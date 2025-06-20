@@ -1,5 +1,5 @@
 import React, { RefObject } from "react";
-import { ObjectUnique } from "@/utils/object-unique";
+import { ObjectUnique } from "@/utils/object";
 import {
     BasePoint,
     IMapHandlers,

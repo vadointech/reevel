@@ -7,22 +7,14 @@ export namespace UpdateProfile {
         fullName: string;
         picture: string;
         completed: string;
-        location: {
-            center?: [number, number],
-            bbox?: [number, number, number, number],
-        };
+        locationCenter: number[],
+        locationBbox?: number[],
         interests: string[];
     }>;
-    export type TOutput = Partial<{
-        bio: string;
-        fullName: string;
-        picture: string;
-        location: UserProfileEntity["location"];
-        interests: string[];
-    }>;
+    export type TOutput = UserProfileEntity | null;
 }
 
-export const updateProfile = fetcherClient<UpdateProfile.TInput, UpdateProfile.TOutput>({
+export const updateProfile = fetcherClient.fetch<UpdateProfile.TInput, UpdateProfile.TOutput>({
     fetcherFunc: (fetcher, input) => {
         return fetcher.patch("/profile", input);
     },

@@ -1,5 +1,5 @@
 import { headers } from "next/headers";
-import { getSession } from "@/api/auth/server";
+import { getSession } from "@/api/user/server";
 
 import { MapProviderDefaultConfig, MapProviderInternalConfig } from "@/components/shared/map/map.config";
 

@@ -1,0 +1,5 @@
+@use "@/theme/mixins";
+
+.form {
+    margin-top: mixins.rem(32);
+}

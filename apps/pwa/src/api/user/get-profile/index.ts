@@ -8,7 +8,7 @@ export namespace GetCurrentUserProfile {
     export const queryKey = ["user/profile"];
 }
 
-export const getCurrentUserProfile = fetcherClient<GetCurrentUserProfile.TInput, GetCurrentUserProfile.TOutput>({
+export const getCurrentUserProfile = fetcherClient.fetch<GetCurrentUserProfile.TInput, GetCurrentUserProfile.TOutput>({
     fetcherFunc: (fetcher, input) => {
         return fetcher.get("/users/me/profile", input);
     },

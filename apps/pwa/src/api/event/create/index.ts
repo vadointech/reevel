@@ -21,7 +21,7 @@ export namespace CreateEvent {
     export const queryKey = ["event/create"];
 }
 
-export const createEvent = fetcherClient({
+export const createEvent = fetcherClient.fetch({
     fetcherFunc: (fetcher, input) => {
         return fetcher.post("/events", {
             body: input?.body,

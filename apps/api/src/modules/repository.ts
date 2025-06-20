@@ -45,6 +45,20 @@ export class Repository<Entity extends ObjectLiteral> {
         return repository.createQueryBuilder(alias);
     }
 
+    // Change to CREATE
+    insert(
+        values: DeepPartial<Entity>,
+    ): Entity {
+        const repository = this.currentRepository();
+        return repository.create(values);
+    }
+    insertMany(
+        values: DeepPartial<Entity>[],
+    ): Entity[] {
+        const repository = this.currentRepository();
+        return repository.create(values);
+    }
+
     async create(
         values: DeepPartial<Entity>,
         entityManager?: EntityManager,

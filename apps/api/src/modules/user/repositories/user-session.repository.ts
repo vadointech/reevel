@@ -9,10 +9,10 @@ import { UserSessionEntity } from "@/modules/user/entities/user-session.entity";
         super(dataSource, UserSessionEntity);
     }
 
-    async updateSessionToken(id: string, refreshTokenHash: string, expiresIn: number) {
+    async updateSessionToken(id: string, refreshTokenHash: string, expiresInSec: number) {
         return this.update({ id }, {
             refreshTokenHash,
-            expiresAt: new Date(Date.now() + expiresIn),
+            expiresAt: new Date(Date.now() + (1000 * expiresInSec)),
         });
     }
 }

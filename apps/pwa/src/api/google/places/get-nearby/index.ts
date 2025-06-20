@@ -19,7 +19,7 @@ export namespace GetNearbyPlaces {
     export const queryKey = ["google/places"];
 }
 
-export const getNearbyPlaces = fetcherClient<GetNearbyPlaces.TInput, GetNearbyPlaces.TOutput, GetNearbyPlaces.TParams>({
+export const getNearbyPlaces = fetcherClient.fetch<GetNearbyPlaces.TInput, GetNearbyPlaces.TOutput, GetNearbyPlaces.TParams>({
     fetcherFunc: async(fetcher, input) => {
 
         const { fieldMask, body } = getGooglePlacesApiFieldMask(input?.body);

@@ -1,6 +1,6 @@
 import { IInterestsPickerController, IInterestsPickerStore } from "./types";
 import { InterestEntity } from "@/entities/interests";
-import { ObjectUnique } from "@/utils/object-unique";
+import { ObjectUnique } from "@/utils/object";
 
 export class InterestsPickerController implements IInterestsPickerController {
     private readonly _store: IInterestsPickerStore;

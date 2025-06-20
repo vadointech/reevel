@@ -26,7 +26,7 @@ export class AuthGuard implements CanActivate {
         const requestCookies = request.cookies;
 
         if(!requestCookies) {
-            throw new BadRequestException();
+            throw new BadRequestException("Access or Refresh token not found");
         }
 
         const tokensMap: Record<string, string> = {};
@@ -40,7 +40,7 @@ export class AuthGuard implements CanActivate {
             if(key) return validatedTokens[key];
             return validatedTokens;
         } catch {
-            throw new BadRequestException();
+            throw new BadRequestException("Access or Refresh token not found");
         }
     }
 
@@ -69,19 +69,19 @@ export class AuthGuard implements CanActivate {
     }
 
     async refreshUserAccess(request: Request, response: Response) {
-        const sessionToken = await this.getAuthJwtToken(request, authConfig.refreshToken.cookieKey);
+        const refreshToken = await this.getAuthJwtToken(request, authConfig.refreshToken.cookieKey);
 
         const {
             valid,
             payload,
-        } = await this.jwtStrategy.validateRefreshToken(sessionToken);
+        } = await this.jwtStrategy.validateRefreshToken(refreshToken);
 
         if(!valid || !payload) {
             throw new UnauthorizedException("Invalid refresh token");
         }
 
         try {
-            const session = await this.jwtStrategy.refreshSession(sessionToken, payload);
+            const session = await this.jwtStrategy.refreshSession(refreshToken, payload);
             this.jwtStrategy.setJwtSession(response, session);
             this.jwtStrategy.setServerSession(request, session.payload);
         } catch(e) {
