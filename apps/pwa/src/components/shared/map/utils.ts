@@ -1,7 +1,9 @@
-import { MapInternalConfig } from "./types";
-import { getSession } from "@/api/auth/get-session";
 import { headers } from "next/headers";
+import { getSession } from "@/api/user/server";
+
 import { MapProviderDefaultConfig, MapProviderInternalConfig } from "@/components/shared/map/map.config";
+
+import { MapInternalConfig } from "./types";
 
 export async function getUserMapInternalConfig(): Promise<MapInternalConfig.IInternalConfig> {
     const { data: session } = await getSession({

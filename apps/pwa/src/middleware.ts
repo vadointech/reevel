@@ -17,10 +17,12 @@ export default async function(request: NextRequest) {
     }
 
     const cookieStore = await cookies();
+
+    const sessionId = cookieStore.get("session_id");
     const accessToken = cookieStore.get("access_token");
     const refreshToken = cookieStore.get("refresh_token");
 
-    const isAuthenticated = accessToken && refreshToken;
+    const isAuthenticated = !!sessionId && !!accessToken && !!refreshToken;
 
     if (isAuthenticated) {
         if (isAuthRoute) {

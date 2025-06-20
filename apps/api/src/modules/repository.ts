@@ -16,7 +16,7 @@ export class Repository<Entity extends ObjectLiteral> {
         private readonly entityTarget: EntityTarget<Entity>,
     ) {}
 
-    protected getRepository(entityManager?: EntityManager) {
+    protected currentRepository(entityManager?: EntityManager) {
         if(entityManager instanceof EntityManager) {
             return entityManager.getRepository(this.entityTarget);
         } else {
@@ -33,7 +33,7 @@ export class Repository<Entity extends ObjectLiteral> {
     }
 
     async query(query: string, parameters?: any[], entityManager?: EntityManager): Promise<any> {
-        const repository = this.getRepository(entityManager);
+        const repository = this.currentRepository(entityManager);
         return repository.query(query, parameters);
     }
 
@@ -41,24 +41,37 @@ export class Repository<Entity extends ObjectLiteral> {
         alias?: string,
         entityManager?: EntityManager,
     ): Promise<SelectQueryBuilder<Entity>> {
-        const repository = this.getRepository(entityManager);
+        const repository = this.currentRepository(entityManager);
         return repository.createQueryBuilder(alias);
     }
 
-    async create(
+    create(
+        values: DeepPartial<Entity>,
+    ): Entity {
+        const repository = this.currentRepository();
+        return repository.create(values);
+    }
+    createMany(
+        values: DeepPartial<Entity>[],
+    ): Entity[] {
+        const repository = this.currentRepository();
+        return repository.create(values);
+    }
+
+    async createAndSave(
         values: DeepPartial<Entity>,
         entityManager?: EntityManager,
     ): Promise<Entity> {
-        const repository = this.getRepository(entityManager);
+        const repository = this.currentRepository(entityManager);
         return repository.save(
             repository.create(values),
         );
     }
-    async createMany(
+    async createAndSaveMany(
         values: DeepPartial<Entity>[],
         entityManager?: EntityManager,
     ): Promise<Entity[]> {
-        const repository = this.getRepository(entityManager);
+        const repository = this.currentRepository(entityManager);
         return repository.save(
             repository.create(values),
         );
@@ -68,33 +81,57 @@ export class Repository<Entity extends ObjectLiteral> {
         values: DeepPartial<Entity>,
         entityManager?: EntityManager,
     ): Promise<Entity> {
-        const repository = this.getRepository(entityManager);
+        const repository = this.currentRepository(entityManager);
+        return repository.save(values);
+    }
+    async saveMany(
+        values: DeepPartial<Entity>[],
+        entityManager?: EntityManager,
+    ): Promise<Entity[]> {
+        const repository = this.currentRepository(entityManager);
         return repository.save(values);
     }
 
     async update(
         criteria: FindOptionsWhere<Entity>,
         values: QueryDeepPartialEntity<Entity>,
-        entityManager?: EntityManager,
-    ): Promise<Entity> {
-        const repository = this.getRepository(entityManager);
+        entityManager?: EntityManager
+    ): Promise<boolean>;
+    async update(
+        criteria: FindOptionsWhere<Entity>,
+        values: QueryDeepPartialEntity<Entity>,
+        returning?: boolean,
+        entityManager?: EntityManager
+    ): Promise<Entity>;
+    async update(
+        criteria: FindOptionsWhere<Entity>,
+        values: QueryDeepPartialEntity<Entity>,
+        arg3: boolean | EntityManager = false,
+        arg4?: EntityManager,
+    ): Promise<boolean | Entity> {
+        if(arg3 === true) {
+            const repository = this.currentRepository(arg4);
+            const updateResult = await repository
+                .createQueryBuilder()
+                .update(this.entityTarget)
+                .set(values)
+                .where(criteria)
+                .returning("*")
+                .execute();
 
-        const updatedData = await repository
-            .createQueryBuilder()
-            .update(this.entityTarget, values)
-            .where(criteria)
-            .returning("*")
-            .execute();
-
-        return updatedData?.raw?.[0];
+            return updateResult?.raw?.[0];
+        } else {
+            const repository = this.currentRepository(arg4);
+            const updateResult = await repository.update(criteria, values);
+            return updateResult.affected !== undefined && updateResult.affected > 0;
+        }
     }
-
 
     async findMany(
         options?: FindManyOptions<Entity>,
         entityManager?: EntityManager,
     ): Promise<Entity[]> {
-        const repository = this.getRepository(entityManager);
+        const repository = this.currentRepository(entityManager);
         return repository.find(options);
     }
 
@@ -102,7 +139,7 @@ export class Repository<Entity extends ObjectLiteral> {
         options: FindOptionsWhere<Entity> | FindOptionsWhere<Entity>[],
         entityManager?: EntityManager,
     ): Promise<Entity[]> {
-        const repository = this.getRepository(entityManager);
+        const repository = this.currentRepository(entityManager);
         return repository.findBy(options);
     }
 
@@ -110,21 +147,19 @@ export class Repository<Entity extends ObjectLiteral> {
         options: FindOneOptions<Entity>,
         entityManager?: EntityManager,
     ): Promise<Entity | null> {
-        const repository = this.getRepository(entityManager);
-        // const response: Entity | null = null;
+        const repository = this.currentRepository(entityManager);
         try {
             return repository.findOne(options);
         } catch {
             return null;
         }
-        // return response;
     }
 
     async findOneBy(
         options: FindOptionsWhere<Entity> | FindOptionsWhere<Entity>[],
         entityManager?: EntityManager,
     ): Promise<Entity | null> {
-        const repository = this.getRepository(entityManager);
+        const repository = this.currentRepository(entityManager);
         try {
             return repository.findOneBy(options);
         } catch {
@@ -136,7 +171,7 @@ export class Repository<Entity extends ObjectLiteral> {
         criteria: FindOptionsWhere<Entity>,
         entityManager?: EntityManager,
     ): Promise<boolean> {
-        const repository = this.getRepository(entityManager);
+        const repository = this.currentRepository(entityManager);
         await repository.delete(criteria);
         return true;
     }
@@ -145,7 +180,7 @@ export class Repository<Entity extends ObjectLiteral> {
         options?: FindManyOptions<Entity>,
         entityManager?: EntityManager,
     ): Promise<number> {
-        const repository = this.getRepository(entityManager);
+        const repository = this.currentRepository(entityManager);
         return repository.count(options);
     }
 
@@ -153,7 +188,7 @@ export class Repository<Entity extends ObjectLiteral> {
         options: FindOptionsWhere<Entity> | FindOptionsWhere<Entity>[],
         entityManager?: EntityManager,
     ): Promise<number> {
-        const repository = this.getRepository(entityManager);
+        const repository = this.currentRepository(entityManager);
         return repository.countBy(options);
     }
 
@@ -161,7 +196,7 @@ export class Repository<Entity extends ObjectLiteral> {
         options?: FindManyOptions<Entity>,
         entityManager?: EntityManager,
     ): Promise<boolean> {
-        const repository = this.getRepository(entityManager);
+        const repository = this.currentRepository(entityManager);
         return repository.exists(options);
     }
 
@@ -169,7 +204,7 @@ export class Repository<Entity extends ObjectLiteral> {
         options: FindOptionsWhere<Entity> | FindOptionsWhere<Entity>[],
         entityManager?: EntityManager,
     ): Promise<boolean> {
-        const repository = this.getRepository(entityManager);
+        const repository = this.currentRepository(entityManager);
         return repository.existsBy(options);
     }
 }

@@ -14,13 +14,23 @@ export class UserController {
     getSession(
         @Session() session: ServerSession,
     ) {
-        return this.userService.getUserSession(session.user.id);
+        console.log(">>> getting session");
+        return this.userService.getUserSession(session);
+    }
+
+    @Get("/me/profile")
+    getUserProfile(
+        @Session() session: ServerSession,
+    ) {
+        console.log(">>> getting profile");
+        return this.userService.getUserProfile(session);
     }
 
     @Get("/me/interests")
     getUserInterests(
         @Session() session: ServerSession,
     ) {
+        console.log(">>> getting interests");
         return this.userService.getUserInterests(session);
     }
 
@@ -29,6 +39,7 @@ export class UserController {
         @Query() params: GetUploadedFileParamsDto,
         @Session() session: ServerSession,
     ) {
+        console.log(">>> getting uploads");
         return this.userService.getUserUploads(session, params);
     }
     @Delete("/me/uploads/:id")

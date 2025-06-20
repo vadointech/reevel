@@ -5,8 +5,7 @@ import { useLocationSearchConfirmation } from "@/features/location/search/hooks"
 
 import { MapView } from "@/components/shared/map";
 import { OnboardingTextBlock } from "../modules/text-block";
-import { OnboardingProgressBar } from "../modules/progress";
-import { OnboardingConfirmLocation } from "../modules/location-picker";
+import { OnboardingNextStepButton, OnboardingProgressBar } from "../modules/progress";
 
 import {
     BottomSheetBody,
@@ -16,6 +15,7 @@ import {
 } from "@/components/shared/bottom-sheet";
 
 import { ButtonsBlock, Container } from "@/components/ui";
+import { GetCurrentUserProfile } from "@/api/user";
 
 import styles from "../styles/location-picker-confirm.module.scss";
 
@@ -56,7 +56,12 @@ export function OnboardingLocationPickerConfirmationPage() {
                             </Container>
 
                             <ButtonsBlock>
-                                <OnboardingConfirmLocation />
+                                <OnboardingNextStepButton
+                                    variant={"accent"}
+                                    revalidateQueryOnSuccess={GetCurrentUserProfile.queryKey}
+                                >
+                                    Yes, browse events
+                                </OnboardingNextStepButton>
                             </ButtonsBlock>
                         </BottomSheetContent>
                     </BottomSheetBody>

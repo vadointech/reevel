@@ -11,14 +11,14 @@ export class SessionStore implements ISessionStore {
 
     constructor(init: Partial<ISessionStore> = {}) {
         makeObservable(this, {
-            user: observable.shallow,
+            user: observable,
             setUser: action,
         });
 
         constructorInit(this, init);
     }
 
-    get plain(): Omit<ISessionStore, "dispose"> {
+    toPlainObject(): Pick<ISessionStore, "user"> {
         return {
             user: toJS(this.user),
         };

@@ -12,7 +12,7 @@ export namespace UploadProfileAvatar {
     export const queryKey = ["uploads/profile/avatar"];
 }
 
-export const uploadProfileAvatar = fetcherClient<UploadEventPoster.TInput, UploadEventPoster.TOutput>({
+export const uploadProfileAvatar = fetcherClient.fetch<UploadEventPoster.TInput, UploadEventPoster.TOutput>({
     fetcherFunc: (fetcher, input) => {
         const formData = new FormData();
 

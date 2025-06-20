@@ -9,8 +9,9 @@ import {
 import { Reflector } from "@nestjs/core";
 import { Request, Response } from "express";
 import { JwtStrategy } from "@/modules/auth/strategies/jwt.strategy";
-import { AuthJwtTokens } from "../dto/jwt.dto";
+import { AuthJwtTokens, IAuthJwtTokens } from "../dto/jwt.dto";
 import { transformAndValidate } from "class-transformer-validator";
+import authConfig from "@/modules/auth/auth.config";
 
 @Injectable({ scope: Scope.REQUEST })
 export class AuthGuard implements CanActivate {
@@ -20,22 +21,19 @@ export class AuthGuard implements CanActivate {
     ) {}
 
     async getAuthJwtToken(request: Request): Promise<AuthJwtTokens>;
-    async getAuthJwtToken(request: Request, key?: keyof AuthJwtTokens): Promise<string>;
-    async getAuthJwtToken(request: Request, key?: keyof AuthJwtTokens) {
-        const cookies = request.headers.cookie;
+    async getAuthJwtToken(request: Request, key?: keyof IAuthJwtTokens): Promise<string>;
+    async getAuthJwtToken(request: Request, key?: keyof IAuthJwtTokens) {
+        const requestCookies = request.cookies;
 
-        if(!cookies) {
+        if(!requestCookies) {
             throw new BadRequestException("Access or Refresh token not found");
         }
 
-        const tokens = cookies.split("; ");
-
         const tokensMap: Record<string, string> = {};
 
-        tokens.forEach((token) => {
-            const [key, value] = token.split("=");
+        for(const [key, value] of Object.entries(requestCookies)) {
             tokensMap[key] = decodeURIComponent(value).replace(/^"|"$/g, "");
-        });
+        }
 
         try {
             const validatedTokens = await transformAndValidate(AuthJwtTokens, tokensMap);
@@ -54,8 +52,7 @@ export class AuthGuard implements CanActivate {
     }
 
     async checkUserAccess(request: Request): Promise<boolean> {
-        const accessToken = await this.getAuthJwtToken(request, "access_token");
-
+        const accessToken = await this.getAuthJwtToken(request, authConfig.accessToken.cookieKey);
 
         const {
             valid,
@@ -72,7 +69,7 @@ export class AuthGuard implements CanActivate {
     }
 
     async refreshUserAccess(request: Request, response: Response) {
-        const refreshToken = await this.getAuthJwtToken(request, "refresh_token");
+        const refreshToken = await this.getAuthJwtToken(request, authConfig.refreshToken.cookieKey);
 
         const {
             valid,
@@ -83,7 +80,14 @@ export class AuthGuard implements CanActivate {
             throw new UnauthorizedException("Invalid refresh token");
         }
 
-        await this.jwtStrategy.refreshSession(request, response, payload);
+        try {
+            const session = await this.jwtStrategy.refreshSession(refreshToken, payload);
+            this.jwtStrategy.setJwtSession(response, session);
+            this.jwtStrategy.setServerSession(request, session.payload);
+        } catch(e) {
+            this.jwtStrategy.clearJwtSession(response);
+            throw e;
+        }
     }
 
     async canActivate(context: ExecutionContext) {

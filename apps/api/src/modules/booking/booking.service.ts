@@ -61,7 +61,7 @@ export class BookingService {
             }
 
             if(reclaimedPayment) {
-                const ticket = await this.eventTicketsRepository.create({
+                const ticket = await this.eventTicketsRepository.createAndSave({
                     eventId,
                     paymentId: reclaimedPayment.id,
                     userId: session.user.id,
@@ -81,7 +81,7 @@ export class BookingService {
 
             try {
                 const ticket = await this.dataSource.transaction(async entityManager => {
-                    await this.paymentRepository.create({
+                    await this.paymentRepository.createAndSave({
                         id: paymentId,
                         type: PaymentType.BOOKING_FEE,
                         amount: event.ticketPrice!,
@@ -90,7 +90,7 @@ export class BookingService {
                         currency: event.ticketPriceCurrency,
                     }, entityManager);
 
-                    return this.eventTicketsRepository.create({
+                    return this.eventTicketsRepository.createAndSave({
                         eventId,
                         paymentId,
                         userId: session.user.id,

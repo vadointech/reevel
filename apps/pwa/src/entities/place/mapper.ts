@@ -13,7 +13,6 @@ class PlaceLocationEntityMapper<T extends PlaceLocationEntity = PlaceLocationEnt
                 points.push({
                     id: place.id,
                     type: "Feature",
-                    bbox: place.bbox,
                     geometry: {
                         type: "Point",
                         coordinates: [

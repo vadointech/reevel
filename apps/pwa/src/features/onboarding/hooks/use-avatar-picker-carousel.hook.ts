@@ -3,11 +3,11 @@
 import { useEffect, useState } from "react";
 import { reaction } from "mobx";
 import { useSessionContext } from "@/features/session";
-import { useOnboardingStore } from "@/features/onboarding";
+import { useOnboardingFormContext } from "@/features/onboarding";
 
 export function useOnboardingAvatarPickerCarousel(defaultAvatars: string[]) {
     const session = useSessionContext();
-    const onboardingStore = useOnboardingStore();
+    const form = useOnboardingFormContext();
 
     const [avatars, setAvatars] = useState<string[]>(() => {
         if(session.store.user?.profile.picture) {
@@ -17,8 +17,6 @@ export function useOnboardingAvatarPickerCarousel(defaultAvatars: string[]) {
         return defaultAvatars;
     });
 
-    const [_, setReady] = useState(true);
-
     useEffect(() => {
         const disposer = reaction(
             () => session.store.user,
@@ -26,7 +24,6 @@ export function useOnboardingAvatarPickerCarousel(defaultAvatars: string[]) {
                 const picture = user?.profile.picture;
                 if(picture) {
                     setAvatars([picture, ...defaultAvatars, picture, ...defaultAvatars]);
-                    setReady(state => !state);
                 }
             },
         );
@@ -35,7 +32,7 @@ export function useOnboardingAvatarPickerCarousel(defaultAvatars: string[]) {
     }, []);
 
     const handleSetAvatar = (index: number) => {
-        onboardingStore.setPicture(avatars[index]);
+        form.setValue("picture", avatars[index]);
     };
 
     return {

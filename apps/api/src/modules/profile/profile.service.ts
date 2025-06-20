@@ -1,36 +1,26 @@
 import { Injectable, NotFoundException } from "@nestjs/common";
 import { DataSource } from "typeorm";
 import { UpdateProfileDto } from "@/modules/profile/dto/update-profile.dto";
-import { ProfileInterestsEntity } from "@/modules/profile/entities/profile-interests.entity";
 import { ProfileRepository } from "@/modules/profile/repositories/profile.repository";
 import { ProfileLocationRepository } from "@/modules/profile/repositories/profile-location.repository";
-import { ProfileLocationsEntity } from "@/modules/profile/entities/profile-location.entity";
 import { Session } from "@/types";
 import { SupportedFileCollections } from "@/modules/uploads/entities/uploads.entity";
 import { UploadsService } from "@/modules/uploads/uploads.service";
+import { ProfileInterestsRepository } from "@/modules/profile/repositories/profile-interests.repository";
+import { ProfileEntity } from "@/modules/profile/entities/profile.entity";
 
 @Injectable()
 export class ProfileService {
     constructor(
         private readonly profileRepository: ProfileRepository,
         private readonly profileLocationsRepository: ProfileLocationRepository,
+        private readonly profileInterestsRepository: ProfileInterestsRepository,
         private readonly uploadsService: UploadsService,
 
         private dataSource: DataSource,
-    ) { }
+    ) {}
 
-    async getProfile(userId: string) {
-        return this.profileRepository.findOne({
-            where: { userId },
-            relations: {
-                interests: {
-                    interest: true,
-                },
-            },
-        });
-    }
-
-    async updateProfile(userId: string, input: UpdateProfileDto) {
+    async updateProfile(userId: string, input: UpdateProfileDto): Promise<ProfileEntity> {
         const dbProfile = await this.profileRepository.findOne({
             where: { userId: userId },
             relations: {
@@ -39,72 +29,55 @@ export class ProfileService {
         });
 
         if (!dbProfile) {
-            throw new NotFoundException();
+            throw new NotFoundException("Профіль не знайдено");
         }
 
-        const { id: profileId } = dbProfile;
-
         const {
-            fullName,
-            bio,
-            picture,
-            location,
+            locationCenter,
+            locationBbox,
             interests,
-            completed,
+            ...newData
         } = input;
 
+        return this.dataSource.transaction(async(entityManager) => {
+            for(const [key, value] of Object.entries(newData)) {
+                if (value !== undefined) {
+                    dbProfile[key] = value;
+                }
+            }
 
-        const newProfile = Object.assign(dbProfile, {
-            fullName,
-            bio,
-            picture,
-            completed,
-        });
-
-        await this.dataSource.transaction(async entityManager => {
-            await this.profileRepository.save(dbProfile, entityManager);
-
-            if(location) {
-                const locationOptions: Partial<ProfileLocationsEntity> = {
+            if(locationCenter && locationBbox) {
+                if (dbProfile.location) {
+                    await this.profileLocationsRepository.delete({ id: dbProfile.location.id }, entityManager);
+                }
+                dbProfile.location = this.profileLocationsRepository.create({
                     center: {
                         type: "Point",
-                        coordinates: location.center,
+                        coordinates: locationCenter,
                     },
                     bbox: {
                         type: "Polygon",
                         coordinates: [[
-                            [location.bbox[0], location.bbox[1]], // SW corner
-                            [location.bbox[0], location.bbox[3]], // NW corner
-                            [location.bbox[2], location.bbox[3]], // NE corner
-                            [location.bbox[2], location.bbox[1]], // SE corner
-                            [location.bbox[0], location.bbox[1]],  // Back to SW to close polygon
+                            [locationBbox[0], locationBbox[1]], // SW corner
+                            [locationBbox[0], locationBbox[3]], // NW corner
+                            [locationBbox[2], locationBbox[3]], // NE corner
+                            [locationBbox[2], locationBbox[1]], // SE corner
+                            [locationBbox[0], locationBbox[1]],  // Back to SW to close polygon
                         ]],
                     },
-                };
-
-                await this.profileLocationsRepository.delete({ profileId }, entityManager);
-                newProfile.location = await this.profileLocationsRepository.create({
-                    profileId,
-                    ...locationOptions,
-                }, entityManager);
+                });
             }
-        });
 
-        if(interests) {
-            await this.dataSource.transaction(async entityManager => {
-                if (!interests) return;
+            if (interests) {
+                await this.profileInterestsRepository.delete({ profileId: dbProfile.id }, entityManager);
 
-                await entityManager.delete(ProfileInterestsEntity, { profileId });
-
-                const newInterests = interests.map(interestId =>
-                    entityManager.create(ProfileInterestsEntity, { profileId, interestId }),
+                dbProfile.interests = interests.map(interestId =>
+                    this.profileInterestsRepository.create({ interestId }),
                 );
+            }
 
-                await entityManager.save(ProfileInterestsEntity, newInterests);
-            });
-        }
-
-        return newProfile;
+            return entityManager.save(dbProfile);
+        });
     }
 
     async uploadAvatar(session: Session, files: Express.Multer.File[]) {

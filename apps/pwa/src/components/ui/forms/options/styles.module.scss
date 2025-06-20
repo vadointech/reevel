@@ -32,8 +32,6 @@
     display: flex;
     column-gap: mixins.rem(18);
 
-    padding: mixins.rem(2.5) 0;
-
     &_disabled {
         opacity: 0.5;
         pointer-events: none;

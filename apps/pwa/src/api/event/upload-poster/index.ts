@@ -11,7 +11,7 @@ export namespace UploadEventPoster {
     export const queryKey = ["uploads/event/poster"];
 }
 
-export const uploadEventPoster = fetcherClient<UploadEventPoster.TInput, UploadEventPoster.TOutput>({
+export const uploadEventPoster = fetcherClient.fetch<UploadEventPoster.TInput, UploadEventPoster.TOutput>({
     fetcherFunc: (fetcher, input) => {
         const formData = new FormData();
 

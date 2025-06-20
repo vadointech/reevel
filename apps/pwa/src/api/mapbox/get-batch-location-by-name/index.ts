@@ -10,7 +10,7 @@ export namespace GetBatchPlaceByName {
     export const queryKey = ["mapbox/places"];
 }
 
-export const getBatchPlaceByName = fetcherClient<GetBatchPlaceByName.TInput, GetBatchPlaceByName.TOutput, GetBatchPlaceByName.TParams>({
+export const getBatchPlaceByName = fetcherClient.fetch<GetBatchPlaceByName.TInput, GetBatchPlaceByName.TOutput, GetBatchPlaceByName.TParams>({
     fetcherFunc: async(fetcher, input) => {
         return fetcher.post("/batch", {
             baseURL: "https://api.mapbox.com/search/geocode/v6",

@@ -11,7 +11,7 @@ export namespace GetLocationByCoordinates {
     export const queryKey = ["mapbox/places"];
 }
 
-export const getLocationByCoordinates = fetcherClient<GetLocationByCoordinates.TInput, GetLocationByCoordinates.TOutput, GetLocationByCoordinates.TParams>({
+export const getLocationByCoordinates = fetcherClient.fetch<GetLocationByCoordinates.TInput, GetLocationByCoordinates.TOutput, GetLocationByCoordinates.TParams>({
     fetcherFunc: (fetcher, input) => {
         return fetcher.get("/reverse", {
             baseURL: "https://api.mapbox.com/search/geocode/v6",

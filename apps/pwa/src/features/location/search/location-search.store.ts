@@ -1,5 +1,5 @@
 import { ILocationSearchStore } from "@/features/location/search/types";
-import { action, makeObservable, observable } from "mobx";
+import { action, makeObservable, observable, reaction } from "mobx";
 import { constructorInit } from "@/lib/init";
 import { PlaceLocationEntity } from "@/entities/place";
 
@@ -9,19 +9,35 @@ export class LocationSearchStore implements ILocationSearchStore {
     searchResults: PlaceLocationEntity[] | null = null;
     locationToConfirm: PlaceLocationEntity | null = null;
 
-    constructor(init?: Partial<ILocationSearchStore>) {
+    private readonly disposeReaction?: () => void;
+
+    constructor(
+        init?: Partial<ILocationSearchStore>,
+        syncLocationToConfirm?: (location: PlaceLocationEntity | null) => void,
+    ) {
         makeObservable(this, {
             searchQuery: observable,
             searchResults: observable,
+            locationToConfirm: observable,
 
             setSearchQuery: action,
             setSearchResults: action,
+            setLocationToConfirm: action,
         });
 
         constructorInit(this, init);
+
+        if(syncLocationToConfirm) {
+            this.disposeReaction = reaction(
+                () => this.locationToConfirm,
+                syncLocationToConfirm,
+            );
+        }
     }
 
-    dispose() {}
+    dispose() {
+        this.disposeReaction?.();
+    }
 
     setSearchQuery(searchQuery: string) {
         this.searchQuery = searchQuery;

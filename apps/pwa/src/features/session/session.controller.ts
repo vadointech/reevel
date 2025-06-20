@@ -29,7 +29,7 @@ export class SessionController implements ISessionController {
                 ...session.profile,
             },
         });
-        return indexedDbService.updateItem("session", this._store.user);
+        return indexedDbService.updateItem("session", this._store.toPlainObject());
     }
 
     cleanSession(): Promise<void> {
@@ -38,14 +38,14 @@ export class SessionController implements ISessionController {
     }
 
     private async initSession(): Promise<void> {
-        const { user } = this._store.plain;
+        const session = this._store.toPlainObject();
 
-        if(user) {
-            return indexedDbService.setItem("session", user);
+        if(session) {
+            return indexedDbService.setItem("session", session);
         } else {
-            const persistedSession = await indexedDbService.getItem<UserEntity>("session");
+            const persistedSession = await indexedDbService.getItem<ISessionStore>("session");
             if(persistedSession) {
-                return this.setSession(persistedSession);
+                return this.setSession(persistedSession.user);
             }
         }
     }

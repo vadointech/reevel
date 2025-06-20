@@ -19,11 +19,11 @@
 
     &__variant {
         &_bordered {
-            border: mixins.rem(1) colors.$foreground solid;
+            border: mixins.rem(1) colors.$static-foreground solid;
         }
 
         &_outline {
-            outline: mixins.rem(1.5) colors.$foreground solid;
+            outline: mixins.rem(1.5) colors.$static-foreground solid;
             outline-offset: mixins.rem(3);
         }
     }

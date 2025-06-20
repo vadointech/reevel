@@ -18,7 +18,7 @@ export namespace SearchLocations {
     export const queryKey = ["google/places"];
 }
 
-export const searchLocations = fetcherClient<SearchLocations.TInput, SearchLocations.TOutput>({
+export const searchLocations = fetcherClient.fetch<SearchLocations.TInput, SearchLocations.TOutput>({
     fetcherFunc: async(fetcher, input) => {
         const { fieldMask, body } = getGooglePlacesApiFieldMask(input?.body);
 

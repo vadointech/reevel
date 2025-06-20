@@ -10,7 +10,7 @@ export namespace GetPlaceByName {
     export const queryKey = ["mapbox/places"];
 }
 
-export const getPlaceByName = fetcherClient<GetPlaceByName.TInput, GetPlaceByName.TOutput, GetPlaceByName.TParams>({
+export const getPlaceByName = fetcherClient.fetch<GetPlaceByName.TInput, GetPlaceByName.TOutput, GetPlaceByName.TParams>({
     fetcherFunc: async(fetcher, input) => {
         return fetcher.get("/forward", {
             baseURL: "https://api.mapbox.com/search/geocode/v6",

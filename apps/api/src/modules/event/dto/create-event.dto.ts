@@ -44,10 +44,12 @@ export class CreateEventDto {
 
     @IsString()
     @IsOptional()
+    @Type(() => Number)
     ticketsAvailable?: number;
 
     @IsString()
     @IsOptional()
+    @Type(() => Number)
     ticketPrice?: number;
 
     @IsEnum(SupportedCurrencies)

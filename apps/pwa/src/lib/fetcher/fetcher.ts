@@ -1,13 +1,13 @@
 import { FetcherResponse } from "./response";
 import {
-    FetcherInitDefaults,
     IFetcher,
-    IFetcherRequestConfig,
+    FetcherInitDefaults,
+    IFetcherRequestConfig, IFetcherResponse,
 } from "./types";
 import { FetcherError } from "@/lib/fetcher/error";
 
 export class Fetcher implements IFetcher {
-    private readonly defaults: FetcherInitDefaults;
+    readonly defaults: FetcherInitDefaults;
 
     constructor(defaults: FetcherInitDefaults) {
         this.defaults = defaults;
@@ -53,7 +53,6 @@ export class Fetcher implements IFetcher {
             body,
             baseURL = this.defaults.baseURL || "",
             credentials = this.defaults.credentials,
-            next = this.defaults.next,
             cache = this.defaults.cache,
         } = config;
 
@@ -76,7 +75,6 @@ export class Fetcher implements IFetcher {
             method,
             headers: mergedHeaders,
             credentials,
-            next,
             cache,
         };
 
@@ -94,7 +92,7 @@ export class Fetcher implements IFetcher {
     }
 
 
-    private async parseResponse<Output>(response: Response): Promise<FetcherResponse<Output>> {
+    private async parseResponse<Output>(response: Response): Promise<IFetcherResponse<Output>> {
         const fetcherResponse = new FetcherResponse<Output>({
             data: null,
             url: response.url,

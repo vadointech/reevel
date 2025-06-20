@@ -7,8 +7,10 @@ import { UploadFile } from "@/api/upload";
 import { uploadEventPoster, UploadEventPoster } from "@/api/event/upload-poster";
 import { useFormContext } from "react-hook-form";
 import { CreateEventFormSchemaValues } from "@/features/event/create";
-import { revalidateCachedTag } from "@/features/cache";
-import { GetUserUploads } from "@/api/user/uploads";
+import { revalidateSessionTag } from "@/features/cache";
+import { useSessionContext } from "@/features/session";
+import { GetUserUploads } from "@/api/user";
+import { SupportedFileCollections } from "@/entities/uploads";
 
 type Params = Partial<Omit<UseMutationOptions<UploadEventPoster.TOutput, unknown, UploadEventPoster.TInput>, "mutationFn">> & {
     callbackUrl?: string;
@@ -16,6 +18,7 @@ type Params = Partial<Omit<UseMutationOptions<UploadEventPoster.TOutput, unknown
 
 export function useCreateEventPosterUpload(params: Params = {}) {
     const router = useRouter();
+    const session = useSessionContext();
     const form = useFormContext<CreateEventFormSchemaValues>();
 
     const uploadFileMutation = useMutation<UploadEventPoster.TOutput, unknown, UploadEventPoster.TInput>({
@@ -24,16 +27,18 @@ export function useCreateEventPosterUpload(params: Params = {}) {
             uploadEventPoster({ body })
                 .then(response => response.data),
         ...params,
-        onSuccess: (data, ...args) => {
+        onSuccess: async(data, ...args) => {
             if(data && data[0]) {
                 form.setValue("poster", {
                     id: data[0].id,
                     fileUrl: data[0].fileUrl,
                 });
                 form.setValue("primaryColor", data[0].colorPalette[0]);
-                revalidateCachedTag(GetUserUploads.queryKey);
             }
 
+            const { user } = session.store.toPlainObject();
+
+            await revalidateSessionTag(user, [...GetUserUploads.queryKey, SupportedFileCollections.EVENT_POSTER]);
             if(params.callbackUrl) {
                 router.push(params.callbackUrl);
             }

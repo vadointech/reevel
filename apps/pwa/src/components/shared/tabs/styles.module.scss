@@ -1,5 +1,6 @@
 @use "@/theme/mixins";
 @use "@/theme/colors";
+@use "@/theme/spacing";
 @use "@/theme/typography";
 @use "@/theme/motions";
 
@@ -18,7 +19,7 @@ $content-height: calc($button-height + $control-offest * 2);
     height: 100%;
     width: 100%;
     flex-shrink: 0;
-    //padding-inline: 1rem;
+    padding-inline: spacing.$container;
     overflow-y: hidden;
     position: relative;
 }

@@ -3,34 +3,10 @@ import { UserEntity } from "@/modules/user/entities/user.entity";
 import { DataSource } from "typeorm";
 import { Repository } from "@/modules/repository";
 
-interface IUserRepository {
-    getByID(id: string): Promise<UserEntity | null>;
-    getByEmail(email: string): Promise<UserEntity | null>;
-    getSession(userId: string): Promise<UserEntity | null>;
-}
-
 @Injectable()
-export class UserRepository extends Repository<UserEntity> implements IUserRepository {
+export class UserRepository extends Repository<UserEntity> {
     constructor(dataSource: DataSource) {
         super(dataSource, UserEntity);
-    }
-
-    async getByID(id: string): Promise<UserEntity | null> {
-        return this.findOne({
-            where: { id },
-            relations: {
-                profile: true,
-                subscription: true,
-            },
-            select: {
-                profile: {
-                    completed: true,
-                },
-                subscription: {
-                    type: true,
-                },
-            },
-        });
     }
 
     async getByEmail(email: string): Promise<UserEntity | null> {
@@ -55,6 +31,7 @@ export class UserRepository extends Repository<UserEntity> implements IUserRepos
         return this.findOne({
             where: { id: userId },
             relations: {
+                // sessions: true,
                 profile: {
                     location: true,
                 },
@@ -63,6 +40,9 @@ export class UserRepository extends Repository<UserEntity> implements IUserRepos
             select: {
                 id: true,
                 email: true,
+                // sessions: {
+                //     id: true,
+                // },
                 profile: {
                     picture: true,
                     fullName: true,
