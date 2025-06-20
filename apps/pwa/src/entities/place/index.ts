@@ -11,7 +11,12 @@ export const placeLocationEntity = z.object({
     primaryTypeDisplayName: z.string(),
     formattedAddress: z.string(),
     googleMapsUri: z.string(),
-    bbox: z.array(z.number()).optional(),
+    bbox: z.tuple([
+        z.number(),
+        z.number(),
+        z.number(),
+        z.number(),
+    ]).optional(),
 });
 
 export type PlaceLocationEntity = z.infer<typeof placeLocationEntity>;

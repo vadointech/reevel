@@ -23,7 +23,7 @@ const registry: TokenRegistry<ISubscriptionEventRegistry> = {
     posterColor: {
         [SubscriptionType.DEFAULT]: ImageColorPalettePreset.Single,
         [SubscriptionType.PLUS]: ImageColorPalettePreset.Default,
-        [SubscriptionType.PREMIUM]: ImageColorPalettePreset.Single,
+        [SubscriptionType.PREMIUM]: ImageColorPalettePreset.Extended,
     },
 };
 

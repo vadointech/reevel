@@ -16,9 +16,8 @@ export type Point<
     id: string;
     type: "Feature",
     properties: P,
-    bbox?: number[],
     geometry: {
         type: "Point",
-        coordinates: number[]
+        coordinates: [number, number]
     },
 };
