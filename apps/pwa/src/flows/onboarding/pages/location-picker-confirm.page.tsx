@@ -15,7 +15,7 @@ import {
 } from "@/components/shared/bottom-sheet";
 
 import { ButtonsBlock, Container } from "@/components/ui";
-import { GetCurrentUserProfile } from "@/api/user";
+import { GetSession } from "@/api/user";
 
 import styles from "../styles/location-picker-confirm.module.scss";
 
@@ -58,7 +58,7 @@ export function OnboardingLocationPickerConfirmationPage() {
                             <ButtonsBlock>
                                 <OnboardingNextStepButton
                                     variant={"accent"}
-                                    revalidateQueryOnSuccess={GetCurrentUserProfile.queryKey}
+                                    revalidateQueryOnSuccess={GetSession.queryKey}
                                 >
                                     Yes, browse events
                                 </OnboardingNextStepButton>

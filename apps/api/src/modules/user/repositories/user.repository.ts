@@ -34,6 +34,7 @@ export class UserRepository extends Repository<UserEntity> {
                 // sessions: true,
                 profile: {
                     location: true,
+                    interests: true,
                 },
                 subscription: true,
             },

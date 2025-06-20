@@ -21,7 +21,7 @@ export const OnboardingPhotoUploader = observer(({
     cropperPageUrl,
 }: OnboardingPhotoUploader.Props) => {
     const {
-        session,
+        form,
         handleAvatarPick,
         handleAvatarDelete,
         uploadDrawerController,
@@ -32,7 +32,7 @@ export const OnboardingPhotoUploader = observer(({
             uploads={uploads}
             gridVariant={"rounded"}
             cropperPageUrl={cropperPageUrl}
-            selectedImageUrl={session.store.user?.profile.picture}
+            selectedImageUrl={form.store.pictureToSelect}
             onImagePick={handleAvatarPick}
             onImageDelete={handleAvatarDelete}
             controller={uploadDrawerController}

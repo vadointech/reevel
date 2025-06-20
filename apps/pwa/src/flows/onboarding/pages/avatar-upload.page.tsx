@@ -9,7 +9,10 @@ export namespace OnboardingAvatarUploadPage {
 
 export const OnboardingAvatarUploadPage = ({ callbackUrl }: OnboardingAvatarUploadPage.Props) => {
     return (
-        <UploadCropperView callbackUrl={callbackUrl}>
+        <UploadCropperView
+            circularCrop
+            callbackUrl={callbackUrl}
+        >
             <OnboardingAvatarUploadCropper callbackUrl={callbackUrl} />
         </UploadCropperView>
     );

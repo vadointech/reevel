@@ -1,13 +1,17 @@
 import { useSessionContext } from "@/features/session";
 import { useUploadedFileDelete } from "@/features/uploader/hooks";
 import { useCallback, useRef } from "react";
-import { UserUploadsEntity } from "@/entities/uploads";
+import { SupportedFileCollections, UserUploadsEntity } from "@/entities/uploads";
 import { useImageUploader } from "@/features/uploader/image/hooks";
 import { uploadProfileAvatar } from "@/api/profile/upload-avatar";
 import { IBottomSheetRootController } from "@/components/shared/bottom-sheet/types";
+import { revalidateSessionTag } from "@/features/cache";
+import { GetUserUploads } from "@/api/user";
+import { useOnboardingFormContext } from "@/features/onboarding";
 
 export function useOnboardingAvatarUploader(callbackUrl?: string) {
     const session = useSessionContext();
+    const form = useOnboardingFormContext();
 
     const uploadDrawerController = useRef<IBottomSheetRootController>(null);
 
@@ -16,11 +20,10 @@ export function useOnboardingAvatarUploader(callbackUrl?: string) {
     } = useUploadedFileDelete();
 
     const handleAvatarPick = useCallback((upload: UserUploadsEntity) => {
-        session.updateSession({
-            profile: {
-                picture: upload.fileUrl,
-            },
-        }).then(() => uploadDrawerController.current?.close());
+        form.store.setPictureToSelect(upload.fileUrl);
+        form.setValue("picture", upload.fileUrl);
+
+        uploadDrawerController.current?.close();
     }, []);
 
     const { handleSelectFile, handleFileUpload } = useImageUploader({
@@ -30,11 +33,14 @@ export function useOnboardingAvatarUploader(callbackUrl?: string) {
                 .then(response => response.data ? response.data[0] : null),
         onSuccess: (upload) => {
             if(upload) handleAvatarPick(upload);
+
+            const { user } = session.store.toPlainObject();
+            return revalidateSessionTag(user, [...GetUserUploads.queryKey, SupportedFileCollections.PROFILE_PICTURE]);
         },
     });
 
     return {
-        session,
+        form,
         handleSelectFile,
         handleFileUpload,
         handleAvatarPick,
