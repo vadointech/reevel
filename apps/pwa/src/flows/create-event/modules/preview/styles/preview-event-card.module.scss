@@ -20,7 +20,7 @@
 
     display: flex;
     flex-direction: column;
-    color: colors.$foreground;
+    color: colors.$static-foreground;
 
     &__header {
         z-index: 1;
@@ -36,7 +36,7 @@
 
         margin-bottom: mixins.rem(11);
 
-        color: colors.$foreground;
+        color: colors.$static-foreground;
 
         &_avatar {
             outline-width: mixins.rem(1);
@@ -80,7 +80,7 @@
             height: mixins.rem(10.5);
 
             path {
-                fill: colors.$foreground;
+                fill: colors.$static-foreground;
             }
         }
     }
@@ -95,7 +95,7 @@
     }
 
     &__tickets {
-        background: colors.$foreground;
+        background: colors.$static-foreground;
         height: mixins.rem(22);
         padding-inline: mixins.rem(8);
         border-radius: mixins.rem(26);
@@ -103,7 +103,7 @@
         display: flex;
         align-items: center;
         justify-content: center;
-        color: colors.$primary;
+        color: colors.$static-primary;
 
         @include typography.font("xxs");
         font-size: mixins.rem(9);
@@ -125,7 +125,7 @@
 
         height: mixins.rem(28);
         border-radius: mixins.rem(76);
-        border: mixins.rem(1) colors.$foreground solid;
+        border: mixins.rem(1) colors.$static-foreground solid;
         padding-inline: mixins.rem(12);
 
         text-wrap: nowrap;

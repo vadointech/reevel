@@ -1,3 +1,4 @@
+/* Dynamic (theme) colors */
 $background: var(--background);
 $foreground: var(--foreground);
 $secondary: var(--secondary);
@@ -7,8 +8,6 @@ $accent: var(--accent);
 $accent-muted: var(--accent-muted);
 $danger: var(--danger);
 $danger-muted: var(--danger-muted);
-
-
 $foreground-highlight: var(--foreground-highlight);
 $secondary-highlight: var(--secondary-highlight);
 $secondary-muted-highlight: var(--secondary-muted-highlight);
@@ -17,6 +16,6 @@ $accent-highlight: var(--accent-highlight);
 $accent-muted-highlight: var(--accent-muted-highlight);
 $danger-highlight: var(--danger-highlight);
 
-$white: red;
-$background-muted: red;
-$border: red;
+/* Static (absolute) colors */
+$static-foreground: var(--static-foreground);
+$static-primary: var(--static-primary);

@@ -9,10 +9,11 @@ import { useFormContext } from "react-hook-form";
 import { createEventFormSchema, CreateEventFormSchemaValues } from "@/features/event/create";
 import { indexedDbService } from "@/lib/indexed-db.service";
 import { useSessionContext } from "@/features/session";
-import { UserUploadsEntity } from "@/entities/uploads";
+import { SupportedFileCollections, UserUploadsEntity } from "@/entities/uploads";
 import { IBottomSheetRootController } from "@/components/shared/bottom-sheet/types";
-import { DeleteUploadedFile, deleteUploadedFile } from "@/api/user/uploads";
+import { DeleteUploadedFile, deleteUploadedFile, GetUserUploads } from "@/api/user/uploads";
 import { FetcherError } from "@/lib/fetcher/error";
+import { revalidateSessionTag } from "@/features/cache";
 
 type Params = Partial<Omit<UseMutationOptions<CreateEvent.TOutput, unknown, CreateEvent.TInput>, "mutationFn">> & {
     callbackUrl?: string;
@@ -59,15 +60,17 @@ export function useCreateEventPreview(params: Params = {}) {
   
     const handlePublishEvent = useCallback(async() => {
         if(!formValues) return;
+        const { success, data } = createEventFormSchema.safeParse(formValues);
+        if(!success || !data) return;
 
-        const location = formValues.location.geometry.coordinates;
-        const interests = formValues.interests.map(item => item.slug);
-        const visibility = formValues.visibility as EventVisibility;
+        const location = data.location.geometry.coordinates;
+        const interests = data.interests.map(item => item.slug);
+        const visibility = data.visibility as EventVisibility;
 
-        const startDate = new Date(formValues.startDate);
+        const startDate = new Date(data.startDate);
 
-        if(formValues.startTime) {
-            const startTime = new Date(formValues.startTime);
+        if(data.startTime) {
+            const startTime = new Date(data.startTime);
             startDate.setHours(
                 startTime.getHours(),
                 startTime.getMinutes(),
@@ -75,11 +78,11 @@ export function useCreateEventPreview(params: Params = {}) {
         }
 
         let endDate: Date | undefined = undefined;
-        if(formValues.endDate) {
-            endDate = new Date(formValues.endDate);
+        if(data.endDate) {
+            endDate = new Date(data.endDate);
         }
-        if(formValues.endTime) {
-            const endTime = new Date(formValues.endTime);
+        if(data.endTime) {
+            const endTime = new Date(data.endTime);
             if(endDate) {
                 endDate.setHours(
                     endTime.getHours(),
@@ -91,9 +94,9 @@ export function useCreateEventPreview(params: Params = {}) {
         }
 
         createEventMutation.mutate({
-            ...formValues,
-            poster: formValues.poster.fileUrl,
-            posterFieldId: formValues.poster.id,
+            ...data,
+            poster: data.poster.fileUrl,
+            posterFieldId: data.poster.id,
             visibility,
             location,
             interests,
@@ -123,9 +126,25 @@ export function useCreateEventPreview(params: Params = {}) {
         }
     }, [formValues]);
 
+    const handlePosterPrimaryColorChange = useCallback((color: string) => {
+        if(color === formValues?.primaryColor) return;
+
+        form.setValue("primaryColor", color);
+        if(formValues) {
+            setFormValues({
+                ...formValues,
+                primaryColor: color,
+            });
+        }
+    }, [formValues]);
+
     const deleteUploadedFileMutation = useMutation<DeleteUploadedFile.TOutput, FetcherError, DeleteUploadedFile.TInput>({
         mutationFn: (body) => deleteUploadedFile({ body })
             .then(response => response.data),
+        onSuccess: () => {
+            const { user } = session.store.toPlainObject();
+            revalidateSessionTag(user, [...GetUserUploads.queryKey, SupportedFileCollections.EVENT_POSTER]);
+        },
     });
 
     const handlePosterDelete = useCallback((upload: UserUploadsEntity) => {
@@ -142,6 +161,7 @@ export function useCreateEventPreview(params: Params = {}) {
         handlePosterPick,
         handlePosterDelete,
         handlePublishEvent,
+        handlePosterPrimaryColorChange,
 
         uploadDrawerController,
     };

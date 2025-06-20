@@ -18,14 +18,18 @@ import cx from "classnames";
 
 export namespace CreateEventPreviewCard {
     export type Data = {
-        event: CreateEventFormSchemaValues;
-        host?: UserProfileEntity
+        posterUrl?: string | undefined;
+        posterPrimaryColor?: string | undefined;
+        eventData: CreateEventFormSchemaValues;
+        host?: UserProfileEntity;
     };
     export type Props = ComponentProps<"div"> & Data;
 }
 
 export const CreateEventPreviewCard = ({
-    event,
+    posterUrl = "/assets/temp/poster6.png",
+    posterPrimaryColor = "#172B0",
+    eventData,
     host,
     className,
     ...props
@@ -39,31 +43,21 @@ export const CreateEventPreviewCard = ({
             )}
             {...props}
         >
-            {
-                event.poster ? (
-                    <Image
-                        fill
-                        src={event.poster.fileUrl}
-                        alt={"Poster"}
-                    />
-                ) : (
-                    <Image
-                        fill
-                        src={"/assets/temp/poster6.png"}
-                        alt={"Poster"}
-                    />
-                )
-            }
+            <Image
+                fill
+                src={posterUrl}
+                alt={"Poster"}
+            />
             <div
                 className={styles.card__header}
                 style={{
                     background: `linear-gradient(
                         to bottom,
-                        ${hexToRgba(event.primaryColor || "#172B0", 0.6)} 52%,
-                        ${hexToRgba(event.primaryColor || "#172B0", 0.5)} 66%,
-                        ${hexToRgba(event.primaryColor || "#172B0", 0.3)} 80%,
-                        ${hexToRgba(event.primaryColor || "#172B0", 0.1)} 92%,
-                        ${hexToRgba(event.primaryColor || "#172B0", 0)} 100%
+                        ${hexToRgba(posterPrimaryColor, 0.6)} 52%,
+                        ${hexToRgba(posterPrimaryColor, 0.5)} 66%,
+                        ${hexToRgba(posterPrimaryColor, 0.3)} 80%,
+                        ${hexToRgba(posterPrimaryColor, 0.1)} 92%,
+                        ${hexToRgba(posterPrimaryColor, 0)} 100%
                     )`,
                 }}
             >
@@ -80,7 +74,7 @@ export const CreateEventPreviewCard = ({
                 </div>
 
                 {
-                    event.visibility === EventVisibility.PRIVATE ? (
+                    eventData.visibility === EventVisibility.PRIVATE ? (
                         <Badge
                             variant={"ghost"}
                             size={"small"}
@@ -105,35 +99,35 @@ export const CreateEventPreviewCard = ({
                 style={{
                     background: `linear-gradient(
                         to top,
-                        ${hexToRgba(event.primaryColor || "#172B0", 1)} 64%,
-                        ${hexToRgba(event.primaryColor || "#172B0", 0.8)} 72%,
-                        ${hexToRgba(event.primaryColor || "#172B0", 0.6)} 78%,
-                        ${hexToRgba(event.primaryColor || "#172B0", 0.4)} 84%,
-                        ${hexToRgba(event.primaryColor || "#172B0", 0.2)} 90%,
-                        ${hexToRgba(event.primaryColor || "#172B0", 0.05)} 96%,
-                        ${hexToRgba(event.primaryColor || "#172B0", 0)} 100%
+                        ${hexToRgba(posterPrimaryColor, 1)} 64%,
+                        ${hexToRgba(posterPrimaryColor, 0.8)} 72%,
+                        ${hexToRgba(posterPrimaryColor, 0.6)} 78%,
+                        ${hexToRgba(posterPrimaryColor, 0.4)} 84%,
+                        ${hexToRgba(posterPrimaryColor, 0.2)} 90%,
+                        ${hexToRgba(posterPrimaryColor, 0.05)} 96%,
+                        ${hexToRgba(posterPrimaryColor, 0)} 100%
                     )`,
                 }}
             >
                 <h3 className={styles.card__title}>
-                    { event.title }
+                    { eventData.title }
                 </h3>
 
                 <div className={styles.card__date}>
                     <IconCalendar />
-                    { formatter.formatDate(event.startDate) } • { formatter.formatTime(event.startTime) }
+                    { formatter.formatDate(eventData.startDate) } • { formatter.formatTime(eventData.startTime) }
                 </div>
 
                 <div className={styles.card__price}>
                     {
-                        event.ticketPrice ? (
-                            event.ticketPrice + " ₴"
-                        ) : null
+                        eventData.ticketPrice ? (
+                            eventData.ticketPrice + " ₴"
+                        ) : "Free"
                     }
                     {
-                        (event.ticketsAvailable && event.ticketsAvailable.length > 0) && (
+                        (eventData.ticketsAvailable && eventData.ticketsAvailable.length > 0) && (
                             <div className={styles.card__tickets}>
-                                { event.ticketsAvailable } tickets
+                                { eventData.ticketsAvailable } tickets
                             </div>
                         )
                     }
@@ -141,7 +135,7 @@ export const CreateEventPreviewCard = ({
 
                 <div className={styles.card__interests}>
                     {
-                        event.interests.map(item => (
+                        eventData.interests.map(item => (
                             <div key={item.slug} className={styles.card__interest}>
                                 <span>{ item.icon }</span> { item.title_en }
                             </div>
@@ -150,7 +144,7 @@ export const CreateEventPreviewCard = ({
                 </div>
 
                 <p className={styles.card__description}>
-                    { event.description }
+                    { eventData.description }
                 </p>
             </div>
         </div>
