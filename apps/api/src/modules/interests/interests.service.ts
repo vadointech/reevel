@@ -1,20 +1,16 @@
 import { Injectable } from "@nestjs/common";
-import { InjectRepository } from "@nestjs/typeorm";
 import { InterestsEntity } from "./entities/interests.entity";
-import { In, Repository } from "typeorm";
-import { InterestRelationsEntity } from "@/modules/interests/entities/interest-relations.entity";
+import { In } from "typeorm";
 import { InterestsRepository } from "./repositories/interests.repository";
 import { InterestsFilterParamsDto } from "@/modules/interests/dto/interests-filter-params.dto";
-import { ProfileRepository } from "@/modules/profile/repositories/profile.repository";
+import { InterestsRelationsRepository } from "@/modules/interests/repositories/interests-relations.repository";
 
 @Injectable()
 export class InterestsService {
 
     constructor(
         private readonly interestsRepository: InterestsRepository,
-        @InjectRepository(InterestRelationsEntity)
-        private readonly interestsRelationsRepository: Repository<InterestRelationsEntity>,
-        private readonly profileRepository: ProfileRepository,
+        private readonly interestsRelationsRepository: InterestsRelationsRepository,
     ) { }
 
     async getInitialInterests(): Promise<InterestsEntity[]> {
@@ -41,7 +37,7 @@ export class InterestsService {
     }
 
     async getRelatedInterests(slug: string): Promise<InterestsEntity[]> {
-        const relatedInterests = await this.interestsRelationsRepository.find({
+        const relatedInterests = await this.interestsRelationsRepository.findMany({
             where: {
                 relatedInterestSlug: slug,
             },

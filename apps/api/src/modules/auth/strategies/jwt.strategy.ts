@@ -26,7 +26,7 @@ export class JwtStrategy {
     async createSession(user: UserEntity): Promise<JwtSession> {
         // const initialRefreshTokenHash = crypto.randomBytes(8).toString();
 
-        // const session = await this.sessionRepository.create({
+        // const session = await this.sessionRepository.insert({
         //     userId: user.id,
         //     refreshTokenHash: initialRefreshTokenHash,
         // });

@@ -77,14 +77,14 @@ export class AuthService {
     async createAccount(oauthUser: GoogleOAuthUserInfo) {
         try {
             return this.dataSource.transaction(async entityManager => {
-                const user = await this.userRepository.create(oauthUser, entityManager);
-                user.profile = await this.profileRepository.create({
+                const user = await this.userRepository.createAndSave(oauthUser, entityManager);
+                user.profile = await this.profileRepository.createAndSave({
                     userId: user.id,
                     picture: oauthUser.picture,
                     fullName: oauthUser.name,
                     completed: "false",
                 }, entityManager);
-                user.subscription = await this.subscriptionRepository.create({
+                user.subscription = await this.subscriptionRepository.createAndSave({
                     userId: user.id,
                 }, entityManager);
 

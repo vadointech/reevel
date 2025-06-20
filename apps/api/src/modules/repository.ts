@@ -45,21 +45,20 @@ export class Repository<Entity extends ObjectLiteral> {
         return repository.createQueryBuilder(alias);
     }
 
-    // Change to CREATE
-    insert(
+    create(
         values: DeepPartial<Entity>,
     ): Entity {
         const repository = this.currentRepository();
         return repository.create(values);
     }
-    insertMany(
+    createMany(
         values: DeepPartial<Entity>[],
     ): Entity[] {
         const repository = this.currentRepository();
         return repository.create(values);
     }
 
-    async create(
+    async createAndSave(
         values: DeepPartial<Entity>,
         entityManager?: EntityManager,
     ): Promise<Entity> {
@@ -68,7 +67,7 @@ export class Repository<Entity extends ObjectLiteral> {
             repository.create(values),
         );
     }
-    async createMany(
+    async createAndSaveMany(
         values: DeepPartial<Entity>[],
         entityManager?: EntityManager,
     ): Promise<Entity[]> {
@@ -82,6 +81,13 @@ export class Repository<Entity extends ObjectLiteral> {
         values: DeepPartial<Entity>,
         entityManager?: EntityManager,
     ): Promise<Entity> {
+        const repository = this.currentRepository(entityManager);
+        return repository.save(values);
+    }
+    async saveMany(
+        values: DeepPartial<Entity>[],
+        entityManager?: EntityManager,
+    ): Promise<Entity[]> {
         const repository = this.currentRepository(entityManager);
         return repository.save(values);
     }

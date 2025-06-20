@@ -50,7 +50,7 @@ export class ProfileService {
                 if (dbProfile.location) {
                     await this.profileLocationsRepository.delete({ id: dbProfile.location.id }, entityManager);
                 }
-                dbProfile.location = this.profileLocationsRepository.insert({
+                dbProfile.location = this.profileLocationsRepository.create({
                     center: {
                         type: "Point",
                         coordinates: locationCenter,
@@ -72,7 +72,7 @@ export class ProfileService {
                 await this.profileInterestsRepository.delete({ profileId: dbProfile.id }, entityManager);
 
                 dbProfile.interests = interests.map(interestId =>
-                    this.profileInterestsRepository.insert({ interestId }),
+                    this.profileInterestsRepository.create({ interestId }),
                 );
             }
 

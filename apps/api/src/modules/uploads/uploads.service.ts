@@ -47,7 +47,7 @@ export class UploadsService {
             return null;
         });
 
-        return this.uploadsRepository.createMany(
+        return this.uploadsRepository.createAndSaveMany(
             uploads.map(item => {
                 return {
                     publicId: item?.public_id,
