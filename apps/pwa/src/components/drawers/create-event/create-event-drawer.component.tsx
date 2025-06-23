@@ -1,6 +1,6 @@
 "use client";
 
-import { PropsWithChildren, useCallback, useRef } from "react";
+import { ComponentProps, ReactNode, useCallback, useRef } from "react";
 
 import {
     BottomSheetBody,
@@ -17,7 +17,9 @@ import { IBottomSheetRootController } from "@/components/shared/bottom-sheet/typ
 import styles from "./styles.module.scss";
 
 export namespace CreateEventDrawer {
-    export type Props = PropsWithChildren;
+    export type Props = ComponentProps<"div"> & {
+        children: ReactNode;
+    };
 }
 
 export const CreateEventDrawer = ({ children }: CreateEventDrawer.Props) => {
@@ -34,7 +36,7 @@ export const CreateEventDrawer = ({ children }: CreateEventDrawer.Props) => {
             fadeThreshold={0}
         >
             <BottomSheetTrigger>
-                { children }
+                {children}
             </BottomSheetTrigger>
             <BottomSheetPortal>
                 <BottomSheetBody>
