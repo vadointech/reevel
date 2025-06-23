@@ -15,6 +15,9 @@ export class UploadsFoldersRegister implements FilesRegister {
     [SupportedFileCollections.EVENT_POSTER](userId: string): string {
         return userId + `/${SupportedFileCollections.EVENT_POSTER}`;
     }
+    [SupportedFileCollections.PROFILE_PICTURE](userId: string): string {
+        return userId + `/${SupportedFileCollections.PROFILE_PICTURE}`;
+    }
     [SupportedFileCollections.UNKNOWN](userId: string): string {
         return userId + `/${SupportedFileCollections.UNKNOWN}`;
     }

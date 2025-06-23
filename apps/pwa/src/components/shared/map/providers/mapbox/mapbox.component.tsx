@@ -11,14 +11,16 @@ import "mapbox-gl/dist/mapbox-gl.css";
 
 export namespace MapboxComponent {
     export type Props = {
-        store: IMapStore
-        provider: RefObject<IMapProvider>
+        mapStyle: string;
+        store: IMapStore;
+        provider: RefObject<IMapProvider>;
         controller: RefObject<IMapRootController>;
         onMapLoad?: () => void;
     };
 }
 
 export const MapboxComponent = memo(observer(forwardRef<MapRef, MapboxComponent.Props>(({
+    mapStyle,
     store,
     provider,
     controller,
@@ -52,7 +54,7 @@ export const MapboxComponent = memo(observer(forwardRef<MapRef, MapboxComponent.
             {...viewState}
             reuseMaps // This is a key prop for performance
             ref={ref}
-            mapStyle={provider.current.internalConfig.mapStyle.styleLight}
+            mapStyle={mapStyle}
             onMove={handleMapMove}
             onMoveEnd={handleMapMoveEnd}
             onLoad={handleMapLoad}

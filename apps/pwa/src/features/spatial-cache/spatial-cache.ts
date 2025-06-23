@@ -1,66 +1,17 @@
-import { MapProviderGL } from "@/components/shared/map/types";
 import { LngLatBounds } from "mapbox-gl";
+
+import { SpatialCacheConfig } from "./spatial-cache.config";
+
+import { MapProviderGL } from "@/components/shared/map/types";
+import { ISpatialCache, TCachedRegion, TCoverageInfo, TSpatialCacheExtort, TSpatialCacheZoomBreakpointsConfig } from "./types";
 
 type SpatialGrid = Record<string, Set<string>>;
 
-export interface CachedRegion {
-    id: string;
-    bounds: MapProviderGL.LngLatBounds;
-    density: number;
-    pointsCount: number;
-    minValidZoom: number;
-    maxValidZoom: number;
-    zoom: number;
-    cachedGridSize: number;
-    placeType?: string;
-    timestamp: number;
-    gridKeys: string[];
-    accessCount?: number; // For LRU tracking
-    lastAccessed?: number;
-}
-
-interface Config {
-    MAX_CACHED_REGIONS: number;
-    CACHE_EXPIRY: number;
-    COVERAGE_THRESHOLD: number;
-    MIN_ZOOM: number;
-    GOOGLE_PLACES_API_LIMIT: number;
-}
-
-type ZoomBreakpointsConfig = {
-    minZoomThreshold: number;
-    zoomOffset: number;
-    gridSize: number;
-    density: {
-        default: number;
-        placeSelected: number;
-    };
-};
-
-type CoverageInfo = {
-    ratio: number; // The overall coverage ratio (0.0 to 1.0)
-    currentBestCoveredRegionId?: string; // ID of the single CachedRegion providing the most coverage that meets density
-    bestSingleRegionIntersectionArea?: number; // The intersection area of that best single region with the queryBounds
-};
-
-export type TSpatialCacheExtort = {
-    regions: any[];
-    timestamp: number
-};
-
-const CONFIG: Config = {
-    MAX_CACHED_REGIONS: 500,
-    CACHE_EXPIRY: 1000 * 60 * 15, // 15 minutes
-    COVERAGE_THRESHOLD: 0.7,
-    MIN_ZOOM: 10,
-    GOOGLE_PLACES_API_LIMIT: 10,
-};
-
-export class SpatialCache {
-    regions = new Map<string, CachedRegion>();
+export class SpatialCache implements ISpatialCache {
+    private regions = new Map<string, TCachedRegion>();
     private spatialGrid: SpatialGrid = {};
 
-    private static readonly ZOOM_BREAKPOINTS_CONFIG: ReadonlyArray<ZoomBreakpointsConfig> = Object.freeze(
+    private static readonly ZOOM_BREAKPOINTS_CONFIG: ReadonlyArray<TSpatialCacheZoomBreakpointsConfig> = Object.freeze(
         [
             { minZoomThreshold: 17, gridSize: 0.001, zoomOffset: 1, density: { placeSelected: 400, default: 2000 } },
             { minZoomThreshold: 15, gridSize: 0.002, zoomOffset: 1.5, density: { placeSelected: 100, default: 500 } },
@@ -76,13 +27,13 @@ export class SpatialCache {
         SpatialCache.ZOOM_BREAKPOINTS_CONFIG.map(tier => tier.gridSize),
     );
 
-    private static getBreakpointConfigForZoom(zoom: number): ZoomBreakpointsConfig {
+    private static getBreakpointConfigForZoom(zoom: number): TSpatialCacheZoomBreakpointsConfig {
         for (const tier of SpatialCache.ZOOM_BREAKPOINTS_CONFIG) {
             if (zoom >= tier.minZoomThreshold) {
                 return tier;
             }
         }
-        // console.warn(`SpatialCache: No specific zoom tier for zoom ${zoom}. Using lowest tier as fallback.`);
+        // console.warn(`SpatialCache: No specific zoom tier for zoom ${zoom}. Using the lowest tier as fallback.`);
         return SpatialCache.ZOOM_BREAKPOINTS_CONFIG[SpatialCache.ZOOM_BREAKPOINTS_CONFIG.length - 1];
     }
 
@@ -90,7 +41,7 @@ export class SpatialCache {
         return SpatialCache.getBreakpointConfigForZoom(zoom).gridSize;
     }
 
-    private getZoomRangeForLevel(zoom: number): Pick<CachedRegion, "minValidZoom" | "maxValidZoom"> {
+    private getZoomRangeForLevel(zoom: number): Pick<TCachedRegion, "minValidZoom" | "maxValidZoom"> {
         const { zoomOffset } = SpatialCache.getBreakpointConfigForZoom(zoom);
         return {
             minValidZoom: Math.round(zoom - zoomOffset),
@@ -137,7 +88,7 @@ export class SpatialCache {
         if(area > 0) {
             computedDensity = pointsCount / area; // Density = items per "square degree"
         } else if(pointsCount > 0) {
-            // If the area is zero or negligible (e.g., a point query or extremely small bounds)
+            // If the area is zero or negligible (e.g., a point query or tiny bounds)
             // but items exist, the density is very high.
             computedDensity = 1_000_000; // A large number representing high density
         }
@@ -165,13 +116,13 @@ export class SpatialCache {
         return `region_${zoomLevel}_${quantizedLat.toFixed(4)}_${quantizedLng.toFixed(4)}_${typeString}`;
     }
 
-    addRegion(region: Omit<CachedRegion, "gridKeys" | "cachedGridSize" | "density" | "accessCount" | "lastAccessed" | "minValidZoom" | "maxValidZoom">): void {
+    addRegion(region: Omit<TCachedRegion, "gridKeys" | "cachedGridSize" | "density" | "accessCount" | "lastAccessed" | "minValidZoom" | "maxValidZoom">): void {
         // Clean up expired regions first
         this.cleanupExpiredRegions();
 
         // Evict old regions if the cache is full
-        if (this.regions.size >= CONFIG.MAX_CACHED_REGIONS) {
-            this.evictLeastRecentlyUsed(Math.floor(CONFIG.MAX_CACHED_REGIONS * 0.1));
+        if (this.regions.size >= SpatialCacheConfig.MAX_CACHED_REGIONS) {
+            this.evictLeastRecentlyUsed(Math.floor(SpatialCacheConfig.MAX_CACHED_REGIONS * 0.1));
         }
 
         const gridSize = this.getGridSizeForZoom(region.zoom);
@@ -181,7 +132,7 @@ export class SpatialCache {
         // Ensure minimum zoom range for better reusability
         const { minValidZoom, maxValidZoom } = this.getZoomRangeForLevel(region.zoom);
 
-        const enriched: CachedRegion = {
+        const enriched: TCachedRegion = {
             ...region,
             gridKeys,
             density,
@@ -227,7 +178,7 @@ export class SpatialCache {
         const expiredIds: string[] = [];
 
         for (const [id, region] of this.regions) {
-            if (now - region.timestamp > CONFIG.CACHE_EXPIRY) {
+            if (now - region.timestamp > SpatialCacheConfig.CACHE_EXPIRY) {
                 expiredIds.push(id);
             }
         }
@@ -262,7 +213,7 @@ export class SpatialCache {
         // console.log(`Evicted ${sorted.length} least recently used regions`);
     }
 
-    findCoveringRegions(bounds: MapProviderGL.LngLatBounds, zoom: number, placeType?: string): CachedRegion[] {
+    findCoveringRegions(bounds: MapProviderGL.LngLatBounds, _zoom: number, placeType?: string): TCachedRegion[] {
         const regionIds = new Set<string>();
 
         for (const gridSize of SpatialCache.UNIQUE_GRID_SIZES) {
@@ -276,14 +227,14 @@ export class SpatialCache {
         }
 
         const now = Date.now();
-        const result: CachedRegion[] = [];
+        const result: TCachedRegion[] = [];
 
         for (const id of regionIds) {
             const region = this.regions.get(id);
             if (!region) continue;
 
             // Check expiry
-            if (now - region.timestamp > CONFIG.CACHE_EXPIRY) {
+            if (now - region.timestamp > SpatialCacheConfig.CACHE_EXPIRY) {
                 this.removeRegion(id);
                 continue;
             }
@@ -318,8 +269,8 @@ export class SpatialCache {
           aNE.lat < bSW.lat || aSW.lat > bNE.lat);
     }
     
-    public getCoverageInfo(bounds: MapProviderGL.LngLatBounds, zoom: number, placeType?: string): CoverageInfo {
-        if (zoom <= CONFIG.MIN_ZOOM) {
+    public getCoverageInfo(bounds: MapProviderGL.LngLatBounds, zoom: number, placeType?: string): TCoverageInfo {
+        if (zoom <= SpatialCacheConfig.MIN_ZOOM) {
             // console.log(`ℹ️ Map zoom ${zoom.toFixed(1)} is at or below MIN_ZOOM (${CONFIG.MIN_ZOOM}). Skipping API request and precache.`);
             return {
                 ratio: 1,
@@ -330,7 +281,7 @@ export class SpatialCache {
 
         const coveringRegions = this.findCoveringRegions(bounds, zoom, placeType);
 
-        const initialResult: CoverageInfo = {
+        const initialResult: TCoverageInfo = {
             ratio: 0,
             currentBestCoveredRegionId: undefined,
             bestSingleRegionIntersectionArea: 0,
@@ -385,51 +336,6 @@ export class SpatialCache {
         };
     }
 
-    public getBestSuitedCachedRegionId(
-        queryBounds: MapProviderGL.LngLatBounds,
-        queryZoom: number, // This should be the quantizedZoom
-        minCoverageThresholdForSingleRegion: number, // e.g., 0.25 or 0.5 from your fetchSpatialData logic
-        queryPlaceType?: string,
-    ): string | undefined {
-        // findCoveringRegions already filters by geographical overlap, zoom validity, placeType, expiry
-        // and importantly, it updates accessCount/lastAccessed for the regions it returns.
-        const candidateRegions = this.findCoveringRegions(queryBounds, queryZoom, queryPlaceType);
-
-        if (candidateRegions.length === 0) {
-            return undefined;
-        }
-
-        const requiredDensityForView = this.getRequiredDensityForZoom(queryZoom, queryPlaceType);
-        const queryBoundsArea = this.calculateBoundsArea(queryBounds);
-
-        if (queryBoundsArea === 0) { // Cannot determine coverage for a zero-area query
-            return undefined;
-        }
-
-        let bestRegionId: string | undefined = undefined;
-        let maxIntersectionAreaForBestCandidate = 0;
-
-        for (const region of candidateRegions) {
-            // Check if this specific cached region meets the density requirement for the current view
-            if (region.density >= requiredDensityForView) {
-                const intersectionArea = this.calculateIntersectionArea(queryBounds, region.bounds);
-                const coverageOfQueryByThisRegion = intersectionArea / queryBoundsArea;
-
-                // Check if this single region meets the minimum coverage threshold
-                if (coverageOfQueryByThisRegion >= minCoverageThresholdForSingleRegion) {
-                    // Among all regions that meet the threshold, pick the one that covers the largest area
-                    // (or you could use other heuristics like highest density, most recent, etc.)
-                    if (intersectionArea > maxIntersectionAreaForBestCandidate) {
-                        maxIntersectionAreaForBestCandidate = intersectionArea;
-                        bestRegionId = region.id;
-                    }
-                }
-            }
-        }
-        // If a bestRegionId is found, its access stats were already updated by findCoveringRegions.
-        return bestRegionId;
-    }
-
     private calculateBoundsArea(bounds: MapProviderGL.LngLatBounds): number {
         const sw = bounds.getSouthWest();
         const ne = bounds.getNorthEast();
@@ -446,7 +352,6 @@ export class SpatialCache {
         return (right - left) * (top - bottom);
     }
 
-    // Check if the cache covers a specific point
     isPointCovered(lat: number, lng: number, zoom: number, placeType?: string): boolean {
         const gridKey = this.getGridKey(lat, lng, zoom);
         const regionIds = this.spatialGrid[gridKey];
@@ -461,7 +366,7 @@ export class SpatialCache {
             if (!region) continue;
 
             // Check expiry
-            if (now - region.timestamp > CONFIG.CACHE_EXPIRY) continue;
+            if (now - region.timestamp > SpatialCacheConfig.CACHE_EXPIRY) continue;
 
             // Check zoom validity
             if (zoom < region.minValidZoom || zoom > region.maxValidZoom) continue;
@@ -483,7 +388,6 @@ export class SpatialCache {
         return false;
     }
 
-    // Get cache statistics for debugging and monitoring
     getStats() {
         const now = Date.now();
         const regions = [...this.regions.values()];
@@ -494,8 +398,8 @@ export class SpatialCache {
             oldestTimestamp: regions.length > 0 ? Math.min(...regions.map(r => r.timestamp)) : 0,
             newestTimestamp: regions.length > 0 ? Math.max(...regions.map(r => r.timestamp)) : 0,
             averageAge: regions.length > 0 ? regions.reduce((sum, r) => sum + (now - r.timestamp), 0) / regions.length : 0,
-            expiredRegions: regions.filter(r => now - r.timestamp > CONFIG.CACHE_EXPIRY).length,
-            regionsWithMaxPlaces: regions.filter(r => r.density >= CONFIG.GOOGLE_PLACES_API_LIMIT).length,
+            expiredRegions: regions.filter(r => now - r.timestamp > SpatialCacheConfig.CACHE_EXPIRY).length,
+            regionsWithMaxPlaces: regions.filter(r => r.density >= SpatialCacheConfig.GOOGLE_PLACES_API_LIMIT).length,
             averagePlaceCount: regions.length > 0 ? regions.reduce((sum, r) => sum + r.density, 0) / regions.length : 0,
             totalAccessCount: regions.reduce((sum, r) => sum + (r.accessCount || 0), 0),
             memoryUsage: this.estimateMemoryUsage(),
@@ -514,19 +418,16 @@ export class SpatialCache {
         };
     }
 
-    // Force cleanup of expired regions
     cleanup(): void {
         this.cleanupExpiredRegions();
     }
 
-    // Clear all cached data
     clear(): void {
         this.regions.clear();
         this.spatialGrid = {};
         // console.log("Cleared all cached regions");
     }
 
-    // Export cache data for persistence
     export(): TSpatialCacheExtort {
         return {
             regions: [...this.regions.values()].map(region => ({
@@ -541,17 +442,16 @@ export class SpatialCache {
         };
     }
 
-    // Import cache data from persistence
     import(data: TSpatialCacheExtort): void {
         const now = Date.now();
-        const maxAge = CONFIG.CACHE_EXPIRY;
+        const maxAge = SpatialCacheConfig.CACHE_EXPIRY;
 
         for (const regionData of data.regions) {
             // Skip if too old
             if (now - regionData.timestamp > maxAge) continue;
 
             try {
-                // Reconstruct bounds object (this depends on your MapProviderGL implementation)
+                // Reconstruct a bound object (this depends on your MapProviderGL implementation)
                 const bounds = new LngLatBounds(
                     regionData.bounds.sw,
                     regionData.bounds.ne,
@@ -561,8 +461,8 @@ export class SpatialCache {
                     ...regionData,
                     bounds,
                 });
-            } catch (error) {
-                console.warn("Failed to import cached region:", error);
+            } catch {
+                // console.warn("Failed to import cached region:", error);
             }
         }
     }

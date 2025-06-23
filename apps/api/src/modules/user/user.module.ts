@@ -1,9 +1,10 @@
 import { Module } from "@nestjs/common";
 import { UserController } from "./user.controller";
-import { UserRepository } from "./user.repository";
+import { UserRepository } from "./repositories/user.repository";
 import { UserService } from "./user.service";
 import { ProfileInterestsRepository } from "@/modules/profile/repositories/profile-interests.repository";
 import { UploadsRepository } from "@/modules/uploads/repositories/uploads.repository";
+import { ProfileRepository } from "@/modules/profile/repositories/profile.repository";
 
 @Module({
     controllers: [UserController],
@@ -11,6 +12,7 @@ import { UploadsRepository } from "@/modules/uploads/repositories/uploads.reposi
         UserRepository,
         UserService,
 
+        ProfileRepository,
         ProfileInterestsRepository,
         UploadsRepository,
     ],

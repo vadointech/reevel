@@ -5,9 +5,8 @@ import { observer } from "mobx-react-lite";
 import { useInterestsPickerContext } from "@/features/interests/picker";
 import { useInterestsPicker } from "@/features/interests/picker/hooks";
 
-import { Checkbox, OptionsList, OptionsListItem, Section } from "@/components/shared/_redesign";
-
-import styles from "../styles.module.scss";
+import { Section } from "@/components/sections";
+import { Checkbox, MotionOptionsList, MotionOptionsListItem } from "@/components/ui";
 
 export namespace SearchInterestsSelected {
     export type Props = never;
@@ -20,14 +19,12 @@ export const SearchInterestsSelected = observer(() => {
     if(store.selectedInterests.length === 0) return;
 
     return (
-        <Section
-            title={"Selected interests"}
-            className={styles.search__gap}
-        >
-            <OptionsList>
+        <Section title={"Selected interests"}>
+            <MotionOptionsList>
                 {
-                    store.selectedInterests.map((interest) => (
-                        <OptionsListItem
+                    store.selectedInterests.map((interest, index) => (
+                        <MotionOptionsListItem
+                            index={index}
                             key={interest.slug}
                             label={interest.title_en}
                             contentLeft={interest.icon}
@@ -38,7 +35,7 @@ export const SearchInterestsSelected = observer(() => {
                         />
                     ))
                 }
-            </OptionsList>
+            </MotionOptionsList>
         </Section>
     );
 });

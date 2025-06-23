@@ -6,7 +6,7 @@ export namespace BasePointMarker {
     export type Props = BasePoint;
 }
 
-export const BasePointMarker = (point: BasePointMarker.Props) => {
+export const BasePointMarker = () => {
     return (
         <>
             <span

@@ -1,4 +1,3 @@
-
 export function initStore<T extends object>(store: T, init?: Partial<T>): void {
     if (!init) return;
 

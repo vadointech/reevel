@@ -1,10 +1,16 @@
 export type MapboxRequestParams = {
-    permanent: boolean;
-    country: string;
-    language: string;
-    limit: number;
-    types: string;
-    worldview: string;
+    access_token: string;
+
+    permanent?: boolean;
+    autocomplete?: boolean;
+    bbox?: string;
+    country?: string;
+    format?: string;
+    language?: string;
+    limit?: number;
+    proximity?: string;
+    types?: string;
+    worldview?: string;
 };
 
 export type MapboxFeaturesResponseFeature = {
@@ -15,30 +21,19 @@ export type MapboxFeaturesResponseFeature = {
         coordinates: [number, number];
     }
     properties: {
-        context: {
-            address: {
-
-            }
-            country: {
-
-            }
-            place: {
-
-            }
-            postcode: {
-
-            }
-            region: {
-
-            }
-            street: {
-
-            }
-        }
         coordinates: {
             accuracy: string;
             longitude: number;
             latitude: number;
+        }
+        bbox: [number, number, number, number];
+        context: {
+            address: object
+            country: object
+            place: object
+            postcode: object
+            region: object
+            street: object
         }
         mapbox_id: string;
         feature_type: string;
@@ -53,4 +48,8 @@ export type MapboxFeaturesResponse = {
     attribution?: string;
     type?: "FeatureCollection"
     features: MapboxFeaturesResponseFeature[];
+};
+
+export type MapboxBatchFeaturesResponse = {
+    batch: MapboxFeaturesResponse[];
 };

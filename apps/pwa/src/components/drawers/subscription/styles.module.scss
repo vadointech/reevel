@@ -1,0 +1,23 @@
+@use "@/theme/mixins";
+@use "@/theme/colors";
+@use "@/theme/typography";
+
+.content {
+    height: 100%;
+}
+
+.drawer {
+    &__title {
+        @include typography.font("lg", 500);
+        text-align: center;
+    }
+}
+.buttons {
+    margin-top: mixins.rem(24);
+}
+
+.test {
+    svg path {
+        stroke: colors.$secondary !important;
+    }
+}

@@ -1,6 +1,6 @@
-import { QueryBuilder } from "@/types/common";
 import { getInterestsByTitle, GetInterestsByTitle } from "@/api/interests";
 import { FetchQueryOptions } from "@tanstack/react-query";
+import { QueryBuilderQuery } from "@/lib/react-query";
 
 export namespace SearchInterestsQueryBuilder {
     export type TInput = {
@@ -8,7 +8,7 @@ export namespace SearchInterestsQueryBuilder {
     };
 }
 
-export const SearchInterestsQueryBuilder: QueryBuilder<SearchInterestsQueryBuilder.TInput, GetInterestsByTitle.TOutput> = ({
+export const SearchInterestsQueryBuilder: QueryBuilderQuery<SearchInterestsQueryBuilder.TInput, GetInterestsByTitle.TOutput> = ({
     query,
 }: SearchInterestsQueryBuilder.TInput): FetchQueryOptions<GetInterestsByTitle.TOutput> => {
     return {
@@ -21,6 +21,6 @@ export const SearchInterestsQueryBuilder: QueryBuilder<SearchInterestsQueryBuild
     };
 };
 
-SearchInterestsQueryBuilder.queryKey = (params) => {
+SearchInterestsQueryBuilder.queryKey = (params = []) => {
     return [...GetInterestsByTitle.queryKey, ...params];
 };

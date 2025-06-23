@@ -8,15 +8,8 @@ export namespace GetInitialInterests {
     export const queryKey = ["interests/initials"];
 }
 
-export const getInitialInterests = fetcherClient<GetInitialInterests.TInput, GetInitialInterests.TOutput>({
+export const getInitialInterests = fetcherClient.fetch<GetInitialInterests.TInput, GetInitialInterests.TOutput>({
     fetcherFunc: (fetcher, input) => {
-        return fetcher.get("/interests/initials", {
-            ...input,
-            cache: "force-cache",
-            next: {
-                tags: GetInitialInterests.queryKey,
-                revalidate: false,
-            },
-        });
+        return fetcher.get("/interests/initials", input);
     },
 });

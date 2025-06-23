@@ -11,7 +11,7 @@ export namespace UploadFile {
     export const queryKey = ["uploads/file"];
 }
 
-export const uploadFile = fetcherClient<UploadFile.TInput, UploadFile.TOutput>({
+export const uploadFile = fetcherClient.fetch<UploadFile.TInput, UploadFile.TOutput>({
     fetcherFunc: (fetcher, input) => {
         const formData = new FormData();
 

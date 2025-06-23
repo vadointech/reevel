@@ -51,7 +51,7 @@ export class EventService {
             }
 
             return this.dataSource.transaction(async entityManager => {
-                const event = await this.eventRepository.create({
+                const event = await this.eventRepository.createAndSave({
                     ...newEvent,
                     location: {
                         type: "Point",
@@ -108,7 +108,7 @@ export class EventService {
                 } : event.location,
             });
 
-            await this.eventRepository.create(event);
+            await this.eventRepository.createAndSave(event);
 
             event.interests = await this.dataSource.transaction(async entityManager => {
                 if(!interests) return event.interests;

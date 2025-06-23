@@ -1,5 +1,5 @@
 import {
-    LngLatBounds as MapboxLngLatBounds,
+    LngLatBounds as MapboxLngLatBounds, LngLatBoundsLike as MapboxLngLatBoundsLike,
 } from "mapbox-gl";
 
 export namespace MapProviderGL {
@@ -17,5 +17,6 @@ export namespace MapProviderGL {
 
     export type LngLatLike = [number, number] | LngLat | { lng: number; lat: number };
 
-    export interface LngLatBounds extends MapboxLngLatBounds {}
+    export type LngLatBounds = MapboxLngLatBounds;
+    export type LngLatBoundsLike = MapboxLngLatBoundsLike;
 }

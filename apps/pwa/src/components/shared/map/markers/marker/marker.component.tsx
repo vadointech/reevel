@@ -25,7 +25,7 @@ export const MapMarker = ({
 
     const getContent = () => {
         if(isIconPoint(point)) return <IconPointMarker {...point} />;
-        return <BasePointMarker {...point} />;
+        return <BasePointMarker />;
     };
 
     return (

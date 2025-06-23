@@ -1,13 +1,17 @@
 import { Controller } from "react-hook-form";
+
+import { useCreateEventFormDatePicker } from "@/features/event/create";
+
 import {
     CreateEventFormBottomSheet,
     CreateEventFormBottomSheetBody,
     CreateEventFormBottomSheetContent,
     CreateEventFormBottomSheetTrigger,
 } from "./bottom-sheet.component";
-import { Calendar, OptionsListItem } from "@/components/shared/_redesign";
+
+import { OptionsListItem } from "@/components/ui";
 import { IconCalendar } from "@/components/icons";
-import { useCreateEventFormDatePicker } from "@/features/event/create";
+import { Calendar } from "@/components/shared/calendar";
 
 export namespace CreateEventFormDatePicker {
     export type Props = never;

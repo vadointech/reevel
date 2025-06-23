@@ -9,7 +9,9 @@ export interface IFetcherRequestConfig<Input = any, Params extends Record<string
     body: Input | undefined;
     params: Params | undefined;
     credentials: RequestCredentials | undefined;
-    next: NextFetchRequestConfig | undefined;
-    cache: RequestCache | undefined
+    cache: RequestCache | undefined;
+    userAwareCacheKey: string | undefined; // cookie token for user-aware caching
+    cacheTags: string[] | undefined;
+    cacheRevalidate: number | undefined;
     signal: AbortSignal | null | undefined
 }

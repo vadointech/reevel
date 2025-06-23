@@ -1,31 +1,26 @@
-import { ReactScan } from "@/lib/react-scan";
-import { type Metadata, Viewport } from "next";
 import { PropsWithChildren } from "react";
-import { type ParamsWithLocale } from "@/types/common";
-import { getMessages, setRequestLocale } from "next-intl/server";
-import { fonts } from "@/fonts.config";
+import { type Metadata, Viewport } from "next";
 import { NextIntlClientProvider } from "next-intl";
-import { ServiceWorkerProvider } from "@/service-worker/client/provider";
-import { getSession } from "@/api/auth/get-session";
+import { getMessages, setRequestLocale } from "next-intl/server";
+
+// import { locales } from "@/i18n/locales";
+import { fonts } from "@/fonts.config";
+
+import { ServiceWorkerProvider } from "@/service-worker/client";
 import { ReactQueryClientProvider } from "@/providers/react-query-provider";
 import { StandaloneProvider } from "@/providers/standalone.provider";
-import { SessionStoreProvider } from "@/features/session";
-import { locales } from "@/i18n/locales";
-import { headers } from "next/headers";
+import { QuerySelectorProvider } from "@/providers/query-selector.provider";
+
+import { type ParamsWithLocale } from "@/types/common";
 
 import "../globals.scss";
-import { QuerySelectorProvider } from "@/providers/query-selector.provider";
-import { ThemeProvider } from "@/providers/theme.provider";
-import { ThemeColorManager } from "@/providers/theme-color-manager";
-
-
 
 export const metadata: Metadata = {
     title: "Reevel",
     description: "Easily bring people together. Reevel turns simple moments into lasting memories.",
     appleWebApp: {
         capable: true,
-        statusBarStyle: "black-translucent", // або ""
+        statusBarStyle: "black-translucent", // or ""
         title: "Reevel",
     },
 };
@@ -37,9 +32,9 @@ export const viewport: Viewport = {
     ],
 };
 
-export function generateStaticParams() {
-    return locales.map((locale) => ({ locale }));
-}
+// export function generateStaticParams() {
+//     return locales.map((locale) => ({ locale }));
+// }
 
 export default async function RootLayout({ children, params }: PropsWithChildren<ParamsWithLocale>) {
     const { locale } = await params;
@@ -47,15 +42,8 @@ export default async function RootLayout({ children, params }: PropsWithChildren
     setRequestLocale(locale);
     const messages = await getMessages();
 
-    const { data } = await getSession({
-        nextHeaders: await headers(),
-    });
-
     return (
         <html lang={locale} suppressHydrationWarning>
-            <head>
-                <ReactScan />
-            </head>
             <body className={fonts} >
                 <ServiceWorkerProvider register={process.env.SERVICE_WORKER === "true"}>
                     <NextIntlClientProvider
@@ -63,28 +51,14 @@ export default async function RootLayout({ children, params }: PropsWithChildren
                         messages={messages}
                     >
                         <ReactQueryClientProvider>
-                            <SessionStoreProvider
-                                init={[{
-                                    user: data,
-                                }]}
-                            >
-                                <ThemeProvider
-                                    attribute="class"
-                                    defaultTheme="system"
-                                    enableSystem
-                                    disableTransitionOnChange
-                                >
-                                    <ThemeColorManager />
-                                    <StandaloneProvider>
-                                        <QuerySelectorProvider>
-                                            <main id={"main"}>
-                                                {children}
-                                            </main>
-                                            <div id={"modal-root"} />
-                                        </QuerySelectorProvider>
-                                    </StandaloneProvider>
-                                </ThemeProvider>
-                            </SessionStoreProvider>
+                            <StandaloneProvider>
+                                <QuerySelectorProvider>
+                                    <main id={"main"}>
+                                        {children}
+                                    </main>
+                                    <div id={"modal-root"} />
+                                </QuerySelectorProvider>
+                            </StandaloneProvider>
                         </ReactQueryClientProvider>
                     </NextIntlClientProvider>
                 </ServiceWorkerProvider>

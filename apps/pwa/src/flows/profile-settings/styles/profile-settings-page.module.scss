@@ -1,0 +1,9 @@
+@use "@/theme/mixins";
+@use "@/theme/colors";
+@use "@/theme/typography";
+
+.page {
+    &__header {
+        margin-bottom: 2rem;
+    }
+}

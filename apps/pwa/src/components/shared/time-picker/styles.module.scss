@@ -1,5 +1,5 @@
-@use "@/theme/fonts";
 @use "@/theme/colors";
+@use "@/theme/typography";
 
 .embla {
     position: relative;
@@ -30,6 +30,17 @@
             rgba(247, 247, 247, 0.97) 70%,
             rgba(247, 247, 247, 1) 100%
         );
+
+        @media (prefers-color-scheme: dark)  {
+            background: linear-gradient(
+                to top,
+                rgba(0, 0, 0, 0) 0%,
+                rgba(0, 0, 0, 0.85) 25%,
+                rgba(0, 0, 0, 0.93) 45%,
+                rgba(0, 0, 0, 0.97) 70%,
+                rgba(0, 0, 0, 1) 100%
+            );
+        }
     }
 
     &:after {
@@ -43,11 +54,18 @@
             rgba(247, 247, 247, 0.97) 70%,
             rgba(247, 247, 247, 1) 100%
         );
+
+        @media (prefers-color-scheme: dark)  {
+            background: linear-gradient(
+                to bottom,
+                rgba(0, 0, 0, 0) 0%,
+                rgba(0, 0, 0, 0.85) 25%,
+                rgba(0, 0, 0, 0.93) 45%,
+                rgba(0, 0, 0, 0.97) 70%,
+                rgba(0, 0, 0, 1) 100%
+            );
+        }
     }
-
-
-
-
 }
 
 .picker {
@@ -90,7 +108,7 @@
     }
 
     &__slide {
-        @include fonts.font-creata('2xl',600);
+        @include typography.font("3xl", 700);
         width: 100%;
         height: 100%;
         text-align: center;
@@ -102,7 +120,7 @@
     }
 
     &__label {
-        @include fonts.font-creata('sm');
+        @include typography.font('sm');
         color: colors.$secondary;
         pointer-events: none;
     }

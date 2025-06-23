@@ -1,0 +1,19 @@
+@use "@/theme/colors";
+@use "@/theme/mixins";
+@use "@/theme/spacing";
+@use "@/theme/typography";
+
+.block {
+    text-align: center;
+    &__title {
+        margin-bottom: spacing.spacing("md");
+
+        @include typography.font("3xl", 700);
+        color: colors.$primary;
+    }
+
+    &__subtitle {
+        @include typography.font("sm");
+        color: colors.$secondary;
+    }
+}

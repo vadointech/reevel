@@ -1,24 +1,19 @@
 import { Injectable } from "@nestjs/common";
-import { InjectRepository } from "@nestjs/typeorm";
 import { InterestsEntity } from "./entities/interests.entity";
-import { In, Repository } from "typeorm";
-import { InterestRelationsEntity } from "@/modules/interests/entities/interest-relations.entity";
-import { ProfileEntity } from "@/modules/profile/entities/profile.entity";
+import { In } from "typeorm";
 import { InterestsRepository } from "./repositories/interests.repository";
 import { InterestsFilterParamsDto } from "@/modules/interests/dto/interests-filter-params.dto";
+import { InterestsRelationsRepository } from "@/modules/interests/repositories/interests-relations.repository";
 
 @Injectable()
 export class InterestsService {
 
     constructor(
         private readonly interestsRepository: InterestsRepository,
-        @InjectRepository(InterestRelationsEntity)
-        private readonly interestsRelationsRepository: Repository<InterestRelationsEntity>,
-        @InjectRepository(ProfileEntity)
-        private readonly profileRepository: Repository<ProfileEntity>,
+        private readonly interestsRelationsRepository: InterestsRelationsRepository,
     ) { }
 
-    async getInitialInterests(userId: string): Promise<InterestsEntity[]> {
+    async getInitialInterests(): Promise<InterestsEntity[]> {
         const slugs = [
             "reading",
             "cooking",
@@ -38,23 +33,11 @@ export class InterestsService {
             "shopping",
         ];
 
-        const userProfile = await this.profileRepository.findOne({
-            where: { userId },
-            relations: {
-                interests: true,
-            },
-        });
-
-        if (userProfile) {
-            const userInterests = userProfile.interests.map(item => item.interestId);
-            slugs.push(...userInterests);
-        }
-
         return this.interestsRepository.findManyBy({ slug: In(slugs) });
     }
 
     async getRelatedInterests(slug: string): Promise<InterestsEntity[]> {
-        const relatedInterests = await this.interestsRelationsRepository.find({
+        const relatedInterests = await this.interestsRelationsRepository.findMany({
             where: {
                 relatedInterestSlug: slug,
             },

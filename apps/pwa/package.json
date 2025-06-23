@@ -2,6 +2,7 @@
   "name": "pwa",
   "version": "0.1.0",
   "private": true,
+  "type": "module",
   "scripts": {
     "build": "next build && pnpm build:sw",
     "dev": "next dev --turbopack",
@@ -21,6 +22,7 @@
     "embla-carousel": "^8.5.2",
     "embla-carousel-react": "^8.5.2",
     "esbuild": "^0.25.0",
+    "fast-deep-equal": "^3.1.3",
     "idb-keyval": "^6.2.2",
     "mapbox-gl": "^3.10.0",
     "mobx": "^6.13.6",
@@ -39,6 +41,7 @@
     "supercluster": "^8.0.1",
     "use-debounce": "^10.0.4",
     "use-supercluster": "^1.2.0",
+    "usehooks-ts": "^3.1.1",
     "vaul": "^1.1.2",
     "zod": "^3.24.4"
   },

@@ -1,21 +1,15 @@
-import { Body, Controller, Get, Patch } from "@nestjs/common";
+import { Body, Controller, Patch, Post, Req, UseInterceptors } from "@nestjs/common";
 import { ProfileService } from "./profile.service";
 import { UpdateProfileDto } from "@/modules/profile/dto/update-profile.dto";
 import { Session } from "@/decorators";
 import { ServerSession } from "@/modules/auth/dto/jwt.dto";
+import { FileUploadInterceptor } from "@/modules/uploads/uploads.interceptor";
 
 @Controller("profile")
 export class ProfileController {
     constructor(
         private readonly profileService: ProfileService,
-    ) { }
-
-    @Get()
-    async getProfile(
-        @Session() session: ServerSession,
-    ) {
-        return this.profileService.getProfile(session.user.id);
-    }
+    ) {}
 
     @Patch()
     async updateProfile(
@@ -23,5 +17,14 @@ export class ProfileController {
         @Session() session: ServerSession,
     ) {
         return this.profileService.updateProfile(session.user.id, body);
+    }
+
+    @Post("picture")
+    @UseInterceptors(FileUploadInterceptor)
+    async uploadPoster(
+        @Req() request: Express.Request,
+        @Session() session: ServerSession,
+    ) {
+        return this.profileService.uploadAvatar(session, request.files as Express.Multer.File[]);
     }
 }

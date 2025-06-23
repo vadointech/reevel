@@ -1,5 +1,3 @@
-import { ReactNode } from "react";
-
 export type WheelParams = {
     loop: boolean;
     itemCount: number;

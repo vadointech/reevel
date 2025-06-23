@@ -10,10 +10,9 @@ import {
     BottomSheetRoot,
     BottomSheetTrigger,
     useBottomSheet,
-} from "@/components/shared/_redesign/bottom-sheet";
-import { Button, Header } from "@/components/shared/_redesign";
+} from "@/components/shared/bottom-sheet";
+import { Button, Container, Header } from "@/components/ui";
 
-import { Container } from "@/components/ui";
 import { UISize } from "@/types/common";
 
 import styles from "../styles/bottom-sheet.module.scss";

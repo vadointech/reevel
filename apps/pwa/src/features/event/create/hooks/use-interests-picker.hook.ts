@@ -4,7 +4,7 @@ import { InterestEntity } from "@/entities/interests";
 import { useRef, useState } from "react";
 import { ControllerRenderProps, useFormContext } from "react-hook-form";
 import { CreateEventFormSchemaValues } from "@/features/event/create";
-import { ObjectUnique } from "@/utils/object-unique";
+import { ObjectUnique } from "@/utils/object";
 
 export function useCreateEventFormInterestsPicker(interestsInit: InterestEntity[]) {
     const { getValues } = useFormContext<CreateEventFormSchemaValues>();

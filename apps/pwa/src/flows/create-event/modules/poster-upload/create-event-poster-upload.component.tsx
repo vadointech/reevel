@@ -1,9 +1,9 @@
 "use client";
 
-import { Button, Input } from "@/components/shared/_redesign";
 import { useImageCropper, useImageUploader } from "@/features/uploader/image/hooks";
 import { useCreateEventPosterUpload } from "@/features/event/create/hooks";
 
+import { Button, Input } from "@/components/ui";
 
 export namespace CreateEventPosterUploadCropper {
     export type Props = {

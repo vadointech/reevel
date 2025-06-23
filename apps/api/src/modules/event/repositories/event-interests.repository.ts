@@ -21,7 +21,7 @@ export class EventInterestsRepository extends Repository<EventInterestsEntity> i
     }
 
     async createInterests(eventId: string, input: string[], entityManager?: EntityManager): Promise<EventInterestsEntity[]> {
-        return this.createMany(
+        return this.createAndSaveMany(
             input.map(interestId => ({ eventId, interestId })),
             entityManager,
         );

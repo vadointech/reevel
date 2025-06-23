@@ -1,6 +1,8 @@
 import { ComponentProps } from "react";
-import { Section } from "@/components/shared/_redesign";
+
 import { Scroll } from "@/components/ui";
+import { Section } from "../section.component";
+
 import { UISize } from "@/types/common";
 
 export namespace ScrollSection {

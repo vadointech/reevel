@@ -1,0 +1,12 @@
+@use "@/theme/mixins";
+@use "@/theme/spacing";
+@use "@/theme/colors";
+
+.text {
+    margin-bottom: mixins.rem(32);
+}
+
+.buttons {
+    z-index: 1;
+    background: colors.$background;
+}

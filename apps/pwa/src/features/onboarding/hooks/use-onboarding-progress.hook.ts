@@ -2,24 +2,19 @@
 
 import { OnboardingStepPath } from "@/features/onboarding";
 import { usePathname, useRouter } from "@/i18n/routing";
-import { useLogout } from "@/features/session";
-import { useMutation } from "@tanstack/react-query";
-import { updateProfile } from "@/api/profile/update-profile";
+import { useLogout } from "@/features/session/hooks";
+import { useProfileUpdate } from "@/features/profile/hooks";
 
 export function useOnboardingProgress() {
 
-    const {
-        handleLogout,
-    } = useLogout();
+    const { handleLogout } = useLogout();
 
     const router = useRouter();
     const pathname = usePathname();
 
     const step = OnboardingStepPath.indexOf(pathname as OnboardingStepPath);
 
-    const { mutateAsync } = useMutation({
-        mutationFn: updateProfile,
-    });
+    const { handleUpdateProfile } = useProfileUpdate();
 
     function getOnboardingProgress(step: OnboardingStepPath | number) {
         const stepIndex = function(){
@@ -31,21 +26,21 @@ export function useOnboardingProgress() {
         }();
 
         return {
-            stepIndex,
-            onboardingStatus,
+            index: stepIndex,
+            status: onboardingStatus,
         };
     }
 
     async function updateOnboardingProgressAsync(step: OnboardingStepPath | number) {
-        const { onboardingStatus, stepIndex } = getOnboardingProgress(step);
-        return mutateAsync({
-            body: { completed: onboardingStatus },
-        }).then(() => router.push(OnboardingStepPath[stepIndex]));
+        const progress = getOnboardingProgress(step);
+        handleUpdateProfile({
+            completed: progress.status,
+        }).then(() => router.push(OnboardingStepPath[progress.index]));
     }
 
     function updateOnboardingProgress(step: OnboardingStepPath | number) {
-        const { stepIndex } = getOnboardingProgress(step);
-        router.push(OnboardingStepPath[stepIndex]);
+        const progress = getOnboardingProgress(step);
+        router.push(OnboardingStepPath[progress.index]);
     }
 
 
@@ -86,7 +81,5 @@ export function useOnboardingProgress() {
         handleSkipStep,
         handleQuitOnboarding,
         getOnboardingProgress,
-        updateOnboardingProgress,
-        updateOnboardingProgressAsync,
     };
 }

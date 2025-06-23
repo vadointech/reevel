@@ -1,21 +1,16 @@
 import { Injectable } from "@nestjs/common";
-import { InjectRepository } from "@nestjs/typeorm";
-import { InterestRelationsEntity } from "@/modules/interests/entities/interest-relations.entity";
-import { Repository } from "typeorm";
-import { InterestCategoriesEntity } from "@/modules/interests/entities/interest-category.entity";
-import { InterestsEntity } from "@/modules/interests/entities/interests.entity";
 import data from "../data/interests.json";
 import slugify from "slugify";
+import { InterestsRelationsRepository } from "@/modules/interests/repositories/interests-relations.repository";
+import { InterestsCategoriesRepository } from "@/modules/interests/repositories/interests-categories.repository";
+import { InterestsRepository } from "@/modules/interests/repositories/interests.repository";
 
 @Injectable()
 export class InterestsSeedService {
     constructor(
-        @InjectRepository(InterestRelationsEntity)
-        private readonly interestRelationsRepository: Repository<InterestRelationsEntity>,
-        @InjectRepository(InterestCategoriesEntity)
-        private readonly interestCategoriesRepository: Repository<InterestCategoriesEntity>,
-        @InjectRepository(InterestsEntity)
-        private readonly interestsEntity: Repository<InterestsEntity>,
+        private readonly interestsRepository: InterestsRepository,
+        private readonly interestRelationsRepository: InterestsRelationsRepository,
+        private readonly interestCategoriesRepository: InterestsCategoriesRepository,
     ) {}
 
     async seedInterests() {
@@ -30,7 +25,7 @@ export class InterestsSeedService {
             const categoryInterests = category.interests.map((interest) => {
                 const slug = this.createSlug(interest.name_en);
 
-                return this.interestsEntity.create({
+                return this.interestsRepository.create({
                     slug,
                     title_en: interest.name_en,
                     title_uk: interest.name_ua,
@@ -41,7 +36,7 @@ export class InterestsSeedService {
                 });
             });
 
-            await this.interestsEntity.save(categoryInterests);
+            await this.interestsRepository.saveMany(categoryInterests);
         }
     }
 

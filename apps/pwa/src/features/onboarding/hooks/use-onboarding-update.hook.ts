@@ -1,13 +1,25 @@
 "use client";
 
-import { IOnboardingStore, useOnboardingProgress, useOnboardingStore } from "@/features/onboarding";
-import { UpdateProfile, updateProfile } from "@/api/profile/update-profile";
-import { useMutation } from "@tanstack/react-query";
-import { revalidateCachedTag } from "@/features/cache";
-import { GetSession } from "@/api/auth/get-session";
+import { useCallback, useRef } from "react";
+import { revalidateSessionTag } from "@/features/cache";
 
-export function useOnboardingUpdate() {
-    const onboardingStore = useOnboardingStore();
+import { useOnboardingProgress } from "./use-onboarding-progress.hook";
+import { useSessionContext } from "@/features/session";
+import { useProfileUpdate, UseProfileUpdateParams } from "@/features/profile/hooks";
+import { useOnboardingFormContext } from "@/features/onboarding";
+import { ObjectDiff } from "@/utils/object";
+
+type ConfigParams = UseProfileUpdateParams & {
+    revalidateQueryOnSuccess?: string[]
+};
+
+export function useOnboardingUpdate({
+    revalidateQueryOnSuccess,
+    ...params
+}: ConfigParams = {}) {
+    const session = useSessionContext();
+    const form = useOnboardingFormContext();
+    const shouldRevalidate = useRef(false);
 
     const {
         step,
@@ -15,46 +27,62 @@ export function useOnboardingUpdate() {
         getOnboardingProgress,
     } = useOnboardingProgress();
 
-    const { mutate } = useMutation({
-        mutationFn: async(input: ObjectEntries<UpdateProfile.TInput>) => {
-            const { onboardingStatus } = getOnboardingProgress(step + 1);
-            return updateProfile({
-                body: {
-                    ...Object.fromEntries(input),
-                    completed: onboardingStatus,
-                },
-            })
-                .then(() => revalidateCachedTag(GetSession.queryKey))
-                .then(handleNextStep);
-        },
-    });
+    const { handleUpdateProfile } = useProfileUpdate({
+        onSettled: handleNextStep,
+        onSuccess: (data) => {
+            if(!data || !shouldRevalidate.current) return;
 
-    const handleUpdateProfile = () => {
-        const onboardingProfile: UpdateProfile.TInput = {
-            fullName: onboardingStore.fullName,
-            bio: onboardingStore.bio,
-            picture: onboardingStore.picture,
-            interests: onboardingStore.interests,
-        };
+            shouldRevalidate.current = false;
 
-        if(onboardingStore.locationCenter && onboardingStore.locationBbox) {
-            onboardingProfile.location = {
-                center: onboardingStore.locationCenter,
-                bbox: onboardingStore.locationBbox,
-            };
-        }
-
-        const profileEntriesToUpdate = (Object.entries(onboardingProfile) as ObjectEntries<UpdateProfile.TInput>)
-            .filter(([key, value]) => {
-                const prevValue = onboardingStore.initialState[key as keyof IOnboardingStore];
-                if(!prevValue) return true;
-                return value !== prevValue;
+            session.updateSession({
+                profile: data,
             });
 
-        mutate(profileEntriesToUpdate);
-    };
+            if(revalidateQueryOnSuccess) {
+                const { user } = session.store.toPlainObject();
+                return revalidateSessionTag(user, revalidateQueryOnSuccess);
+            }
+        },
+        ...params,
+    });
 
-    return {
-        handleUpdateProfile,
-    };
+    return useCallback(() => {
+        const formValues = form.getValues();
+        const diff = new ObjectDiff(form.defaultValues, formValues);
+        const progress = getOnboardingProgress(step + 1);
+
+        if(diff.hasChanges) {
+            shouldRevalidate.current = true;
+            const {
+                location,
+                interests,
+                ...changedData
+            } = diff.toObject();
+
+            handleUpdateProfile({
+                ...changedData,
+                locationCenter: location ?
+                    [location.location.longitude, location.location.latitude]
+                    : undefined,
+                locationBbox: location ?
+                    location.bbox
+                    : undefined,
+                interests: interests ?
+                    interests.map(i => i.slug)
+                    : undefined,
+                completed: progress.status,
+            });
+        } else {
+            const onboardingStep = Number(session.store.user?.profile.completed);
+
+            if(isNaN(onboardingStep) || onboardingStep > step) {
+                return handleNextStep();
+            } else {
+                handleUpdateProfile({
+                    completed: progress.status,
+                });
+            }
+        }
+
+    }, [step, revalidateQueryOnSuccess, handleUpdateProfile]);
 }

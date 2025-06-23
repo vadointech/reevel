@@ -1,16 +1,17 @@
 import { useCallback, useEffect, useMemo, useRef } from "react";
 
 import { useQueryClient } from "@tanstack/react-query";
-
-import { useLocationPicker } from "../location-picker.context";
-import { GetNearbyPlacesQueryBuilder, GetPlacesByCoordinatesQueryBuilder } from "../queries";
-
 import { usePersistentMap } from "@/components/shared/map";
+import { useLocationPicker } from "../location-picker.context";
+import { useLocationAccessRequest } from "@/features/location/search/hooks";
+
+import { GetNearbyPlacesQueryBuilder, SearchLocationQueryBuilder } from "../queries";
+import { GetLocationByCoordinatesQueryBuilder } from "@/features/location/search/queries";
 
 import { placeLocationEntityMapper } from "@/entities/place/mapper";
 
 import { Point, IconPoint, MapInternalConfig } from "@/components/shared/map/types";
-import { IBottomSheetRootController } from "@/components/shared/_redesign/bottom-sheet/types";
+import { IBottomSheetRootController } from "@/components/shared/bottom-sheet/types";
 import { PlaceLocationEntity } from "@/entities/place";
 
 export function useConfirmationDrawer(placesInit: PlaceLocationEntity[]) {
@@ -54,12 +55,18 @@ export function useConfirmationDrawer(placesInit: PlaceLocationEntity[]) {
     }, []);
 
     const getLocationPickerQueryData = (placeId: string) => {
-        const data = queryClient.getQueriesData<PlaceLocationEntity>({
+        const nearbyData = queryClient.getQueriesData<PlaceLocationEntity>({
             queryKey: GetNearbyPlacesQueryBuilder.queryKey(),
-        });
+        }).flatMap(([, data]) => data);
 
-        const places = data.flatMap(([, data]) => data);
-        return places.find(place => place?.id === placeId);
+        const place = nearbyData.find(place => place?.id === placeId);
+        if(place) return place;
+
+        const searchData = queryClient.getQueriesData<SearchLocationQueryBuilder.TOutput>({
+            queryKey: SearchLocationQueryBuilder.queryKey(),
+        }).flatMap(([, data]) => data?.places);
+
+        return searchData.find(place => place?.id === placeId);
     };
     const moveViewStateToPoint = (point: Point<IconPoint>, checkBuffer: boolean = true) => {
         const { bounds: defaultBounds } = map.provider.current.internalConfig.viewState;
@@ -154,44 +161,34 @@ export function useConfirmationDrawer(placesInit: PlaceLocationEntity[]) {
         confirmationStore.setPoint(null);
     };
 
-    const handleLocationAccessRequest = useCallback(() => {
-        if ("geolocation" in navigator) {
-            navigator.geolocation.getCurrentPosition(
-                async({ coords }) => {
-                    const place = await queryClient.fetchQuery(
-                        GetPlacesByCoordinatesQueryBuilder({
-                            lng: coords.longitude,
-                            lat: coords.latitude,
-                        }),
-                    ).then(response => response[0]);
+    const { handleRequestLocationAccess } = useLocationAccessRequest({
+        queryBuilder: GetLocationByCoordinatesQueryBuilder({
+            accessToken: map.provider.current.internalConfig.accessToken,
+            types: "place",
+            language: "uk",
+        }),
+        onSuccess: (place) => {
+            const [point] = placeLocationEntityMapper.toIconPoint([place]);
+            if(!point) return;
 
-                    if(place) {
-                        const [point] = placeLocationEntityMapper.toIconPoint([place]);
-                        if(!point) return;
+            pickerDrawerControls.current?.setPositionBySnapIndex(1);
 
-                        pickerDrawerControls.current?.setPositionBySnapIndex(1);
+            moveViewStateToPoint(point, false);
 
-                        moveViewStateToPoint(point, false);
+            pointsBuffer.current = placeLocationEntityMapper.toIconPoint(placesInit);
+            map.controller.current.setPoints([point]);
+            map.controller.current.selectPoint(point.id);
 
-                        pointsBuffer.current = placeLocationEntityMapper.toIconPoint(placesInit);
-                        map.controller.current.setPoints([point]);
-                        map.controller.current.selectPoint(point.id);
+            confirmationStore.setPoint(point);
 
-                        confirmationStore.setPoint(point);
-
-                        confirmationDataRef.current = place;
-                        pickerDrawerControls.current?.setPositionBySnapIndex(1);
-                        confirmationDrawerControls.current?.open();
-                    }
-                },
-                () => {
-                    // TODO: Show modal "We're unable to get your location. (Enter it manually)"
-                },
-            );
-        } else {
+            confirmationDataRef.current = place;
+            pickerDrawerControls.current?.setPositionBySnapIndex(1);
+            confirmationDrawerControls.current?.open();
+        },
+        onFailure: () => {
             // TODO: Show modal "We're unable to get your location. (Enter it manually)"
-        }
-    }, []);
+        },
+    });
 
     return {
         confirmationDataRef,
@@ -200,6 +197,6 @@ export function useConfirmationDrawer(placesInit: PlaceLocationEntity[]) {
         pickerDrawerDefaultSnapIndex,
         handleSelectPoint,
         handleConfirmationClose,
-        handleLocationAccessRequest,
+        handleRequestLocationAccess,
     };
 }

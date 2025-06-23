@@ -1,0 +1,28 @@
+@use "@/theme/mixins";
+@use "@/theme/colors";
+
+.page {
+    &__info {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+        gap: mixins.rem(40);
+    }
+
+    &__avatar {
+        height: mixins.rem(140);
+
+        & > * {
+            outline-offset: .5rem;
+            outline-color: colors.$primary;
+        }
+    }
+
+    &__buttons {
+        margin-top: mixins.rem(14);
+        display: flex;
+        flex-direction: column;
+        row-gap: 1rem;
+    }
+}

@@ -10,14 +10,8 @@ export namespace GetRelatedInterests {
 
     export const queryKey = ["/interests/related"];
 }
-export const getRelatedInterests = fetcherClient<GetRelatedInterests.TInput, GetRelatedInterests.TOutput>({
-    fetcherFunc: (fetcher, input) => {
-        return fetcher.get(`/interests/related/${input?.body?.slug}`, {
-            cache: "force-cache",
-            next: {
-                tags: GetRelatedInterests.queryKey,
-                revalidate: false,
-            },
-        });
+export const getRelatedInterests = fetcherClient.fetch<GetRelatedInterests.TInput, GetRelatedInterests.TOutput>({
+    fetcherFunc: (fetcher, { body, ...input }) => {
+        return fetcher.get(`/interests/related/${body?.slug}`, input);
     },
 });

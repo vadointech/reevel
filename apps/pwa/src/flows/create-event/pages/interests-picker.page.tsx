@@ -1,10 +1,13 @@
 import { headers } from "next/headers";
-import { getInitialInterests } from "@/api/interests";
-import { getCurrentUserInterests } from "@/api/user/get-interests";
-import { ObjectUnique } from "@/utils/object-unique";
-import { InterestEntity } from "@/entities/interests";
+
+import { getInitialInterests } from "@/api/interests/server";
+import { getCurrentUserInterests } from "@/api/user/server";
+
 import { InterestsPickerProvider } from "@/features/interests/picker";
-import { InterestsPickerContent } from "@/components/screens";
+import { InterestsPickerContent } from "@/components/screens/interests-picker";
+
+import { ObjectUnique } from "@/utils/object";
+import { InterestEntity } from "@/entities/interests";
 
 export namespace CreateEventInterestsPickerPage {
     export type Props = {

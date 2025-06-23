@@ -1,0 +1,26 @@
+"use client";
+
+import { ComponentProps } from "react";
+import { useBottomSheet } from "@/components/shared/bottom-sheet/bottom-sheet.context";
+
+import styles from "../styles.module.scss";
+import cx from "classnames";
+
+export namespace BottomSheetTrigger {
+    export type Props = ComponentProps<"div">;
+}
+
+export const BottomSheetTrigger = ({ className, ...props }: BottomSheetTrigger.Props) => {
+    const { controller } = useBottomSheet();
+
+    return (
+        <div
+            className={cx(
+                styles.bottomSheet__triger,
+                className,
+            )}
+            onClick={() => controller.current.open()}
+            {...props}
+        />
+    );
+};

@@ -1,11 +1,12 @@
 "use client";
-import styles from "./styles.module.scss";
 
+import { ComponentProps, ReactNode, useEffect, useRef } from "react";
 import { IconCheck, IconClose, IconImportant } from "@/components/icons";
-import { cva, VariantProps } from "class-variance-authority";
 import { AnimatePresence, motion } from "motion/react";
-import { ComponentProps, ReactNode, useCallback, useEffect, useRef } from "react";
 import { ANIMATION_CONFIG } from "./config/root.config";
+
+import styles from "./styles.module.scss";
+import { cva, VariantProps } from "class-variance-authority";
 
 const toast = cva(styles.toast, {
     variants: {
@@ -60,15 +61,15 @@ export const Toast = ({
     }, [autoClose, autoCloseDelay, isVisible, onClose]);
 
 
-    const handleClose = useCallback((event: React.MouseEvent) => {
-        event.stopPropagation();
-
-        if (timeoutRef.current) {
-            clearTimeout(timeoutRef.current);
-        }
-
-        onClose();
-    }, [onClose]);
+    // const handleClose = useCallback((event: MouseEvent) => {
+    //     event.stopPropagation();
+    //
+    //     if (timeoutRef.current) {
+    //         clearTimeout(timeoutRef.current);
+    //     }
+    //
+    //     onClose();
+    // }, [onClose]);
 
     const icon: Record<string, ReactNode> = {
         "error": <IconClose />,

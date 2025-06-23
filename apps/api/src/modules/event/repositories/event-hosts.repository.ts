@@ -22,7 +22,7 @@ export class EventHostsRepository extends Repository<EventHostsEntity> implement
     }
 
     async createHosts(eventId: string, input: string[], entityManager?: EntityManager): Promise<EventHostsEntity[]> {
-        return this.createMany(
+        return this.createAndSaveMany(
             input.map(userId => ({ eventId, userId })),
             entityManager,
         );

@@ -1,19 +1,11 @@
 "use server";
 
 import cache from "next/cache";
+import { FetcherCacheManager } from "@/lib/fetcher/cache";
+import { UserEntity } from "@/entities/user";
 
-export async function revalidateCachedTag(tag: string | string[]) {
-    if(Array.isArray(tag)) {
-        tag.forEach(cache.revalidateTag);
-    } else {
-        cache.revalidateTag(tag);
-    }
-}
-
-export async function revalidateCachedPath(path: string | string[], type?: "layout" | "page") {
-    if(Array.isArray(path)) {
-        path.forEach(item => cache.revalidatePath(item, type));
-    } else {
-        cache.revalidatePath(path, type);
-    }
+export async function revalidateSessionTag(session: Maybe<UserEntity>, queryKey: string[]) {
+    if(!session) return;
+    const tags = FetcherCacheManager.newCacheTag(queryKey, session);
+    tags.forEach(cache.revalidateTag);
 }

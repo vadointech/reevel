@@ -1,4 +1,5 @@
 @use "@/theme/mixins";
+@use "@/theme/spacing";
 @use "@/theme/colors";
 @use "@/theme/motions";
 @use "@/theme/typography";
@@ -14,23 +15,46 @@
         flex-wrap: wrap;
         align-items: center;
         justify-content: space-between;
-        gap: .5rem;
+        gap: mixins.rem(12);
+
+        label {
+            @include typography.font("sm");
+        }
 
         &_vertical {
-            & > * {
+            & > *, label {
                 width: mixins.rem(168);
                 height: mixins.rem(224);
                 padding: mixins.rem(4);
-                border-radius: mixins.rem(12);
+
+                &, .upload__file_wrapper {
+                    border-radius: mixins.rem(12);
+                }
             }
         }
 
         &_horizontal {
-            & > * {
+            & > *, label {
                 width: mixins.rem(168);
                 height: mixins.rem(111);
                 padding: mixins.rem(4);
-                border-radius: mixins.rem(12);
+
+                &, .upload__file_wrapper {
+                    border-radius: mixins.rem(12);
+                }
+            }
+        }
+
+        &_rounded {
+            justify-content: flex-start;
+            & > *, label {
+                width: mixins.rem(104);
+                height: mixins.rem(104);
+                padding: mixins.rem(4);
+
+                &, .upload__file_wrapper {
+                    border-radius: 50%;
+                }
             }
         }
     }
@@ -55,7 +79,6 @@
             height: 100%;
             position: relative;
 
-            border-radius: .5rem;
             overflow: hidden;
 
             img {

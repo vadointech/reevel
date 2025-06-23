@@ -1,26 +1,18 @@
 "use client";
 
-import { InterestEntity } from "@/entities/interests";
-import { createMobxStoreProvider, initStore } from "@/lib/mobx";
-import { action, makeObservable, observable } from "mobx";
+import { makeObservable } from "mobx";
+import { createMobxStoreProvider } from "@/lib/mobx";
 
+class ProfileSettingsStore {
 
-export interface IProfileSettingsStore {
-
-}
-
-class ProfileSettingsStore implements IProfileSettingsStore {
-
-
-    constructor(init?: Partial<IProfileSettingsStore>) {
+    constructor() {
         makeObservable(this, {
 
         });
 
-        initStore(this, init);
     }
 
-
+    dispose() {}
 }
 
 export const [ProfileSettingsStoreProvider, useProfileSettingsStore] = createMobxStoreProvider(ProfileSettingsStore);

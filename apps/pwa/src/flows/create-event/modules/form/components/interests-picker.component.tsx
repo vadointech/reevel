@@ -1,7 +1,7 @@
 "use client";
 
 import { Controller } from "react-hook-form";
-import { FormField, InterestButton } from "@/components/shared/_redesign";
+import { FormField, InterestButton } from "@/components/ui";
 
 import { CreateEventFormSchemaValues, useCreateEventFormInterestsPicker } from "@/features/event/create";
 import { InterestEntity } from "@/entities/interests";
