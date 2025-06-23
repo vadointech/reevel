@@ -14,10 +14,14 @@ export function useTabsContentContainer() {
         if(!element) return;
         tabsContentRef.current = element;
 
-        tabsContentSnapPoints.current = Array.from({ length: element.children.length })
-            .map((_, index) =>
-                element.clientWidth * index,
-            );
+        if(element.children.length === 0) {
+            tabsContentSnapPoints.current = [0];
+        } else {
+            tabsContentSnapPoints.current = Array.from({ length: element.children.length })
+                .map((_, index) =>
+                    element.clientWidth * index,
+                );
+        }
 
         const { clientWidth, scrollWidth } = element;
 

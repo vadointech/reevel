@@ -1,0 +1,25 @@
+@use "@/theme/mixins";
+@use "@/theme/spacing";
+
+.drawer {
+    &__handle {
+        display: flex;
+        align-items: center;
+        column-gap: .5rem;
+        padding-inline: spacing.$container;
+        margin-bottom: mixins.rem(18);
+
+        & > div {
+            height: mixins.rem(44);
+        }
+    }
+
+    &__scroll {
+        margin-bottom: spacing.$container;
+        padding-inline: spacing.$container;
+    }
+
+    &__gap {
+        margin-bottom: mixins.rem(24);
+    }
+}

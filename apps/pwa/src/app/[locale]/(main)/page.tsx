@@ -13,6 +13,9 @@ export default function Home() {
             <Link href={"/profile/settings"}>
                 To profile settings
             </Link>
+            <Link href={"/discover"}>
+                To Discover
+            </Link>
         </div>
     );
 }

@@ -19,6 +19,7 @@ export interface IBottomSheetRootController {
 
     open(): void;
     close(): void;
+    settleSnapPoint(): void;
     setSnapPoint(index: number, ctx?: IBottomSheetRootControllerContext): void;
     setPositionBySnapIndex(index: number, ctx?: IBottomSheetRootControllerContext): void;
 

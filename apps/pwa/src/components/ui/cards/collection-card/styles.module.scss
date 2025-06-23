@@ -60,6 +60,8 @@
             justify-content: center;
 
             svg {
+                width: .5rem;
+                height: .5rem;
                 transform: rotate(-45deg);
                 path {
                     fill: colors.$primary;

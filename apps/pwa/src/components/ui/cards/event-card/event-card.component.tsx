@@ -14,7 +14,7 @@ import styles from "./styles.module.scss";
 import cx from "classnames";
 
 const defaultAttendees: UserProfileEntity[] = [
-    { id: "1", userId: "", completed: "true", picture: "http://localhost:3000/assets/temp/valentine.png" },
+    { id: "1", userId: "", completed: "true", picture: "http://localhost:3000/assets/temp/poster5.png" },
     { id: "2", userId: "", completed: "true", picture: "http://localhost:3000/assets/temp/poster1.jpg" },
     { id: "3", userId: "", completed: "true", picture: "http://localhost:3000/assets/temp/poster2.png" },
     { id: "4", userId: "", completed: "true", picture: "http://localhost:3000/assets/temp/poster3.png" },

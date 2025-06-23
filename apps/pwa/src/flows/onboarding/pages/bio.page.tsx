@@ -5,7 +5,6 @@ import { OnboardingNextStepButton, OnboardingProgressBar } from "../modules/prog
 import { OnboardingProfileBioForm } from "../modules/profile-bio";
 import { OnboardingTextBlock } from "../modules/text-block";
 import { Avatar, ButtonsBlock, Container } from "@/components/ui";
-import { GetSession } from "@/api/user";
 
 import styles from "../styles/bio-page.module.scss";
 

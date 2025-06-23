@@ -12,7 +12,7 @@ export namespace ProfilePublicViewPage {
 
 export function ProfilePublicViewPage() {
     return (
-        <div className={styles.layout}>
+        <>
             <ProfilePageHeader overlayVariant={"light"} variant={"public"} />
             <ProfilePageContent>
                 <ProfileHero />
@@ -86,6 +86,6 @@ export function ProfilePublicViewPage() {
                     />
                 </div>
             </ProfilePageContent>
-        </div>
+        </>
     );
 }

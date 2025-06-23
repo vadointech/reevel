@@ -4,3 +4,6 @@ export * from "./portal.component";
 export * from "./trigger.component";
 export * from "./overlay.component";
 export * from "./handle-component";
+
+export * from "./scrollable.component";
+export * from "./draggable.component";

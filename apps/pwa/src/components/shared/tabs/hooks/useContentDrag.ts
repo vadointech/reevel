@@ -84,7 +84,7 @@ export function useTabsContentDrag(
     };
 
     const handleDragStart = (_: any, info: PanInfo) => {
-        if (Math.abs(info.offset.y) > Math.abs(info.offset.x)) return;
+        if(Math.abs(info.offset.y) > Math.abs(info.offset.x)) return;
         callbacks.onDragStart?.(tabsStore.activeTabIndex, direction.current);
     };
 

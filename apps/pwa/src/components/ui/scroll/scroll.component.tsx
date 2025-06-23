@@ -13,6 +13,7 @@ export namespace Scroll {
     export type Props = ComponentProps<"div"> & {
         variant?: Variant;
         size?: UISize;
+        dragFree?: boolean;
     };
 }
 
@@ -21,11 +22,14 @@ export const Scroll = ({
     size = "default",
     className,
     children,
+
+    dragFree = true,
+
     ...props
 }: Scroll.Props) => {
 
     const [ref] = useEmblaCarousel({
-        dragFree: true,
+        dragFree,
     });
 
     return (

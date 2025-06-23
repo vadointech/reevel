@@ -2,19 +2,26 @@
 
 import { BoundingBox, HTMLMotionProps, motion } from "motion/react";
 
-import { ComponentProps, useCallback, useState } from "react";
+import { ReactNode, useCallback, useState } from "react";
 
 import styles from "./styles.module.scss";
+import cx from "classnames";
 
 export namespace ScrollArea {
     export type Props = HTMLMotionProps<"div"> & {
         delta?: number;
+        children?: ReactNode;
     };
 }
 
-export const ScrollArea = ({ delta = 0, ...props }: ScrollArea.Props) => {
-    const [scrollAreaDragBounds, setScrollAreaDragBounds] = useState<Partial<BoundingBox> | null>(null);
-    const containerRefHandler = useCallback((element: HTMLDivElement | null) => {
+export const ScrollArea = ({
+    delta = 0,
+    className,
+    children,
+    ...props
+}: ScrollArea.Props) => {
+    const [dragBounds, setDragBounds] = useState<BoundingBox | undefined>(undefined);
+    const refHandler = useCallback((element: HTMLDivElement | null) => {
         if(!element) return;
 
         const { scrollHeight, clientHeight } = element;
@@ -23,28 +30,38 @@ export const ScrollArea = ({ delta = 0, ...props }: ScrollArea.Props) => {
 
         if(offset >= 0) return;
 
-        setScrollAreaDragBounds({
+        setDragBounds({
             top: offset + delta,
             bottom: 0,
+            left: 0,
+            right: 0,
         });
-    }, []);
+    }, [delta]);
+
+    const isDraggable = !!dragBounds;
+
     return (
-        <div
-            ref={containerRefHandler}
-            className={styles.scroll}
+        <motion.div
+            ref={refHandler}
+            className={cx(
+                styles.scroll__root,
+                !isDraggable && className,
+            )}
         >
             {
-                scrollAreaDragBounds === null ? (
-                    <div {...props as ComponentProps<"div">} />
-                ) : (
+                isDraggable ? (
                     <motion.div
                         drag={"y"}
+                        dragElastic={0.3}
                         dragDirectionLock
-                        dragConstraints={scrollAreaDragBounds}
+                        dragConstraints={dragBounds}
+                        className={className}
                         {...props}
-                    />
-                )
+                    >
+                        { children }
+                    </motion.div>
+                ) : children
             }
-        </div>
+        </motion.div>
     );
 };

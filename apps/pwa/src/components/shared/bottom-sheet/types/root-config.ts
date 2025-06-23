@@ -11,6 +11,7 @@ export interface IBottomSheetConfigParams extends Partial<IBottomSheetHandlers> 
     dismissible: boolean;
     handleOnly: boolean;
     touchEvents: boolean;
+    dragListener: boolean | undefined;
 }
 
 export interface IBottomSheetInternalConfig extends IBottomSheetConfigParams {

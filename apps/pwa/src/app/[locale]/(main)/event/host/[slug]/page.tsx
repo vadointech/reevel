@@ -23,7 +23,7 @@ export default function Page() {
                         avatar: "/assets/temp/avatar.png",
                     }}
                     attendees={[
-                        { id: "1", userId: "1", completed: "true", picture: "http://localhost:3000/assets/temp/valentine.png" },
+                        { id: "1", userId: "1", completed: "true", picture: "http://localhost:3000/assets/temp/poster5.png" },
                         { id: "2", userId: "2", completed: "true", picture: "http://localhost:3000/assets/temp/poster1.jpg" },
                         { id: "3", userId: "3", completed: "true", picture: "http://localhost:3000/assets/temp/poster2.png" },
                         { id: "4", userId: "4", completed: "true", picture: "http://localhost:3000/assets/temp/poster3.png" },

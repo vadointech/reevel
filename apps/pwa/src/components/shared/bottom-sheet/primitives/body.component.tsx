@@ -1,7 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useState } from "react";
-import { HTMLMotionProps, motion } from "motion/react";
+import { HTMLMotionProps, motion, MotionValue } from "motion/react";
 
 import { useOutsideEvent } from "@/hooks/use-outside-event";
 import { useBottomSheet } from "../bottom-sheet.context";
@@ -17,12 +17,15 @@ import styles from "../styles.module.scss";
 import cx from "classnames";
 
 export namespace BottomSheetBody {
-    export type Props = HTMLMotionProps<"div">;
+    export type Props = HTMLMotionProps<"div"> & {
+        dragYProgress?: MotionValue<number>;
+    };
 }
 
 export const BottomSheetBody = ({
     style,
     className,
+    dragYProgress: externalDragYProgress,
     ...props
 }: BottomSheetBody.Props) => {
     const { controller, store } = useBottomSheet();
@@ -39,7 +42,21 @@ export const BottomSheetBody = ({
         dragYProgress,
         contentOpacity,
         handleDragEnd,
+        handleAnimationComplete,
     } = useBottomSheetDrag();
+
+    useEffect(() => {
+        if(!externalDragYProgress) return;
+
+        externalDragYProgress.set(dragYProgress.get());
+
+        const unsubscribe = dragYProgress.on("change", (latest) => {
+            externalDragYProgress.set(latest);
+        });
+
+        return () => unsubscribe();
+    }, [dragYProgress, externalDragYProgress]);
+
 
     useEffect(() => {
         if(ready && store.open) {
@@ -71,10 +88,12 @@ export const BottomSheetBody = ({
                 style={{
                     y: dragY,
                     height: "100%",
+                    touchAction: "none",
+                    paddingBottom: controller.current.dragConstraints.top,
                 }}
+                dragListener={false}
                 ref={bottomSheetRef}
                 dragControls={controller.current.dragControls}
-                dragListener={!controller.current.internalConfig.handleOnly}
                 transition={generateBottomSheetTransitionParams(0)}
                 initial={{ y: controller.current.internalConfig.clientHeight }}
                 exit={{ y: controller.current.internalConfig.clientHeight }}
@@ -86,6 +105,7 @@ export const BottomSheetBody = ({
                     bottom: controller.current.internalConfig.snapPointsCount === 1 ? .2 : .07,
                 }}
                 onDragEnd={handleDragEnd}
+                onAnimationComplete={handleAnimationComplete}
                 className={styles.bottomSheet__dragger}
             >
                 <motion.div
@@ -98,6 +118,12 @@ export const BottomSheetBody = ({
                         styles.bottomSheet__body,
                         className,
                     )}
+                    onPointerDown={(event) => {
+                        if(controller.current.internalConfig.dragListener) {
+                            controller.current.dragControls.start(event);
+                        }
+                        event.stopPropagation();
+                    }}
                     {...props}
                 />
             </motion.div>

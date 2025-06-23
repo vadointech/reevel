@@ -4,7 +4,9 @@ export interface IBottomSheetStore {
 
     open: boolean;
     activeSnapPoint: number;
+    settledSnapPoint: number;
 
     setOpen(state: boolean): void;
     setActiveSnapPoint(index: number): void;
+    setSettledSnapPoint(index: number): void;
 }

@@ -13,7 +13,7 @@ export namespace ProfilePrivateViewPage {
 
 export function ProfilePrivateViewPage() {
     return (
-        <div className={styles.layout}>
+        <>
             <ProfilePageHeader overlayVariant={"light"} variant={"private"} />
             <ProfilePageContent>
                 <ProfileHero />
@@ -98,6 +98,6 @@ export function ProfilePrivateViewPage() {
                     />
                 </div>
             </ProfilePageContent>
-        </div>
+        </>
     );
 }

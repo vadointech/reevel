@@ -1,20 +1,17 @@
 import { PanInfo, useMotionValue, useTransform } from "motion/react";
 
-import { normalize } from "@/utils/normalize";
 import { useBottomSheet } from "@/components/shared/bottom-sheet/bottom-sheet.context";
 
-export function useBottomSheetDrag(
-) {
+export function useBottomSheetDrag() {
     const { controller } = useBottomSheet();
 
     const dragY = useMotionValue(0);
     const dragYProgress = useTransform(
         dragY,
-        (val) => {
-            if(val === 0) return 0;
-            return normalize(controller.current.internalConfig.clientHeight, controller.current.dragConstraints.top, val);
-        },
+        [controller.current.internalConfig.clientHeight, controller.current.dragConstraints.top],
+        [0, 1],
     );
+
     const contentOpacity = useTransform(
         dragY,
         [
@@ -29,10 +26,15 @@ export function useBottomSheetDrag(
         controller.current.drag(info);
     };
 
+    const handleAnimationComplete = () => {
+        controller.current.settleSnapPoint();
+    };
+
     return {
         dragY,
         dragYProgress,
         contentOpacity,
         handleDragEnd,
+        handleAnimationComplete,
     };
 }
