@@ -37,10 +37,10 @@ export class Repository<Entity extends ObjectLiteral> {
         return repository.query(query, parameters);
     }
 
-    async queryBuilder(
+    queryBuilder(
         alias?: string,
         entityManager?: EntityManager,
-    ): Promise<SelectQueryBuilder<Entity>> {
+    ): SelectQueryBuilder<Entity> {
         const repository = this.currentRepository(entityManager);
         return repository.createQueryBuilder(alias);
     }

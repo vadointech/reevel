@@ -25,6 +25,10 @@ export class BottomSheetStore implements IBottomSheetStore {
         this.activeSnapPoint = rootConfig.defaultSnapPointIndex;
     }
 
+    setPositionPx(px: number) {
+        this.positionPx = px;
+    }
+
     setOpen(state: boolean) {
         this.open = state;
     }

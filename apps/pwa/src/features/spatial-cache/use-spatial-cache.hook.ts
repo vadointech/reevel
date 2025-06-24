@@ -2,6 +2,7 @@ import { useCallback, useRef } from "react";
 import { FetchQueryOptions, useQueryClient } from "@tanstack/react-query";
 import { RequestDebouncer } from "@/lib/debouncer";
 import { SpatialCache } from "./spatial-cache";
+import { ISpatialCacheConfig } from "./types";
 import {
     IMapProvider,
     MapInternalConfig,
@@ -33,45 +34,17 @@ interface ConfigParams<TData, TInput> {
     queryBuilder: QueryBuilder<TData>;
     prefetchedData?: TData;
     onDataFetchResponse?: (response: TData, input: TFetchInput<TInput>) => void;
+    cacheConfig?: Partial<ISpatialCacheConfig>;
 }
 
 export function useSpatialCache<TData extends unknown[], TInput extends object = Record<string, unknown>>(mapProvider: IMapProvider, {
     queryBuilder,
     prefetchedData,
+    cacheConfig,
 }: ConfigParams<TData, TInput>) {
     const queryClient = useQueryClient();
-    const spatialCache = useRef(new SpatialCache());
+    const spatialCache = useRef(new SpatialCache(cacheConfig));
     const debouncer = useRef(new RequestDebouncer());
-    // const precacheStore = useRef<TData | undefined>(undefined);
-
-    // const persistentStorageKey = useMemo(() => {
-    //     if(!persist) return undefined;
-    //     if(typeof persist === "object") return persist.key;
-    //     return "spatial-cache";
-    // }, [persist]);
-    //
-    // const saveToPersistent = async(key: string) => {
-    //     indexedDbService.setItem<TSpatialCacheExtort>(key, spatialCache.current.export());
-    // };
-    //
-    // const loadFromPersistence = async(key: string) => {
-    //     const persistData = await indexedDbService.getItem<TSpatialCacheExtort>(key);
-    //     if(persistData) {
-    //         spatialCache.current.import(persistData);
-    //     }
-    // };
-    //
-    // useEffect(() => {
-    //     if(persistentStorageKey) {
-    //         loadFromPersistence(persistentStorageKey);
-    //     }
-    //
-    //     return () => {
-    //         if(persistentStorageKey) {
-    //             saveToPersistent(persistentStorageKey);
-    //         }
-    //     };
-    // }, [persistentStorageKey]);
 
     const cacheRegion = useCallback((
         regionId: string,

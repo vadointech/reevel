@@ -52,7 +52,9 @@ export class EventsEntity {
     @CreateDateColumn({ type: "timestamp" })
     createdAt: Date;
 
-    @OneToMany(() => EventHostsEntity, event => event.event)
+    @OneToMany(() => EventHostsEntity, event => event.event, {
+        cascade: true,
+    })
     hosts: EventHostsEntity[];
 
     @OneToMany(() => EventInterestsEntity, event => event.event)

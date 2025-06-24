@@ -1,4 +1,5 @@
 import { FetcherFetchFunc } from "./fetcher";
+import { IFetcherRequestConfig } from "./request";
 
 export type FetcherClientFetchOptions<Input, Output, Params extends Record<string, any>> = {
     fetcherFunc: (fetcher: Fetcher, input: Partial<IFetcherRequestConfig<Input, Params>>) => Promise<IFetcherResponse<Output>>;

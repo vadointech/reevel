@@ -24,13 +24,14 @@ export type TCoverageInfo = {
     bestSingleRegionIntersectionArea?: number; // The intersection area of that best single region with the queryBounds
 };
 
-export type TSpatialCacheConfig = {
-    MAX_CACHED_REGIONS: number;
-    CACHE_EXPIRY: number;
-    COVERAGE_THRESHOLD: number;
-    MIN_ZOOM: number;
-    GOOGLE_PLACES_API_LIMIT: number;
-};
+export interface ISpatialCacheConfig {
+    maxCachedRegions: number;
+    cacheExpiry: number;
+    coverageThreshold: number;
+    minZoom: number;
+    apiLimit: number;
+    sensitivity: number;
+}
 
 export type TSpatialCacheZoomBreakpointsConfig = {
     minZoomThreshold: number;

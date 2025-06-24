@@ -1,9 +1,15 @@
-import { TSpatialCacheConfig } from "./types";
+import { constructorInit } from "@/lib/init";
+import { ISpatialCacheConfig } from "./types";
 
-export const SpatialCacheConfig: TSpatialCacheConfig = {
-    MAX_CACHED_REGIONS: 500,
-    CACHE_EXPIRY: 1000 * 60 * 15, // 15 minutes
-    COVERAGE_THRESHOLD: 0.7,
-    MIN_ZOOM: 10,
-    GOOGLE_PLACES_API_LIMIT: 10,
-};
+export class SpatialCacheConfig implements ISpatialCacheConfig {
+    maxCachedRegions = 500;
+    cacheExpiry = 1000 * 60 * 15;
+    coverageThreshold = 0.7;
+    minZoom = 10;
+    apiLimit = 10;
+    sensitivity = 1;
+
+    constructor(params: Partial<ISpatialCacheConfig> = {}) {
+        constructorInit(this, params);
+    }
+}

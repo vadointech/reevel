@@ -1,6 +1,6 @@
 import { UserProfileEntity } from "../profile";
 import { InterestEntity } from "../interests";
-import { Point, BasePoint } from "@/components/shared/map/types/point/point";
+import { PointGeometry } from "@/components/shared/map/types/point/point";
 
 export enum EventVisibility {
     PUBLIC = "PUBLIC",
@@ -13,7 +13,7 @@ export type EventEntity = {
     description: string;
     poster: string;
     primaryColor?: string;
-    location?: Point<BasePoint>;
+    location?: PointGeometry;
     ticketsAvailable?: number;
     ticketPrice?: number;
     visibility: EventVisibility;

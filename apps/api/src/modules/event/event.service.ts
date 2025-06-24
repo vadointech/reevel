@@ -17,6 +17,7 @@ import { UpdateEventDto } from "./dto/update-event.dto";
 
 import { Session } from "@/types";
 import { SupportedFileCollections } from "@/modules/uploads/entities/uploads.entity";
+import { GetNearbyEventsDto } from "@/modules/event/dto/get-nearby.dto";
 
 @Injectable()
 export class EventService {
@@ -141,5 +142,29 @@ export class EventService {
                 },
             },
         );
+    }
+
+    async getNearbyEvents(session: Session, input: GetNearbyEventsDto) {
+        const { center, radius } = input.circle;
+        const take = input.take || 10;
+
+        const query = this.eventRepository.queryBuilder("event");
+
+        query.where(
+            `ST_DWithin(
+            event.location,
+            ST_SetSRID(ST_MakePoint(:lon, :lat), 4326)::geography,
+            :radius
+        )`,
+            {
+                lon: center.longitude,
+                lat: center.latitude,
+                radius: radius,
+            },
+        );
+
+        query.take(take);
+
+        return query.getMany();
     }
 }
