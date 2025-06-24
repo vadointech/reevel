@@ -1,9 +1,9 @@
-import { DiscoverDrawer } from "@/components/drawers/discover";
 import { headers } from "next/headers";
 import { getUserMapInternalConfig } from "@/components/shared/map/utils";
 import { MapRootProvider } from "@/components/shared/map/map.provider";
 import { QueryClient } from "@tanstack/react-query";
 import { GetNearbyEventsQueryBuilder } from "@/features/event/discover/queries";
+import { DiscoverScreen } from "@/components/screens/discover";
 
 export namespace DiscoverPage {
     export type Props = never;
@@ -27,6 +27,6 @@ export async function DiscoverPage() {
     );
 
     return (
-        <DiscoverDrawer eventsInit={eventsInit} />
+        <DiscoverScreen eventsInit={eventsInit} />
     );
 }
