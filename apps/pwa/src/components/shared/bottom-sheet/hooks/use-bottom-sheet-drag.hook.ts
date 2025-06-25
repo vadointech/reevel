@@ -8,7 +8,7 @@ export function useBottomSheetDrag() {
     const dragY = useMotionValue(0);
     const dragYProgress = useTransform(
         dragY,
-        [controller.current.internalConfig.clientHeight, controller.current.dragConstraints.top],
+        [controller.current.dragConstraints.bottom, controller.current.dragConstraints.top],
         [0, 1],
     );
 

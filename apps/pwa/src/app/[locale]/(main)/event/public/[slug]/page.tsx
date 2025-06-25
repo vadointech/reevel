@@ -1,6 +1,5 @@
-import { EventAttendeeViewPage } from "@/flows/event-view/pages";
-import { EventVisibility } from "@/entities/event";
+import { EventAttendeePublicViewPage } from "@/flows/event-view/pages";
 
 export default function Page() {
-    return <EventAttendeeViewPage type={EventVisibility.PUBLIC} />;
+    return <EventAttendeePublicViewPage />;
 }

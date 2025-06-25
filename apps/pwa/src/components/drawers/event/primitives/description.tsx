@@ -1,4 +1,4 @@
-import { useTruncatedText } from "../../hooks/use-truncate-text.hook";
+import { useTruncatedText } from "../hooks/use-truncate-text.hook";
 
 import styles from "../styles.module.scss";
 

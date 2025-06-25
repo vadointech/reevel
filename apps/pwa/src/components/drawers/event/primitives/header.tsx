@@ -2,16 +2,14 @@
 
 import { ReactNode } from "react";
 import { motion, useTransform } from "motion/react";
-
-import { useDrawerContentDragYProgress } from "../../config/motion-values";
-import { HERO_SECTION_OFFSET } from "../../config/snap-points";
+import { useEventDrawerContext } from "@/components/drawers/event/event-drawer.context";
 
 import styles from "../styles.module.scss";
 
 export namespace EventDrawerContentHeader {
     export type Props = {
-        primaryColor: string;
         title: string | ReactNode
+        primaryColor?: string;
     };
 }
 
@@ -19,14 +17,17 @@ export const EventDrawerContentHeader = ({
     title,
     primaryColor,
 }: EventDrawerContentHeader.Props) => {
-    const drawerContentDragYProgress = useDrawerContentDragYProgress();
+    const {
+        config,
+        drawerContentDragYProgress,
+    } = useEventDrawerContext();
 
     const headerOpacity = useTransform(
         drawerContentDragYProgress,
         [
             0,
-            HERO_SECTION_OFFSET - 100,
-            HERO_SECTION_OFFSET,
+            config.heroSectionOffset - 100,
+            config.heroSectionOffset,
         ],
         [
             0,
@@ -39,8 +40,8 @@ export const EventDrawerContentHeader = ({
         drawerContentDragYProgress,
         [
             0,
-            HERO_SECTION_OFFSET,
-            HERO_SECTION_OFFSET + 40,
+            config.heroSectionOffset,
+            config.heroSectionOffset + 40,
         ],
         [
             0,
@@ -52,7 +53,7 @@ export const EventDrawerContentHeader = ({
     return (
         <motion.div
             dragListener={false}
-            className={styles.content__header}
+            className={styles.header}
             style={{
                 opacity: headerOpacity,
                 backgroundColor: primaryColor,

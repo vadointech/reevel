@@ -2,36 +2,37 @@ import { ComponentProps } from "react";
 import { motion, useTransform } from "motion/react";
 
 import { hexToRgba } from "@/utils/hex-to-rgba";
-import { useDrawerContentDragYProgress, useDrawerDragYProgress } from "../../config/motion-values";
-import { HERO_SECTION_OFFSET } from "@/components/drawers/event/config/snap-points";
 
 import { HostedBy } from "@/components/ui/hosted-by";
 
 import styles from "../styles.module.scss";
+import { UserProfileEntity } from "@/entities/profile";
+import { useEventDrawerContext } from "@/components/drawers/event/event-drawer.context";
 
 export namespace EventDrawerContentHost {
     export type Props = ComponentProps<"div"> & {
-        host: {
-            name: string;
-            avatar: string;
-        },
+        host?: UserProfileEntity,
         primaryColor: string;
     };
 }
 
 export const EventDrawerContentHost = ({
+    host,
     primaryColor,
 }: EventDrawerContentHost.Props) => {
-    const drawerDragYProgress = useDrawerDragYProgress();
-    const drawerContentDragYProgress = useDrawerContentDragYProgress();
+    const {
+        config,
+        drawerDragYProgress,
+        drawerContentDragYProgress,
+    } = useEventDrawerContext();
 
     const hostOpacity = useTransform<number, number>(
         [drawerDragYProgress, drawerContentDragYProgress],
         ([drawerY, contentY]) => {
             if(contentY > 0) {
-                if (contentY <= HERO_SECTION_OFFSET - 100) return 1;
-                if (contentY >= HERO_SECTION_OFFSET) return 0;
-                return (HERO_SECTION_OFFSET - contentY) / 100;
+                if (contentY <= config.heroSectionOffset - 100) return 1;
+                if (contentY >= config.heroSectionOffset) return 0;
+                return (config.heroSectionOffset - contentY) / 100;
             }
             if (drawerY >= 0.4) return 1;
             if (drawerY <= 0.1) return 0;
@@ -42,7 +43,7 @@ export const EventDrawerContentHost = ({
 
     return (
         <motion.div
-            className={styles.content__host}
+            className={styles.header__host}
             style={{
                 opacity: hostOpacity,
                 background: `linear-gradient(
@@ -55,10 +56,9 @@ export const EventDrawerContentHost = ({
                 )`,
             }}
         >
-            <HostedBy
-                avatar={"/assets/temp/avatar.png"}
-                name={"Jimmy Smith"}
-            />
+            <HostedBy avatar={host?.picture}>
+                { host?.fullName }
+            </HostedBy>
         </motion.div>
     );
 };

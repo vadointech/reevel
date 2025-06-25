@@ -3,6 +3,7 @@ import { InterestEntity } from "../interests";
 import { PointGeometry } from "@/components/shared/map/types/point/point";
 
 export enum EventVisibility {
+    HOST = "HOST",
     PUBLIC = "PUBLIC",
     PRIVATE = "PRIVATE",
 }
@@ -12,15 +13,16 @@ export type EventEntity = {
     title: string;
     description: string;
     poster: string;
-    primaryColor?: string;
+    primaryColor: string;
     location?: PointGeometry;
     ticketsAvailable?: number;
     ticketPrice?: number;
     visibility: EventVisibility;
-    dateTime: string;
-    hosts: UserProfileEntity;
+    dateTime: Date;
+    host: UserProfileEntity;
     interests: InterestEntity[];
     tickets: EventTicketEntity[];
+    attendees: UserProfileEntity[];
 };
 
 export type EventTicketEntity = {

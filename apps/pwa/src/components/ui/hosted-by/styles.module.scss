@@ -13,11 +13,11 @@
     color: colors.$foreground;
 
     &__text {
-        @include typography.font("sm")
-        //font-weight: 300;
-        //
-        //span {
-        //    font-weight: 400;
-        //}
+        display: flex;
+        flex-direction: column;
+
+        & > * {
+            @include typography.font("sm")
+        }
     }
 }

@@ -5,10 +5,10 @@ import {
     IconCycle,
 } from "@/components/icons";
 import styles from "../styles.module.scss";
-import { Variant } from "../../types";
+import { EventVisibility } from "@/entities/event";
 
 export type EventDrawerHeroButtonsProps = {
-    variant: Variant;
+    visibility?: EventVisibility;
     onJoin?: () => void;
     onShare?: () => void;
     onMore?: () => void;
@@ -17,23 +17,22 @@ export type EventDrawerHeroButtonsProps = {
 };
 
 export const EventDrawerHeroButtons = ({
-    variant = "public",
+    visibility = EventVisibility.PUBLIC,
     onJoin,
     onShare,
     onMore,
     onDecline,
     onSuggest,
 }: EventDrawerHeroButtonsProps) => {
-    switch (variant) {
-        case "public":
+    switch (visibility) {
+        case EventVisibility.PUBLIC:
             return (
                 <>
                     <button
                         className={cx(
-                            styles.hero__button,
-                            styles.hero__button_primary,
-                            styles.hero__button_primary_filled,
-                            styles.hero__button_join,
+                            styles.button,
+                            styles.button_primary,
+                            styles.button_join,
                         )}
                         onClick={onJoin}
                     >
@@ -42,8 +41,8 @@ export const EventDrawerHeroButtons = ({
                     </button>
                     <button
                         className={cx(
-                            styles.hero__button,
-                            styles.hero__button_share,
+                            styles.button,
+                            styles.button_share,
                         )}
                         onClick={onShare}
                     >
@@ -52,8 +51,8 @@ export const EventDrawerHeroButtons = ({
                     </button>
                     <button
                         className={cx(
-                            styles.hero__button,
-                            styles.hero__button_more,
+                            styles.button,
+                            styles.button_more,
                         )}
                         onClick={onMore}
                     >
@@ -62,15 +61,14 @@ export const EventDrawerHeroButtons = ({
                     </button>
                 </>
             );
-        case "private":
+        case EventVisibility.PRIVATE:
             return (
                 <>
                     <button
                         className={cx(
-                            styles.hero__button,
-                            styles.hero__button_primary,
-                            styles.hero__button_primary_outlined,
-                            styles.hero__button_accept,
+                            styles.button,
+                            styles.button_primary,
+                            styles.button_accept,
                         )}
                         onClick={onJoin}
                     >
@@ -79,8 +77,8 @@ export const EventDrawerHeroButtons = ({
                     </button>
                     <button
                         className={cx(
-                            styles.hero__button,
-                            styles.hero__button_decline,
+                            styles.button,
+                            styles.button_decline,
                         )}
                         onClick={onDecline}
                     >
@@ -89,8 +87,8 @@ export const EventDrawerHeroButtons = ({
                     </button>
                     <button
                         className={cx(
-                            styles.hero__button,
-                            styles.hero__button_suggest,
+                            styles.button,
+                            styles.button_suggest,
                         )}
                         onClick={onSuggest}
                     >
@@ -99,14 +97,14 @@ export const EventDrawerHeroButtons = ({
                     </button>
                 </>
             );
-        case "host":
+        case EventVisibility.HOST:
             return (
                 <>
                     <button
                         className={cx(
-                            styles.hero__button,
-                            styles.hero__button_primary,
-                            styles.hero__button_primary_outlined,
+                            styles.button,
+                            styles.button_primary,
+                            styles.button_share,
                         )}
                         onClick={onJoin}
                     >
@@ -115,15 +113,16 @@ export const EventDrawerHeroButtons = ({
                     </button>
                     <button
                         className={cx(
-                            styles.hero__button,
-                            styles.hero__button_settings,
+                            styles.button,
+                            styles.button_settings,
                         )}
                         onClick={onDecline}
                     >
                         <IconSettings />
                         Settings
                     </button>
-                </>);
+                </>
+            );
         default:
             return null;
     }

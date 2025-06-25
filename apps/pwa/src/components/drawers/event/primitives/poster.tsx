@@ -3,13 +3,9 @@
 import Image, { ImageProps } from "next/image";
 import { motion, useTransform } from "motion/react";
 
-import {
-    useDrawerContentDragYProgress,
-    useDrawerContentOverscrollYProgress,
-    useDrawerDragYProgress,
-} from "../../config/motion-values";
-
 import styles from "../styles.module.scss";
+import { useEventDrawerContext } from "@/components/drawers/event/event-drawer.context";
+import { useBottomSheet } from "@/components/shared/bottom-sheet";
 
 export namespace EventDrawerContentPoster {
     export type Data = ImageProps["src"];
@@ -19,9 +15,18 @@ export namespace EventDrawerContentPoster {
 }
 
 export const EventDrawerContentPoster = ({ src }: EventDrawerContentPoster.Props) => {
-    const drawerDragYProgress = useDrawerDragYProgress();
-    const drawerContentDragYProgress = useDrawerContentDragYProgress();
-    const dragOverscrollYProgress = useDrawerContentOverscrollYProgress();
+    const {
+        drawerDragYProgress,
+        drawerContentDragYPx,
+        drawerContentDragYProgress,
+    } = useEventDrawerContext();
+
+    const dragOverscrollYProgress = useTransform(
+        drawerContentDragYPx,
+        (val) => {
+            return val > 0 ? val : 0;
+        },
+    );
 
     const posterScrew = useTransform(dragOverscrollYProgress, (val) => {
         return 1 + val / 1000;
@@ -36,7 +41,7 @@ export const EventDrawerContentPoster = ({ src }: EventDrawerContentPoster.Props
 
     return (
         <motion.div
-            className={styles.content__poster}
+            className={styles.poster}
             style={{
                 y: posterTranslate,
                 scaleY: posterScrew,

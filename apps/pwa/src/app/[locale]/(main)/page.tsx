@@ -16,6 +16,9 @@ export default function Home() {
             <Link href={"/discover"}>
                 To Discover
             </Link>
+            <Link href={"/event/public/1"}>
+                To Event
+            </Link>
         </div>
     );
 }

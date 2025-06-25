@@ -26,3 +26,22 @@ export const ScrollSection = ({
         </Section>
     );
 };
+
+export const NativeScrollSection = ({
+    container = true,
+    children,
+    ...props
+}: ScrollSection.Props) => {
+    return (
+        <Section {...props} container={container}>
+            <div style={{
+                display: "flex",
+                columnGap: 12,
+                width: "100%",
+                overflow: "auto",
+            }}>
+                { children }
+            </div>
+        </Section>
+    );
+};

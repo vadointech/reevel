@@ -3,7 +3,7 @@ import { formInterestsEntitySchema } from "@/features/interests/picker/interests
 import { iconPoint } from "@/lib/zod/validators";
 
 export const createEventFormSchema = z.object({
-    visibility: z.enum(["PUBLIC", "PRIVATE"]),
+    visibility: z.enum(["PUBLIC", "PRIVATE", "HOST"]),
     title: z.string().min(1),
     description: z.string().min(1),
     poster: z.object({
