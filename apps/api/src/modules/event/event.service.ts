@@ -40,7 +40,7 @@ export class EventService {
     async createEvent(session: Session, input: CreateEventDto): Promise<EventsEntity> {
         try {
             const {
-                location,
+                locationPoint,
                 interests,
                 ...newEvent
             } = input;
@@ -54,9 +54,9 @@ export class EventService {
             return this.dataSource.transaction(async entityManager => {
                 const event = await this.eventRepository.createAndSave({
                     ...newEvent,
-                    location: {
+                    locationPoint: {
                         type: "Point",
-                        coordinates: location,
+                        coordinates: locationPoint,
                     },
                 }, entityManager);
 
@@ -90,7 +90,7 @@ export class EventService {
             }
 
             const {
-                location,
+                locationPoint,
                 interests,
                 ...newEvent
             } = input;
@@ -102,23 +102,26 @@ export class EventService {
                 }
             }
 
-            Object.assign(event, newEvent, {
-                location: location ? {
-                    type: "Point",
-                    coordinates: location,
-                } : event.location,
+            return this.dataSource.transaction(async entityManager => {
+                const event = await this.eventRepository.createAndSave({
+                    ...newEvent,
+                    locationPoint: {
+                        type: "Point",
+                        coordinates: locationPoint,
+                    },
+                }, entityManager);
+
+                if(interests && interests.length > 0) {
+                    event.interests = await this.eventInterestsRepository.updateInterests(
+                        event.id,
+                        interests,
+                        entityManager,
+                    );
+                }
+                return event;
             });
-
-            await this.eventRepository.createAndSave(event);
-
-            event.interests = await this.dataSource.transaction(async entityManager => {
-                if(!interests) return event.interests;
-                return this.eventInterestsRepository.updateInterests(eventId, interests, entityManager);
-            });
-
-            return event;
         } catch(error) {
-            this.logger.error(`Unexpected error updating event: ${error.message}`, error.stack);
+            this.logger.error(`Unexpected error creating event: ${error.message}`, error.stack);
             throw new BadRequestException();
         }
     }
@@ -173,7 +176,7 @@ export class EventService {
 
         query.where(
             `ST_DWithin(
-            event.location,
+            event.locationPoint,
             ST_SetSRID(ST_MakePoint(:lon, :lat), 4326)::geography,
             :radius
         )`,

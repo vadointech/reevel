@@ -42,7 +42,7 @@ export const RecommendationCard = ({
                     size={"small"}
                     className={styles.card__place}
                 >
-                    { event.location.type }
+                    { event.locationTitle }
                 </LocationBadge>
                 <h2 className={styles.card__title}>
                     { event.title }

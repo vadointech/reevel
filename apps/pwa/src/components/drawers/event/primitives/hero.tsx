@@ -15,7 +15,6 @@ import { EventEntity } from "@/entities/event";
 
 import styles from "../styles.module.scss";
 
-
 export namespace EventDrawerContentHero {
     export type Data = EventEntity;
     export type Props = Data;
@@ -24,7 +23,7 @@ export namespace EventDrawerContentHero {
 export const EventDrawerContentHero = ({
     primaryColor = "red",
     title,
-    location,
+    locationTitle,
     ticketPrice,
     visibility,
     description,
@@ -51,7 +50,6 @@ export const EventDrawerContentHero = ({
             0,
         ],
     );
-
 
     return (
         <div className={styles.hero}>
@@ -88,7 +86,7 @@ export const EventDrawerContentHero = ({
                 <div className={styles.hero__date}>
                     <div className={styles.hero__date_item}>
                         <IconLocation />
-                        { location?.type }
+                        { locationTitle }
                     </div>
                     <div className={styles.hero__date_item}>
                         <IconCalendar />
@@ -99,7 +97,11 @@ export const EventDrawerContentHero = ({
                     <EventDrawerHeroButtons visibility={visibility} />
                 </div>
                 <div className={styles.hero__price}>
-                    { ticketPrice } ₴
+                    {
+                        ticketPrice ? (
+                            ticketPrice + "₴"
+                        ) : "Free"
+                    }
                     <AttendersSection users={tickets.map(item => item.user.profile)} />
                 </div>
                 <EventDrawerContentDescription>

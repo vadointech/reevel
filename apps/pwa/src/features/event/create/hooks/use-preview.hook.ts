@@ -63,7 +63,6 @@ export function useCreateEventPreview(params: Params = {}) {
         const { success, data } = createEventFormSchema.safeParse(formValues);
         if(!success || !data) return;
 
-        const location = data.location.geometry.coordinates;
         const interests = data.interests.map(item => item.slug);
         const visibility = data.visibility as EventVisibility;
 
@@ -98,7 +97,8 @@ export function useCreateEventPreview(params: Params = {}) {
             poster: data.poster.fileUrl,
             posterFieldId: data.poster.id,
             visibility,
-            location,
+            locationPoint: data.location.geometry.coordinates,
+            locationTitle: data.location.properties.label,
             interests,
             startDate,
             endDate,

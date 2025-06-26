@@ -15,7 +15,8 @@ export type EventEntity = {
     poster: string;
     primaryColor: string;
     visibility: EventVisibility;
-    location: PointGeometry;
+    locationPoint: PointGeometry;
+    locationTitle: string;
     startDate: Date;
     endDate?: Date;
 

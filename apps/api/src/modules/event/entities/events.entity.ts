@@ -29,7 +29,10 @@ export class EventsEntity {
     primaryColor?: string;
 
     @Column("geography", { nullable: true, spatialFeatureType: "Point", srid: 4326 })
-    location?: Point;
+    locationPoint?: Point;
+
+    @Column()
+    locationTitle: string;
 
     @Column({ nullable: true })
     ticketsAvailable?: number;

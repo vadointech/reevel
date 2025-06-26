@@ -38,12 +38,12 @@ export async function EventAttendeePublicViewPage({ eventId, callbackUrl }: Even
                 >
                     <ScrollSection size={"small"}>
                         {
-                            Array.from({ length: 8 }).map((_, index) => (
+                            event.interests.map(interest => (
                                 <InterestButton
-                                    key={index}
-                                    icon={"🥊"}
+                                    key={interest.interestId}
+                                    icon={interest.interest.icon}
                                 >
-                                    Boxing
+                                    { interest.interest.title_uk }
                                 </InterestButton>
                             ))
                         }

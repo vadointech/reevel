@@ -8,13 +8,13 @@ class EventEntityMapper<T extends EventEntity = EventEntity> {
         const points: Point<EventPoint>[] = [];
 
         input.forEach(event => {
-            if(event.id && event.location) {
+            if(event.id && event.locationPoint) {
                 points.push({
                     id: event.id,
                     type: "Feature",
                     geometry: {
                         type: "Point",
-                        coordinates: event.location.coordinates,
+                        coordinates: event.locationPoint.coordinates,
                     },
                     properties: {
                         id: event.id,
