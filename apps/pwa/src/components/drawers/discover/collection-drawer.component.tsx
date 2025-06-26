@@ -1,6 +1,6 @@
 "use client";
 
-import { ReactNode } from "react";
+import { PropsWithChildren } from "react";
 import { Link } from "@/i18n/routing";
 import { motion, useMotionValue, useTransform } from "motion/react";
 
@@ -14,24 +14,28 @@ import {
 import { Header, InterestButton, OptionsList, PreviewCard, Scroll } from "@/components/ui";
 import { IconArrowLeft, IconSearch } from "@/components/icons";
 import { RecommendationCard } from "@/components/ui/cards";
-import { GOOGLE_PLACES_API_INCLUDED_TYPES } from "@/features/location/picker";
+
+import { InterestEntity } from "@/entities/interests";
+import { EventEntity } from "@/entities/event";
 
 import styles from "./styles/collection-drawer.module.scss";
 
 export namespace DiscoverCollectionDrawer {
-    export type Props = {
-        title: string | ReactNode;
-        events: PreviewCard.Data[]
+    export type Data = {
+        interests: InterestEntity[]
+        events: EventEntity[]
     };
+    export type Props = PropsWithChildren<Data>;
 }
 
 export const DiscoverCollectionDrawer = ({
-    title,
     events,
+    interests,
+    children,
 }: DiscoverCollectionDrawer.Props) => {
     const dragYProgress = useMotionValue(0);
 
-    const transitionRange = [.2, 0.5];
+    const transitionRange = [0, 0.4];
 
     const opacity1 = useTransform(dragYProgress, transitionRange, [1, 0]);
     const y1 = useTransform(dragYProgress, transitionRange, [0, 80]);
@@ -53,7 +57,7 @@ export const DiscoverCollectionDrawer = ({
             defaultSnapPointIndex={2}
         >
             <BottomSheetPortal>
-                <BottomSheetBody style={{ height: "100%" }} dragYProgress={dragYProgress}>
+                <BottomSheetBody dragYProgress={dragYProgress} style={{ height: "100%" }} >
                     <div
                         className={styles.drawer__scroll}
                         style={{ position: "relative", height: 38 }}
@@ -69,13 +73,10 @@ export const DiscoverCollectionDrawer = ({
                         >
                             <Scroll dragFree={false}>
                                 {
-                                    Array.from({ length: 8 }).map((_, index) => (
+                                    events.map(event => (
                                         <RecommendationCard
-                                            key={index}
-                                            location={"ТЦ SkyPark"}
-                                            title={"Happy Valentine’s Day Party"}
-                                            description={"Contrary to popular belief, Lorem Ipsum is not simply random text..."}
-                                            image={"/assets/temp/carousel2.jpg"}
+                                            key={event.id}
+                                            event={event}
                                         />
                                     ))
                                 }
@@ -96,7 +97,7 @@ export const DiscoverCollectionDrawer = ({
                                     layout={"icon"}
                                 />
                                 {
-                                    GOOGLE_PLACES_API_INCLUDED_TYPES.display.map(item => (
+                                    interests.map(item => (
                                         <InterestButton
                                             key={item.slug}
                                             icon={item.icon}
@@ -119,14 +120,17 @@ export const DiscoverCollectionDrawer = ({
                                     </Link>
                                 }
                             >
-                                { title }
+                                { children }
                             </Header>
                         </BottomSheetHandle>
                         <BottomSheetScrollable className={styles.drawer__list}>
                             <OptionsList>
                                 {
-                                    events.map((event, index) => (
-                                        <PreviewCard key={index} {...event} />
+                                    events.map(event => (
+                                        <PreviewCard
+                                            key={event.id}
+                                            event={event}
+                                        />
                                     ))
                                 }
                             </OptionsList>

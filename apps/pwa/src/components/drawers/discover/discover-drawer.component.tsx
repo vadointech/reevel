@@ -10,21 +10,23 @@ import {
 } from "@/components/shared/bottom-sheet";
 
 import { Avatar, CollectionCard, EventCard, Input, InterestButton, Scroll } from "@/components/ui";
-import { GOOGLE_PLACES_API_INCLUDED_TYPES } from "@/features/location/picker";
 import { IconStars } from "@/components/icons";
 import { ScrollSection } from "@/components/sections";
 import { BottomSheetExternalController } from "@/components/shared/bottom-sheet/types";
+import { InterestEntity } from "@/entities/interests";
 
 import styles from "./styles/discover-drawer.module.scss";
 
 export namespace DiscoverDrawer {
     export type Props = {
+        interests: InterestEntity[]
         controller?: BottomSheetExternalController
         onSnapPointChange?: (snapPointIndex: number) => void;
     };
 }
 
 export const DiscoverDrawer = ({
+    interests,
     controller,
     onSnapPointChange,
 }: DiscoverDrawer.Props) => {
@@ -50,7 +52,7 @@ export const DiscoverDrawer = ({
                                 Randomize
                             </InterestButton>
                             {
-                                GOOGLE_PLACES_API_INCLUDED_TYPES.display.map(item => (
+                                interests.map(item => (
                                     <InterestButton
                                         key={item.slug}
                                         icon={item.icon}

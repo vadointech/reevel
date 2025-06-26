@@ -1,7 +1,7 @@
 import { headers } from "next/headers";
+import { getCurrentUserInterests } from "@/api/user/server";
 import { getUserMapInternalConfig } from "@/components/shared/map/utils";
 import { MapRootProvider } from "@/components/shared/map/map.provider";
-import { QueryClient } from "@tanstack/react-query";
 import { GetNearbyEventsQueryBuilder } from "@/features/event/discover/queries";
 import { DiscoverScreen } from "@/components/screens/discover";
 
@@ -10,23 +10,26 @@ export namespace DiscoverPage {
 }
 
 export async function DiscoverPage() {
-    const queryClient = new QueryClient();
-
     const mapConfig = await getUserMapInternalConfig();
     const mapProvider = new MapRootProvider(mapConfig);
 
     const { bounds, center } = mapProvider.internalConfig.viewState;
     const radius = mapProvider.getHorizontalRadius(bounds, center);
 
-    const eventsInit = await queryClient.fetchQuery(
-        GetNearbyEventsQueryBuilder({
-            center,
-            radius,
-            nextHeaders: await headers(),
-        }),
-    );
+    const eventsInit = await GetNearbyEventsQueryBuilder.queryFunc({
+        center,
+        radius,
+        nextHeaders: await headers(),
+    });
+
+    const { data: interests } = await getCurrentUserInterests({
+        nextHeaders: await headers(),
+    });
 
     return (
-        <DiscoverScreen eventsInit={eventsInit} />
+        <DiscoverScreen
+            interestsInit={interests?.map(item => item.interest) || []}
+            eventsInit={eventsInit}
+        />
     );
 }

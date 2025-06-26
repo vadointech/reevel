@@ -1,7 +1,7 @@
 import {
     Body,
     Controller,
-    Delete,
+    Delete, Get,
     HttpCode,
     HttpStatus,
     Param,
@@ -59,12 +59,20 @@ export class EventController {
         return this.eventService.deleteEvent(session, eventId);
     }
 
+    @Public()
+    @Get(":eventId")
+    async getEventById(
+        @Param("eventId") eventId: string,
+    ) {
+        return this.eventService.getEventById(eventId);
+    }
+
+    @Public()
     @Post("nearby")
     @HttpCode(HttpStatus.OK)
     async getNearbyEvents(
         @Body() body: GetNearbyEventsDto,
-        @Session() session: ServerSession,
     ) {
-        return this.eventService.getNearbyEvents(session, body);
+        return this.eventService.getNearbyEvents(body);
     }
 }

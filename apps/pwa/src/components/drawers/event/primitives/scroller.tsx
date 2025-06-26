@@ -2,8 +2,9 @@
 
 import { useEffect, useRef, useState, PropsWithChildren, PointerEvent } from "react";
 import { BoundingBox, motion, useDragControls } from "motion/react";
+
 import { useBottomSheet } from "@/components/shared/bottom-sheet";
-import { useEventDrawerContext } from "@/components/drawers/event/event-drawer.context";
+import { useEventDrawerContext } from "../event-drawer.context";
 
 export namespace EventDrawerContentScroller {
     export type Props = PropsWithChildren;

@@ -105,7 +105,7 @@ export class Fetcher implements IFetcher {
         });
 
         if (!response.ok) {
-            console.log(response);
+            // console.log(response);
             return fetcherResponse;
             // throw new FetcherError(fetcherResponse);
         }

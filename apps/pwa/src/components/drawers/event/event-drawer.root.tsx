@@ -13,11 +13,12 @@ import {
 import { EventDrawerConfigParams } from "./types";
 
 export namespace EventDrawerRoot {
-    export type Props = PropsWithChildren<Partial<EventDrawerConfigParams>>;
+    export type Props = PropsWithChildren<EventDrawerConfigParams>;
 }
 
 export const EventDrawerRoot = ({
     children,
+    callbackUrl,
     heroSectionOffset = 350,
 }: EventDrawerRoot.Props) => {
     const drawerDragYProgress = useMotionValue(0);
@@ -36,7 +37,7 @@ export const EventDrawerRoot = ({
                 drawerDragYProgress,
                 drawerContentDragYPx,
                 drawerContentDragYProgress,
-                config: { heroSectionOffset },
+                config: { heroSectionOffset, callbackUrl },
             }}
         >
             <BottomSheetRoot

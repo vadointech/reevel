@@ -1,34 +1,28 @@
 import { ComponentProps } from "react";
 import Image from "next/image";
-import { UserProfileEntity } from "@/entities/profile";
-import { useLocale } from "next-intl";
+import { useCreateEventFormFieldFormatter } from "@/features/event/create";
 import { IconCalendar } from "@/components/icons";
-import { formatDate } from "@/utils/time";
 import { AttendersSection } from "@/components/ui";
+
+import { EventEntity } from "@/entities/event";
 
 import styles from "./styles.module.scss";
 import cx from "classnames";
 
 export namespace PreviewCard {
     export type Data = {
-        title: string;
-        date: Date;
-        image: string;
-        attendees: UserProfileEntity[];
+        event: EventEntity
     };
     export type Props = ComponentProps<"div"> & Data;
 }
 
 export const PreviewCard = ({
-    title,
-    date,
-    image,
-    attendees,
+    event,
     className,
     ...props
 }: PreviewCard.Props) => {
-    const locale = useLocale();
-    const formattedDate = formatDate(date, locale);
+
+    const formatter = useCreateEventFormFieldFormatter();
 
     return (
         <div
@@ -38,8 +32,8 @@ export const PreviewCard = ({
             <div className={styles.card__content}>
                 <div className={styles.card__image}>
                     <Image
-                        alt={title}
-                        src={image}
+                        alt={event.title}
+                        src={event.poster}
                         fill
                         style={{ objectFit: "cover" }}
                         priority
@@ -48,13 +42,13 @@ export const PreviewCard = ({
                 <div className={styles.card__info}>
                     <div className={styles.card__info__date}>
                         <IconCalendar />
-                        {formattedDate}
+                        { formatter.formatDate(event.startDate) }
                     </div>
                     <div className={styles.card__info__title}>
-                        {title}
+                        { event.title }
                     </div>
 
-                    <AttendersSection size="small" users={attendees} />
+                    <AttendersSection size={"small"} users={event.tickets.map(item => item.user.profile)} />
                 </div>
             </div>
         </div>

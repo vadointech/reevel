@@ -1,23 +1,24 @@
 import { ComponentProps } from "react";
 import { motion, useTransform } from "motion/react";
 
+import { useEventDrawerContext } from "../event-drawer.context";
 import { hexToRgba } from "@/utils/hex-to-rgba";
 
 import { HostedBy } from "@/components/ui/hosted-by";
 
+import { EventHostEntity } from "@/entities/event";
+
 import styles from "../styles.module.scss";
-import { UserProfileEntity } from "@/entities/profile";
-import { useEventDrawerContext } from "@/components/drawers/event/event-drawer.context";
 
 export namespace EventDrawerContentHost {
     export type Props = ComponentProps<"div"> & {
-        host?: UserProfileEntity,
+        hosts: EventHostEntity[],
         primaryColor: string;
     };
 }
 
 export const EventDrawerContentHost = ({
-    host,
+    hosts,
     primaryColor,
 }: EventDrawerContentHost.Props) => {
     const {
@@ -56,9 +57,13 @@ export const EventDrawerContentHost = ({
                 )`,
             }}
         >
-            <HostedBy avatar={host?.picture}>
-                { host?.fullName }
-            </HostedBy>
+            {
+                hosts.map(item => (
+                    <HostedBy avatar={item.user.profile.picture}>
+                        { item.user.profile.fullName }
+                    </HostedBy>
+                ))
+            }
         </motion.div>
     );
 };

@@ -4,33 +4,32 @@ import { PlaceLocationEntity } from "@/entities/place";
 import { QueryBuilder } from "@/lib/react-query/types";
 
 export namespace GetLocationByCoordinatesQueryBuilder {
-    export type TInput = Omit<GetLocationByCoordinates.TParams, "access_token"> & {
-        signal?: AbortSignal;
-    };
+    export type TInput = Omit<GetLocationByCoordinates.TParams, "access_token">;
     export type TParams = Partial<Omit<GetLocationByCoordinates.TParams, "access_token">> & {
         accessToken: string;
     };
 }
 
-export const GetLocationByCoordinatesQueryBuilder: QueryBuilder<GetLocationByCoordinatesQueryBuilder.TInput, PlaceLocationEntity[], GetLocationByCoordinatesQueryBuilder.TParams> = ({
-    accessToken,
-    ...params
-}) => {
-    return ({ signal, ...input }) => {
+export const GetLocationByCoordinatesQueryBuilder: QueryBuilder<GetLocationByCoordinatesQueryBuilder.TInput, PlaceLocationEntity[], GetLocationByCoordinatesQueryBuilder.TParams> = (
+    injected,
+) => {
+    return (input) => {
         return {
             queryKey: GetLocationByCoordinatesQueryBuilder.queryKey([input.longitude, input.latitude]),
-            queryFn: () => getLocationByCoordinates({
-                params: {
-                    access_token: accessToken,
-                    ...params,
-                    ...input,
-                },
-                signal: signal,
-            })
-                .then(response => response.data || { features: [] })
-                .then(mapboxFeaturesResponseMapper.toPlaceLocationEntity),
+            queryFn: () => GetLocationByCoordinatesQueryBuilder.queryFunc({...input, ...injected}),
         };
     };
+};
+
+GetLocationByCoordinatesQueryBuilder.queryFunc = ({ accessToken, ...input }) => {
+    return getLocationByCoordinates({
+        params: {
+            access_token: accessToken,
+            ...input,
+        },
+    })
+        .then(response => response.data || { features: [] })
+        .then(mapboxFeaturesResponseMapper.toPlaceLocationEntity);
 };
 
 GetLocationByCoordinatesQueryBuilder.queryKey = (params = []) => {

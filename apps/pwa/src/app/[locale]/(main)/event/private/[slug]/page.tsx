@@ -1,5 +1,5 @@
-import { EventAttendeePrivateViewPage } from "@/flows/event-view/pages";
+import { EventAttendeePublicViewPage } from "@/flows/event-view/pages";
 
 export default function Page() {
-    return <EventAttendeePrivateViewPage />;
+    return <EventAttendeePublicViewPage eventId={""} callbackUrl={""} />;
 }

@@ -1,13 +1,17 @@
-import { FetcherFetchFunc } from "./fetcher";
+import { IFetcher, FetcherFetchFunc } from "./fetcher";
 import { IFetcherRequestConfig } from "./request";
 
 export type FetcherClientFetchOptions<Input, Output, Params extends Record<string, any>> = {
-    fetcherFunc: (fetcher: Fetcher, input: Partial<IFetcherRequestConfig<Input, Params>>) => Promise<IFetcherResponse<Output>>;
+    fetcherFunc: (fetcher: IFetcher, input: Partial<IFetcherRequestConfig<Input, Params>>) => Promise<IFetcherResponse<Output>>;
 };
 
 export type FetcherClientCacheOptions<Input, Output, Params extends Record<string, any>> = {
     fetchFunc: FetcherFetchFunc<Input, Output, Params>;
     queryKey: string[];
+    cache?: {
+        tags?: string | undefined;
+        revalidate?: number | undefined;
+    }
 };
 
 export interface IFetcherClient {

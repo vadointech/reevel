@@ -13,20 +13,23 @@ export namespace GetBatchLocationByNameQueryBuilder {
 }
 
 export const GetBatchLocationByNameQueryBuilder: QueryBuilderQuery<GetBatchLocationByNameQueryBuilder.TInput, PlaceLocationEntity[]> = (
-    { signal, ...input }: GetBatchLocationByNameQueryBuilder.TInput,
+    input: GetBatchLocationByNameQueryBuilder.TInput,
 ): FetchQueryOptions<PlaceLocationEntity[]> => {
     return {
         queryKey: GetBatchLocationByNameQueryBuilder.queryKey(),
-        queryFn: () => getBatchPlaceByName({
-            body: input.request,
-            params: {
-                access_token: input.accessToken,
-            },
-            signal,
-        })
-            .then(response => response.data || { batch: [] })
-            .then(mapboxBatchFeaturesResponseMapper.toPlaceLocationEntity),
+        queryFn: () => GetBatchLocationByNameQueryBuilder.queryFunc(input),
     };
+};
+
+GetBatchLocationByNameQueryBuilder.queryFunc = (input) => {
+    return getBatchPlaceByName({
+        body: input.request,
+        params: {
+            access_token: input.accessToken,
+        },
+    })
+        .then(response => response.data || { batch: [] })
+        .then(mapboxBatchFeaturesResponseMapper.toPlaceLocationEntity);
 };
 
 GetBatchLocationByNameQueryBuilder.queryKey = (params = []) => {

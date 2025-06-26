@@ -5,48 +5,32 @@ import cx from "classnames";
 import styles from "./styles.module.scss";
 import { LocationBadge } from "@/components/ui/location";
 import { hexToRgba } from "@/utils/hex-to-rgba";
+import { EventEntity } from "@/entities/event";
 
 export namespace RecommendationCard {
-    export type Props = ComponentProps<"div"> & {
-        title: string;
-        image: string;
-        location: string;
-        description: string;
-        primaryColor?: string;
+    export type Data = {
+        event: EventEntity
     };
+    export type Props = ComponentProps<"div"> & Data;
 }
 
-const DEFAULT_PRIMARY_COLOR = "#0A192F";
-
 export const RecommendationCard = ({
-    title,
-    location,
-    image,
-    description,
-    primaryColor = DEFAULT_PRIMARY_COLOR,
+    event,
     className,
     ...props
 }: RecommendationCard.Props) => (
     <div
         className={cx(styles.card, className)}
         style={{
-            background: `linear-gradient(
-                115deg,
-                ${hexToRgba(primaryColor, 0.9)} 60%,
-                ${hexToRgba(primaryColor, 0.7)} 70%,
-                ${hexToRgba(primaryColor, 0.4)} 80%,
-                ${hexToRgba(primaryColor, 0.2)} 88%,
-                ${hexToRgba(primaryColor, 0.05)} 95%,
-                ${hexToRgba(primaryColor, 0)} 100%
-            )`,
+            background: `${hexToRgba(event.primaryColor, 0.8)}`,
         }}
         {...props}
     >
         <div className={styles.card__content}>
             <div className={styles.card__image}>
                 <Image
-                    alt={title}
-                    src={image}
+                    alt={event.title}
+                    src={event.poster}
                     width={122}
                     height={122}
                     style={{ objectFit: "cover" }}
@@ -58,10 +42,14 @@ export const RecommendationCard = ({
                     size={"small"}
                     className={styles.card__place}
                 >
-                    { location }
+                    { event.location.type }
                 </LocationBadge>
-                <h2 className={styles.card__title}>{title}</h2>
-                <p className={styles.card__description}>{description}</p>
+                <h2 className={styles.card__title}>
+                    { event.title }
+                </h2>
+                <p className={styles.card__description}>
+                    { event.description }
+                </p>
             </div>
         </div>
     </div>

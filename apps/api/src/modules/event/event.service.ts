@@ -144,7 +144,28 @@ export class EventService {
         );
     }
 
-    async getNearbyEvents(session: Session, input: GetNearbyEventsDto) {
+    async getEventById(eventId: string) {
+        return this.eventRepository.findOne({
+            where: { id: eventId },
+            relations: {
+                hosts: {
+                    user: {
+                        profile: true,
+                    },
+                },
+                interests: {
+                    interest: true,
+                },
+                tickets: {
+                    user: {
+                        profile: true,
+                    },
+                },
+            },
+        });
+    }
+
+    async getNearbyEvents(input: GetNearbyEventsDto) {
         const { center, radius } = input.circle;
         const take = input.take || 10;
 
@@ -162,6 +183,18 @@ export class EventService {
                 radius: radius,
             },
         );
+
+        query
+            .leftJoinAndSelect("event.hosts", "host")
+            .leftJoinAndSelect("host.user", "hostUser")
+            .leftJoinAndSelect("hostUser.profile", "userProfile")
+
+            .leftJoinAndSelect("event.interests", "interestLink")
+            .leftJoinAndSelect("interestLink.interest", "interestData")
+
+            .leftJoinAndSelect("event.tickets", "ticket")
+            .leftJoinAndSelect("ticket.user", "ticketUser")
+            .leftJoinAndSelect("ticketUser.profile", "ticketProfile");
 
         query.take(take);
 

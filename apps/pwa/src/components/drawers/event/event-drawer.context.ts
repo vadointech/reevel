@@ -2,13 +2,13 @@
 
 import { createContext, useContext } from "react";
 import { MotionValue } from "motion/react";
-import { EventDrawerConfigParams } from "./types";
+import { EventDrawerConfig } from "./types";
 
 type EventDrawerContextValues = {
     drawerDragYProgress: MotionValue<number>;
     drawerContentDragYPx: MotionValue<number>;
     drawerContentDragYProgress: MotionValue<number>;
-    config: EventDrawerConfigParams;
+    config: EventDrawerConfig;
 };
 
 export const EventDrawerContext = createContext<EventDrawerContextValues | null>(null);

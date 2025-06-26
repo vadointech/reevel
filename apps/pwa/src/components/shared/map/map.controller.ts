@@ -47,11 +47,21 @@ export class MapRootController implements IMapRootController {
             }
 
             if(init.handlers) {
-                this._externalHandlers = init.handlers;
+                this.attachHandlers(init.handlers);
             }
 
             this.syncViewState(this._provider.current.internalConfig.viewState, true);
         }
+    }
+
+    attachHandlers(handlers: Partial<IMapHandlers>) {
+        this._externalHandlers = handlers;
+    }
+
+    detachHandlers(handlers: Array<keyof IMapHandlers>) {
+        handlers.forEach(handler => {
+            delete this._externalHandlers[handler];
+        });
     }
 
     detachMap() {

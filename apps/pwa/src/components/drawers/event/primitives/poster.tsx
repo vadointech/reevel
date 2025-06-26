@@ -3,9 +3,9 @@
 import Image, { ImageProps } from "next/image";
 import { motion, useTransform } from "motion/react";
 
+import { useEventDrawerContext } from "../event-drawer.context";
+
 import styles from "../styles.module.scss";
-import { useEventDrawerContext } from "@/components/drawers/event/event-drawer.context";
-import { useBottomSheet } from "@/components/shared/bottom-sheet";
 
 export namespace EventDrawerContentPoster {
     export type Data = ImageProps["src"];

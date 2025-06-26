@@ -2,7 +2,8 @@
 
 import { ReactNode } from "react";
 import { motion, useTransform } from "motion/react";
-import { useEventDrawerContext } from "@/components/drawers/event/event-drawer.context";
+
+import { useEventDrawerContext } from "../event-drawer.context";
 
 import styles from "../styles.module.scss";
 

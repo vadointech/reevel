@@ -1,10 +1,11 @@
 import { usePersistentMap } from "@/components/shared/map";
-import { useCallback, useMemo, useRef } from "react";
+import { useCallback, useEffect, useRef } from "react";
 import { useSpatialCache } from "@/features/spatial-cache/use-spatial-cache.hook";
 import { MapInternalConfig } from "@/components/shared/map/types";
 import { EventEntity } from "@/entities/event";
 import { eventEntityMapper } from "@/entities/event/mapper";
 import { GetNearbyEventsQueryBuilder } from "@/features/event/discover/queries";
+import { useRouter } from "@/i18n/routing";
 
 const PICKER_MAP_PADDING = {
     bottom: 260,
@@ -12,12 +13,8 @@ const PICKER_MAP_PADDING = {
 
 export function useDiscoverDrawerMap(eventsInit: EventEntity[]) {
     const map = usePersistentMap();
-
+    const router = useRouter();
     const preventMapUpdate = useRef<boolean>(false);
-
-    const defaultPoints = useMemo(() => {
-        return eventEntityMapper.toEventPoint(eventsInit);
-    }, [eventsInit]);
 
     const appendResponse = (response?: EventEntity[]) => {
         map.controller.current.appendPoints(eventEntityMapper.toEventPoint(response));
@@ -54,11 +51,25 @@ export function useDiscoverDrawerMap(eventsInit: EventEntity[]) {
         }
     }, []);
 
+    const handleSelectPoint = useCallback((pointId: string | null) => {
+        if(pointId) router.push("/discover/event/" + pointId);
+        else router.push("/discover");
+    }, []);
+
+
+    useEffect(() => {
+        map.controller.current.attachHandlers({
+            onMapReady: precacheSpatialData,
+            onMoveEnd: handleViewportChange,
+            onPointSelect: handleSelectPoint,
+        });
+
+        return () => {
+            map.controller.current.detachHandlers(["onMapReady", "onViewportChange", "onPointSelect"]);
+        };
+    }, [precacheSpatialData, handleViewportChange, handleSelectPoint]);
+
     return {
-        PICKER_MAP_PADDING,
-        defaultPoints,
-        handleViewportChange,
         handlePickerSnapPointChange,
-        handlePrecacheSpatialData: precacheSpatialData,
     };
 }

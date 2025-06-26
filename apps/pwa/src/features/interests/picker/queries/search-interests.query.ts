@@ -8,17 +8,21 @@ export namespace SearchInterestsQueryBuilder {
     };
 }
 
-export const SearchInterestsQueryBuilder: QueryBuilderQuery<SearchInterestsQueryBuilder.TInput, GetInterestsByTitle.TOutput> = ({
-    query,
-}: SearchInterestsQueryBuilder.TInput): FetchQueryOptions<GetInterestsByTitle.TOutput> => {
+export const SearchInterestsQueryBuilder: QueryBuilderQuery<SearchInterestsQueryBuilder.TInput, GetInterestsByTitle.TOutput> = (
+    input: SearchInterestsQueryBuilder.TInput,
+): FetchQueryOptions<GetInterestsByTitle.TOutput> => {
     return {
-        queryKey: SearchInterestsQueryBuilder.queryKey([query]),
-        queryFn: () => getInterestsByTitle({
-            params: {
-                title_en: query,
-            },
-        }).then(response => response.data || []),
+        queryKey: SearchInterestsQueryBuilder.queryKey([input.query]),
+        queryFn: () => SearchInterestsQueryBuilder.queryFunc(input),
     };
+};
+
+SearchInterestsQueryBuilder.queryFunc = (input) => {
+    return getInterestsByTitle({
+        params: {
+            title_en: input.query,
+        },
+    }).then(response => response.data || []);
 };
 
 SearchInterestsQueryBuilder.queryKey = (params = []) => {

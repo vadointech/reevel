@@ -14,9 +14,13 @@ export const GetRelatedInterestsQueryBuilder: QueryBuilderQuery<GetRelatedIntere
 ): FetchQueryOptions<GetRelatedInterestsQueryBuilder.TOutput> => {
     return {
         queryKey: GetRelatedInterestsQueryBuilder.queryKey([input.slug]),
-        queryFn: () => getRelatedInterests({ body: input })
-            .then(response => response.data || []),
+        queryFn: () => GetRelatedInterestsQueryBuilder.queryFunc(input),
     };
+};
+
+GetRelatedInterestsQueryBuilder.queryFunc = (input) => {
+    return getRelatedInterests({ body: input })
+        .then(response => response.data || []);
 };
 
 GetRelatedInterestsQueryBuilder.queryKey = (params = []) => {

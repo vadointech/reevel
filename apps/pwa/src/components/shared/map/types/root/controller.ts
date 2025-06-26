@@ -23,6 +23,17 @@ export interface IMapRootController {
     ): void;
 
     /**
+     * Attaches the provided handlers to the corresponding events on the map.
+     *
+     * @param {Partial<IMapHandlers>} handlers - An object containing the event handlers to be attached. Each key in the object corresponds to an event type, and the value is the handler function for that event. Only the specified keys will be attached.
+     * @return {void} This method does not return a value.
+     */
+    attachHandlers(handlers: Partial<IMapHandlers>): void;
+
+
+    detachHandlers(handlers: Array<keyof IMapHandlers>): void;
+
+    /**
      * A function that detaches or removes a mapped relationship or reference within a data structure.
      * Typically used to disassociate or clean up mappings within a program.
      */

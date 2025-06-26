@@ -18,21 +18,25 @@ export const GetNearbyEventsQueryBuilder: QueryBuilderQuery<GetNearbyEventsQuery
 ) => {
     return {
         queryKey: GetNearbyEventsQueryBuilder.queryKey([input.regionId]),
-        queryFn: () => getNearbyEvents({
-            nextHeaders: input.nextHeaders,
-            body: {
-                circle: {
-                    radius: input.radius,
-                    center: {
-                        longitude: input.center.lng,
-                        latitude: input.center.lat,
-                    },
-                },
-            },
-        }).then(response => response.data || []),
+        queryFn: () => GetNearbyEventsQueryBuilder.queryFunc(input),
     };
 };
 
 GetNearbyEventsQueryBuilder.queryKey = (params = []) => {
     return [...GetNearbyEvents.queryKey, ...params];
+};
+
+GetNearbyEventsQueryBuilder.queryFunc = (input) => {
+    return getNearbyEvents({
+        nextHeaders: input.nextHeaders,
+        body: {
+            circle: {
+                radius: input.radius,
+                center: {
+                    longitude: input.center.lng,
+                    latitude: input.center.lat,
+                },
+            },
+        },
+    }).then(response => response.data || []);
 };
