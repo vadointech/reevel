@@ -55,6 +55,9 @@ export class EventsEntity {
     @CreateDateColumn({ type: "timestamp" })
     createdAt: Date;
 
+    @Column({ type: "boolean", default: false })
+    isFeatured: boolean;
+
     @OneToMany(() => EventHostsEntity, event => event.event, {
         cascade: true,
     })

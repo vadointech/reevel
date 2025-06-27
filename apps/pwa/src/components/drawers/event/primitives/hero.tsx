@@ -99,7 +99,7 @@ export const EventDrawerContentHero = ({
                 <div className={styles.hero__price}>
                     {
                         ticketPrice ? (
-                            ticketPrice + "₴"
+                            ticketPrice + " ₴"
                         ) : "Free"
                     }
                     <AttendersSection users={tickets.map(item => item.user.profile)} />

@@ -2,7 +2,7 @@ import { headers } from "next/headers";
 import { getEvent } from "@/api/event";
 
 import { EventDrawerContent, EventDrawerRoot } from "@/components/drawers/event";
-import { CollectionCard, EventCard, InterestButton, OptionsList, OptionsListItem } from "@/components/ui";
+import { InterestButton, OptionsList, OptionsListItem } from "@/components/ui";
 import { ReviewsSection, ScrollSection, Section } from "@/components/sections";
 import { IconReport } from "@/components/icons";
 
@@ -50,66 +50,50 @@ export async function EventAttendeePublicViewPage({ eventId, callbackUrl }: Even
                     </ScrollSection>
                 </div>
 
-                <ScrollSection
-                    title={"Similar interests"}
-                    cta={"See all"}
-                    variant={"text-accent"}
-                    className={styles.gap}
-                >
-                    <CollectionCard
-                        title="Astronomy"
-                        location="Vinnitsa"
-                        emoji="🔭"
-                        primaryColor="#0A192F"
-                        secondaryColor="#23395D"
-                    />
-                    <CollectionCard
-                        title="Bouling"
-                        location="Vinnitsa"
-                        emoji="🎳"
-                        primaryColor="#A54F4F"
-                        secondaryColor="#6A3232"
-                    />
-                    <CollectionCard
-                        title="Farming"
-                        location="Vinnitsa"
-                        emoji="🚜"
-                        primaryColor="#7D9A5D"
-                        secondaryColor="#4F6F3A"
-                    />
-                </ScrollSection>
+                {/*<ScrollSection*/}
+                {/*    title={"Similar interests"}*/}
+                {/*    cta={"See all"}*/}
+                {/*    variant={"text-accent"}*/}
+                {/*    className={styles.gap}*/}
+                {/*>*/}
+                {/*    <CollectionCard*/}
+                {/*        title="Astronomy"*/}
+                {/*        location="Vinnitsa"*/}
+                {/*        emoji="🔭"*/}
+                {/*        primaryColor="#0A192F"*/}
+                {/*        secondaryColor="#23395D"*/}
+                {/*    />*/}
+                {/*    <CollectionCard*/}
+                {/*        title="Bouling"*/}
+                {/*        location="Vinnitsa"*/}
+                {/*        emoji="🎳"*/}
+                {/*        primaryColor="#A54F4F"*/}
+                {/*        secondaryColor="#6A3232"*/}
+                {/*    />*/}
+                {/*    <CollectionCard*/}
+                {/*        title="Farming"*/}
+                {/*        location="Vinnitsa"*/}
+                {/*        emoji="🚜"*/}
+                {/*        primaryColor="#7D9A5D"*/}
+                {/*        secondaryColor="#4F6F3A"*/}
+                {/*    />*/}
+                {/*</ScrollSection>*/}
 
-                <ScrollSection
-                    title={"More from Jimmy Smith"}
-                    cta={"See all"}
-                    variant={"text-accent"}
-                    className={styles.gap}
-                >
-                    <EventCard
-                        size={"small"}
-                        poster={"/assets/temp/poster5.png"}
-                        primaryColor={"#AB002F"}
-                        title={"Happy Valentine's Day Party"}
-                        location={"ТЦ SkyPark"}
-                        type={"Public"}
-                    />
-                    <EventCard
-                        size={"small"}
-                        poster={"/assets/temp/poster5.png"}
-                        primaryColor={"#AB002F"}
-                        title={"Happy Valentine's Day Party"}
-                        location={"ТЦ SkyPark"}
-                        type={"Public"}
-                    />
-                    <EventCard
-                        size={"small"}
-                        poster={"/assets/temp/poster5.png"}
-                        primaryColor={"#AB002F"}
-                        title={"Happy Valentine's Day Party"}
-                        location={"ТЦ SkyPark"}
-                        type={"Public"}
-                    />
-                </ScrollSection>
+                {/*<ScrollSection*/}
+                {/*    title={"More from Jimmy Smith"}*/}
+                {/*    cta={"See all"}*/}
+                {/*    variant={"text-accent"}*/}
+                {/*    className={styles.gap}*/}
+                {/*>*/}
+                {/*    <EventCard*/}
+                {/*        size={"small"}*/}
+                {/*        poster={"/assets/temp/poster5.png"}*/}
+                {/*        primaryColor={"#AB002F"}*/}
+                {/*        title={"Happy Valentine's Day Party"}*/}
+                {/*        location={"ТЦ SkyPark"}*/}
+                {/*        type={"Public"}*/}
+                {/*    />*/}
+                {/*</ScrollSection>*/}
 
                 <ReviewsSection
                     title={"Rating & reviews"}

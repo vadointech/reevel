@@ -6,7 +6,7 @@ import {
     HttpStatus,
     Param,
     Patch,
-    Post,
+    Post, Query,
     Req,
     UseInterceptors,
 } from "@nestjs/common";
@@ -17,6 +17,7 @@ import { ServerSession } from "@/modules/auth/dto/jwt.dto";
 import { FileUploadInterceptor } from "@/modules/uploads/uploads.interceptor";
 import { UpdateEventDto } from "@/modules/event/dto/update-event.dto";
 import { GetNearbyEventsDto } from "@/modules/event/dto/get-nearby.dto";
+import { GetCityHighlightsDto } from "@/modules/event/dto/get-city-highlights.dto";
 
 @Controller("events")
 export class EventController {
@@ -59,20 +60,33 @@ export class EventController {
         return this.eventService.deleteEvent(session, eventId);
     }
 
-    @Public()
-    @Get(":eventId")
-    async getEventById(
-        @Param("eventId") eventId: string,
-    ) {
-        return this.eventService.getEventById(eventId);
-    }
-
-    @Public()
     @Post("nearby")
     @HttpCode(HttpStatus.OK)
     async getNearbyEvents(
         @Body() body: GetNearbyEventsDto,
     ) {
         return this.eventService.getNearbyEvents(body);
+    }
+
+    @Get("highlights")
+    async getCityHighlights(
+        @Query() query: GetCityHighlightsDto,
+    ) {
+        return this.eventService.getCityHighlights(query);
+    }
+
+    @Get("collections")
+    async getEventCollections(
+        @Session() session: ServerSession,
+    ) {
+        return this.eventService.getEventCollectionsFeed(session);
+    }
+
+    @Public()
+    @Get(":eventId")
+    async getEventById(
+        @Param("eventId") eventId: string,
+    ) {
+        return this.eventService.getEventById(eventId);
     }
 }

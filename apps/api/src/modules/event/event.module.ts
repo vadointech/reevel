@@ -9,6 +9,9 @@ import { SubscriptionRegistry } from "@/modules/subscription/registry/subscripti
 import { EventTicketsRepository } from "@/modules/event/repositories/event-tickets.repository";
 import { PaymentRepository } from "@/modules/payment/repositories/payment.repository";
 import { BookingModule } from "@/modules/booking/booking.module";
+import { ProfileLocationRepository } from "@/modules/profile/repositories/profile-location.repository";
+import { UserRepository } from "@/modules/user/repositories/user.repository";
+import { InterestsRepository } from "@/modules/interests/repositories/interests.repository";
 
 @Module({
     imports: [
@@ -24,6 +27,10 @@ import { BookingModule } from "@/modules/booking/booking.module";
         EventInterestsRepository,
         EventHostsRepository,
         PaymentRepository,
+
+        UserRepository,
+        ProfileLocationRepository,
+        InterestsRepository,
 
         SubscriptionRegistry,
     ],

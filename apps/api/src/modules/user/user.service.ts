@@ -15,7 +15,7 @@ export class UserService {
         private readonly uploadsRepository: UploadsRepository,
     ) {}
 
-    getUserSession(session: Session) {
+    async getUserSession(session: Session) {
         return this.userRepository.getSession(session.user.id);
     }
 

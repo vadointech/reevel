@@ -3,24 +3,19 @@ import { IconArrowNext } from "@/components/icons";
 
 import styles from "./styles.module.scss";
 import cx from "classnames";
+import { InterestEntity } from "@/entities/interests";
 
 export namespace CollectionCard {
     export type Data = {
-        title: string,
-        location: string,
-        emoji: string,
-        primaryColor: string,
-        secondaryColor: string
+        interest: InterestEntity;
+        location: string;
     };
     export type Props = ComponentProps<"div"> & Data;
 }
 
 export const CollectionCard = ({
-    title,
+    interest,
     location,
-    emoji,
-    primaryColor,
-    secondaryColor,
     className,
     ...props
 }: CollectionCard.Props) => {
@@ -31,13 +26,13 @@ export const CollectionCard = ({
                 className,
             )}
             style={{
-                background: `linear-gradient(94deg, ${primaryColor} 50%, ${secondaryColor} 100%)`,
+                background: `linear-gradient(94deg, ${interest.primaryColor} 50%, ${interest.secondaryColor} 100%)`,
             }}
             {...props}
         >
             <div className={styles.card__info}>
                 <h2 className={styles.card__info__title}>
-                    { title }
+                    { interest.title_uk }
                 </h2>
                 <span className={styles.card__info__city}>
                     in { location }
@@ -45,7 +40,7 @@ export const CollectionCard = ({
             </div>
 
             <div className={styles.card__foreground}>
-                { emoji }
+                { interest.icon }
             </div>
 
             <div className={styles.card__detailed}>
@@ -58,7 +53,7 @@ export const CollectionCard = ({
             </div>
 
             <div className={styles.card__background}>
-                { title }
+                { interest.title_uk }
             </div>
         </div>
     );

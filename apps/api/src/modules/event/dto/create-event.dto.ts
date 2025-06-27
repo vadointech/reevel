@@ -46,12 +46,12 @@ export class CreateEventDto {
     @IsNotEmpty()
     locationTitle: string;
 
-    @IsString()
+    @IsNumber()
     @IsOptional()
     @Type(() => Number)
     ticketsAvailable?: number;
 
-    @IsString()
+    @IsNumber()
     @IsOptional()
     @Type(() => Number)
     ticketPrice?: number;
