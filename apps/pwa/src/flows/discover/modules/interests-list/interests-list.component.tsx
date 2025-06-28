@@ -13,7 +13,7 @@ export namespace DiscoverInterestsList {
         interests: InterestEntity[]
     };
     export type Props = Data & {
-        onEventInterestPick: (interest: string) => void;
+        onEventInterestPick: (pointId: string | null) => void;
     };
 }
 
@@ -25,7 +25,7 @@ export const DiscoverInterestsList = observer(({
 
     useEffect(() => {
         return () => {
-            filtersStore.setLocationInterest(undefined);
+            onEventInterestPick(null);
         };
     }, []);
 

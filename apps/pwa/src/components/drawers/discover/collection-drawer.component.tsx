@@ -29,7 +29,7 @@ export namespace DiscoverCollectionDrawer {
         events: EventEntity[]
     };
     export type Props = PropsWithChildren<Data> & {
-        onEventInterestPick: (interest: string) => void;
+        onEventInterestPick: (pointId: string | null) => void;
         onEventSlideChange: (index: number) => void;
     };
 }

@@ -93,13 +93,23 @@ export function useDiscoverDrawerMap({ queryBuilder, callbackUrl, eventsInit }: 
     }, []);
 
     const handleSelectPoint = useCallback((pointId: string | null) => {
-        if(pointId) router.push("/discover/event/" + pointId);
+        if(pointId) {
+            const point = map.store.points.find(point => point.id === pointId);
+            collectionStore.setPointToPreview(point);
+            router.push("/discover/event/" + pointId);
+        }
     }, []);
 
-    const handleEventInterestPick = useCallback((interest: string) => {
+    const handleEventInterestPick = useCallback((interest: string | null) => {
         const currentInterest = filtersStore.locationInterest;
         const viewState = map.provider.current.internalConfig.viewState;
         const currentViewState = map.provider.current.getViewState();
+
+        if(!interest) {
+            filtersStore.setLocationInterest(undefined);
+            fetchSpatialData({ viewState }).then(replaceResponse);
+            return;
+        }
 
         if(currentInterest === interest) {
             filtersStore.setLocationInterest(undefined);

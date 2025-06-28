@@ -31,7 +31,7 @@ export namespace DiscoverDrawer {
         cityHighlights: EventEntity[];
         controller?: BottomSheetExternalController;
         onSnapPointChange?: (snapPointIndex: number) => void;
-        onEventInterestPick: (interest: string) => void;
+        onEventInterestPick: (pointId: string | null) => void;
     };
 }
 
