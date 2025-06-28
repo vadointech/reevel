@@ -12,11 +12,10 @@ import cx from "classnames";
 export namespace EventAttendeePublicViewPage {
     export type Props = {
         eventId: string;
-        callbackUrl: string;
     };
 }
 
-export async function EventAttendeePublicViewPage({ eventId, callbackUrl }: EventAttendeePublicViewPage.Props) {
+export async function EventAttendeePublicViewPage({ eventId }: EventAttendeePublicViewPage.Props) {
 
     const { data: event } = await getEvent({
         nextHeaders: await headers(),
@@ -28,7 +27,7 @@ export async function EventAttendeePublicViewPage({ eventId, callbackUrl }: Even
     }
 
     return (
-        <EventDrawerRoot callbackUrl={callbackUrl}>
+        <EventDrawerRoot callbackUrl={""}>
             <EventDrawerContent event={event}>
                 <div
                     className={cx(

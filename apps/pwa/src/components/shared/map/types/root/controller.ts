@@ -69,7 +69,7 @@ export interface IMapRootController {
      * Replaces the current points with a new set of points, optionally delaying the process for a specified duration.
      *
      * @param {Point<BasePoint>[]} points - The new array of points to replace the current points.
-     * @param {number} [duration=500] - The duration in milliseconds to delay the replacement.
+     * @param {number} [duration=400] - The duration in milliseconds to delay the replacement.
      * Make sure duration is equal animation duration of the markers itself
      * @return {Promise<void>} A promise that resolves after the points have been replaced and the specified delay has elapsed.
      */

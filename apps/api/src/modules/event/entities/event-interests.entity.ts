@@ -12,7 +12,7 @@ export class EventInterestsEntity {
 
     @PrimaryColumn()
     interestId: string;
-    @JoinColumn({ name: "interestId" })
+    @JoinColumn({ name: "interestId", referencedColumnName: "slug" })
     @ManyToOne(() => InterestsEntity, interests => interests.events, { onDelete: "CASCADE" })
     interest: InterestsEntity;
 }

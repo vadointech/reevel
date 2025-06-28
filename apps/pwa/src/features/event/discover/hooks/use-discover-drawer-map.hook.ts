@@ -1,28 +1,66 @@
 import { usePersistentMap } from "@/components/shared/map";
 import { useCallback, useEffect, useRef } from "react";
 import { useSpatialCache } from "@/features/spatial-cache/use-spatial-cache.hook";
-import { MapInternalConfig } from "@/components/shared/map/types";
+import { BasePoint, MapInternalConfig, Point } from "@/components/shared/map/types";
 import { EventEntity } from "@/entities/event";
 import { eventEntityMapper } from "@/entities/event/mapper";
-import { GetNearbyEventsQueryBuilder } from "@/features/event/discover/queries";
 import { useRouter } from "@/i18n/routing";
+import { useDiscoverContext } from "@/features/event/discover";
+import { QueryBuilderQuery } from "@/lib/react-query";
 
 const PICKER_MAP_PADDING = {
     bottom: 260,
 };
 
-export function useDiscoverDrawerMap(eventsInit: EventEntity[]) {
+type Params = {
+    callbackUrl: string;
+    queryBuilder: QueryBuilderQuery<any, EventEntity[], any>
+    eventsInit: EventEntity[];
+};
+
+export function useDiscoverDrawerMap({ queryBuilder, callbackUrl, eventsInit }: Params) {
     const map = usePersistentMap();
     const router = useRouter();
     const preventMapUpdate = useRef<boolean>(false);
+
+    const { filtersStore, collectionStore } = useDiscoverContext();
+
+    useEffect(() => {
+        collectionStore.setCallbackUrl(callbackUrl);
+    }, [callbackUrl]);
 
     const appendResponse = (response?: EventEntity[]) => {
         map.controller.current.appendPoints(eventEntityMapper.toEventPoint(response));
     };
 
+    const replaceResponse = (response?: EventEntity[]) => {
+        return map.controller.current.replacePoints(eventEntityMapper.toEventPoint(response));
+    };
+
+    useEffect(() => {
+        if(!collectionStore.initialLoad) {
+            new Promise(resolve => setTimeout(resolve, 700))
+                .then(() => replaceResponse(eventsInit))
+                .then(()  => collectionStore.setInitialLoad(false));
+        }
+
+        return () => {
+            collectionStore.setInitialLoad(false);
+        };
+    }, []);
+
+    const flyToEvent = useCallback((point: Point<BasePoint>) => {
+        preventMapUpdate.current = true;
+        collectionStore.setPointToPreview(point);
+        map.provider.current.flyTo({
+            center: point.geometry.coordinates,
+            zoom: 17,
+        });
+    }, []);
+
     const { fetchSpatialData, precacheSpatialData } = useSpatialCache<EventEntity[]>(map.provider.current, {
         prefetchedData: eventsInit,
-        queryBuilder: GetNearbyEventsQueryBuilder,
+        queryBuilder,
         cacheConfig: {
             sensitivity: 2,
         },
@@ -34,7 +72,10 @@ export function useDiscoverDrawerMap(eventsInit: EventEntity[]) {
             return;
         }
 
-        fetchSpatialData({ viewState }).then(appendResponse);
+        fetchSpatialData({
+            viewState,
+            filter: filtersStore.locationInterest,
+        }).then(appendResponse);
     }, [fetchSpatialData]);
 
     const handlePickerSnapPointChange = useCallback((snapIndex: number) => {
@@ -53,9 +94,34 @@ export function useDiscoverDrawerMap(eventsInit: EventEntity[]) {
 
     const handleSelectPoint = useCallback((pointId: string | null) => {
         if(pointId) router.push("/discover/event/" + pointId);
-        else router.push("/discover");
     }, []);
 
+    const handleEventInterestPick = useCallback((interest: string) => {
+        const currentInterest = filtersStore.locationInterest;
+        const viewState = map.provider.current.internalConfig.viewState;
+        const currentViewState = map.provider.current.getViewState();
+
+        if(currentInterest === interest) {
+            filtersStore.setLocationInterest(undefined);
+            fetchSpatialData({ viewState }).then(replaceResponse);
+        } else {
+            filtersStore.setLocationInterest(interest);
+            fetchSpatialData({ viewState, filter: interest }).then(replaceResponse);
+        }
+
+        if(viewState.zoom !== currentViewState.zoom) {
+            map.provider.current.resetViewState();
+            preventMapUpdate.current = true;
+        }
+    }, [fetchSpatialData]);
+
+    const handleEventSlideChange = useCallback((index: number) => {
+        const event = eventsInit[index];
+
+        const point = map.store.points.find(point => point.id === event.id);
+
+        if(point) flyToEvent(point);
+    }, [eventsInit, flyToEvent]);
 
     useEffect(() => {
         map.controller.current.attachHandlers({
@@ -71,5 +137,7 @@ export function useDiscoverDrawerMap(eventsInit: EventEntity[]) {
 
     return {
         handlePickerSnapPointChange,
+        handleEventInterestPick,
+        handleEventSlideChange,
     };
 }

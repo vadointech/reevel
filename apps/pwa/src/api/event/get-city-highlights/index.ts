@@ -1,19 +1,15 @@
 import { fetcherClient } from "@/api/fetcher-client";
 import { EventEntity } from "@/entities/event";
+import { GetNearbyEvents } from "@/api/event";
 
-export namespace GetCityHighlights {
-    export type TInput = null;
+export namespace GetEventCityHighlightsCollection {
+    export type TInput = GetNearbyEvents.TInput;
     export type TOutput = EventEntity[];
-    export type TParams = {
-        city: string;
-        limit?: number;
-    };
-
-    export const queryKey = ["events/highlights"];
+    export const queryKey = ["events/collections/highlights"];
 }
 
-export const getCityHighlights = fetcherClient.fetch<GetCityHighlights.TInput, GetCityHighlights.TOutput, GetCityHighlights.TParams>({
+export const getEventCityHighlightsCollection = fetcherClient.fetch<GetEventCityHighlightsCollection.TInput, GetEventCityHighlightsCollection.TOutput>({
     fetcherFunc: (fetcher, input) => {
-        return fetcher.get("/events/highlights", input);
+        return fetcher.post("/events/collections/highlights", input);
     },
 });

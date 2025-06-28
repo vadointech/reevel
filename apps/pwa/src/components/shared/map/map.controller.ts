@@ -120,7 +120,6 @@ export class MapRootController implements IMapRootController {
     }
 
     async replacePoints(points: Point<BasePoint>[], duration: number = 400): Promise<void> {
-        if(points.length === 0) return;
         this._store.setPointsVisible(false);
 
         await new Promise((resolve) => setTimeout(resolve, duration));

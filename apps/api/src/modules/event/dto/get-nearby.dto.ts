@@ -1,5 +1,14 @@
 import { Type } from "class-transformer";
-import { IsLatitude, IsLongitude, IsNotEmptyObject, IsNumber, IsOptional, Min, ValidateNested } from "class-validator";
+import {
+    IsArray,
+    IsLatitude,
+    IsLongitude,
+    IsNotEmptyObject,
+    IsNumber,
+    IsOptional,
+    Min,
+    ValidateNested,
+} from "class-validator";
 
 class CenterPointDto {
     @IsLongitude()
@@ -30,4 +39,8 @@ export class GetNearbyEventsDto {
     @IsOptional()
     @Min(1)
     take?: number;
+
+    @IsArray()
+    @IsOptional()
+    interests?: string[];
 }

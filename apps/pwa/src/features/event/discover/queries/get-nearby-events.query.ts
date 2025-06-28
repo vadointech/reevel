@@ -8,6 +8,7 @@ export namespace GetNearbyEventsQueryBuilder {
         center: MapProviderGL.LngLat,
         radius: number,
         regionId?: string,
+        filter?: string,
         nextHeaders?: Headers
     };
     export type TOutput = EventEntity[];
@@ -30,6 +31,8 @@ GetNearbyEventsQueryBuilder.queryFunc = (input) => {
     return getNearbyEvents({
         nextHeaders: input.nextHeaders,
         body: {
+            take: input.filter ? 20 : 10,
+            interests: input.filter ? [input.filter] : undefined,
             circle: {
                 radius: input.radius,
                 center: {

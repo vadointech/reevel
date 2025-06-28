@@ -42,6 +42,10 @@ export class JwtStrategy {
             email: user.email,
             completed: user.profile.completed,
             subscription: user.subscription.type,
+            location: user.profile.location ? {
+                id: user.profile.location?.id,
+                coordinates: user.profile.location?.center?.coordinates,
+            }: undefined,
         });
 
         // const sessionTokenHash = await bcrypt.hash(tokens.refresh_token, 10);
@@ -77,6 +81,7 @@ export class JwtStrategy {
                 sid: payload.sid,
                 email: payload.email,
                 subscription: payload.subscription,
+                location: payload.location,
             },
         } satisfies ServerSession;
     }
@@ -131,6 +136,7 @@ export class JwtStrategy {
             email: payload.email,
             completed: payload.completed,
             subscription: payload.subscription,
+            location: payload.location,
         };
         const refreshTokenPayload: SessionJwtTokenPayload = { ...accessTokenPayload };
 

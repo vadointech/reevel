@@ -5,6 +5,7 @@ import { MapRootProvider } from "@/components/shared/map/map.provider";
 import { GetNearbyEventsQueryBuilder } from "@/features/event/discover/queries";
 import { headers } from "next/headers";
 import { eventEntityMapper } from "@/entities/event/mapper";
+import { DiscoverProvider } from "@/features/event/discover";
 
 export default async function Layout({ children }: PropsWithChildren) {
     const mapConfig = await getUserMapInternalConfig();
@@ -22,7 +23,7 @@ export default async function Layout({ children }: PropsWithChildren) {
     const points = eventEntityMapper.toEventPoint(events);
 
     return (
-        <>
+        <DiscoverProvider>
             <MapView
                 viewState={{
                     padding: {
@@ -32,6 +33,6 @@ export default async function Layout({ children }: PropsWithChildren) {
                 points={points}
             />
             { children }
-        </>
+        </DiscoverProvider>
     );
 }
