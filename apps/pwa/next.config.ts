@@ -20,6 +20,14 @@ const nextConfig: NextConfig = {
                 protocol: "https",
                 hostname: "res.cloudinary.com",
             },
+            {
+                protocol: "https",
+                hostname: "artwizard.io",
+            },
+            {
+                protocol: "https",
+                hostname: "i.pinimg.com",
+            },
         ],
     },
 };
