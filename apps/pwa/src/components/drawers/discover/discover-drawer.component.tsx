@@ -23,7 +23,6 @@ import { DiscoverInterestsList } from "@/flows/discover/modules/interests-list";
 import { useSessionContext } from "@/features/session";
 import { usePersistentMap } from "@/components/shared/map";
 import { useEffect } from "react";
-import { useDiscoverContext } from "@/features/event/discover";
 
 export namespace DiscoverDrawer {
     export type Props = {

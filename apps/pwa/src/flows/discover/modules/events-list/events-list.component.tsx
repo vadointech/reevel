@@ -20,7 +20,7 @@ export const DiscoverEventsList = ({
     return (
         <Scroll startIndex={startIndex} onChange={onChange} dragFree={false}>
             {
-                events.map((event, index) => (
+                events.map(event => (
                     <Link
                         key={event.id}
                         href={`/discover/event/${event.id}`}
