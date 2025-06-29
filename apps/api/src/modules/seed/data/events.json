@@ -299,5 +299,45 @@
     "createdAt": "2025-06-27T12:00:00Z",
     "isFeatured": true,
     "interests": ["shopping","budgeting","fashion-design"]
+  },
+  {
+    "title": "Турнір з Counter-Strike 2",
+    "description": "Запрошуємо всіх фанатів CS2 взяти участь у захопливому турнірі! Покажи свої навички, змагайся з найкращими гравцями та отримай шанс виграти круті призи. Формат змагання — команди 5 на 5. Реєстрація відкрита для всіх бажаючих. Не пропусти можливість стати чемпіоном!",
+    "poster": "https://i.pinimg.com/736x/9f/50/a9/9f50a9384d0d8b539bf10aa8db6981e9.jpg",
+    "posterFieldId": "poster_016",
+    "primaryColor": "#A5B309",
+    "location": {
+      "type": "Point",
+      "coordinates": [28.4492,49.2323]
+    },
+    "locationTitle": "Vinnytsia",
+    "ticketsAvailable": 74,
+    "ticketPrice": 100,
+    "visibility": "PUBLIC",
+    "startDate": "2025-07-20T16:00:00Z",
+    "endDate": "2025-07-21T02:00:00Z",
+    "createdAt": "2025-06-27T12:00:00Z",
+    "isFeatured": true,
+    "interests": ["video-gaming","esports","strategy-gaming"]
+  },
+  {
+    "title": "FIFA Challenge Cup: Грай, перемагай, святкуй!",
+    "description": "Запрошуємо всіх фанатів футболу на турнір з FIFA! Змагайся з іншими гравцями, покажи свої найкращі трюки та поборись за перемогу й круті призи. Формат — індивідуальні матчі 1 на 1. Реєстрація відкрита для всіх бажаючих. Долучайся та стань чемпіоном!",
+    "poster": "https://i.pinimg.com/736x/ae/c6/99/aec699e5218fa9c595d77f8347cdcd77.jpg",
+    "posterFieldId": "poster_017",
+    "primaryColor": "#0c6ce9",
+    "location": {
+      "type": "Point",
+      "coordinates": [28.4974,49.2416] 
+    },
+    "locationTitle": "Vinnytsia",
+    "ticketsAvailable": 14,
+    "ticketPrice": 550,
+    "visibility": "PUBLIC",
+    "startDate": "2025-07-20T16:00:00Z",
+    "endDate": "2025-07-21T02:00:00Z",
+    "createdAt": "2025-06-27T12:00:00Z",
+    "isFeatured": true,
+    "interests": ["video-gaming","esports","strategy-gaming"]
   }
 ]
