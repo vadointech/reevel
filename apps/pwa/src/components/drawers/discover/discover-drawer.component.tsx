@@ -18,6 +18,11 @@ import { EventEntity } from "@/entities/event";
 import { InterestEntity } from "@/entities/interests";
 
 import styles from "./styles/discover-drawer.module.scss";
+import { Link } from "@/i18n/routing";
+import { DiscoverInterestsList } from "@/flows/discover/modules/interests-list";
+import { useSessionContext } from "@/features/session";
+import { usePersistentMap } from "@/components/shared/map";
+import { useEffect } from "react";
 
 export namespace DiscoverDrawer {
     export type Props = {
@@ -26,6 +31,7 @@ export namespace DiscoverDrawer {
         cityHighlights: EventEntity[];
         controller?: BottomSheetExternalController;
         onSnapPointChange?: (snapPointIndex: number) => void;
+        onEventInterestPick: (pointId: string | null) => void;
     };
 }
 
@@ -35,7 +41,19 @@ export const DiscoverDrawer = ({
     cityHighlights,
     controller,
     onSnapPointChange,
+    onEventInterestPick,
 }: DiscoverDrawer.Props) => {
+    const session = useSessionContext();
+    const map = usePersistentMap();
+
+    useEffect(() => {
+        const currentState = map.provider.current.getViewState();
+        const defaultState = map.provider.current.internalConfig.viewState;
+
+        if(currentState.zoom !== defaultState.zoom) {
+            map.provider.current.resetViewState();
+        }
+    }, []);
 
     return (
         <BottomSheetRoot
@@ -52,59 +70,64 @@ export const DiscoverDrawer = ({
                 <BottomSheetBody style={{ height: "100%" }}>
                     <div className={styles.drawer__scroll}>
                         <Scroll>
-                            <InterestButton
-                                icon={<IconStars />}
-                                variant={"accent"}
-                            >
-                                Randomize
-                            </InterestButton>
-                            {
-                                interests.map(item => (
-                                    <InterestButton
-                                        key={item.slug}
-                                        icon={item.icon}
-                                        variant={"default"}
-                                    >
-                                        { item.title_uk }
-                                    </InterestButton>
-                                ))
-                            }
+                            <Link href={"/discover/randomized"}>
+                                <InterestButton
+                                    icon={<IconStars />}
+                                    variant={"accent"}
+                                >
+                                    Randomize
+                                </InterestButton>
+                            </Link>
+
+                            <DiscoverInterestsList
+                                interests={interests}
+                                onEventInterestPick={onEventInterestPick}
+                            />
                         </Scroll>
                     </div>
                     <BottomSheetContent>
                         <BottomSheetHandle className={styles.drawer__handle}>
                             <Input.Search placeholder={"Search"} />
-                            <Avatar image={"/assets/temp/avatar.png"}/>
+                            <Avatar image={session.store.user?.profile?.picture}/>
                         </BottomSheetHandle>
                         <BottomSheetScrollable>
                             <ScrollSection
                                 title={"Don’t Miss in Vinnitsa"}
                                 cta={"See all"}
                                 variant={"text-accent"}
-                                ctaHref={"/discover/rnd"}
+                                ctaHref={"/discover/highlights"}
                                 className={styles.drawer__gap}
                             >
                                 {
                                     cityHighlights.map(event => (
-                                        <EventCard
-                                            size={"small"}
-                                            event={event}
-                                        />
+                                        <Link
+                                            key={event.id}
+                                            href={`/discover/event/${event.id}`}
+                                        >
+                                            <EventCard
+                                                size={"small"}
+                                                event={event}
+                                            />
+                                        </Link>
                                     ))
                                 }
                             </ScrollSection>
 
                             <ScrollSection
                                 title={"Events for You"}
-                                cta={"See all"}
                                 variant={"text-accent"}
                             >
                                 {
                                     collections.map(interest => (
-                                        <CollectionCard
-                                            interest={interest}
-                                            location={"Vinnitsa"}
-                                        />
+                                        <Link
+                                            key={interest.slug}
+                                            href={`/discover/${interest.slug}`}
+                                        >
+                                            <CollectionCard
+                                                interest={interest}
+                                                location={"Vinnitsa"}
+                                            />
+                                        </Link>
                                     ))
                                 }
                             </ScrollSection>

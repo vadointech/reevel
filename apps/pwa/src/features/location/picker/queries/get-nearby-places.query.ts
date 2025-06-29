@@ -14,7 +14,7 @@ export namespace GetNearbyPlacesQueryBuilder {
         center: MapProviderGL.LngLat,
         radius: number,
         regionId?: string,
-        placeType?: string;
+        filter?: string;
         signal?: AbortSignal;
     };
 
@@ -33,9 +33,9 @@ export const GetNearbyPlacesQueryBuilder: QueryBuilderQuery<GetNearbyPlacesQuery
 GetNearbyPlacesQueryBuilder.queryFunc = (input) => {
     return getNearbyPlaces({
         body: {
-            maxResultCount: input.placeType ? 20 : 10,
-            includedPrimaryTypes: input.placeType ? [input.placeType] : GOOGLE_PLACES_API_INCLUDED_TYPES.primaryTypes,
-            includedTypes: input.placeType ? [input.placeType] : GOOGLE_PLACES_API_INCLUDED_TYPES.secondaryTypes,
+            maxResultCount: input.filter ? 20 : 10,
+            includedPrimaryTypes: input.filter ? [input.filter] : GOOGLE_PLACES_API_INCLUDED_TYPES.primaryTypes,
+            includedTypes: input.filter ? [input.filter] : GOOGLE_PLACES_API_INCLUDED_TYPES.secondaryTypes,
             excludedPrimaryTypes: GOOGLE_PLACES_API_EXCLUDED_TYPES.primaryTypes,
             excludedTypes: GOOGLE_PLACES_API_EXCLUDED_TYPES.secondaryTypes,
             languageCode: "uk",

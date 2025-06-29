@@ -36,6 +36,10 @@ export interface SessionJwtTokenPayload {
     email: string;
     completed: string;
     subscription: SubscriptionType;
+    location?: {
+        id: string;
+        coordinates: number[]
+    }
 }
 
 export interface JwtSession extends AuthJwtTokens {
@@ -48,5 +52,9 @@ export class ServerSession {
         sid?: string;
         email: string;
         subscription: SubscriptionType;
+        location?: {
+            id: string;
+            coordinates: number[]
+        }
     };
 }

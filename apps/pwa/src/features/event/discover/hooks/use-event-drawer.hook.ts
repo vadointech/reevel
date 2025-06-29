@@ -2,18 +2,24 @@ import { useCallback, useEffect } from "react";
 import { usePersistentMap } from "@/components/shared/map";
 import { useRouter } from "@/i18n/routing";
 import { useBottomSheet } from "@/components/shared/bottom-sheet";
-import { useEventDrawerContext } from "@/components/drawers/event";
+import { useDiscoverContext } from "@/features/event/discover";
 
 export function useEventDrawer(eventId: string) {
     const router = useRouter();
     const map = usePersistentMap();
     const bottomSheet = useBottomSheet();
-    const { config } = useEventDrawerContext();
+    const { collectionStore } = useDiscoverContext();
 
     const closeDrawer = () => {
         bottomSheet.controller.current?.close();
-        router.push(config.callbackUrl);
+        router.push(collectionStore.callbackUrl);
     };
+
+    useEffect(() => {
+        return () => {
+            collectionStore.setInitialLoad(true);
+        };
+    }, []);
 
     const handleClose = useCallback(() => {
         map.controller.current.selectPoint(null);

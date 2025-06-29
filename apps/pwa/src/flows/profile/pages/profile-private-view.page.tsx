@@ -1,7 +1,7 @@
 import { ProfileHero } from "../modules/hero";
 import { ProfilePageHeader } from "../modules/header";
 import { ProfilePageContent } from "../modules/content";
-import { Button, Container, EventCard, InterestButton } from "@/components/ui";
+import { Button, Container, InterestButton } from "@/components/ui";
 import { ReviewsSection, ScrollSection } from "@/components/sections";
 
 import styles from "../styles/profile-page.module.scss";
@@ -64,30 +64,30 @@ export function ProfilePrivateViewPage() {
                         cta={"See all"}
                         className={styles.content__gap}
                     >
-                        <EventCard
-                            size={"small"}
-                            poster={"/assets/temp/poster5.png"}
-                            primaryColor={"#AB002F"}
-                            title={"Happy Valentine's Day Party"}
-                            location={"ТЦ SkyPark"}
-                            type={"Public"}
-                        />
-                        <EventCard
-                            size={"small"}
-                            poster={"/assets/temp/poster5.png"}
-                            primaryColor={"#AB002F"}
-                            title={"Happy Valentine's Day Party"}
-                            location={"ТЦ SkyPark"}
-                            type={"Public"}
-                        />
-                        <EventCard
-                            size={"small"}
-                            poster={"/assets/temp/poster5.png"}
-                            primaryColor={"#AB002F"}
-                            title={"Happy Valentine's Day Party"}
-                            location={"ТЦ SkyPark"}
-                            type={"Public"}
-                        />
+                        {/*<EventCard*/}
+                        {/*    size={"small"}*/}
+                        {/*    poster={"/assets/temp/poster5.png"}*/}
+                        {/*    primaryColor={"#AB002F"}*/}
+                        {/*    title={"Happy Valentine's Day Party"}*/}
+                        {/*    location={"ТЦ SkyPark"}*/}
+                        {/*    type={"Public"}*/}
+                        {/*/>*/}
+                        {/*<EventCard*/}
+                        {/*    size={"small"}*/}
+                        {/*    poster={"/assets/temp/poster5.png"}*/}
+                        {/*    primaryColor={"#AB002F"}*/}
+                        {/*    title={"Happy Valentine's Day Party"}*/}
+                        {/*    location={"ТЦ SkyPark"}*/}
+                        {/*    type={"Public"}*/}
+                        {/*/>*/}
+                        {/*<EventCard*/}
+                        {/*    size={"small"}*/}
+                        {/*    poster={"/assets/temp/poster5.png"}*/}
+                        {/*    primaryColor={"#AB002F"}*/}
+                        {/*    title={"Happy Valentine's Day Party"}*/}
+                        {/*    location={"ТЦ SkyPark"}*/}
+                        {/*    type={"Public"}*/}
+                        {/*/>*/}
                     </ScrollSection>
 
                     <ReviewsSection

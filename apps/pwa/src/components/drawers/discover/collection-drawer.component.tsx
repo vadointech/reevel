@@ -1,6 +1,6 @@
 "use client";
 
-import { PropsWithChildren } from "react";
+import { PropsWithChildren, useEffect, useState } from "react";
 import { Link } from "@/i18n/routing";
 import { motion, useMotionValue, useTransform } from "motion/react";
 
@@ -13,10 +13,13 @@ import {
 } from "@/components/shared/bottom-sheet";
 import { Header, InterestButton, OptionsList, PreviewCard, Scroll } from "@/components/ui";
 import { IconArrowLeft, IconSearch } from "@/components/icons";
-import { RecommendationCard } from "@/components/ui/cards";
 
 import { InterestEntity } from "@/entities/interests";
 import { EventEntity } from "@/entities/event";
+
+import { DiscoverInterestsList } from "@/flows/discover/modules/interests-list";
+import { DiscoverEventsList } from "@/flows/discover/modules/events-list";
+import { useDiscoverContext } from "@/features/event/discover";
 
 import styles from "./styles/collection-drawer.module.scss";
 
@@ -25,14 +28,21 @@ export namespace DiscoverCollectionDrawer {
         interests: InterestEntity[]
         events: EventEntity[]
     };
-    export type Props = PropsWithChildren<Data>;
+    export type Props = PropsWithChildren<Data> & {
+        onEventInterestPick: (pointId: string | null) => void;
+        onEventSlideChange: (index: number) => void;
+    };
 }
 
 export const DiscoverCollectionDrawer = ({
+    children,
     events,
     interests,
-    children,
+    onEventInterestPick,
+    onEventSlideChange,
 }: DiscoverCollectionDrawer.Props) => {
+    const { collectionStore } = useDiscoverContext();
+
     const dragYProgress = useMotionValue(0);
 
     const transitionRange = [0, 0.4];
@@ -46,6 +56,22 @@ export const DiscoverCollectionDrawer = ({
     const y2 = useTransform(dragYProgress, transitionRange, [50, 0]);
     const scale2 = useTransform(dragYProgress, transitionRange, [0.97, 1]);
     const blur2 = useTransform(dragYProgress, transitionRange, ["blur(2px)", "blur(0px)"]);
+
+    const [eventSlideStartIndex] = useState(() => {
+        if(collectionStore.pointToPreview) {
+            const index = events.findIndex(event => event.id === collectionStore.pointToPreview?.id);
+            if(index !== -1) return index;
+        }
+
+        return 0;
+    });
+
+    useEffect(() => {
+        if(!collectionStore.initialLoad) {
+            new Promise(resolve => setTimeout(resolve, 1800))
+                .then(() => onEventSlideChange(eventSlideStartIndex));
+        }
+    }, [onEventSlideChange, eventSlideStartIndex]);
 
     return (
         <BottomSheetRoot
@@ -71,16 +97,11 @@ export const DiscoverCollectionDrawer = ({
                                 filter: blur1,
                             }}
                         >
-                            <Scroll dragFree={false}>
-                                {
-                                    events.map(event => (
-                                        <RecommendationCard
-                                            key={event.id}
-                                            event={event}
-                                        />
-                                    ))
-                                }
-                            </Scroll>
+                            <DiscoverEventsList
+                                events={events}
+                                startIndex={eventSlideStartIndex}
+                                onChange={onEventSlideChange}
+                            />
                         </motion.div>
                         <motion.div
                             style={{
@@ -96,17 +117,10 @@ export const DiscoverCollectionDrawer = ({
                                     icon={<IconSearch />}
                                     layout={"icon"}
                                 />
-                                {
-                                    interests.map(item => (
-                                        <InterestButton
-                                            key={item.slug}
-                                            icon={item.icon}
-                                            variant={"default"}
-                                        >
-                                            { item.title_uk }
-                                        </InterestButton>
-                                    ))
-                                }
+                                <DiscoverInterestsList
+                                    interests={interests}
+                                    onEventInterestPick={onEventInterestPick}
+                                />
                             </Scroll>
                         </motion.div>
                     </div>
@@ -126,11 +140,14 @@ export const DiscoverCollectionDrawer = ({
                         <BottomSheetScrollable className={styles.drawer__list}>
                             <OptionsList>
                                 {
-                                    events.map(event => (
-                                        <PreviewCard
+                                    events.map((event, index) => (
+                                        <Link
                                             key={event.id}
-                                            event={event}
-                                        />
+                                            href={`/discover/event/${event.id}`}
+                                            onClick={() => onEventSlideChange(index)}
+                                        >
+                                            <PreviewCard event={event} />
+                                        </Link>
                                     ))
                                 }
                             </OptionsList>

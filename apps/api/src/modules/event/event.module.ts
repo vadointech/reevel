@@ -12,15 +12,19 @@ import { BookingModule } from "@/modules/booking/booking.module";
 import { ProfileLocationRepository } from "@/modules/profile/repositories/profile-location.repository";
 import { UserRepository } from "@/modules/user/repositories/user.repository";
 import { InterestsRepository } from "@/modules/interests/repositories/interests.repository";
+import { InterestsRelationsRepository } from "@/modules/interests/repositories/interests-relations.repository";
+import { EventCollectionController } from "@/modules/event/event-collection.controller";
+import { EventCollectionService } from "@/modules/event/event-collection.service";
 
 @Module({
     imports: [
         UploadsModule,
         BookingModule,
     ],
-    controllers: [EventController],
+    controllers: [EventController, EventCollectionController],
     providers: [
         EventService,
+        EventCollectionService,
 
         EventRepository,
         EventTicketsRepository,
@@ -31,6 +35,7 @@ import { InterestsRepository } from "@/modules/interests/repositories/interests.
         UserRepository,
         ProfileLocationRepository,
         InterestsRepository,
+        InterestsRelationsRepository,
 
         SubscriptionRegistry,
     ],

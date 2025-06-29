@@ -4,7 +4,7 @@ import { ComponentProps, CSSProperties } from "react";
 
 import { useHtmlDownload } from "@/hooks/use-html-download";
 
-import { Button, Carousel, Container, EventCard, Header } from "@/components/ui";
+import { Button, Carousel, Container, Header } from "@/components/ui";
 import { IconArrowLeft, IconLogoInstagram, IconShare } from "@/components/icons";
 import { Toast } from "@/components/shared/toast";
 
@@ -64,15 +64,15 @@ export const ShareEvent = ({
             </div>
 
             <div className={styles.event}>
-                <EventCard
-                    size={"default"}
-                    poster={"/assets/temp/poster5.png"}
-                    primaryColor={"#AB002F"}
-                    title={"Happy Valentine's Day Party"}
-                    location={"ТЦ SkyPark"}
-                    type={"Public"}
-                    className={styles.event__card}
-                />
+                {/*<EventCard*/}
+                {/*    size={"default"}*/}
+                {/*    poster={"/assets/temp/poster5.png"}*/}
+                {/*    primaryColor={"#AB002F"}*/}
+                {/*    title={"Happy Valentine's Day Party"}*/}
+                {/*    location={"ТЦ SkyPark"}*/}
+                {/*    type={"Public"}*/}
+                {/*    className={styles.event__card}*/}
+                {/*/>*/}
 
                 <div className={styles.event__info}>
                     <h1>{eventTitle}</h1>

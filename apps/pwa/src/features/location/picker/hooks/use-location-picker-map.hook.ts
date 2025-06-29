@@ -51,7 +51,7 @@ export function useLocationPickerMap(placesInit: PlaceLocationEntity[]) {
 
         fetchSpatialData({
             viewState,
-            placeType: filtersStore.locationType,
+            filter: filtersStore.locationType,
         }).then(appendResponse);
     }, [fetchSpatialData, filtersStore.locationType]);
 
@@ -65,7 +65,7 @@ export function useLocationPickerMap(placesInit: PlaceLocationEntity[]) {
             fetchSpatialData({ viewState }).then(replaceResponse);
         } else {
             filtersStore.setLocationType(type);
-            fetchSpatialData({ viewState, placeType: type }).then(replaceResponse);
+            fetchSpatialData({ viewState, filter: type }).then(replaceResponse);
         }
 
         if(viewState.zoom !== currentViewState.zoom) {

@@ -49,3 +49,8 @@ export type EventTicketEntity = {
     userId: string;
     user: UserEntity;
 };
+
+export type EventCollectionEntity = {
+    events: EventEntity[];
+    interests: InterestEntity[];
+};

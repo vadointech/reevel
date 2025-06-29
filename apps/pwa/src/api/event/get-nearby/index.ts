@@ -11,6 +11,7 @@ export namespace GetNearbyEvents {
             radius: number;
         }
         take?: number;
+        interests?: string[]
     };
     export type TOutput = EventEntity[];
 

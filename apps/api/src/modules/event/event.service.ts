@@ -18,24 +18,6 @@ import { UpdateEventDto } from "./dto/update-event.dto";
 import { Session } from "@/types";
 import { SupportedFileCollections } from "@/modules/uploads/entities/uploads.entity";
 import { GetNearbyEventsDto } from "@/modules/event/dto/get-nearby.dto";
-import { ProfileLocationRepository } from "@/modules/profile/repositories/profile-location.repository";
-import { GetCityHighlightsDto } from "@/modules/event/dto/get-city-highlights.dto";
-import { UserRepository } from "@/modules/user/repositories/user.repository";
-import { InterestsRepository } from "@/modules/interests/repositories/interests.repository";
-
-function polygonToWkt(polygon: any): string | null {
-    if (!polygon || !polygon.coordinates || !polygon.coordinates[0]) {
-        return null;
-    }
-    // Беремо зовнішнє кільце координат
-    const ring = polygon.coordinates[0];
-
-    // Перетворюємо кожну пару [довгота, широта] у рядок "довгота широта"
-    const pointsString = ring.map((p: number[]) => `${p[0]} ${p[1]}`).join(", ");
-
-    // Збираємо фінальний WKT рядок
-    return `POLYGON((${pointsString}))`;
-}
 
 @Injectable()
 export class EventService {
@@ -50,12 +32,7 @@ export class EventService {
         private readonly eventHostsRepository: EventHostsRepository,
         private readonly eventInterestsRepository: EventInterestsRepository,
 
-        private readonly userRepository: UserRepository,
-        private readonly profileLocationRepository: ProfileLocationRepository,
-        private readonly interestsRepository: InterestsRepository,
-
         private readonly subscriptionRegistry: SubscriptionRegistry,
-
 
         private dataSource: DataSource,
     ) {}
@@ -191,88 +168,45 @@ export class EventService {
         });
     }
 
-    async getNearbyEvents(input: GetNearbyEventsDto) {
+    async getNearbyEvents(input: GetNearbyEventsDto): Promise<EventsEntity[]> {
         const { center, radius } = input.circle;
-        const take = input.take || 10;
+        const limit = input.take || 10;
+        const interestsFilter = input.interests; // Отримуємо масив інтересів
 
-        const query = this.eventRepository.queryBuilder("event");
+        // --- Крок 1: Отримати ID подій з урахуванням фільтрів ---
+        const eventIdsQueryBuilder = this.eventRepository.queryBuilder("event")
+        // --- ВИПРАВЛЕНО ТУТ ---
+            .select("event.id", "id") // Явно вказуємо псевдонім "id"
+            .where("ST_DWithin(event.locationPoint, ST_SetSRID(ST_MakePoint(:lon, :lat), 4326)::geography, :radius)");
+            // .andWhere("\"event\".\"startDate\" > NOW()")
+            // .andWhere("\"event\".\"visibility\" = 'PUBLIC'");
 
-        query.where(
-            `ST_DWithin(
-            event.locationPoint,
-            ST_SetSRID(ST_MakePoint(:lon, :lat), 4326)::geography,
-            :radius
-        )`,
-            {
-                lon: center.longitude,
-                lat: center.latitude,
-                radius: radius,
-            },
-        );
+        if (interestsFilter && interestsFilter.length > 0) {
+            eventIdsQueryBuilder
+                .innerJoin("event.interests", "interestLink")
+                .andWhere("interestLink.interestId IN (:...interests)", { interests: interestsFilter });
+        }
 
-        query
-            .leftJoinAndSelect("event.hosts", "host")
-            .leftJoinAndSelect("host.user", "hostUser")
-            .leftJoinAndSelect("hostUser.profile", "userProfile")
+        // Встановлюємо всі параметри в кінці, щоб уникнути перезаписування
+        eventIdsQueryBuilder.setParameters({
+            lon: center.longitude,
+            lat: center.latitude,
+            radius: radius,
+            interests: interestsFilter, // TypeORM проігнорує цей параметр, якщо він не використовується в запиті
+        });
 
-            .leftJoinAndSelect("event.interests", "interestLink")
-            .leftJoinAndSelect("interestLink.interest", "interestData")
+        // ВИПРАВЛЕНО: Використовуємо getRawMany для ефективності
+        const eventIdsResult = await eventIdsQueryBuilder
+            .limit(limit)
+            .getRawMany<{ id: string }>();
 
-            .leftJoinAndSelect("event.tickets", "ticket")
-            .leftJoinAndSelect("ticket.user", "ticketUser")
-            .leftJoinAndSelect("ticketUser.profile", "ticketProfile");
-
-        query.take(take);
-
-        return query.getMany();
-    }
-
-    async getCityHighlights(params: GetCityHighlightsDto): Promise<EventsEntity[]> {
-        const locationId = params.city;
-        const limit = params.limit || 10;
-
-        const location = await this.profileLocationRepository.findOneBy({ id: locationId });
-        if (!location || !location.bbox) return [];
-
-        const cityBoundaryWkt = polygonToWkt(location.bbox);
-        if (!cityBoundaryWkt) return [];
-
-        const today = new Date();
-        const endOfWeek = new Date();
-        endOfWeek.setDate(today.getDate() + (7 - today.getDay()) % 7);
-        endOfWeek.setHours(23, 59, 59, 999);
-
-        // --- Крок 1: Отримати ID відранжованих подій ---
-        const rankedEventsQuery = this.eventRepository.queryBuilder("event")
-            .select("event.id", "id") // Вибираємо тільки ID
-            .where("\"event\".\"startDate\" > NOW()")
-            .andWhere("\"event\".\"visibility\" = 'PUBLIC'")
-            .andWhere("ST_Intersects(event.locationPoint, ST_GeomFromText(:cityBoundary, 4326))")
-            .orderBy(
-                "CASE WHEN \"event\".\"isFeatured\" = true THEN 0 ELSE 1 END", "ASC",
-            )
-            .addOrderBy(
-                "CASE WHEN \"event\".\"startDate\" BETWEEN :today AND :endOfWeek THEN 0 ELSE 1 END", "ASC",
-            )
-            .addOrderBy(
-                "((SELECT COUNT(*) FROM \"event_tickets\" WHERE \"eventId\" = \"event\".\"id\") * 2 + (SELECT COUNT(*) FROM \"event_interests\" WHERE \"eventId\" = \"event\".\"id\"))", "DESC",
-            )
-            .addOrderBy("\"event\".\"startDate\"", "ASC")
-            .setParameters({
-                today: today.toISOString(),
-                endOfWeek: endOfWeek.toISOString(),
-                cityBoundary: cityBoundaryWkt,
-            })
-            .limit(limit);
-
-        const rawResults = await rankedEventsQuery.getRawMany<{ id: string }>();
-        const eventIds = rawResults.map(result => result.id);
-
+        const eventIds = eventIdsResult.map(e => e.id);
         if (eventIds.length === 0) {
             return [];
         }
 
-        const finalEvents = await this.eventRepository.queryBuilder("event")
+        // --- Крок 2: Завантажити повні дані для знайдених ID ---
+        return this.eventRepository.queryBuilder("event")
             .leftJoinAndSelect("event.hosts", "host")
             .leftJoinAndSelect("host.user", "hostUser")
             .leftJoinAndSelect("hostUser.profile", "userProfile")
@@ -282,48 +216,6 @@ export class EventService {
             .leftJoinAndSelect("ticket.user", "ticketUser")
             .leftJoinAndSelect("ticketUser.profile", "ticketProfile")
             .where("event.id IN (:...eventIds)", { eventIds })
-            .getMany();
-
-        return eventIds.map(id =>
-            finalEvents.find(event => event.id === id),
-        ).filter(event => event !== undefined);
-    }
-
-    async getEventCollectionsFeed(session: Session) {
-        // --- Крок 1: Отримати інтереси та локацію користувача ---
-        // Ця частина залишається такою ж ефективною
-        const userProfile = await this.userRepository.queryBuilder("user")
-            .leftJoinAndSelect("user.profile", "profile")
-            .leftJoinAndSelect("profile.interests", "profileInterests")
-            .leftJoinAndSelect("profile.location", "profileLocation")
-            .where("user.id = :userId", { userId: session.user.id })
-            .getOne();
-
-
-        if (!userProfile?.profile?.interests?.length || !userProfile?.profile?.location?.bbox) {
-            // Якщо у користувача немає інтересів або локації, повертаємо порожній масив
-            return [];
-        }
-
-        const userInterestSlugs = userProfile.profile.interests.map(pi => pi.interestId);
-        const userBboxWkt = polygonToWkt(userProfile.profile.location.bbox);
-
-        if (!userBboxWkt) return [];
-
-        // --- Крок 2: Основний запит, що шукає інтереси з подіями ---
-        return this.interestsRepository.queryBuilder("interest")
-            .where("interest.slug IN (:...userInterestSlugs)", { userInterestSlugs }) // Зверніть увагу на зміну назви
-            .innerJoin("interest.events", "interestLink")
-            .innerJoin(
-                "interestLink.event",
-                "event",
-                `"event"."startDate" > NOW() AND 
-                     "event"."visibility" = 'PUBLIC' AND 
-                     ST_Intersects(event.locationPoint, ST_GeomFromText(:userBboxWkt, 4326))`,
-                { userBboxWkt },
-            )
-            .groupBy("interest.slug")
-            .select("interest")
             .getMany();
     }
 }
