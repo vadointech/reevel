@@ -3,6 +3,7 @@
 @use "@/theme/typography";
 
 .header {
+    width: 100%;
     display: grid;
     grid-template-columns: 1fr 5fr 1fr;
     align-items: center;

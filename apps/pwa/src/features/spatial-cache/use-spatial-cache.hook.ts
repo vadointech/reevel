@@ -2,6 +2,7 @@ import { useCallback, useRef } from "react";
 import { FetchQueryOptions, useQueryClient } from "@tanstack/react-query";
 import { RequestDebouncer } from "@/lib/debouncer";
 import { SpatialCache } from "./spatial-cache";
+import { ISpatialCacheConfig } from "./types";
 import {
     IMapProvider,
     MapInternalConfig,
@@ -10,7 +11,7 @@ import {
 
 type TFetchInput<TInput> = TInput & {
     viewState: MapInternalConfig.IViewStateConfig,
-    placeType?: string,
+    filter?: string,
 };
 
 type Metadata = {
@@ -19,59 +20,31 @@ type Metadata = {
     radius: number;
     bounds: MapProviderGL.LngLatBounds;
     zoom: number;
-    placeType?: string;
+    filter?: string;
     signal?: AbortSignal;
 };
 
-interface QueryBuilder<TData> {
+export interface ISpatialCacheQueryBuilder<TData> {
     (metadata: Metadata): FetchQueryOptions<TData>;
     queryKey: (params: unknown[]) => unknown[];
 }
 
 interface ConfigParams<TData, TInput> {
     persist?: boolean | { key: string }
-    queryBuilder: QueryBuilder<TData>;
+    queryBuilder: ISpatialCacheQueryBuilder<TData>;
     prefetchedData?: TData;
     onDataFetchResponse?: (response: TData, input: TFetchInput<TInput>) => void;
+    cacheConfig?: Partial<ISpatialCacheConfig>;
 }
 
 export function useSpatialCache<TData extends unknown[], TInput extends object = Record<string, unknown>>(mapProvider: IMapProvider, {
     queryBuilder,
     prefetchedData,
+    cacheConfig,
 }: ConfigParams<TData, TInput>) {
     const queryClient = useQueryClient();
-    const spatialCache = useRef(new SpatialCache());
+    const spatialCache = useRef(new SpatialCache(cacheConfig));
     const debouncer = useRef(new RequestDebouncer());
-    // const precacheStore = useRef<TData | undefined>(undefined);
-
-    // const persistentStorageKey = useMemo(() => {
-    //     if(!persist) return undefined;
-    //     if(typeof persist === "object") return persist.key;
-    //     return "spatial-cache";
-    // }, [persist]);
-    //
-    // const saveToPersistent = async(key: string) => {
-    //     indexedDbService.setItem<TSpatialCacheExtort>(key, spatialCache.current.export());
-    // };
-    //
-    // const loadFromPersistence = async(key: string) => {
-    //     const persistData = await indexedDbService.getItem<TSpatialCacheExtort>(key);
-    //     if(persistData) {
-    //         spatialCache.current.import(persistData);
-    //     }
-    // };
-    //
-    // useEffect(() => {
-    //     if(persistentStorageKey) {
-    //         loadFromPersistence(persistentStorageKey);
-    //     }
-    //
-    //     return () => {
-    //         if(persistentStorageKey) {
-    //             saveToPersistent(persistentStorageKey);
-    //         }
-    //     };
-    // }, [persistentStorageKey]);
 
     const cacheRegion = useCallback((
         regionId: string,
@@ -95,7 +68,7 @@ export function useSpatialCache<TData extends unknown[], TInput extends object =
             input: TFetchInput<TInput>,
             forceRefresh: boolean = false,
         ) => {
-            const { placeType } = input;
+            const { filter } = input;
 
             const viewState = {
                 ...input.viewState,
@@ -106,8 +79,8 @@ export function useSpatialCache<TData extends unknown[], TInput extends object =
             const { bounds, zoom } = viewState;
 
             if(!forceRefresh) {
-                const coverage = spatialCache.current.getCoverageInfo(bounds, zoom, placeType);
-                const requiredCoverage = placeType ? 0.4 : 0.6;
+                const coverage = spatialCache.current.getCoverageInfo(bounds, zoom, filter);
+                const requiredCoverage = filter ? 0.4 : 0.6;
 
                 if(coverage.ratio >= requiredCoverage) {
                     const cache = queryClient.getQueryData<TData>(queryBuilder.queryKey([coverage.currentBestCoveredRegionId]));
@@ -117,7 +90,7 @@ export function useSpatialCache<TData extends unknown[], TInput extends object =
                 // console.log(`❌ Cache miss: ${(coverage.ratio * 100).toFixed(1)}% coverage`);
             }
 
-            const regionId = spatialCache.current.createStableRegionId(bounds, zoom, placeType);
+            const regionId = spatialCache.current.createStableRegionId(bounds, zoom, filter);
 
             const center = bounds.getCenter();
             const radius = mapProvider.getHorizontalRadius(bounds, center);
@@ -131,12 +104,12 @@ export function useSpatialCache<TData extends unknown[], TInput extends object =
                             radius,
                             bounds,
                             zoom,
-                            placeType,
+                            filter,
                             signal,
                         }),
                     );
 
-                    cacheRegion(regionId, response, viewState, placeType);
+                    cacheRegion(regionId, response, viewState, filter);
 
                     return response;
                 },

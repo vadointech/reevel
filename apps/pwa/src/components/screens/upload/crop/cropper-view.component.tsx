@@ -1,4 +1,4 @@
-import { ComponentProps } from "react";
+import { CSSProperties } from "react";
 import { Link } from "@/i18n/routing";
 
 import { Header } from "@/components/ui";
@@ -7,22 +7,28 @@ import { IconArrowLeft } from "@/components/icons";
 import { ImageCropper } from "@/components/shared/cropper";
 
 import styles from "./styles.module.scss";
+import cx from "classnames";
 
 export namespace UploadCropperView {
-    export type Props = ComponentProps<"div"> & {
+    export type Props = ImageCropper.Props & {
         callbackUrl: string;
+        className?: string;
+        style?: CSSProperties
     };
 }
 
 export const UploadCropperView = ({
     callbackUrl,
     children,
+    className,
+    style,
+
     ...props
 }: UploadCropperView.Props) => {
     return (
         <div
-            className={styles.crop}
-            {...props}
+            className={cx(styles.crop, className)}
+            style={style}
         >
             <Header
                 iconBefore={
@@ -35,7 +41,7 @@ export const UploadCropperView = ({
             </Header>
 
             <div className={styles.crop__cropper}>
-                <ImageCropper aspect={390/510} />
+                <ImageCropper {...props} />
             </div>
 
             <div className={styles.crop__buttons}>

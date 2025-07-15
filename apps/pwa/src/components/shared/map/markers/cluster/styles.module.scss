@@ -11,6 +11,5 @@
 
     &__text {
         color: colors.$foreground;
-        @include typography.font("sm");
     }
 }

@@ -37,8 +37,8 @@ export const ClusterMarker = ({
             <span
                 className={styles.cluster__text}
                 style={{
-                    height: Math.max(size / 3.2, 12),
-                    fontSize: Math.max(size / 2.4, 14),
+                    lineHeight: 1,
+                    fontSize: Math.max(size / 2.4, 16),
                 }}
             >
                 { children }

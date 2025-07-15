@@ -13,7 +13,7 @@ export namespace ImageCropper {
 
 export const ImageCropper = observer(({
     aspect = 1,
-    minWidth = 150,
+    minWidth = 100,
     ...props
 }: ImageCropper.Props) => {
     const {

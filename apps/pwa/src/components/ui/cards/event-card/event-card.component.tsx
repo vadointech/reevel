@@ -1,4 +1,4 @@
-import { ComponentProps, ReactNode } from "react";
+import { ComponentProps } from "react";
 import Image from "next/image";
 import { hexToRgba } from "@/utils/hex-to-rgba";
 
@@ -6,50 +6,29 @@ import { Badge } from "@/components/ui";
 import { IconLock, IconLocation, IconGlobe } from "@/components/icons";
 import { AttendersSection } from "../../attenders";
 
-
-import { UserProfileEntity } from "@/entities/profile";
+import { EventEntity, EventVisibility } from "@/entities/event";
 import { UISize } from "@/types/common";
 
 import styles from "./styles.module.scss";
 import cx from "classnames";
 
-const defaultAttendees: UserProfileEntity[] = [
-    { id: "1", userId: "", completed: "true", picture: "http://localhost:3000/assets/temp/valentine.png" },
-    { id: "2", userId: "", completed: "true", picture: "http://localhost:3000/assets/temp/poster1.jpg" },
-    { id: "3", userId: "", completed: "true", picture: "http://localhost:3000/assets/temp/poster2.png" },
-    { id: "4", userId: "", completed: "true", picture: "http://localhost:3000/assets/temp/poster3.png" },
-    { id: "5", userId: "", completed: "true", picture: "http://localhost:3000/assets/temp/poster4.png" },
-];
-
 export namespace EventCard {
-    export type EventType = "Public" | "Private";
     type Data = {
-        poster: string;
-        primaryColor: string;
-        title: string;
-        location: string;
-        type: EventType;
-        size?: UISize;
+        event: EventEntity
     };
 
-    export type Props = ComponentProps<"div"> & Data;
+    export type Props = ComponentProps<"div"> & Data & {
+        size?: UISize;
+    };
 }
 
 
 export const EventCard = ({
-    title,
+    event,
     size = "default",
-    primaryColor,
-    poster,
-    type,
-    location,
     className,
     ...props
 }: EventCard.Props) => {
-    const icon: Record<EventCard.EventType, ReactNode> = {
-        Public: <IconGlobe />,
-        Private: <IconLock />,
-    };
 
     return (
         <div
@@ -63,8 +42,8 @@ export const EventCard = ({
             <Image
                 crossOrigin="anonymous"
                 fill
-                src={poster}
-                alt={title}
+                src={event.poster}
+                alt={event.title}
                 className={styles.card__background}
             />
 
@@ -76,21 +55,33 @@ export const EventCard = ({
                 style={{
                     background: `linear-gradient(
                         to bottom,
-                        ${hexToRgba(primaryColor, 0.5)} 58%,
-                        ${hexToRgba(primaryColor, 0.4)} 66%,
-                        ${hexToRgba(primaryColor, 0.2)} 80%,
-                        ${hexToRgba(primaryColor, 0.05)} 92%,
-                        ${hexToRgba(primaryColor, 0)} 100%
+                        ${hexToRgba(event.primaryColor, 0.5)} 58%,
+                        ${hexToRgba(event.primaryColor, 0.4)} 66%,
+                        ${hexToRgba(event.primaryColor, 0.2)} 80%,
+                        ${hexToRgba(event.primaryColor, 0.05)} 92%,
+                        ${hexToRgba(event.primaryColor, 0)} 100%
                     )`,
                 }}
             >
-                <Badge
-                    size={"small"}
-                    variant={"ghost"}
-                    iconBefore={icon[type]}
-                >
-                    {type}
-                </Badge>
+                {
+                    event.visibility === EventVisibility.PRIVATE ? (
+                        <Badge
+                            variant={"ghost"}
+                            size={"small"}
+                            iconBefore={<IconLock />}
+                        >
+                            Private
+                        </Badge>
+                    ) : (
+                        <Badge
+                            variant={"ghost"}
+                            size={"small"}
+                            iconBefore={<IconGlobe />}
+                        >
+                            Public
+                        </Badge>
+                    )
+                }
             </div>
 
             <div
@@ -101,10 +92,10 @@ export const EventCard = ({
                 style={{
                     background: `linear-gradient(
                         to top,
-                        ${hexToRgba(primaryColor, 1)} 44%,
-                        ${hexToRgba(primaryColor, 0.2)} 80%,
-                        ${hexToRgba(primaryColor, 0.05)} 92%,
-                        ${hexToRgba(primaryColor, 0)} 100%
+                        ${hexToRgba(event.primaryColor, 1)} 44%,
+                        ${hexToRgba(event.primaryColor, 0.2)} 80%,
+                        ${hexToRgba(event.primaryColor, 0.05)} 92%,
+                        ${hexToRgba(event.primaryColor, 0)} 100%
                     )`,
                 }}
             >
@@ -115,7 +106,7 @@ export const EventCard = ({
                     )}
                 >
                     <IconLocation />
-                    {location}
+                    { event.locationTitle }
                 </div>
                 <h3
                     className={cx(
@@ -123,11 +114,11 @@ export const EventCard = ({
                         styles[`card__title_size_${size}`],
                     )}
                 >
-                    {title}
+                    { event.title }
                 </h3>
                 <AttendersSection
                     size={size}
-                    users={defaultAttendees}
+                    users={event.tickets.map(item => item.user.profile)}
                 />
             </div>
         </div>

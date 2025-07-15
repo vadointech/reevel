@@ -62,9 +62,16 @@ export class BottomSheetRootController implements IBottomSheetRootController {
     close() {
         this._store.setOpen(false);
         this._internalConfig.onClose?.();
+        this._store.setPositionPx(0);
+        this._store.setActiveSnapPoint(0);
+        this._store.setSettledSnapPoint(0);
     }
 
-    setSnapPoint(index:number, ctx?: IBottomSheetRootControllerContext) {
+    settleSnapPoint() {
+        this._store.setSettledSnapPoint(this._store.activeSnapPoint);
+    }
+
+    setSnapPoint(index: number, ctx?: IBottomSheetRootControllerContext) {
         this._store.setActiveSnapPoint(index);
 
         this.withContext(ctx, ctx => {
@@ -99,16 +106,22 @@ export class BottomSheetRootController implements IBottomSheetRootController {
     }
 
     setPositionBySnapIndex(index: number, ctx?: IBottomSheetRootControllerContext) {
+        if(index < 0 || index >= this._internalConfig.snapPointsCount) return;
+
         const y = this.snapPointController.getPositionPxByIndex(index);
         if(y === this._store.positionPx) return;
-        this.setSnapPoint(index, ctx);
+
         this.animationControls.start(
             { y },
             generateBottomSheetTransitionParams(
                 y,
-                this.snapPointController.getPositionPxByIndex(index),
+                this._store.positionPx,
+                this.snapPointController.boundBottom,
             ),
         );
+
+        this.setSnapPoint(index, ctx);
+        this._store.setPositionPx(y);
     };
 
     private withContext(ctx: IBottomSheetRootControllerContext = { triggerHandlers: false }, callback: (ctx: IBottomSheetRootControllerContext) => void) {

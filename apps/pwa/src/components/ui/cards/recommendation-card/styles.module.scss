@@ -1,0 +1,49 @@
+@use "@/theme/mixins";
+@use "@/theme/colors";
+@use "@/theme/typography";
+
+.card {
+    position: relative;
+    overflow: hidden;
+
+    height: mixins.rem(146);
+    width: mixins.rem(342);
+    padding: 0.75rem;
+
+    border-radius: mixins.rem(18);
+    flex: 0 0 auto;
+
+    &__content {
+        position: relative;
+        z-index: 2;
+        display: flex;
+        align-items: center;
+        gap: mixins.rem(14);
+        color: colors.$static-foreground;
+    }
+
+    &__image {
+        position: relative;
+        overflow: hidden;
+        width: mixins.rem(122);
+        height: mixins.rem(122);
+
+        flex: 0 0 auto;
+        border-radius: mixins.rem(15);
+    }
+
+    &__place {
+        margin-bottom: 0.25rem;
+    }
+
+    &__title {
+        @include mixins.textEllipsis(2);
+        @include typography.font("lg", 500);
+    }
+
+    &__description {
+        @include typography.font("xxs");
+        font-size: mixins.rem(10);
+        @include mixins.textEllipsis(2);
+    }
+}

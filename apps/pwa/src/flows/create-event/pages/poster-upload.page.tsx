@@ -9,7 +9,10 @@ export namespace CreateEventPosterUploadPage {
 
 export const CreateEventPosterUploadPage = ({ callbackUrl }: CreateEventPosterUploadPage.Props) => {
     return (
-        <UploadCropperView callbackUrl={callbackUrl}>
+        <UploadCropperView
+            aspect={390/510}
+            callbackUrl={callbackUrl}
+        >
             <CreateEventPosterUploadCropper callbackUrl={callbackUrl} />
         </UploadCropperView>
     );

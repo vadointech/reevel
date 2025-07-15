@@ -8,7 +8,8 @@ export namespace CreateEvent {
         poster: string;
         posterFieldId: string;
         primaryColor?: string;
-        location?: number[];
+        locationPoint: number[];
+        locationTitle: string;
         ticketsAvailable?: string;
         ticketPrice?: string;
         visibility?: EventVisibility;

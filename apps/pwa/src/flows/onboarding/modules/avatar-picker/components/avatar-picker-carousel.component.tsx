@@ -1,6 +1,9 @@
 "use client";
 
-import { useOnboardingAvatarPickerCarousel } from "@/features/onboarding/hooks";
+import { observer } from "mobx-react-lite";
+
+import { useOnboardingFormContext } from "@/features/onboarding";
+
 import { CircularCarousel, useCircularCarousel } from "@/components/shared/circular-carousel";
 import { ActiveScale } from "@/components/shared/circular-carousel/plugins";
 
@@ -18,14 +21,12 @@ export namespace OnboardingAvatarPickerCarousel {
     };
 }
 
-export const OnboardingAvatarPickerCarousel = ({
+export const OnboardingAvatarPickerCarousel = observer(({
     defaultAvatars,
 }: OnboardingAvatarPickerCarousel.Props) => {
+    const form = useOnboardingFormContext();
 
-    const {
-        avatars,
-        handleSetAvatar,
-    } = useOnboardingAvatarPickerCarousel(defaultAvatars);
+    const avatars = [form.store.pictureToSelect, ...defaultAvatars, form.store.pictureToSelect, ...defaultAvatars];
 
     const slides = avatars.map((item) => (
         <SliderItem key={item} src={item} />
@@ -38,9 +39,9 @@ export const OnboardingAvatarPickerCarousel = ({
         plugins: [ActiveScale],
         handlers: {
             onChange(carousel) {
-                handleSetAvatar(
-                    carousel.api.selectedScrollSnap(),
-                );
+                const snapIndex = carousel.api.selectedScrollSnap();
+                if(!snapIndex || snapIndex < 0 || snapIndex >= avatars.length) return;
+                form.setValue("picture", avatars[snapIndex]);
             },
         },
     });
@@ -54,8 +55,8 @@ export const OnboardingAvatarPickerCarousel = ({
         >
             <div className={styles.picker__circle} />
             <div className={styles.picker__options}>
-                <CircularCarousel carousel={carousel} />;
+                <CircularCarousel carousel={carousel} />
             </div>
         </div>
     );
-};
+});

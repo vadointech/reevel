@@ -48,7 +48,7 @@ export function useOnboardingUpdate({
 
     return useCallback(() => {
         const formValues = form.getValues();
-        const diff = new ObjectDiff(form.defaultValues, formValues);
+        const diff = new ObjectDiff(form.store.defaultValues, formValues);
         const progress = getOnboardingProgress(step + 1);
 
         if(diff.hasChanges) {

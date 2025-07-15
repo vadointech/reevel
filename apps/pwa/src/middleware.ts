@@ -8,11 +8,10 @@ export default async function (request: NextRequest) {
         nextUrl,
     } = request;
 
-
     const isPublicRoute = publicRoutes.includes(nextUrl.pathname);
     const isAuthRoute = authRoutes.includes(nextUrl.pathname);
 
-    if (isPublicRoute) {
+    if(isPublicRoute) {
         return intlMiddleware(request);
     }
 
@@ -24,14 +23,14 @@ export default async function (request: NextRequest) {
 
     const isAuthenticated = !!sessionId && !!accessToken && !!refreshToken;
 
-    if (isAuthenticated) {
+    if(isAuthenticated) {
         if (isAuthRoute) {
             return Response.redirect(new URL("/", nextUrl));
         }
     }
 
-    if (!isAuthenticated) {
-        if (!isAuthRoute) {
+    if(!isAuthenticated) {
+        if(!isAuthRoute) {
             return Response.redirect(new URL("/login", nextUrl));
         }
     }

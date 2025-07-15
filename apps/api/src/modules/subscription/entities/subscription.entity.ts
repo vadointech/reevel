@@ -10,7 +10,7 @@ export enum SubscriptionType {
 
 @Entity("subscriptions")
 export class SubscriptionEntity {
-    @Column({ type: "enum", enum: SubscriptionType, default: SubscriptionType.DEFAULT })
+    @Column({ type: "enum", enum: SubscriptionType, default: SubscriptionType.PREMIUM })
     type: SubscriptionType;
 
     @PrimaryColumn()

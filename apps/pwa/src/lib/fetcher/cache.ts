@@ -19,10 +19,6 @@ export class FetcherCacheManager implements IFetcherCacheManager {
             }
         }
 
-        if(request.cacheTags) {
-            keyParts.push(...request.cacheTags);
-        }
-
         if(sid) return FetcherCacheManager.newCacheTag(keyParts, { id: sid });
         return FetcherCacheManager.newCacheTag(keyParts);
     }

@@ -1,0 +1,362 @@
+[
+  {
+    "title": "Astral Trip",
+    "description": "An open-air festival featuring live music and food trucks.",
+    "poster": "https://artwizard.io/cdn-cgi/imagedelivery/nEFkEwcLfsgJlYjxGEgkpQ/33a98366-8b0a-42c8-4e53-b3418e958f00/w=1920,f=auto",
+    "posterFieldId": "poster_001",
+    "primaryColor": "#01296C",
+    "location": {
+      "type": "Point",
+      "coordinates": [28.4536,49.2359]   
+    },
+    "locationTitle": "Vinnytsia",
+    "ticketsAvailable": 20,
+    "ticketPrice": 400.00,
+    "visibility": "PUBLIC",
+    "startDate": "2025-07-20T16:00:00Z",
+    "endDate": "2025-07-21T02:00:00Z",
+    "createdAt": "2025-06-27T12:00:00Z",
+    "isFeatured": true,
+    "interests": ["traveling","backpacking","adventure-travel"]
+  },
+  {
+    "title": "Відродження світла",
+    "description": "Після семирічної тиші гурт “Рай із Твоїх Снів” повертається на сцену у повному складі. Це буде не просто виступ — це довгоочікуване відродження, перша велика поява колективу в оновленій енергії, зі старою силою.",
+    "poster": "https://artwizard.io/cdn-cgi/imagedelivery/nEFkEwcLfsgJlYjxGEgkpQ/9665b8e3-22c3-403a-f0ad-8bd35c2ba100/w=2048,f=auto",
+    "posterFieldId": "poster_002",
+    "primaryColor": "#977b67",
+    "location": {
+      "type": "Point",
+      "coordinates": [28.4293,49.2337]   
+    },
+    "locationTitle": "Vinnytsia",
+    "ticketsAvailable": 30,
+    "ticketPrice": 100.00,
+    "visibility": "PUBLIC",
+    "startDate": "2025-07-20T16:00:00Z",
+    "endDate": "2025-07-21T02:00:00Z",
+    "createdAt": "2025-06-27T12:00:00Z",
+    "isFeatured": true,
+    "interests": ["music-listening", "music-production","podcasting","music-production"]
+  },
+  {
+    "title": "Замальовки",
+    "description": "Постановки по 15 хв. протягом 2 годин.Оголена жіноча натура",
+    "poster": "https://artwizard.io/cdn-cgi/imagedelivery/nEFkEwcLfsgJlYjxGEgkpQ/fc3544c1-47b6-47f6-e033-be02458de200/w=1920,f=auto",
+    "posterFieldId": "poster_003",
+    "primaryColor": "#6484ba",
+    "location": {
+      "type": "Point",
+      "coordinates": [28.4170,49.2298]    
+    },
+    "locationTitle": "Vinnytsia",
+    "ticketsAvailable": 10,
+    "ticketPrice": 50.00,
+    "visibility": "PUBLIC",
+    "startDate": "2025-07-20T16:00:00Z",
+    "endDate": "2025-07-21T02:00:00Z",
+    "createdAt": "2025-06-27T12:00:00Z",
+    "isFeatured": true,
+    "interests": ["drawing","painting","illustration","watercolor-painting"]
+  },
+  {
+    "title": "Настолки та смачна піцца",
+    "description": "Запрошуємо всіх до нашого зеленого літнього дворику 🌿 В цю пʼятницю граємо в настолки та слухаємо вініл. Також ви можете приносити свою платівки для прослуховування.",
+    "poster": "https://artwizard.io/cdn-cgi/imagedelivery/nEFkEwcLfsgJlYjxGEgkpQ/31cc8d04-8855-4956-78d8-e07158273f00/w=1920,f=auto",
+    "posterFieldId": "poster_004",
+    "primaryColor": "#fc4c04",
+    "location": {
+      "type": "Point",
+      "coordinates": [28.4233,49.2170]    
+    },
+    "locationTitle": "Vinnytsia",
+    "ticketsAvailable": 5,
+    "ticketPrice": 200.00,
+    "visibility": "PUBLIC",
+    "startDate": "2025-07-20T16:00:00Z",
+    "endDate": "2025-07-21T02:00:00Z",
+    "createdAt": "2025-06-27T12:00:00Z",
+    "isFeatured": true,
+    "interests": ["cooking","grilling","barbecuing"]
+
+  },
+  {
+    "title": "🍺Йога🍺",
+    "description": "трохи руху, трохи пива, багато сміху,гарно проведений час в дружній компанії в якій кожен знайде спокій та задоволення.тренер — @jurodest",
+    "poster": "https://artwizard.io/cdn-cgi/imagedelivery/nEFkEwcLfsgJlYjxGEgkpQ/43067d67-a16e-4877-b243-e6443f079100/w=1920,f=auto",
+    "posterFieldId": "poster_005",
+    "primaryColor": "#175913",
+    "location": {
+      "type": "Point",
+      "coordinates": [28.4120,49.2186]     
+    },
+    "locationTitle": "Vinnytsia",
+    "ticketsAvailable": 3,
+    "ticketPrice": 300.00,
+    "visibility": "PUBLIC",
+    "startDate": "2025-07-20T16:00:00Z",
+    "endDate": "2025-07-21T02:00:00Z",
+    "createdAt": "2025-06-27T12:00:00Z",
+    "isFeatured": true,
+    "interests": ["fitness-training","nutrition","gymnastics"]
+  },
+  {
+    "title": "🤔Як відео допомагають популяризувати архітектуру модернізму?",
+    "description": "Про подію 🗣 Розповість Дмитро Фальковський - відеооператор/фотограф та автор проєкту @df1_explore.Ви дізнаєтесь:🔸️ як знімати архітектуру на смартфон та професійну техніку?🔸️як зробити відео з архітектурою модернізму вірусним?🔸️надихнетесь прикладами збережених будівель та монументальних творів 🤍Приходьте, щоб поглянути на знайому архітектуру по-новому та навчитись знімати фото/відео так, аби робити модернізм ближчим до людей.",
+    "poster": "https://artwizard.io/cdn-cgi/imagedelivery/nEFkEwcLfsgJlYjxGEgkpQ/32101d16-2981-48e5-8a7c-6c9dc4306500/w=1920,f=auto",
+    "posterFieldId": "poster_006",
+    "primaryColor": "#515C73",
+    "location": {
+      "type": "Point",
+      "coordinates": [28.3965,49.2275]     
+    },
+    "locationTitle": "Vinnytsia",
+    "ticketsAvailable": 12,
+    "ticketPrice": 400.00,
+    "visibility": "PUBLIC",
+    "startDate": "2025-07-20T16:00:00Z",
+    "endDate": "2025-07-21T02:00:00Z",
+    "createdAt": "2025-06-27T12:00:00Z",
+    "isFeatured": true,
+    "interests": ["photography","urban-exploration","videography"]
+  },
+  {
+    "title": "Турнір з Dota 2",
+    "description": "Якщо ти вмієш грати, та маєш натхення спробувати себе на LAN турнірові, пропонуємо тобі прийняти участь в найбільшому кіберспортивному заході у Вінниці. Який буде проводитися у Вінницькому національному технічному універстеті",
+    "poster": "https://i.pinimg.com/originals/69/2c/7f/692c7f9a1508c844932f7d2c71e2aac0.jpg",
+    "posterFieldId": "poster_007",
+    "primaryColor": "#B30200",
+    "location": {
+      "type": "Point",
+      "coordinates": [28.4105,49.2346]    
+    },
+    "locationTitle": "Vinnytsia",
+    "ticketsAvailable": 60,
+    "ticketPrice": 0,
+    "visibility": "PUBLIC",
+    "startDate": "2025-07-20T16:00:00Z",
+    "endDate": "2025-07-21T02:00:00Z",
+    "createdAt": "2025-06-27T12:00:00Z",
+    "isFeatured": true,
+    "interests": ["video-gaming","esports","strategy-gaming"]
+  },
+  {
+    "title": "ХОВАНКА x BIOS",
+    "description": "Дві потужні формації зустрічаються у нашому клубі, щоб зламати все на своєму шляху. ХОВАНКА і BIOS об’єднуються для двох незабутніх подій — дві сцени, дві локації, десятки артистів, але один спільний вайб.",
+    "poster": "https://artwizard.io/cdn-cgi/imagedelivery/nEFkEwcLfsgJlYjxGEgkpQ/79fb7193-7173-4a4e-ee4e-c36f19c6b900/w=1920,f=auto",
+    "posterFieldId": "poster_008",
+    "primaryColor": "#597C36",
+    "location": {
+      "type": "Point",
+      "coordinates": [28.4547,49.2487]    
+    },
+    "locationTitle": "Vinnytsia",
+    "ticketsAvailable": 20,
+    "ticketPrice": 600.00,
+    "visibility": "PUBLIC",
+    "startDate": "2025-07-20T16:00:00Z",
+    "endDate": "2025-07-21T02:00:00Z",
+    "createdAt": "2025-06-27T12:00:00Z",
+    "isFeatured": true,
+    "interests": ["hiking","orienteering","backpacking"]
+  },
+  {
+    "title": "Літній вечір на даху з друзями",
+    "description": "Незабутня зустріч на даху багатоповерхівки в самому серці міста. Тепла атмосфера, яскраві вогні нічного мегаполіса, гарячий чай та щирі розмови з найближчими друзями. Будемо збирати врожай гарбузів на даху.",
+    "poster": "https://i.pinimg.com/736x/af/f4/49/aff4495db684fe884b657198b0d06a1d.jpg",
+    "posterFieldId": "poster_009",
+    "primaryColor": "#cd6832",
+    "location": {
+      "type": "Point",
+      "coordinates": [28.4714,49.2334] 
+    },
+    "locationTitle": "Vinnytsia",
+    "ticketsAvailable": 7,
+    "ticketPrice": 400.00,
+    "visibility": "PUBLIC",
+    "startDate": "2025-07-20T16:00:00Z",
+    "endDate": "2025-07-21T02:00:00Z",
+    "createdAt": "2025-06-27T12:00:00Z",
+    "isFeatured": true,
+    "interests": ["gardening","team-sports","hunting"]
+  },
+  {
+    "title": "Вечорниці «Сонцестояння»",
+    "description": "21 червня Сонце зупиняється в найвищій точці горизонту, в цей день українці святкували Купала. Цього тижня для нас зупинилось не сонце, а серця близьких людей.На фронті загинув актор театру на Подолі, чоловік нашої подруги Юрій Філіпенко. росія продовжує тероризувати та вбивати цивільне населення. З життя пішов Володимир Польовчик, музикант-цимбаліст з яким ми неодноразово грали разом та потрапляли у різноманітні пригоди.",
+    "poster": "https://artwizard.io/cdn-cgi/imagedelivery/nEFkEwcLfsgJlYjxGEgkpQ/60e08588-434d-40b9-0e51-c149aabfdf00/w=1920,f=auto",
+    "posterFieldId": "poster_010",
+    "primaryColor": "#282020",
+    "location": {
+      "type": "Point",
+      "coordinates": [28.4483,49.2180]  
+    },
+    "locationTitle": "Vinnytsia",
+    "ticketsAvailable": 23,
+    "ticketPrice": 350.00,
+    "visibility": "PUBLIC",
+    "startDate": "2025-07-20T16:00:00Z",
+    "endDate": "2025-07-21T02:00:00Z",
+    "createdAt": "2025-06-27T12:00:00Z",
+    "isFeatured": true,
+    "interests": ["socializing","coffee","trivia-nights"]
+  },
+  {
+    "title": "Майстерня",
+    "description": "цього разу ми будемо йти простотою та легкістю, слідувати процесу природної творчої сили 💎 зерноу борошно а з борошна…? до твоїх творчих рук з яких народиться реліквія ні чим іншим як чарами приділеної уваги👁️у цю суботу",
+    "poster": "https://artwizard.io/cdn-cgi/imagedelivery/nEFkEwcLfsgJlYjxGEgkpQ/ac2d4092-8120-4e18-2eeb-1be0e303d500/w=1920,f=auto",
+    "posterFieldId": "poster_011",
+    "primaryColor": "#4e8ec4",
+    "location": {
+      "type": "Point",
+      "coordinates": [28.4713,49.2252]   
+    },
+    "locationTitle": "Vinnytsia",
+    "ticketsAvailable": 6,
+    "ticketPrice": 700.00,
+    "visibility": "PUBLIC",
+    "startDate": "2025-07-20T16:00:00Z",
+    "endDate": "2025-07-21T02:00:00Z",
+    "createdAt": "2025-06-27T12:00:00Z",
+    "isFeatured": true,
+    "interests": ["diy-projects","woodworking","upcycling"]
+  },
+  {
+    "title": "Перегляд фільму “Тихий рев” Джонні Барінгтона",
+    "description": "Юний серфінгіст Дондо намагається прийняти зникнення свого батька-рибалки у морі. До тями його приводить бунтівна розумниця Сас, яка не боїться підбивати інших на витівки. Вона пропонує хлопцю втекти з острова, щоб знайти власний шлях через хвилі, вірування, і пекельний вогонь.",
+    "poster": "https://artwizard.io/cdn-cgi/imagedelivery/nEFkEwcLfsgJlYjxGEgkpQ/2a4161ce-6e08-45e1-6d56-65a6e6bb4f00/w=1920,f=auto",
+    "posterFieldId": "poster_012",
+    "primaryColor": "#e9ad37",
+    "location": {
+      "type": "Point",
+      "coordinates": [28.4271,49.2281]    
+    },
+    "locationTitle": "Vinnytsia",
+    "ticketsAvailable": 38,
+    "ticketPrice": 210.00,
+    "visibility": "PUBLIC",
+    "startDate": "2025-07-20T16:00:00Z",
+    "endDate": "2025-07-21T02:00:00Z",
+    "createdAt": "2025-06-27T12:00:00Z",
+    "isFeatured": true,
+    "interests": ["movie-watching","tv-series","virtual-concerts"]
+  },
+  {
+    "title": "Ранкова пробіжка у міському парку",
+    "description": "Енергійний старт дня з дружньою командою бігунів у мальовничому міському парку. Свіже повітря, легкий туман і ритмічний стукіт кросівок по доріжках заряджають мотивацією й позитивом на весь день. Пробіжка супроводжувалася підтримкою однодумців та приємними розмовами після фінішу.",
+    "poster": "https://i.pinimg.com/564x/32/23/14/322314e988e9f0eb2bdd8535e1184806.jpg",
+    "posterFieldId": "poster_013",
+    "primaryColor": "#780595",
+    "location": {
+      "type": "Point",
+      "coordinates": [28.4787,49.2439]    
+    },
+    "locationTitle": "Vinnytsia",
+    "ticketsAvailable": 13,
+    "ticketPrice": 0,
+    "visibility": "PUBLIC",
+    "startDate": "2025-07-20T16:00:00Z",
+    "endDate": "2025-07-21T02:00:00Z",
+    "createdAt": "2025-06-27T12:00:00Z",
+    "isFeatured": true,
+    "interests": ["running","marathon-running","morning-runs"]
+  },
+  {
+    "title": "Теплий вечір турботи про домашнього улюбленця",
+    "description": "Особлива подія, присвячена спілкуванню та догляду за домашнім улюбленцем. Спільна прогулянка на свіжому повітрі, ігри, ласка та час для обіймів створили атмосферу довіри й радості. Дбайливий догляд не тільки зміцнив зв'язок між господарем і улюбленцем, а й подарував обом гарний настрій та незабутні спогади.",
+    "poster": "https://i.pinimg.com/736x/4e/3a/74/4e3a7442a91b21eec3ab5f0c144cb672.jpg",
+    "posterFieldId": "poster_014",
+    "primaryColor": "#111324",
+    "location": {
+      "type": "Point",
+      "coordinates": [28.4892,49.2551] 
+    },
+    "locationTitle": "Vinnytsia",
+    "ticketsAvailable": 4,
+    "ticketPrice": 100.00,
+    "visibility": "PUBLIC",
+    "startDate": "2025-07-20T16:00:00Z",
+    "endDate": "2025-07-21T02:00:00Z",
+    "createdAt": "2025-06-27T12:00:00Z",
+    "isFeatured": true,
+    "interests": ["pet-care","dog-walking","animal-rescue"]
+  },
+  {
+    "title": "Шопінг-день",
+    "description": "Весела та емоційна пригода у світі моди: разом із подругою вирушили на шопінг до улюблених магазинів. Примірки нових образів, пошук стильних аксесуарів, багато сміху й теплих обіймів. День, наповнений приємними моментами, гарним настроєм і новими покупками, які нагадуватимуть про чудово проведений час разом.",
+    "poster": "https://i.pinimg.com/736x/3f/b7/ea/3fb7eaa59816acb3b81ef52a511ed4d6.jpg",
+    "posterFieldId": "poster_015",
+    "primaryColor": "#BAAB9C",
+    "location": {
+      "type": "Point",
+      "coordinates": [28.4701,49.2337]  
+    },
+    "locationTitle": "Vinnytsia",
+    "ticketsAvailable": 1,
+    "ticketPrice": 0,
+    "visibility": "PUBLIC",
+    "startDate": "2025-07-20T16:00:00Z",
+    "endDate": "2025-07-21T02:00:00Z",
+    "createdAt": "2025-06-27T12:00:00Z",
+    "isFeatured": true,
+    "interests": ["shopping","budgeting","fashion-design"]
+  },
+  {
+    "title": "Турнір з Counter-Strike 2",
+    "description": "Запрошуємо всіх фанатів CS2 взяти участь у захопливому турнірі! Покажи свої навички, змагайся з найкращими гравцями та отримай шанс виграти круті призи. Формат змагання — команди 5 на 5. Реєстрація відкрита для всіх бажаючих. Не пропусти можливість стати чемпіоном!",
+    "poster": "https://i.pinimg.com/736x/9f/50/a9/9f50a9384d0d8b539bf10aa8db6981e9.jpg",
+    "posterFieldId": "poster_016",
+    "primaryColor": "#A5B309",
+    "location": {
+      "type": "Point",
+      "coordinates": [28.4492,49.2323]
+    },
+    "locationTitle": "Vinnytsia",
+    "ticketsAvailable": 74,
+    "ticketPrice": 100,
+    "visibility": "PUBLIC",
+    "startDate": "2025-07-20T16:00:00Z",
+    "endDate": "2025-07-21T02:00:00Z",
+    "createdAt": "2025-06-27T12:00:00Z",
+    "isFeatured": true,
+    "interests": ["video-gaming","esports","strategy-gaming"]
+  },
+  {
+    "title": "FIFA Challenge Cup: Грай, перемагай, святкуй!",
+    "description": "Запрошуємо всіх фанатів футболу на турнір з FIFA! Змагайся з іншими гравцями, покажи свої найкращі трюки та поборись за перемогу й круті призи. Формат — індивідуальні матчі 1 на 1. Реєстрація відкрита для всіх бажаючих. Долучайся та стань чемпіоном!",
+    "poster": "https://i.pinimg.com/736x/ae/c6/99/aec699e5218fa9c595d77f8347cdcd77.jpg",
+    "posterFieldId": "poster_017",
+    "primaryColor": "#0c6ce9",
+    "location": {
+      "type": "Point",
+      "coordinates": [28.4974,49.2416] 
+    },
+    "locationTitle": "Vinnytsia",
+    "ticketsAvailable": 14,
+    "ticketPrice": 550,
+    "visibility": "PUBLIC",
+    "startDate": "2025-07-20T16:00:00Z",
+    "endDate": "2025-07-21T02:00:00Z",
+    "createdAt": "2025-06-27T12:00:00Z",
+    "isFeatured": true,
+    "interests": ["video-gaming","esports","strategy-gaming"]
+  },
+  {
+    "title": "/HACKATHON",
+    "description": "Мрієш створити свій перший стартап, працювати в команді й прокачати свої скіли з топовими менторами з IT? Hack4Impact у Вінниці — твій шанс увірватись у світ технологій і зробити щось корисне для туристичної сфери міста!",
+    "poster": "https://i.pinimg.com/736x/0c/6e/0f/0c6e0f3401fb73d0bd0148017845a1e5.jpg",
+    "posterFieldId": "poster_018",
+    "primaryColor": "#07949c",
+    "location": {
+      "type": "Point",
+      "coordinates": [28.4278,49.2238]  
+    },
+    "locationTitle": "Vinnytsia",
+    "ticketsAvailable": 60,
+    "visibility": "PUBLIC",
+    "startDate": "2025-07-20T16:00:00Z",
+    "endDate": "2025-07-21T02:00:00Z",
+    "createdAt": "2025-06-27T12:00:00Z",
+    "isFeatured": true,
+    "interests": ["diy-projects","esports","strategy-gaming"]
+  }
+]

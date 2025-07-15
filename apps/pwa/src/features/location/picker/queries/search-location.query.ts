@@ -21,56 +21,58 @@ export namespace SearchLocationQueryBuilder {
         places: PlaceLocationEntity[]
     };
 
-    export interface Methods extends IQueryBuilderMethods {
+    export interface Methods extends IQueryBuilderMethods<SearchLocationQueryBuilder.TInput, SearchLocationQueryBuilder.TOutput> {
         getLocationRestrictions: (bounds?: MapProviderGL.LngLatBounds) => GooglePlacesApiRestrictionRectangle | undefined
     }
 }
 
-export const SearchLocationQueryBuilder: QueryBuilderQuery<SearchLocationQueryBuilder.TInput, SearchLocationQueryBuilder.TOutput, SearchLocationQueryBuilder.Methods> = ({
-    query,
-    nextPageToken,
-    locationRestrictions,
-}: SearchLocationQueryBuilder.TInput): FetchQueryOptions<SearchLocationQueryBuilder.TOutput> => {
+export const SearchLocationQueryBuilder: QueryBuilderQuery<SearchLocationQueryBuilder.TInput, SearchLocationQueryBuilder.TOutput, SearchLocationQueryBuilder.Methods> = (
+    input: SearchLocationQueryBuilder.TInput,
+): FetchQueryOptions<SearchLocationQueryBuilder.TOutput> => {
     return {
         queryKey: SearchLocationQueryBuilder.queryKey([
-            query,
+            input.query,
             ...(
-                locationRestrictions ? [
-                    locationRestrictions.rectangle.high.longitude.toFixed(3),
-                    locationRestrictions.rectangle.high.latitude.toFixed(3),
-                    locationRestrictions.rectangle.low.longitude.toFixed(3),
-                    locationRestrictions.rectangle.low.latitude.toFixed(3),
+                input.locationRestrictions ? [
+                    input.locationRestrictions.rectangle.high.longitude.toFixed(3),
+                    input.locationRestrictions.rectangle.high.latitude.toFixed(3),
+                    input.locationRestrictions.rectangle.low.longitude.toFixed(3),
+                    input.locationRestrictions.rectangle.low.latitude.toFixed(3),
                 ] : []
             ),
-            ...(nextPageToken ? [nextPageToken] : []),
+            ...(input.nextPageToken ? [input.nextPageToken] : []),
         ]),
-        queryFn: () => searchLocations({
-            body: {
-                textQuery: query,
-                languageCode: "uk",
-                pageToken: nextPageToken,
-                locationRestriction: locationRestrictions,
-                fieldMask: [
-                    "id",
-                    "displayName",
-                    "location",
-                    "primaryType",
-                    "primaryTypeDisplayName",
-                    "formattedAddress",
-                    "addressComponents",
-                    "googleMapsUri",
-                ],
-            },
-        })
-            .then(response => response.data || { places: [] })
-            .then(googlePlacesApiResponseTransformer.formatAddress)
-            .then((response) => {
-                return {
-                    nextPageToken: response.nextPageToken,
-                    places: googlePlacesApiResponseMapper.toPlaceLocationEntity(response),
-                };
-            }),
+        queryFn: () => SearchLocationQueryBuilder.queryFunc(input),
     };
+};
+
+SearchLocationQueryBuilder.queryFunc = (input) => {
+    return searchLocations({
+        body: {
+            textQuery: input.query,
+            languageCode: "uk",
+            pageToken: input.nextPageToken,
+            locationRestriction: input.locationRestrictions,
+            fieldMask: [
+                "id",
+                "displayName",
+                "location",
+                "primaryType",
+                "primaryTypeDisplayName",
+                "formattedAddress",
+                "addressComponents",
+                "googleMapsUri",
+            ],
+        },
+    })
+        .then(response => response.data || { places: [] })
+        .then(googlePlacesApiResponseTransformer.formatAddress)
+        .then((response) => {
+            return {
+                nextPageToken: response.nextPageToken,
+                places: googlePlacesApiResponseMapper.toPlaceLocationEntity(response),
+            };
+        });
 };
 
 SearchLocationQueryBuilder.queryKey = (params = []) => {

@@ -1,6 +1,6 @@
 "use client";
 
-import { ComponentProps } from "react";
+import { ComponentProps, useEffect } from "react";
 
 import useEmblaCarousel from "embla-carousel-react";
 import { UISize } from "@/types/common";
@@ -10,9 +10,12 @@ import cx from "classnames";
 
 export namespace Scroll {
     export type Variant = "horizontal" | "vertical";
-    export type Props = ComponentProps<"div"> & {
+    export type Props = Omit<ComponentProps<"div">, "onChange"> & {
         variant?: Variant;
         size?: UISize;
+        dragFree?: boolean;
+        startIndex?: number;
+        onChange?: (index: number) => void;
     };
 }
 
@@ -21,12 +24,26 @@ export const Scroll = ({
     size = "default",
     className,
     children,
+
+    dragFree = true,
+    startIndex = 0,
+    onChange,
+
     ...props
 }: Scroll.Props) => {
 
-    const [ref] = useEmblaCarousel({
-        dragFree: true,
+    const [ref, emblaApi] = useEmblaCarousel({
+        dragFree,
+        startIndex,
     });
+
+    useEffect(() => {
+        if(!emblaApi) return;
+
+        emblaApi.on("pointerUp", (api) => {
+            onChange?.(api.selectedScrollSnap());
+        });
+    }, [emblaApi, onChange]);
 
     return (
         <div

@@ -23,6 +23,7 @@
         &__title {
             @include typography.font("base", 500);
             font-size: mixins.rem(42);
+            text-wrap: nowrap;
             line-height: 1;
         }
 
@@ -60,6 +61,8 @@
             justify-content: center;
 
             svg {
+                width: .5rem;
+                height: .5rem;
                 transform: rotate(-45deg);
                 path {
                     fill: colors.$primary;
@@ -80,13 +83,14 @@
         opacity: 0.05;
 
         position: absolute;
-        top: -35%;
+        top: 0;
         left: -24%;
         transform: rotateZ(-26deg);
 
         @include typography.font;
         font-size: mixins.rem(130);
         font-weight: 500;
+        text-wrap: nowrap;
         color: colors.$foreground;
     }
 }   

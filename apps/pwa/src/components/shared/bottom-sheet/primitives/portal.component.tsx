@@ -16,25 +16,25 @@ export const BottomSheetPortal = observer(({ children }: BottomSheetPortal.Props
     const { modal, main } = useQuerySelectorContext();
     const { store, controller } = useBottomSheet();
 
-    useEffect(() => {
-        return () => {
-            if(main.current) {
-                main.current.style.pointerEvents = "";
-            }
-        };
-    }, []);
-
-    if(!modal.current) return null;
-
     const handleExitComplete = () => {
-        if (main.current && !controller.current.internalConfig.touchEvents) {
+        if(main.current) {
+            main.current.style.overflow = "";
             main.current.style.pointerEvents = "";
         }
     };
 
+    useEffect(() => {
+        return () => handleExitComplete();
+    }, []);
+
+    if(!modal.current) return null;
+
     if(store.open) {
-        if(main.current && !controller.current.internalConfig.touchEvents) {
-            main.current.style.pointerEvents = "none";
+        if(main.current) {
+            main.current.style.overflow = "hidden";
+            if(!controller.current.internalConfig.touchEvents) {
+                main.current.style.pointerEvents = "none";
+            }
         }
     }
 

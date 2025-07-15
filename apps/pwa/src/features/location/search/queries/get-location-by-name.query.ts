@@ -14,21 +14,24 @@ export namespace GetLocationByNameQueryBuilder {
 }
 
 export const GetLocationByNameQueryBuilder: QueryBuilderQuery<GetLocationByNameQueryBuilder.TInput, PlaceLocationEntity[]> = (
-    { signal, ...input }: GetLocationByNameQueryBuilder.TInput,
+    input: GetLocationByNameQueryBuilder.TInput,
 ): FetchQueryOptions<PlaceLocationEntity[]> => {
     return {
         queryKey: GetLocationByNameQueryBuilder.queryKey([input.name]),
-        queryFn: () => getPlaceByName({
-            params: {
-                q: input.name,
-                access_token: input.accessToken,
-                ...input,
-            },
-            signal,
-        })
-            .then(response => response.data || { features: [] })
-            .then(mapboxFeaturesResponseMapper.toPlaceLocationEntity),
+        queryFn: () => GetLocationByNameQueryBuilder.queryFunc(input),
     };
+};
+
+GetLocationByNameQueryBuilder.queryFunc = (input) => {
+    return getPlaceByName({
+        params: {
+            q: input.name,
+            access_token: input.accessToken,
+            ...input,
+        },
+    })
+        .then(response => response.data || { features: [] })
+        .then(mapboxFeaturesResponseMapper.toPlaceLocationEntity);
 };
 
 GetLocationByNameQueryBuilder.queryKey = (params = []) => {

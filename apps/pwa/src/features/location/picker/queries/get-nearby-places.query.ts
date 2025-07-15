@@ -14,7 +14,7 @@ export namespace GetNearbyPlacesQueryBuilder {
         center: MapProviderGL.LngLat,
         radius: number,
         regionId?: string,
-        placeType?: string;
+        filter?: string;
         signal?: AbortSignal;
     };
 
@@ -26,41 +26,45 @@ export const GetNearbyPlacesQueryBuilder: QueryBuilderQuery<GetNearbyPlacesQuery
 ): FetchQueryOptions<GetNearbyPlacesQueryBuilder.TOutput> => {
     return {
         queryKey: GetNearbyPlacesQueryBuilder.queryKey([input.regionId]),
-        queryFn: () => getNearbyPlaces({
-            body: {
-                maxResultCount: input.placeType ? 20 : 10,
-                includedPrimaryTypes: input.placeType ? [input.placeType] : GOOGLE_PLACES_API_INCLUDED_TYPES.primaryTypes,
-                includedTypes: input.placeType ? [input.placeType] : GOOGLE_PLACES_API_INCLUDED_TYPES.secondaryTypes,
-                excludedPrimaryTypes: GOOGLE_PLACES_API_EXCLUDED_TYPES.primaryTypes,
-                excludedTypes: GOOGLE_PLACES_API_EXCLUDED_TYPES.secondaryTypes,
-                languageCode: "uk",
-                locationRestriction: {
-                    circle: {
-                        center: {
-                            longitude: input.center.lng,
-                            latitude: input.center.lat,
-                        },
-                        radius: input.radius,
-                    },
-                },
-                fieldMask: [
-                    "id",
-                    "displayName",
-                    "location",
-                    "primaryType",
-                    "primaryTypeDisplayName",
-                    "formattedAddress",
-                    "addressComponents",
-                    "googleMapsUri",
-                ],
-            },
-            signal: input.signal,
-        })
-            .then(response => response.data || { places: [] })
-            .then(googlePlacesApiResponseTransformer.filterClosePoints)
-            .then(googlePlacesApiResponseTransformer.formatAddress)
-            .then(googlePlacesApiResponseMapper.toPlaceLocationEntity),
+        queryFn: () => GetNearbyPlacesQueryBuilder.queryFunc(input),
     };
+};
+
+GetNearbyPlacesQueryBuilder.queryFunc = (input) => {
+    return getNearbyPlaces({
+        body: {
+            maxResultCount: input.filter ? 20 : 10,
+            includedPrimaryTypes: input.filter ? [input.filter] : GOOGLE_PLACES_API_INCLUDED_TYPES.primaryTypes,
+            includedTypes: input.filter ? [input.filter] : GOOGLE_PLACES_API_INCLUDED_TYPES.secondaryTypes,
+            excludedPrimaryTypes: GOOGLE_PLACES_API_EXCLUDED_TYPES.primaryTypes,
+            excludedTypes: GOOGLE_PLACES_API_EXCLUDED_TYPES.secondaryTypes,
+            languageCode: "uk",
+            locationRestriction: {
+                circle: {
+                    center: {
+                        longitude: input.center.lng,
+                        latitude: input.center.lat,
+                    },
+                    radius: input.radius,
+                },
+            },
+            fieldMask: [
+                "id",
+                "displayName",
+                "location",
+                "primaryType",
+                "primaryTypeDisplayName",
+                "formattedAddress",
+                "addressComponents",
+                "googleMapsUri",
+            ],
+        },
+        signal: input.signal,
+    })
+        .then(response => response.data || { places: [] })
+        .then(googlePlacesApiResponseTransformer.filterClosePoints)
+        .then(googlePlacesApiResponseTransformer.formatAddress)
+        .then(googlePlacesApiResponseMapper.toPlaceLocationEntity);
 };
 
 GetNearbyPlacesQueryBuilder.queryKey = (params = []) => {

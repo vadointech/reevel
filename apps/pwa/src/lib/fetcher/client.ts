@@ -29,12 +29,18 @@ export class FetcherClient implements IFetcherClient {
         return (input = new FetcherRequest({})) => {
             const cacheKeys = this._cacheManager.newRequestCacheKey(input, options.queryKey);
 
+            const tags = [...cacheKeys];
+            let revalidate: number | undefined = undefined;
+
+            if(input.cacheTags) tags.push(...input.cacheTags);
+            else if(options.cache?.tags) tags.push(...options.cache.tags);
+
+            if(input.cacheRevalidate) revalidate = input.cacheRevalidate;
+            else if(options.cache?.revalidate) revalidate = options.cache.revalidate;
+
             return unstable_cache(
                 () => options.fetchFunc(input),
-                cacheKeys, {
-                    tags: cacheKeys,
-                    revalidate: input.cacheRevalidate,
-                },
+                cacheKeys, { tags, revalidate },
             )();
         };
     }

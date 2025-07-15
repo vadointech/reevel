@@ -1,0 +1,28 @@
+@use "@/theme/colors";
+@use "@/theme/mixins";
+@use "@/theme/typography";
+
+.location {
+    display: flex;
+    align-items: center;
+
+    &_size {
+        &_default {
+            column-gap: .5rem;
+            @include typography.font("sm");
+            svg {
+                width: mixins.rem(14);
+                height: mixins.rem(14);
+            }
+        }
+        &_small {
+            column-gap: mixins.rem(6);
+            @include typography.font("xxs");
+            //font-size: mixins.rem(10);
+            svg {
+                width: mixins.rem(10);
+                height: mixins.rem(10);
+            }
+        }
+    }
+}

@@ -9,6 +9,15 @@ export type IconPoint = BasePoint & {
     iconType?: string;
     address?: string;
 };
+export type EventPoint = BasePoint & {
+    imageUrl: string;
+    primaryColor?: string;
+};
+
+export type PointGeometry = {
+    type: "Point";
+    coordinates: [number, number];
+};
 
 export type Point<
     P extends BasePoint,
@@ -16,8 +25,5 @@ export type Point<
     id: string;
     type: "Feature",
     properties: P,
-    geometry: {
-        type: "Point",
-        coordinates: [number, number]
-    },
+    geometry: PointGeometry
 };

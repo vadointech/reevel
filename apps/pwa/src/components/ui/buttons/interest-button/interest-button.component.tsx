@@ -5,15 +5,21 @@ import { cva, VariantProps } from "class-variance-authority";
 
 const interestButton = cva(styles.button, {
     variants: {
+        layout: {
+            default: styles.button_layout_default,
+            icon: styles.button_layout_icon,
+        },
         variant: {
-            default: styles.button_default,
-            text: styles.button_text,
-            primary: styles.button_primary,
-            outline: styles.button_outline,
-            background: styles.button_background,
+            default: styles.button_variant_default,
+            text: styles.button_variant_text,
+            primary: styles.button_variant_primary,
+            accent: styles.button_variant_accesnt,
+            outline: styles.button_variant_outline,
+            background: styles.button_variant_background,
         },
     },
     defaultVariants: {
+        layout: "default",
         variant: "default",
     },
 });
@@ -29,6 +35,7 @@ export namespace InterestButton {
 
 export const InterestButton = ({
     variant,
+    layout,
     icon,
     className,
     children,
@@ -36,19 +43,18 @@ export const InterestButton = ({
 }: InterestButton.Props) => {
     return (
         <div
-            className={interestButton({ variant, className })}
+            className={interestButton({ variant, layout, className })}
             {...props}
         >
+            { icon }
+
             {
-                icon ? (
-                    <div>
-                        {icon}
-                    </div>
-                ) : null
+                layout !== "icon" && (
+                    <span>
+                        {children}
+                    </span>
+                )
             }
-            <span>
-                {children}
-            </span>
         </div>
     );
 };

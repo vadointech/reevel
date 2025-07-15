@@ -1,8 +1,9 @@
-import { UserProfileEntity } from "../profile";
+import { PointGeometry } from "@/components/shared/map/types/point/point";
+import { UserEntity } from "@/entities/user";
 import { InterestEntity } from "../interests";
-import { Point, BasePoint } from "@/components/shared/map/types/point/point";
 
 export enum EventVisibility {
+    HOST = "HOST",
     PUBLIC = "PUBLIC",
     PRIVATE = "PRIVATE",
 }
@@ -12,22 +13,44 @@ export type EventEntity = {
     title: string;
     description: string;
     poster: string;
-    primaryColor?: string;
-    location?: Point<BasePoint>;
-    ticketsAvailable?: number;
-    ticketPrice?: number;
+    primaryColor: string;
     visibility: EventVisibility;
-    dateTime: string;
-    hosts: UserProfileEntity;
-    interests: InterestEntity[];
+    locationPoint: PointGeometry;
+    locationTitle: string;
+    startDate: Date;
+    endDate?: Date;
+
+    ticketPrice?: number;
+    ticketPriceCurrency?: string;
+    ticketsAvailable?: number;
+
+    hosts: EventHostEntity[];
+    interests: EventInterestEntity[];
     tickets: EventTicketEntity[];
+
+    createdAt?: Date;
+    updatedAt?: Date;
+};
+
+export type EventHostEntity = {
+    eventId: string;
+    userId: string;
+    user: UserEntity;
+};
+
+export type EventInterestEntity = {
+    eventId: string;
+    interestId: string;
+    interest: InterestEntity;
 };
 
 export type EventTicketEntity = {
-    id: string;
     eventId: string;
     userId: string;
-    paymentId?: string;
-    event: Event; // або Partial<Event>, якщо не завжди передаєш повністю
-    user: UserProfileEntity;   // залежить від структури UserEntity
+    user: UserEntity;
+};
+
+export type EventCollectionEntity = {
+    events: EventEntity[];
+    interests: InterestEntity[];
 };

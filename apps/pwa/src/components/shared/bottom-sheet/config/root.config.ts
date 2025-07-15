@@ -13,6 +13,7 @@ export class BottomSheetRootConfig implements IBottomSheetInternalConfig {
     fadeThreshold: number = .5;
     dismissible: boolean = true;
     handleOnly: boolean = false;
+    dragListener: boolean = true;
     touchEvents: boolean = false;
 
     onClose: undefined;
@@ -23,6 +24,10 @@ export class BottomSheetRootConfig implements IBottomSheetInternalConfig {
         this.snapPointsCount = this.snapPoints.length;
         if(typeof window !== "undefined") {
             this.clientHeight = window.innerHeight;
+        }
+
+        if(init.handleOnly) {
+            this.dragListener = false;
         }
     }
 }

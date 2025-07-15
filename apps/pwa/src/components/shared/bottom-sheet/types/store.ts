@@ -4,7 +4,11 @@ export interface IBottomSheetStore {
 
     open: boolean;
     activeSnapPoint: number;
+    settledSnapPoint: number;
+
+    setPositionPx(positionPx: number): void;
 
     setOpen(state: boolean): void;
     setActiveSnapPoint(index: number): void;
+    setSettledSnapPoint(index: number): void;
 }

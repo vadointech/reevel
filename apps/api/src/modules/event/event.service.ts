@@ -17,6 +17,7 @@ import { UpdateEventDto } from "./dto/update-event.dto";
 
 import { Session } from "@/types";
 import { SupportedFileCollections } from "@/modules/uploads/entities/uploads.entity";
+import { GetNearbyEventsDto } from "@/modules/event/dto/get-nearby.dto";
 
 @Injectable()
 export class EventService {
@@ -39,7 +40,7 @@ export class EventService {
     async createEvent(session: Session, input: CreateEventDto): Promise<EventsEntity> {
         try {
             const {
-                location,
+                locationPoint,
                 interests,
                 ...newEvent
             } = input;
@@ -53,9 +54,9 @@ export class EventService {
             return this.dataSource.transaction(async entityManager => {
                 const event = await this.eventRepository.createAndSave({
                     ...newEvent,
-                    location: {
+                    locationPoint: {
                         type: "Point",
-                        coordinates: location,
+                        coordinates: locationPoint,
                     },
                 }, entityManager);
 
@@ -89,7 +90,7 @@ export class EventService {
             }
 
             const {
-                location,
+                locationPoint,
                 interests,
                 ...newEvent
             } = input;
@@ -101,23 +102,26 @@ export class EventService {
                 }
             }
 
-            Object.assign(event, newEvent, {
-                location: location ? {
-                    type: "Point",
-                    coordinates: location,
-                } : event.location,
+            return this.dataSource.transaction(async entityManager => {
+                const event = await this.eventRepository.createAndSave({
+                    ...newEvent,
+                    locationPoint: {
+                        type: "Point",
+                        coordinates: locationPoint,
+                    },
+                }, entityManager);
+
+                if(interests && interests.length > 0) {
+                    event.interests = await this.eventInterestsRepository.updateInterests(
+                        event.id,
+                        interests,
+                        entityManager,
+                    );
+                }
+                return event;
             });
-
-            await this.eventRepository.createAndSave(event);
-
-            event.interests = await this.dataSource.transaction(async entityManager => {
-                if(!interests) return event.interests;
-                return this.eventInterestsRepository.updateInterests(eventId, interests, entityManager);
-            });
-
-            return event;
         } catch(error) {
-            this.logger.error(`Unexpected error updating event: ${error.message}`, error.stack);
+            this.logger.error(`Unexpected error creating event: ${error.message}`, error.stack);
             throw new BadRequestException();
         }
     }
@@ -141,5 +145,77 @@ export class EventService {
                 },
             },
         );
+    }
+
+    async getEventById(eventId: string) {
+        return this.eventRepository.findOne({
+            where: { id: eventId },
+            relations: {
+                hosts: {
+                    user: {
+                        profile: true,
+                    },
+                },
+                interests: {
+                    interest: true,
+                },
+                tickets: {
+                    user: {
+                        profile: true,
+                    },
+                },
+            },
+        });
+    }
+
+    async getNearbyEvents(input: GetNearbyEventsDto): Promise<EventsEntity[]> {
+        const { center, radius } = input.circle;
+        const limit = input.take || 10;
+        const interestsFilter = input.interests; // Отримуємо масив інтересів
+
+        // --- Крок 1: Отримати ID подій з урахуванням фільтрів ---
+        const eventIdsQueryBuilder = this.eventRepository.queryBuilder("event")
+        // --- ВИПРАВЛЕНО ТУТ ---
+            .select("event.id", "id") // Явно вказуємо псевдонім "id"
+            .where("ST_DWithin(event.locationPoint, ST_SetSRID(ST_MakePoint(:lon, :lat), 4326)::geography, :radius)");
+            // .andWhere("\"event\".\"startDate\" > NOW()")
+            // .andWhere("\"event\".\"visibility\" = 'PUBLIC'");
+
+        if (interestsFilter && interestsFilter.length > 0) {
+            eventIdsQueryBuilder
+                .innerJoin("event.interests", "interestLink")
+                .andWhere("interestLink.interestId IN (:...interests)", { interests: interestsFilter });
+        }
+
+        // Встановлюємо всі параметри в кінці, щоб уникнути перезаписування
+        eventIdsQueryBuilder.setParameters({
+            lon: center.longitude,
+            lat: center.latitude,
+            radius: radius,
+            interests: interestsFilter, // TypeORM проігнорує цей параметр, якщо він не використовується в запиті
+        });
+
+        // ВИПРАВЛЕНО: Використовуємо getRawMany для ефективності
+        const eventIdsResult = await eventIdsQueryBuilder
+            .limit(limit)
+            .getRawMany<{ id: string }>();
+
+        const eventIds = eventIdsResult.map(e => e.id);
+        if (eventIds.length === 0) {
+            return [];
+        }
+
+        // --- Крок 2: Завантажити повні дані для знайдених ID ---
+        return this.eventRepository.queryBuilder("event")
+            .leftJoinAndSelect("event.hosts", "host")
+            .leftJoinAndSelect("host.user", "hostUser")
+            .leftJoinAndSelect("hostUser.profile", "userProfile")
+            .leftJoinAndSelect("event.interests", "interestLink")
+            .leftJoinAndSelect("interestLink.interest", "interestData")
+            .leftJoinAndSelect("event.tickets", "ticket")
+            .leftJoinAndSelect("ticket.user", "ticketUser")
+            .leftJoinAndSelect("ticketUser.profile", "ticketProfile")
+            .where("event.id IN (:...eventIds)", { eventIds })
+            .getMany();
     }
 }

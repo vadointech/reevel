@@ -5,7 +5,6 @@ import { OnboardingNextStepButton, OnboardingProgressBar } from "../modules/prog
 import { OnboardingProfileBioForm } from "../modules/profile-bio";
 import { OnboardingTextBlock } from "../modules/text-block";
 import { Avatar, ButtonsBlock, Container } from "@/components/ui";
-import { GetCurrentUserProfile } from "@/api/user";
 
 import styles from "../styles/bio-page.module.scss";
 
@@ -35,9 +34,7 @@ export async function OnboardingBioPage() {
             </Container>
 
             <ButtonsBlock>
-                <OnboardingNextStepButton
-                    revalidateQueryOnSuccess={GetCurrentUserProfile.queryKey}
-                >
+                <OnboardingNextStepButton>
                     Next step
                 </OnboardingNextStepButton>
             </ButtonsBlock>

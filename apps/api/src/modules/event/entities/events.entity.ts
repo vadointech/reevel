@@ -29,7 +29,10 @@ export class EventsEntity {
     primaryColor?: string;
 
     @Column("geography", { nullable: true, spatialFeatureType: "Point", srid: 4326 })
-    location?: Point;
+    locationPoint?: Point;
+
+    @Column()
+    locationTitle: string;
 
     @Column({ nullable: true })
     ticketsAvailable?: number;
@@ -52,7 +55,12 @@ export class EventsEntity {
     @CreateDateColumn({ type: "timestamp" })
     createdAt: Date;
 
-    @OneToMany(() => EventHostsEntity, event => event.event)
+    @Column({ type: "boolean", default: false })
+    isFeatured: boolean;
+
+    @OneToMany(() => EventHostsEntity, event => event.event, {
+        cascade: true,
+    })
     hosts: EventHostsEntity[];
 
     @OneToMany(() => EventInterestsEntity, event => event.event)

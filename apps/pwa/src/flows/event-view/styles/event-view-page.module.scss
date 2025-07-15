@@ -1,0 +1,11 @@
+@use "../../../theme/mixins";
+@use "../../../theme/colors";
+
+.interests {
+    padding: mixins.rem(22) 0;
+    border-bottom: 1px colors.$secondary-muted solid;
+}
+
+.gap {
+    margin-bottom: mixins.rem(32);
+}

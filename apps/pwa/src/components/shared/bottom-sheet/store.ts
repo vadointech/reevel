@@ -6,6 +6,7 @@ export class BottomSheetStore implements IBottomSheetStore {
 
     open = false;
     activeSnapPoint: number = 0;
+    settledSnapPoint: number = 0;
 
     constructor(
         rootConfig: IBottomSheetInternalConfig,
@@ -13,13 +14,19 @@ export class BottomSheetStore implements IBottomSheetStore {
         makeObservable(this, {
             open: observable,
             activeSnapPoint: observable,
+            settledSnapPoint: observable,
 
             setOpen: action,
             setActiveSnapPoint: action,
+            setSettledSnapPoint: action,
         });
 
         this.open = rootConfig.defaultOpen;
         this.activeSnapPoint = rootConfig.defaultSnapPointIndex;
+    }
+
+    setPositionPx(px: number) {
+        this.positionPx = px;
     }
 
     setOpen(state: boolean) {
@@ -28,5 +35,9 @@ export class BottomSheetStore implements IBottomSheetStore {
 
     setActiveSnapPoint(snapPoint: number) {
         this.activeSnapPoint = snapPoint;
+    }
+
+    setSettledSnapPoint(index: number) {
+        this.settledSnapPoint = index;
     }
 }

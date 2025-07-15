@@ -4,7 +4,7 @@ import {
     FetcherInitDefaults,
     IFetcherRequestConfig, IFetcherResponse,
 } from "./types";
-import { FetcherError } from "@/lib/fetcher/error";
+// import { FetcherError } from "@/lib/fetcher/error";
 
 export class Fetcher implements IFetcher {
     readonly defaults: FetcherInitDefaults;
@@ -105,7 +105,8 @@ export class Fetcher implements IFetcher {
         });
 
         if (!response.ok) {
-            throw new FetcherError(fetcherResponse);
+            return fetcherResponse;
+            // throw new FetcherError(fetcherResponse);
         }
 
         const contentType = response.headers.get("Content-Type");

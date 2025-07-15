@@ -47,11 +47,21 @@ export class MapRootController implements IMapRootController {
             }
 
             if(init.handlers) {
-                this._externalHandlers = init.handlers;
+                this.attachHandlers(init.handlers);
             }
 
             this.syncViewState(this._provider.current.internalConfig.viewState, true);
         }
+    }
+
+    attachHandlers(handlers: Partial<IMapHandlers>) {
+        this._externalHandlers = handlers;
+    }
+
+    detachHandlers(handlers: Array<keyof IMapHandlers>) {
+        handlers.forEach(handler => {
+            delete this._externalHandlers[handler];
+        });
     }
 
     detachMap() {
@@ -110,7 +120,6 @@ export class MapRootController implements IMapRootController {
     }
 
     async replacePoints(points: Point<BasePoint>[], duration: number = 400): Promise<void> {
-        if(points.length === 0) return;
         this._store.setPointsVisible(false);
 
         await new Promise((resolve) => setTimeout(resolve, duration));

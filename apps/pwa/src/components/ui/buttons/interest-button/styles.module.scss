@@ -7,12 +7,10 @@
     height: mixins.rem(38);
     width: fit-content;
     border-radius: mixins.rem(100);
-    padding-inline: mixins.rem(18);
 
     display: flex;
     align-items: center;
     justify-content: center;
-    column-gap: .5rem;
 
     @include typography.font("sm");
     line-height: 1;
@@ -22,23 +20,44 @@
             background-color motions.$motion-duration-fast motions.$motion-ease-in-out,
             color motions.$motion-duration-fast motions.$motion-ease-in-out;
 
-    &_default {
-        background: colors.$foreground;
-    }
-    &_outline {
-        border: 0.75px solid colors.$foreground;
+    svg {
+        height: 1rem;
     }
 
-    &_text {
-
+    &_layout {
+        &_default {
+            column-gap: .5rem;
+            padding-inline: mixins.rem(18);
+        }
+        &_icon {
+            width: mixins.rem(38);
+        }
     }
 
-    &_primary {
-        background: colors.$primary;
-        color: colors.$foreground;
-    }
+    &_variant {
+        &_default {
+            background: colors.$foreground;
+        }
+        &_outline {
+            border: 0.75px solid colors.$foreground;
+        }
 
-    &_background {
-        background: colors.$background;
+        &_text {
+
+        }
+
+        &_primary {
+            background: colors.$primary;
+            color: colors.$foreground;
+        }
+
+        &_accesnt {
+            background: colors.$accent;
+            color: colors.$foreground;
+        }
+
+        &_background {
+            background: colors.$background;
+        }
     }
 }

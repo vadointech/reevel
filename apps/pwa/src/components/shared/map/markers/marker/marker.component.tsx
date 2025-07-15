@@ -1,15 +1,15 @@
 import { ComponentProps } from "react";
-import { BasePoint, IconPoint, isIconPoint } from "../../types";
+import { EventPoint, IconPoint, isIconPoint } from "../../types";
 import { IconPointMarker } from "./variants/icon.component";
 import { BasePointMarker } from "./variants/base.component";
 
-import styles from "./styles.module.scss";
+import styles from "./styles/icon-marker.module.scss";
 import marker from "../styles.module.scss";
 import cx from "classnames";
 
 export namespace MapMarker {
     export type Props = ComponentProps<"div"> & {
-        point: BasePoint | IconPoint;
+        point: EventPoint | IconPoint;
         selected?: boolean;
         active?: boolean;
     };
@@ -25,7 +25,7 @@ export const MapMarker = ({
 
     const getContent = () => {
         if(isIconPoint(point)) return <IconPointMarker {...point} />;
-        return <BasePointMarker />;
+        return <BasePointMarker {...point} />;
     };
 
     return (

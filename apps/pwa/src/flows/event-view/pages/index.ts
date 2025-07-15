@@ -1,2 +1,1 @@
-export * from "./attendee-view.page";
-export * from "./host-view.page";
+export * from "./attendee-public-view.page";

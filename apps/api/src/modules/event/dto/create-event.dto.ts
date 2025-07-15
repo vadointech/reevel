@@ -40,14 +40,18 @@ export class CreateEventDto {
     @ArrayMaxSize(2)
     @IsNumber({}, { each: true })
     @Type(() => Number)
-    location?: [number, number];
+    locationPoint?: [number, number];
 
     @IsString()
+    @IsNotEmpty()
+    locationTitle: string;
+
+    @IsNumber()
     @IsOptional()
     @Type(() => Number)
     ticketsAvailable?: number;
 
-    @IsString()
+    @IsNumber()
     @IsOptional()
     @Type(() => Number)
     ticketPrice?: number;

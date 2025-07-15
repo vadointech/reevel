@@ -11,7 +11,7 @@ export namespace BottomSheetTrigger {
 }
 
 export const BottomSheetTrigger = ({ className, ...props }: BottomSheetTrigger.Props) => {
-    const { controller } = useBottomSheet();
+    const { store } = useBottomSheet();
 
     return (
         <div
@@ -19,7 +19,7 @@ export const BottomSheetTrigger = ({ className, ...props }: BottomSheetTrigger.P
                 styles.bottomSheet__triger,
                 className,
             )}
-            onClick={() => controller.current.open()}
+            onClick={() => store.setOpen(true)}
             {...props}
         />
     );

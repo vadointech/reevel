@@ -5,7 +5,7 @@ import cx from "classnames";
 
 export namespace OptionsList {
     export type Props = ComponentProps<"ul"> & {
-        spacingMode?: "gap" | "padding"
+        spacingMode?: "gap" | "padding";
     };
 }
 
