@@ -23,6 +23,7 @@
     "class-validator": "^0.14.1",
     "cloudinary": "^2.5.1",
     "cookie-parser": "^1.4.7",
+    "dotenv": "^17.2.2",
     "node-vibrant": "^4.0.3",
     "pg": "^8.13.3",
     "reflect-metadata": "^0.2.0",
