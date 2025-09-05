@@ -4,7 +4,6 @@ import { getSession } from "@/api/user/server";
 import { PersistentMapProvider } from "@/components/shared/map";
 import { SessionProvider } from "@/features/session";
 import { ThemeProvider } from "@/features/theme";
-import { BottomNavBar } from "@/components/shared/bottom-nav-bar";
 
 export default async function MainLayout({ children }: PropsWithChildren) {
 
@@ -30,7 +29,6 @@ export default async function MainLayout({ children }: PropsWithChildren) {
                 >
                     {children}
                 </PersistentMapProvider>
-                <BottomNavBar />
             </ThemeProvider>
         </SessionProvider>
     );
