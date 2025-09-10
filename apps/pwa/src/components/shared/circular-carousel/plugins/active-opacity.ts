@@ -1,4 +1,4 @@
-import { Carousel } from "../carousel/types";
+import { Carousel } from "../circular-carousel";
 
 export function ActiveOpacity({ api, wheelRef }: Carousel) {
     const activeIndex = api.selectedScrollSnap();

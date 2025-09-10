@@ -1,10 +1,11 @@
 "use client";
 
+import { useCallback } from "react";
 import { observer } from "mobx-react-lite";
 
 import { useOnboardingFormContext } from "@/features/onboarding";
 
-import { CircularCarousel, useCircularCarousel } from "@/components/shared/circular-carousel";
+import { CircularCarousel, Carousel } from "@/components/shared/circular-carousel";
 import { ActiveScale } from "@/components/shared/circular-carousel/plugins";
 
 import { Avatar } from "@/components/ui";
@@ -32,19 +33,11 @@ export const OnboardingAvatarPickerCarousel = observer(({
         <SliderItem key={item} src={item} />
     ));
 
-    const carousel = useCircularCarousel({
-        items: slides,
-        itemWidth: 146,
-        itemHeight: 100,
-        plugins: [ActiveScale],
-        handlers: {
-            onChange(carousel) {
-                const snapIndex = carousel.api.selectedScrollSnap();
-                if(!snapIndex || snapIndex < 0 || snapIndex >= avatars.length) return;
-                form.setValue("picture", avatars[snapIndex]);
-            },
-        },
-    });
+    const handleSlideChange = useCallback((carousel: Carousel) => {
+        const snapIndex = carousel.api.selectedScrollSnap();
+        if(!snapIndex || snapIndex < 0 || snapIndex >= avatars.length) return;
+        form.setValue("picture", avatars[snapIndex]);
+    }, []);
 
     return (
         <div
@@ -55,7 +48,13 @@ export const OnboardingAvatarPickerCarousel = observer(({
         >
             <div className={styles.picker__circle} />
             <div className={styles.picker__options}>
-                <CircularCarousel carousel={carousel} />
+                <CircularCarousel
+                    slides={slides}
+                    slideWidth={146}
+                    slideHeight={100}
+                    plugins={[ActiveScale]}
+                    onChange={handleSlideChange}
+                />
             </div>
         </div>
     );

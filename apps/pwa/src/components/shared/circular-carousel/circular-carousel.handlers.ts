@@ -1,4 +1,4 @@
-import { Carousel } from "./types";
+import { Carousel } from "./circular-carousel";
 
 export const onPointerUp = ({ api }: Carousel) => {
     const { scrollTo, target, location } = api.internalEngine();

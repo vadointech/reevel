@@ -1,2 +1,2 @@
 export * from "./circular-carousel.component";
-export { useCircularCarousel } from "./hooks";
+export { type ICarousel as Carousel } from "./circular-carousel";
