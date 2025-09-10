@@ -1,6 +1,6 @@
 "use client";
 
-import { PropsWithChildren, useMemo } from "react";
+import { PropsWithChildren, useState } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 import { OnboardingFormContext } from "./onboarding-form.context";
 import { onboardingFormSchema } from "./onboarding-form.schema";
@@ -23,7 +23,7 @@ export const OnboardingFormProvider = ({
         mode: "onSubmit",
     });
 
-    const store = useMemo(() => new OnboardingFormStore(config), [config]);
+    const [store] = useState(() => new OnboardingFormStore(config));
 
     return (
         <OnboardingFormContext value={{ ...form, store }}>
