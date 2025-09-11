@@ -2,7 +2,7 @@ import { MapboxFeaturesResponse, MapboxRequestParams } from "../types";
 import { fetcherClient } from "@/api/fetcher-client";
 
 export namespace GetPlaceByName {
-    export type TInput = never;
+    export type TInput = null;
     export type TOutput = MapboxFeaturesResponse;
     export type TParams = MapboxRequestParams & {
         q: string;

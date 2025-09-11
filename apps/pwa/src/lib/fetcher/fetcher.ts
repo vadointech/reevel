@@ -1,5 +1,5 @@
 import { IFetcher } from "./types/fetcher";
-import { FetcherRequest, FetcherRequestConfig } from "./types/request";
+import { FetcherInput, FetcherRequest, FetcherRequestParams } from "./types/request";
 import { FetcherResponse } from "./types/response";
 
 export class Fetcher implements IFetcher {
@@ -7,37 +7,37 @@ export class Fetcher implements IFetcher {
         private readonly defaults: FetcherRequest,
     ) {}
 
-    get<TInput extends object | null = null, TOutput = any, TParams extends Record<string, any> | null = null>(url: string, config: FetcherRequestConfig<TInput, TParams>): Promise<FetcherResponse<TOutput>> {
+    get<TInput extends FetcherInput = null, TOutput = any, TParams extends FetcherRequestParams = null>(url: string, config: FetcherRequest<TInput, TParams>): Promise<FetcherResponse<TOutput>> {
         return this.request<TInput, TOutput, TParams>(url, {
             ...config,
             method: "GET",
         });
     }
 
-    post<TInput extends object | null = null, TOutput = any, TParams extends Record<string, any> | null = null>(url: string, config: FetcherRequestConfig<TInput, TParams>): Promise<FetcherResponse<TOutput>> {
+    post<TInput extends FetcherInput = null, TOutput = any, TParams extends FetcherRequestParams = null>(url: string, config: FetcherRequest<TInput, TParams>): Promise<FetcherResponse<TOutput>> {
         return this.request<TInput, TOutput, TParams>(url, {
             ...config,
             method: "POST",
         });
     }
 
-    patch<TInput extends object | null = null, TOutput = any, TParams extends Record<string, any> | null = null>(url: string, config: FetcherRequestConfig<TInput, TParams>): Promise<FetcherResponse<TOutput>> {
+    patch<TInput extends FetcherInput = null, TOutput = any, TParams extends FetcherRequestParams = null>(url: string, config: FetcherRequest<TInput, TParams>): Promise<FetcherResponse<TOutput>> {
         return this.request<TInput, TOutput, TParams>(url, {
             ...config,
             method: "PATCH",
         });
     }
 
-    delete<TInput extends object | null = null, TOutput = any, TParams extends Record<string, any> | null = null>(url: string, config: FetcherRequestConfig<TInput, TParams>): Promise<FetcherResponse<TOutput>> {
+    delete<TInput extends FetcherInput = null, TOutput = any, TParams extends FetcherRequestParams = null>(url: string, config: FetcherRequest<TInput, TParams>): Promise<FetcherResponse<TOutput>> {
         return this.request<TInput, TOutput, TParams>(url, {
             ...config,
             method: "DELETE",
         });
     }
 
-    private async request<TInput extends object | null, TOutput = any, TParams extends Record<string, any> | null = null>(
+    private async request<TInput extends FetcherInput, TOutput, TParams extends FetcherRequestParams>(
         url: string,
-        config: FetcherRequestConfig<TInput, TParams>,
+        config: FetcherRequest<TInput, TParams>,
     ): Promise<FetcherResponse<TOutput>> {
         const {
             // Omit
@@ -89,7 +89,7 @@ export class Fetcher implements IFetcher {
     }
 
 
-    private async parseResponse<TOutput = any>(response: Response): Promise<FetcherResponse<TOutput>> {
+    private async parseResponse<TOutput>(response: Response): Promise<FetcherResponse<TOutput>> {
         const fetcherResponse: FetcherResponse<TOutput> = {
             data: null,
             url: response.url,

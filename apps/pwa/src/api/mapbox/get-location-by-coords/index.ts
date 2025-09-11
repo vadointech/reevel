@@ -2,7 +2,7 @@ import { fetcherClient } from "@/api/fetcher-client";
 import { MapboxFeaturesResponse, MapboxRequestParams } from "@/api/mapbox/types";
 
 export namespace GetLocationByCoordinates {
-    export type TInput = never;
+    export type TInput = null;
     export type TOutput = MapboxFeaturesResponse;
     export type TParams = MapboxRequestParams & {
         longitude: number;

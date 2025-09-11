@@ -20,16 +20,16 @@ export namespace GetNearbyPlaces {
 }
 
 export const getNearbyPlaces = fetcherClient.fetch<GetNearbyPlaces.TInput, GetNearbyPlaces.TOutput, GetNearbyPlaces.TParams>({
-    fetcherFunc: async(fetcher, input) => {
+    fetcherFunc: async(fetcher, { body, ...input }) => {
 
-        const { fieldMask, body } = getGooglePlacesApiFieldMask(input?.body);
+        const mask = getGooglePlacesApiFieldMask(body);
 
         const result: FetcherResponse<GetNearbyPlaces.TOutput> = await fetcher.post(":searchNearby", {
             baseURL: "https://places.googleapis.com/v1/places",
             credentials: "omit",
             headers: {
                 "X-Goog-Api-Key": "AIzaSyAIfGyOk4VSltw4QnBr1r6wjK_2bkw1pU4",
-                "X-Goog-FieldMask": fieldMask,
+                "X-Goog-FieldMask": mask.fieldMask,
             },
             body,
             ...input,

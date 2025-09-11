@@ -2,7 +2,7 @@ import { fetcherClient } from "@/api/fetcher-client";
 import { SupportedFileCollections, SupportedFileTypes, UserUploadsEntity } from "@/entities/uploads";
 
 export namespace GetUserUploads {
-    export type TInput = never;
+    export type TInput = null;
 
     export type TParams = Partial<{
         collection: SupportedFileCollections;

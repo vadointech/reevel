@@ -1,4 +1,4 @@
-import { FetcherRequestConfig } from "./request";
+import { FetcherInput, FetcherRequestConfig, FetcherRequestParams } from "./request";
 import { FetcherResponse } from "./response";
 import { IFetcher } from "./fetcher";
 import { FetcherCacheConfig } from "./cache";
@@ -10,7 +10,7 @@ export interface IFetcherClient {
    * @param {FetcherClientFetchOptions} options - Configuration options for the fetch operation, including input, output, and parameters.
    * @return {FetcherFetchFunc} A function that performs the fetch operation with the given options.
    */
-    fetch<TInput extends object | null = null, TOutput = any, TParams extends Record<string, any> | null = null>
+    fetch<TInput extends FetcherInput, TOutput, TParams extends FetcherRequestParams>
     (options: FetcherClientFetchOptions<TInput, TOutput, TParams>): FetcherFetchFunc<TInput, TOutput, TParams>
 
     /**
@@ -19,7 +19,7 @@ export interface IFetcherClient {
    * @param {FetcherClientCacheOptions} options - The configuration options for the caching functionality, such as cache size, expiration, and fetching behavior.
    * @return {FetcherFetchFunc} A fetcher function wrapped with caching logic, allowing retrieval of cached data or fresh data based on the specified options.
    */
-    cache<TInput extends object | null = null, TOutput = any, TParams extends Record<string, any> | null = null>
+    cache<TInput extends FetcherInput, TOutput, TParams extends FetcherRequestParams>
     (options: FetcherClientCacheOptions<TInput, TOutput, TParams>): FetcherFetchFunc<TInput, TOutput, TParams>;
 
     /**
@@ -28,14 +28,14 @@ export interface IFetcherClient {
    * @param {FetcherClientCacheOptions} options - The configuration options for the caching functionality, such as cache size, expiration, and fetching behavior.
    * @return {FetcherFetchFunc} A fetcher function wrapped with caching logic, allowing retrieval of cached data or fresh data based on the specified options.
    */
-    persist<TInput extends object | null = null, TOutput = any, TParams extends Record<string, any> | null = null>
+    persist<TInput extends FetcherInput, TOutput, TParams extends FetcherRequestParams>
     (options: FetcherClientCacheOptions<TInput, TOutput, TParams>): FetcherFetchFunc<TInput, TOutput, TParams>;
 }
 
 export type FetcherClientCacheOptions<
-    TInput extends object | null = null,
-    TOutput = any,
-    TParams extends Record<string, any> | null = null,
+    TInput extends FetcherInput,
+    TOutput,
+    TParams extends FetcherRequestParams,
 > = {
     fetchFunc: FetcherFetchFunc<TInput, TOutput, TParams>;
     queryKey: string[];
@@ -44,15 +44,15 @@ export type FetcherClientCacheOptions<
 
 
 export type FetcherClientFetchOptions<
-    TInput extends object | null = null,
-    TOutput = any,
-    TParams extends Record<string, any> | null = null,
+    TInput extends FetcherInput,
+    TOutput,
+    TParams extends FetcherRequestParams,
 > = {
     fetcherFunc: (fetcher: IFetcher, input: FetcherRequestConfig<TInput, TParams>) => Promise<FetcherResponse<TOutput>>;
 };
 
 export type FetcherFetchFunc<
-    TInput extends object | null = null,
-    TOutput = any,
-    TParams extends Record<string, any> | null = null,
+    TInput extends FetcherInput,
+    TOutput,
+    TParams extends FetcherRequestParams,
 > = (input: FetcherRequestConfig<TInput, TParams>) => Promise<FetcherResponse<TOutput>>;

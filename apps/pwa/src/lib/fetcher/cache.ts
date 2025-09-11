@@ -1,4 +1,4 @@
-import { FetcherRequestConfig, FetcherCacheConfig, IFetcherCacheManager } from "./types";
+import { FetcherCacheConfig, IFetcherCacheManager, FetcherRequest } from "./types";
 
 export class FetcherCacheManager implements IFetcherCacheManager {
     private readonly config: FetcherCacheConfig;
@@ -6,7 +6,7 @@ export class FetcherCacheManager implements IFetcherCacheManager {
         this.config = config;
     }
 
-    newRequestCacheKey(request: Partial<FetcherRequestConfig>, queryKey: string[]): string[] {
+    newRequestCacheKey(request: Partial<FetcherRequest>, queryKey: string[]): string[] {
         const keyParts = [...queryKey];
         let sid: string | undefined;
 

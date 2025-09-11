@@ -1,6 +1,11 @@
 import { FetcherCacheConfig } from "./cache";
 
-export interface FetcherRequest extends Omit<RequestInit, "cache" | "body"> {
+export interface FetcherRequest<
+    TInput extends FetcherInput = FetcherInput,
+    TParams extends FetcherRequestParams = FetcherRequestParams,
+> extends Omit<RequestInit, "cache" | "body"> {
+    body?: TInput;
+    params?: TParams;
     baseURL?: string | undefined;
     cache?: FetcherCacheConfig;
     headers?: Record<string, string>;
@@ -9,17 +14,19 @@ export interface FetcherRequest extends Omit<RequestInit, "cache" | "body"> {
 }
 
 export type FetcherRequestConfig<
-    TInput extends object | null = null,
-    TParams extends FetcherRequestParams | null = null,
-> = RequestConfigWithBodyAndParams<TInput, TParams>;
-// TInput extends null ?
-//     TParams extends null ?
-//         RequestConfigWithParams<TParams> :
-//     TParams extends null ?
-//         RequestConfigWithInput<TInput> :
-//         RequestConfigWithInputAndParams<TInput, TParams>;
+    TInput extends FetcherInput,
+    TParams extends FetcherRequestParams,
+> =
+    TInput extends null ?
+        TParams extends null ?
+            FetcherRequest<TInput, TParams> :
+            RequestConfigWithParams<TParams> :
+        TParams extends null ?
+            RequestConfigWithBody<TInput> :
+            RequestConfigWithBodyAndParams<TInput, TParams>;
 
-export type FetcherRequestParams = Record<string, any>;
+export type FetcherRequestParams = Record<string, any> | null;
+export type FetcherInput = object | null;
 
 type FetcherRequestMethod =
   "GET" |
@@ -33,15 +40,18 @@ type FetcherRequestMethod =
   "LINK" |
   "UNLINK";
 
-interface RequestConfigWithBody<TInput> extends FetcherRequest {
+interface RequestConfigWithBody<TInput extends FetcherInput> extends FetcherRequest<TInput, null> {
     body: TInput
 }
 
-interface RequestConfigWithParams<TParams> extends FetcherRequest {
+interface RequestConfigWithParams<TParams extends FetcherRequestParams> extends FetcherRequest<null, TParams> {
     params: TParams;
 }
 
-interface RequestConfigWithBodyAndParams<TInput, TParams> extends FetcherRequest {
-    body?: TInput;
-    params?: TParams;
+interface RequestConfigWithBodyAndParams<
+    TInput extends FetcherInput,
+    TParams extends FetcherRequestParams,
+> extends FetcherRequest<TInput, TParams> {
+    body: TInput;
+    params: TParams;
 }

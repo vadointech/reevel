@@ -6,9 +6,10 @@ import { FetcherCacheManager } from "./cache";
 import {
     FetcherClientCacheOptions,
     FetcherClientFetchOptions,
-    FetcherFetchFunc,
+    FetcherFetchFunc, FetcherInput,
     FetcherRequest,
     FetcherRequestConfig,
+    FetcherRequestParams,
     IFetcher,
     IFetcherCacheManager,
     IFetcherClient,
@@ -23,13 +24,13 @@ export class FetcherClient implements IFetcherClient {
         this.cacheManager = new FetcherCacheManager(defaultConfig.cache);
     }
 
-    fetch<TInput extends object | null = null, TOutput = any, TParams extends Record<string, any> | null = null>({ fetcherFunc }: FetcherClientFetchOptions<TInput, TOutput, TParams>): FetcherFetchFunc<TInput, TOutput, TParams> {
+    fetch<TInput extends FetcherInput = null, TOutput = any, TParams extends FetcherRequestParams = null>({ fetcherFunc }: FetcherClientFetchOptions<TInput, TOutput, TParams>): FetcherFetchFunc<TInput, TOutput, TParams> {
         return (input: FetcherRequestConfig<TInput, TParams>) => {
             return fetcherFunc(this.fetcher, input);
         };
     }
 
-    cache<TInput extends object | null = null, TOutput = any, TParams extends Record<string, any> | null = null>({ fetchFunc, ...options }: FetcherClientCacheOptions<TInput, TOutput, TParams>):  FetcherFetchFunc<TInput, TOutput, TParams> {
+    cache<TInput extends FetcherInput = null, TOutput = any, TParams extends FetcherRequestParams = null>({ fetchFunc, ...options }: FetcherClientCacheOptions<TInput, TOutput, TParams>):  FetcherFetchFunc<TInput, TOutput, TParams> {
         return (input: FetcherRequestConfig<TInput, TParams>) => {
             const cacheKeys = this.cacheManager.newRequestCacheKey(input, options.queryKey);
 
@@ -49,7 +50,7 @@ export class FetcherClient implements IFetcherClient {
         };
     }
 
-    persist<TInput extends object | null = null, TOutput = any, TParams extends Record<string, any> | null = null>({ fetchFunc, ...options }: FetcherClientCacheOptions<TInput, TOutput, TParams>):  FetcherFetchFunc<TInput, TOutput, TParams> {
+    persist<TInput extends FetcherInput = null, TOutput = any, TParams extends FetcherRequestParams = null>({ fetchFunc, ...options }: FetcherClientCacheOptions<TInput, TOutput, TParams>):  FetcherFetchFunc<TInput, TOutput, TParams> {
         return (input: FetcherRequestConfig<TInput, TParams>) => {
             return unstable_cache(
                 () => fetchFunc(input),

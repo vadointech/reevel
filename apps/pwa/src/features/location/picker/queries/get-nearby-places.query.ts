@@ -32,6 +32,7 @@ export const GetNearbyPlacesQueryBuilder: QueryBuilderQuery<GetNearbyPlacesQuery
 
 GetNearbyPlacesQueryBuilder.queryFunc = (input) => {
     return getNearbyPlaces({
+        params: {},
         body: {
             maxResultCount: input.filter ? 20 : 10,
             includedPrimaryTypes: input.filter ? [input.filter] : GOOGLE_PLACES_API_INCLUDED_TYPES.primaryTypes,
