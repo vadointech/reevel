@@ -12,6 +12,7 @@ import cx from "classnames";
 export namespace UploadCropperView {
     export type Props = ImageCropper.Props & {
         callbackUrl: string;
+        title: string;
         className?: string;
         style?: CSSProperties
     };
@@ -19,10 +20,10 @@ export namespace UploadCropperView {
 
 export const UploadCropperView = ({
     callbackUrl,
+    title,
     children,
     className,
     style,
-
     ...props
 }: UploadCropperView.Props) => {
     return (
@@ -37,7 +38,7 @@ export const UploadCropperView = ({
                     </Link>
                 }
             >
-                Upload poster
+                { title }
             </Header>
 
             <div className={styles.crop__cropper}>

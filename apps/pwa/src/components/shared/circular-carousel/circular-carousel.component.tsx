@@ -1,7 +1,7 @@
 "use client";
 
-import { forwardRef, ReactNode, useEffect, useImperativeHandle, useRef } from "react";
-import { Carousel, Handlers, Plugin } from "./circular-carousel";
+import { forwardRef, ReactNode, RefObject, useEffect, useImperativeHandle, useRef } from "react";
+import { Carousel, Handlers, ICarousel, Plugin } from "./circular-carousel";
 import { Wheel, WheelRef } from "./wheel";
 import useEmblaCarousel from "embla-carousel-react";
 import { onChange, onPointerUp, onScroll } from "./circular-carousel.handlers";
@@ -14,6 +14,7 @@ export namespace CircularCarousel {
         slideWidth: number;
         slideHeight: number;
         plugins?: Plugin[],
+        externalController?: RefObject<ICarousel | null>
     };
 }
 
@@ -22,6 +23,7 @@ export const CircularCarousel = ({
     slideWidth,
     slideHeight,
     plugins,
+    externalController,
     ...handlers
 }: CircularCarousel.Props) => {
     const wheel = new Wheel({
@@ -54,6 +56,12 @@ export const CircularCarousel = ({
             plugins,
             handlers,
         });
+
+
+
+        if(externalController) {
+            externalController.current = carousel;
+        }
 
         emblaApi.on("pointerUp", () => onPointerUp(carousel));
         emblaApi.on("scroll", () => onScroll(carousel));

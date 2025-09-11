@@ -28,6 +28,6 @@ export class Carousel implements ICarousel {
         this.wheel = params.wheel;
         this.wheelRef = params.wheelRef;
         this.plugins = params.plugins || [];
-        this.handlers = params.handlers = {};
+        this.handlers = params.handlers || {};
     }
 }

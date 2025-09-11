@@ -25,7 +25,7 @@ export const OnboardingAvatarUploadCropper = ({ callbackUrl }: OnboardingAvatarU
     return (
         <>
             <Input.File
-                label={"Change Poster"}
+                label={"Change Photo"}
                 accept={"image/png, image/jpeg, image/webp"}
                 onChange={handleSelectFile}
             />

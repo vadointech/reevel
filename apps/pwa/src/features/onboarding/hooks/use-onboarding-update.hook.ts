@@ -8,6 +8,7 @@ import { useSessionContext } from "@/features/session";
 import { useProfileUpdate, UseProfileUpdateParams } from "@/features/profile/hooks";
 import { useOnboardingFormContext } from "@/features/onboarding";
 import { ObjectDiff } from "@/utils/object";
+import { UpdateProfile } from "@/api/profile";
 
 type ConfigParams = UseProfileUpdateParams & {
     revalidateQueryOnSuccess?: string[]
@@ -40,7 +41,7 @@ export function useOnboardingUpdate({
 
             if(revalidateQueryOnSuccess) {
                 const { user } = session.store.toPlainObject();
-                return revalidateSessionTag(user, revalidateQueryOnSuccess);
+                revalidateSessionTag(user, revalidateQueryOnSuccess);
             }
         },
         ...params,
@@ -59,24 +60,28 @@ export function useOnboardingUpdate({
                 ...changedData
             } = diff.toObject();
 
-            handleUpdateProfile({
-                ...changedData,
-                locationCenter: location ?
-                    [location.location.longitude, location.location.latitude]
-                    : undefined,
-                locationBbox: location ?
-                    location.bbox
-                    : undefined,
-                interests: interests ?
-                    interests.map(i => i.slug)
-                    : undefined,
+            const profileToUpdate: UpdateProfile.TInput = {
+                bio: changedData.bio,
+                fullName: changedData.fullName,
+                picture: changedData.picture,
                 completed: progress.status,
-            });
+            };
+
+            if(location) {
+                profileToUpdate.locationCenter = [location.location.longitude, location.location.latitude];
+                profileToUpdate.locationBbox = location.bbox;
+            }
+
+            if(interests) {
+                profileToUpdate.interests = interests.map(item => item.slug);
+            }
+
+            handleUpdateProfile(profileToUpdate);
         } else {
             const onboardingStep = Number(session.store.user?.profile.completed);
 
             if(isNaN(onboardingStep) || onboardingStep > step) {
-                return handleNextStep();
+                // return handleNextStep();
             } else {
                 handleUpdateProfile({
                     completed: progress.status,

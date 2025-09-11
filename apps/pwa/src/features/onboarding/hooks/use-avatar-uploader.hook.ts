@@ -15,13 +15,11 @@ export function useOnboardingAvatarUploader(callbackUrl?: string) {
 
     const uploadDrawerController = useRef<IBottomSheetRootController>(null);
 
-    const {
-        handleFileDelete: handleAvatarDelete,
-    } = useUploadedFileDelete();
+    const handleAvatarDelete = useUploadedFileDelete();
 
     const handleAvatarPick = useCallback((upload: UserUploadsEntity) => {
-        form.store.setPictureToSelect(upload.fileUrl);
         form.setValue("picture", upload.fileUrl);
+        form.store.setPictureToSelect(upload.fileUrl);
 
         uploadDrawerController.current?.close();
     }, []);
@@ -40,7 +38,6 @@ export function useOnboardingAvatarUploader(callbackUrl?: string) {
     });
 
     return {
-        form,
         handleSelectFile,
         handleFileUpload,
         handleAvatarPick,

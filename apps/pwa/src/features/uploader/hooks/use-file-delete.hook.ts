@@ -13,11 +13,7 @@ export function useUploadedFileDelete(params: ConfigParams = {}) {
         ...params,
     });
 
-    const handleFileDelete = useCallback((upload: UserUploadsEntity) => {
+    return useCallback((upload: UserUploadsEntity) => {
         deleteUploadedFileMutation.mutateAsync({ fileId: upload.id });
     }, []);
-
-    return {
-        handleFileDelete,
-    };
 }

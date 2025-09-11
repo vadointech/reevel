@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback } from "react";
+import { useCallback, useRef } from "react";
 import { observer } from "mobx-react-lite";
 
 import { useOnboardingFormContext } from "@/features/onboarding";
@@ -18,7 +18,7 @@ const SliderItem = ({ src }: { src?: string }) => {
 
 export namespace OnboardingAvatarPickerCarousel {
     export type Props = {
-        defaultAvatars: string[]
+        defaultAvatars: string[];
     };
 }
 
@@ -26,8 +26,17 @@ export const OnboardingAvatarPickerCarousel = observer(({
     defaultAvatars,
 }: OnboardingAvatarPickerCarousel.Props) => {
     const form = useOnboardingFormContext();
+    const controller = useRef<Carousel | null>(null);
 
-    const avatars = [form.store.pictureToSelect, ...defaultAvatars, form.store.pictureToSelect, ...defaultAvatars];
+    const _forceRerender = form.store.version;
+    const pictureToSelect = form.store.pictureToSelect;
+
+    const avatars = [
+        pictureToSelect,
+        ...defaultAvatars,
+        pictureToSelect,
+        ...defaultAvatars,
+    ];
 
     const slides = avatars.map((item) => (
         <SliderItem key={item} src={item} />
@@ -38,6 +47,21 @@ export const OnboardingAvatarPickerCarousel = observer(({
         if(!snapIndex || snapIndex < 0 || snapIndex >= avatars.length) return;
         form.setValue("picture", avatars[snapIndex]);
     }, []);
+
+
+    if(controller.current) {
+        const snapIndex = controller.current.api.selectedScrollSnap();
+
+        const candidateIndexes = avatars
+            .map((val, idx) => (val === pictureToSelect ? idx : -1))
+            .filter(idx => idx !== -1);
+
+        const nearestIndex = candidateIndexes.reduce((prev, curr) =>
+            Math.abs(curr - snapIndex) < Math.abs(prev - snapIndex) ? curr : prev,
+        );
+
+        controller.current.api.scrollTo(nearestIndex);
+    }
 
     return (
         <div
@@ -53,6 +77,7 @@ export const OnboardingAvatarPickerCarousel = observer(({
                     slideWidth={146}
                     slideHeight={100}
                     plugins={[ActiveScale]}
+                    externalController={controller}
                     onChange={handleSlideChange}
                 />
             </div>
