@@ -1,88 +1,85 @@
-import { FetcherResponse } from "./response";
-import {
-    IFetcher,
-    FetcherInitDefaults,
-    IFetcherRequestConfig, IFetcherResponse,
-} from "./types";
-// import { FetcherError } from "@/lib/fetcher/error";
+import { IFetcher } from "./types/fetcher";
+import { FetcherRequest, FetcherRequestConfig } from "./types/request";
+import { FetcherResponse } from "./types/response";
 
 export class Fetcher implements IFetcher {
-    readonly defaults: FetcherInitDefaults;
+    constructor(
+        private readonly defaults: FetcherRequest,
+    ) {}
 
-    constructor(defaults: FetcherInitDefaults) {
-        this.defaults = defaults;
-    }
-
-    async get<Input extends null = null, Output = any, Params extends Record<string, any> = object>(url: string, config: Partial<IFetcherRequestConfig<Input, Params>> = {}): Promise<FetcherResponse<Output>> {
-        return this.request<Output>(url, {
+    get<TInput extends object | null = null, TOutput = any, TParams extends Record<string, any> | null = null>(url: string, config: FetcherRequestConfig<TInput, TParams>): Promise<FetcherResponse<TOutput>> {
+        return this.request<TInput, TOutput, TParams>(url, {
             ...config,
             method: "GET",
         });
     }
 
-    async post<Input = any, Output = any, Params extends Record<string, any> = object>(url: string, config: Partial<IFetcherRequestConfig<Input, Params>> = {}): Promise<FetcherResponse<Output>> {
-        return this.request<Output>(url, {
+    post<TInput extends object | null = null, TOutput = any, TParams extends Record<string, any> | null = null>(url: string, config: FetcherRequestConfig<TInput, TParams>): Promise<FetcherResponse<TOutput>> {
+        return this.request<TInput, TOutput, TParams>(url, {
             ...config,
             method: "POST",
         });
     }
 
-    async patch<Input = any, Output = any, Params extends Record<string, any> = object>(url: string, config: Partial<IFetcherRequestConfig<Input, Params>> = {}): Promise<FetcherResponse<Output>> {
-        return this.request<Output>(url, {
+    patch<TInput extends object | null = null, TOutput = any, TParams extends Record<string, any> | null = null>(url: string, config: FetcherRequestConfig<TInput, TParams>): Promise<FetcherResponse<TOutput>> {
+        return this.request<TInput, TOutput, TParams>(url, {
             ...config,
             method: "PATCH",
         });
     }
 
-    async delete<Input extends null = null, Output = any, Params extends Record<string, any> = object>(url: string, config: Partial<IFetcherRequestConfig<Input, Params>> = {}): Promise<FetcherResponse<Output>> {
-        return this.request<Output>(url, {
+    delete<TInput extends object | null = null, TOutput = any, TParams extends Record<string, any> | null = null>(url: string, config: FetcherRequestConfig<TInput, TParams>): Promise<FetcherResponse<TOutput>> {
+        return this.request<TInput, TOutput, TParams>(url, {
             ...config,
             method: "DELETE",
         });
     }
 
-    private async request<Output = any>(
+    private async request<TInput extends object | null, TOutput = any, TParams extends Record<string, any> | null = null>(
         url: string,
-        config: Partial<IFetcherRequestConfig> = {},
-    ): Promise<FetcherResponse<Output>> {
+        config: FetcherRequestConfig<TInput, TParams>,
+    ): Promise<FetcherResponse<TOutput>> {
         const {
-            method = "GET",
-            headers = {},
+            // Omit
+            baseURL = this.defaults.baseURL,
             nextHeaders,
-            params = {},
+            params,
+
+            // Add to request
             body,
-            baseURL = this.defaults.baseURL || "",
-            credentials = this.defaults.credentials,
             cache = this.defaults.cache,
+            credentials = this.defaults.credentials,
+            ...requestInit
         } = config;
 
         // Merge default headers with request-specific headers
-        const mergedHeaders = {
+        requestInit.headers = {
             ...this.defaults.headers,
-            ...headers,
+            ...requestInit.headers,
             ...Object.fromEntries(nextHeaders?.entries() || []),
         };
 
         const fullURL = new URL(baseURL + url);
 
-        Object.entries(params).forEach(([key, value]) => {
-            if (value !== undefined && value !== null) {
-                fullURL.searchParams.append(key, String(value));
-            }
-        });
+        if(params) {
+            Object.entries(params).forEach(([key, value]) => {
+                if (value !== undefined && value !== null) {
+                    fullURL.searchParams.append(key, String(value));
+                }
+            });
+        }
 
         const requestOptions: RequestInit = {
-            method,
-            headers: mergedHeaders,
-            credentials,
-            cache,
+            ...requestInit,
+            cache: cache?.mode,
+            credentials: credentials,
         };
 
-        if (method !== "GET" && body !== undefined) {
-            if (typeof body === "string" || body instanceof FormData) {
+        if (requestInit.method !== "GET" && body !== undefined) {
+            if (body instanceof FormData) {
                 requestOptions.body = body;
             } else {
-                mergedHeaders["Content-Type"] = "application/json";
+                requestInit.headers["Content-Type"] = "application/json";
                 requestOptions.body = JSON.stringify(body);
             }
         }
@@ -92,8 +89,8 @@ export class Fetcher implements IFetcher {
     }
 
 
-    private async parseResponse<Output>(response: Response): Promise<IFetcherResponse<Output>> {
-        const fetcherResponse = new FetcherResponse<Output>({
+    private async parseResponse<TOutput = any>(response: Response): Promise<FetcherResponse<TOutput>> {
+        const fetcherResponse: FetcherResponse<TOutput> = {
             data: null,
             url: response.url,
             ok: response.ok,
@@ -102,7 +99,7 @@ export class Fetcher implements IFetcher {
             headers: response.headers,
             type: response.type,
             redirected: response.redirected,
-        });
+        };
 
         if (!response.ok) {
             return fetcherResponse;
@@ -112,14 +109,14 @@ export class Fetcher implements IFetcher {
         const contentType = response.headers.get("Content-Type");
 
         if (contentType && contentType.includes("application/json")) {
-            fetcherResponse.data = await response.json() as Output;
+            fetcherResponse.data = await response.json() as TOutput;
         } else {
             // Handle text-area or other response types
             const text = await response.text();
             try {
-                fetcherResponse.data = JSON.parse(text) as Output;
+                fetcherResponse.data = JSON.parse(text) as TOutput;
             } catch {
-                fetcherResponse.data = text as unknown as Output;
+                fetcherResponse.data = text as unknown as TOutput;
             }
         }
 

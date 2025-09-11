@@ -12,8 +12,8 @@ import { useSessionContext } from "@/features/session";
 import { SupportedFileCollections, UserUploadsEntity } from "@/entities/uploads";
 import { IBottomSheetRootController } from "@/components/shared/bottom-sheet/types";
 import { DeleteUploadedFile, deleteUploadedFile, GetUserUploads } from "@/api/user/uploads";
-import { FetcherError } from "@/lib/fetcher/error";
 import { revalidateSessionTag } from "@/features/cache";
+import { FetcherErrorResponse } from "@/lib/fetcher/types";
 
 type Params = Partial<Omit<UseMutationOptions<CreateEvent.TOutput, unknown, CreateEvent.TInput>, "mutationFn">> & {
     callbackUrl?: string;
@@ -46,7 +46,7 @@ export function useCreateEventPreview(params: Params = {}) {
         }
     }, []);
 
-    const createEventMutation = useMutation<CreateEvent.TOutput, FetcherError, CreateEvent.TInput>({
+    const createEventMutation = useMutation<CreateEvent.TOutput, FetcherErrorResponse, CreateEvent.TInput>({
         mutationKey: CreateEvent.queryKey,
         mutationFn: (body) => createEvent({ body })
             .then(response => response.data),
@@ -138,7 +138,7 @@ export function useCreateEventPreview(params: Params = {}) {
         }
     }, [formValues]);
 
-    const deleteUploadedFileMutation = useMutation<DeleteUploadedFile.TOutput, FetcherError, DeleteUploadedFile.TInput>({
+    const deleteUploadedFileMutation = useMutation<DeleteUploadedFile.TOutput, FetcherErrorResponse, DeleteUploadedFile.TInput>({
         mutationFn: (body) => deleteUploadedFile({ body })
             .then(response => response.data),
         onSuccess: () => {

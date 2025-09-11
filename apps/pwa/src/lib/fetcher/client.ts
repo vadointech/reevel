@@ -1,57 +1,61 @@
 import { unstable_cache } from "next/cache";
+
 import { Fetcher } from "./fetcher";
-import { FetcherRequest } from "./request";
 import { FetcherCacheManager } from "./cache";
 
 import {
     FetcherClientCacheOptions,
     FetcherClientFetchOptions,
     FetcherFetchFunc,
+    FetcherRequest,
+    FetcherRequestConfig,
+    IFetcher,
+    IFetcherCacheManager,
     IFetcherClient,
 } from "./types";
 
 export class FetcherClient implements IFetcherClient {
-    private readonly _fetcher: Fetcher;
-    private readonly _cacheManager: FetcherCacheManager;
+    private readonly fetcher: IFetcher;
+    private readonly cacheManager: IFetcherCacheManager;
 
-    constructor(defaultConfig: Partial<FetcherRequest> = {}) {
-        this._fetcher = new Fetcher(defaultConfig);
-        this._cacheManager = new FetcherCacheManager(this._fetcher);
+    constructor(defaultConfig: Partial<FetcherRequest>) {
+        this.fetcher = new Fetcher(defaultConfig);
+        this.cacheManager = new FetcherCacheManager(defaultConfig.cache);
     }
 
-    fetch<Input = any, Output = any, Params extends Record<string, any> = object>({ fetcherFunc }: FetcherClientFetchOptions<Input, Output, Params>): FetcherFetchFunc<Input, Output, Params> {
-        return (input = new FetcherRequest({})) => {
-            return fetcherFunc(this._fetcher, input);
+    fetch<TInput extends object | null = null, TOutput = any, TParams extends Record<string, any> | null = null>({ fetcherFunc }: FetcherClientFetchOptions<TInput, TOutput, TParams>): FetcherFetchFunc<TInput, TOutput, TParams> {
+        return (input: FetcherRequestConfig<TInput, TParams>) => {
+            return fetcherFunc(this.fetcher, input);
         };
     }
 
-    cache<Input = any, Output = any, Params extends Record<string, any> = object>(options: FetcherClientCacheOptions<Input, Output, Params>): FetcherFetchFunc<Input, Output, Params> {
-        return (input = new FetcherRequest({})) => {
-            const cacheKeys = this._cacheManager.newRequestCacheKey(input, options.queryKey);
+    cache<TInput extends object | null = null, TOutput = any, TParams extends Record<string, any> | null = null>({ fetchFunc, ...options }: FetcherClientCacheOptions<TInput, TOutput, TParams>):  FetcherFetchFunc<TInput, TOutput, TParams> {
+        return (input: FetcherRequestConfig<TInput, TParams>) => {
+            const cacheKeys = this.cacheManager.newRequestCacheKey(input, options.queryKey);
 
             const tags = [...cacheKeys];
             let revalidate: number | undefined = undefined;
 
-            if(input.cacheTags) tags.push(...input.cacheTags);
+            if(input.cache?.tags) tags.push(...input.cache.tags);
             else if(options.cache?.tags) tags.push(...options.cache.tags);
 
-            if(input.cacheRevalidate) revalidate = input.cacheRevalidate;
+            if(input.cache?.revalidate) revalidate = input.cache.revalidate;
             else if(options.cache?.revalidate) revalidate = options.cache.revalidate;
 
             return unstable_cache(
-                () => options.fetchFunc(input),
+                () => fetchFunc(input),
                 cacheKeys, { tags, revalidate },
             )();
         };
     }
 
-    persist<Input = any, Output = any, Params extends Record<string, any> = object>(options: FetcherClientCacheOptions<Input, Output, Params>): FetcherFetchFunc<Input, Output, Params> {
-        return (input = new FetcherRequest({})) => {
+    persist<TInput extends object | null = null, TOutput = any, TParams extends Record<string, any> | null = null>({ fetchFunc, ...options }: FetcherClientCacheOptions<TInput, TOutput, TParams>):  FetcherFetchFunc<TInput, TOutput, TParams> {
+        return (input: FetcherRequestConfig<TInput, TParams>) => {
             return unstable_cache(
-                () => options.fetchFunc(input),
+                () => fetchFunc(input),
                 options.queryKey, {
                     tags: options.queryKey,
-                    revalidate: input.cacheRevalidate,
+                    revalidate: input.cache?.revalidate,
                 },
             )();
         };

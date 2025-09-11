@@ -5,7 +5,7 @@ import {
     GooglePlacesApiResponse, GooglePlacesApiRestrictionCircle,
 } from "../types";
 import { getGooglePlacesApiFieldMask } from "@/api/google/places/_internal/field-mask";
-import { FetcherResponse } from "@/lib/fetcher/response";
+import { FetcherResponse } from "@/lib/fetcher/types";
 
 export namespace GetNearbyPlaces {
     export type TInput = GooglePlacesApiRequestBody & {

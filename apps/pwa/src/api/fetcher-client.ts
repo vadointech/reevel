@@ -3,6 +3,7 @@ import { FetcherClient } from "@/lib/fetcher/client";
 export const fetcherClient = new FetcherClient({
     baseURL: "http://localhost:3001/api",
     credentials: "include",
-    cache: "no-store",
-    userAwareCacheKey: "session_id",
+    cache: {
+        userAwareKey: "session_id",
+    },
 });

@@ -24,7 +24,9 @@ export async function CreateEventPreviewPage({ callbackUrl, cropperUrl }: Create
         params: {
             collection: SupportedFileCollections.EVENT_POSTER,
         },
-        cacheTags: [SupportedFileCollections.EVENT_POSTER],
+        cache: {
+            tags: [SupportedFileCollections.EVENT_POSTER],
+        },
     });
 
     return (

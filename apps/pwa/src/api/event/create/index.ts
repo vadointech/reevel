@@ -22,7 +22,7 @@ export namespace CreateEvent {
     export const queryKey = ["event/create"];
 }
 
-export const createEvent = fetcherClient.fetch({
+export const createEvent = fetcherClient.fetch<CreateEvent.TInput, CreateEvent.TOutput>({
     fetcherFunc: (fetcher, input) => {
         return fetcher.post("/events", {
             body: input?.body,
