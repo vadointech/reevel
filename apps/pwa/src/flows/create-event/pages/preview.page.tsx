@@ -1,7 +1,7 @@
 import { headers } from "next/headers";
 import { Link } from "@/i18n/routing";
 
-import { getCurrentUserUploads } from "@/api/user/server";
+import { getCurrentUserUploads } from "@/api/user";
 
 import { Header } from "@/components/ui";
 import { IconArrowLeft } from "@/components/icons";

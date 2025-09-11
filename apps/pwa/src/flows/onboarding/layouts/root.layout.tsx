@@ -2,7 +2,7 @@ import { PropsWithChildren } from "react";
 import { headers } from "next/headers";
 import { redirect } from "@/i18n/routing";
 
-import { getSession } from "@/api/user/server";
+import { getCurrentUserProfile } from "@/api/user";
 import { OnboardingFormProvider } from "@/features/onboarding";
 import { ImageUploaderProvider } from "@/features/uploader/image";
 
@@ -17,11 +17,9 @@ export namespace OnboardingRootLayout {
 }
 
 export async function OnboardingRootLayout({ locale, children }: OnboardingRootLayout.Props) {
-    const { data } = await getSession({
+    const { data: profile } = await getCurrentUserProfile({
         nextHeaders: await headers(),
     });
-
-    const profile = data?.profile;
 
     const onboardingStatus = profile?.completed;
 

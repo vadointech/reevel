@@ -9,9 +9,3 @@ export const formInterestsEntitySchema = z.object({
     secondaryColor: z.string(),
     categoryId: z.string(),
 });
-
-export const formInterestsFieldSchema = z.object({
-    interests: z.array(formInterestsEntitySchema),
-});
-
-export type FormInterestsFieldSchema = z.infer<typeof formInterestsFieldSchema>;

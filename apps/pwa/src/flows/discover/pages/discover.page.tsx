@@ -1,5 +1,5 @@
 import { headers } from "next/headers";
-import { getCurrentUserInterests } from "@/api/user/server";
+import { getCurrentUserInterests } from "@/api/user";
 import { getUserMapInternalConfig } from "@/components/shared/map/utils";
 import { MapRootProvider } from "@/components/shared/map/map.provider";
 import { GetCityHighlightsQueryBuilder, GetNearbyEventsQueryBuilder } from "@/features/event/discover/queries";

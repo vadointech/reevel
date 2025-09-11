@@ -57,6 +57,6 @@ export interface FetcherClientFetchOptions<
 }
 
 export interface FetcherFetchFunc<TInput extends FetcherInput, TOutput, TParams extends FetcherRequestParams> {
-    (input: FetcherRequestConfig<TInput, TParams>): Promise<FetcherResponse<TOutput>>;
     (input: FetcherRequestConfigWithFallback<TInput, TParams, TOutput>): Promise<FetcherSafeResponse<TOutput>>;
+    (input: FetcherRequestConfig<TInput, TParams>): Promise<FetcherResponse<TOutput>>;
 }

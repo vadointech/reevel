@@ -81,7 +81,7 @@ export function useOnboardingUpdate({
             const onboardingStep = Number(session.store.user?.profile.completed);
 
             if(isNaN(onboardingStep) || onboardingStep > step) {
-                // return handleNextStep();
+                return handleNextStep();
             } else {
                 handleUpdateProfile({
                     completed: progress.status,

@@ -3,8 +3,8 @@ import { ComponentType } from "react";
 import { headers } from "next/headers";
 import { Link } from "@/i18n/routing";
 
-import { getInitialInterests } from "@/api/interests/server";
-import { getCurrentUserInterests } from "@/api/user/server";
+import { getInitialInterests } from "@/api/interests";
+import { getCurrentUserInterests } from "@/api/user";
 
 import { Header } from "@/components/ui";
 import { IconArrowLeft } from "@/components/icons";

@@ -1,6 +1,6 @@
 import { headers } from "next/headers";
 
-import { getCurrentUserUploads } from "@/api/user/server";
+import { getCurrentUserUploads } from "@/api/user";
 
 import { OnboardingNextStepButton, OnboardingProgressBar } from "../modules/progress";
 import {
@@ -10,10 +10,10 @@ import {
 import { OnboardingTextBlock } from "../modules/text-block";
 import { ButtonsBlock, Container } from "@/components/ui";
 
-import { SupportedFileCollections } from "@/entities/uploads";
 import { GetSession } from "@/api/user";
 
 import styles from "../styles/avatar-picker-page.module.scss";
+import { SupportedFileCollections } from "@/entities/uploads";
 
 const defaultPictures = [
     "http://localhost:3000/assets/temp/carousel1.jpg",
@@ -35,6 +35,7 @@ export async function OnboardingAvatarPickerPage({ cropperPageUrl }: OnboardingA
         params: {
             collection: SupportedFileCollections.PROFILE_PICTURE,
         },
+        fallback: [],
     });
 
     return (

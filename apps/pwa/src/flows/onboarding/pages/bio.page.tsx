@@ -1,5 +1,5 @@
 import { headers } from "next/headers";
-import { getCurrentUserProfile, getSession } from "@/api/user/server";
+import { getCurrentUserProfile } from "@/api/user";
 
 import { OnboardingNextStepButton, OnboardingProgressBar } from "../modules/progress";
 import { OnboardingProfileBioForm } from "../modules/profile-bio";
