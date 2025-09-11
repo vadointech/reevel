@@ -1,5 +1,10 @@
-import { FetcherInput, FetcherRequestConfig, FetcherRequestParams } from "./request";
-import { FetcherResponse } from "./response";
+import {
+    FetcherInput, FetcherOutput,
+    FetcherRequestConfig,
+    FetcherRequestConfigWithFallback,
+    FetcherRequestParams,
+} from "./request";
+import { FetcherResponse, FetcherSafeResponse } from "./response";
 import { IFetcher } from "./fetcher";
 import { FetcherCacheConfig } from "./cache";
 
@@ -43,16 +48,15 @@ export type FetcherClientCacheOptions<
 };
 
 
-export type FetcherClientFetchOptions<
+export interface FetcherClientFetchOptions<
     TInput extends FetcherInput,
-    TOutput,
+    TOutput extends FetcherOutput,
     TParams extends FetcherRequestParams,
-> = {
-    fetcherFunc: (fetcher: IFetcher, input: FetcherRequestConfig<TInput, TParams>) => Promise<FetcherResponse<TOutput>>;
-};
+>{
+    fetcherFunc(fetcher: IFetcher, input: FetcherRequestConfig<TInput, TParams>): Promise<FetcherResponse<TOutput>>;
+}
 
-export type FetcherFetchFunc<
-    TInput extends FetcherInput,
-    TOutput,
-    TParams extends FetcherRequestParams,
-> = (input: FetcherRequestConfig<TInput, TParams>) => Promise<FetcherResponse<TOutput>>;
+export interface FetcherFetchFunc<TInput extends FetcherInput, TOutput, TParams extends FetcherRequestParams> {
+    (input: FetcherRequestConfig<TInput, TParams>): Promise<FetcherResponse<TOutput>>;
+    (input: FetcherRequestConfigWithFallback<TInput, TParams, TOutput>): Promise<FetcherSafeResponse<TOutput>>;
+}

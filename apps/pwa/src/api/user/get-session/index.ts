@@ -6,6 +6,16 @@ export namespace GetSession {
     export type TOutput = UserEntity;
 
     export const queryKey = ["user/session"];
+
+    export const fallback: TOutput = {
+        id: "",
+        email: "",
+        profile: {
+            id: "",
+            userId: "",
+            completed: "",
+        },
+    };
 }
 
 export const getSession = fetcherClient.fetch<GetSession.TInput, GetSession.TOutput>({

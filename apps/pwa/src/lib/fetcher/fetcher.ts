@@ -37,13 +37,14 @@ export class Fetcher implements IFetcher {
 
     private async request<TInput extends FetcherInput, TOutput, TParams extends FetcherRequestParams>(
         url: string,
-        config: FetcherRequest<TInput, TParams>,
+        config: FetcherRequest<TInput, TParams> & { fallback?: TOutput | null },
     ): Promise<FetcherResponse<TOutput>> {
         const {
             // Omit
             baseURL = this.defaults.baseURL,
             nextHeaders,
             params,
+            fallback = null,
 
             // Add to request
             body,
@@ -84,14 +85,25 @@ export class Fetcher implements IFetcher {
             }
         }
 
-        const response = await fetch(fullURL.toString(), requestOptions);
-        return this.parseResponse(response);
+        try {
+            const response = await fetch(fullURL.toString(), requestOptions);
+            return this.parseResponse(response, fallback);
+        } catch(error) {
+            return {
+                url,
+                data: fallback,
+                ok: false,
+                status: 0,
+                statusText: error instanceof Error ? error.message : "Network Error",
+                redirected: false,
+            };
+        }
     }
 
 
-    private async parseResponse<TOutput>(response: Response): Promise<FetcherResponse<TOutput>> {
+    private async parseResponse<TOutput>(response: Response, fallback: TOutput | null): Promise<FetcherResponse<TOutput>> {
         const fetcherResponse: FetcherResponse<TOutput> = {
-            data: null,
+            data: fallback,
             url: response.url,
             ok: response.ok,
             status: response.status,
@@ -103,7 +115,6 @@ export class Fetcher implements IFetcher {
 
         if (!response.ok) {
             return fetcherResponse;
-            // throw new FetcherError(fetcherResponse);
         }
 
         const contentType = response.headers.get("Content-Type");

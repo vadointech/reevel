@@ -4,11 +4,13 @@ import { getSession } from "@/api/user/server";
 import { PersistentMapProvider } from "@/components/shared/map";
 import { SessionProvider } from "@/features/session";
 import { ThemeProvider } from "@/features/theme";
+import { GetSession } from "@/api/user";
 
 export default async function MainLayout({ children }: PropsWithChildren) {
 
     const { data: user } = await getSession({
         nextHeaders: await headers(),
+        fallback: GetSession.fallback,
     });
 
     const location = user?.profile.location;
