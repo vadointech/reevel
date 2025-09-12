@@ -1,12 +1,13 @@
-import {
-    FetcherInput, FetcherOutput,
-    FetcherRequestConfig,
-    FetcherRequestConfigWithFallback,
-    FetcherRequestParams,
-} from "./request";
-import { FetcherResponse, FetcherSafeResponse } from "./response";
 import { IFetcher } from "./fetcher";
 import { FetcherCacheConfig } from "./cache";
+import {
+    FetcherInput,
+    FetcherOutput,
+    FetcherRequestParams,
+    FetcherRequestConfig,
+    FetcherRequestConfigWithFallback,
+} from "./request";
+import { FetcherResponse, FetcherSafeResponse } from "./response";
 
 export interface IFetcherClient {
     /**
@@ -15,7 +16,7 @@ export interface IFetcherClient {
    * @param {FetcherClientFetchOptions} options - Configuration options for the fetch operation, including input, output, and parameters.
    * @return {FetcherFetchFunc} A function that performs the fetch operation with the given options.
    */
-    fetch<TInput extends FetcherInput, TOutput, TParams extends FetcherRequestParams>
+    fetch<TInput extends FetcherInput, TOutput extends FetcherOutput, TParams extends FetcherRequestParams>
     (options: FetcherClientFetchOptions<TInput, TOutput, TParams>): FetcherFetchFunc<TInput, TOutput, TParams>
 
     /**
@@ -24,7 +25,7 @@ export interface IFetcherClient {
    * @param {FetcherClientCacheOptions} options - The configuration options for the caching functionality, such as cache size, expiration, and fetching behavior.
    * @return {FetcherFetchFunc} A fetcher function wrapped with caching logic, allowing retrieval of cached data or fresh data based on the specified options.
    */
-    cache<TInput extends FetcherInput, TOutput, TParams extends FetcherRequestParams>
+    cache<TInput extends FetcherInput, TOutput extends FetcherOutput, TParams extends FetcherRequestParams>
     (options: FetcherClientCacheOptions<TInput, TOutput, TParams>): FetcherFetchFunc<TInput, TOutput, TParams>;
 
     /**
@@ -33,30 +34,21 @@ export interface IFetcherClient {
    * @param {FetcherClientCacheOptions} options - The configuration options for the caching functionality, such as cache size, expiration, and fetching behavior.
    * @return {FetcherFetchFunc} A fetcher function wrapped with caching logic, allowing retrieval of cached data or fresh data based on the specified options.
    */
-    persist<TInput extends FetcherInput, TOutput, TParams extends FetcherRequestParams>
+    persist<TInput extends FetcherInput, TOutput extends FetcherOutput, TParams extends FetcherRequestParams>
     (options: FetcherClientCacheOptions<TInput, TOutput, TParams>): FetcherFetchFunc<TInput, TOutput, TParams>;
 }
 
-export type FetcherClientCacheOptions<
-    TInput extends FetcherInput,
-    TOutput,
-    TParams extends FetcherRequestParams,
-> = {
+export type FetcherClientCacheOptions<TInput, TOutput, TParams> = {
     fetchFunc: FetcherFetchFunc<TInput, TOutput, TParams>;
     queryKey: string[];
     cache?: FetcherCacheConfig;
 };
 
-
-export type FetcherClientFetchOptions<
-    TInput extends FetcherInput,
-    TOutput extends FetcherOutput,
-    TParams extends FetcherRequestParams,
-> = {
+export type FetcherClientFetchOptions<TInput, TOutput, TParams> = {
     fetcherFunc: (fetcher: IFetcher, input: FetcherRequestConfig<TInput, TParams, TOutput>) => Promise<FetcherResponse<TOutput>>;
 };
 
-export interface FetcherFetchFunc<TInput extends FetcherInput, TOutput extends FetcherOutput, TParams extends FetcherRequestParams> {
+export interface FetcherFetchFunc<TInput, TOutput, TParams> {
     (input: FetcherRequestConfigWithFallback<TInput, TParams, TOutput>): Promise<FetcherSafeResponse<TOutput>>;
     (input: FetcherRequestConfig<TInput, TParams, TOutput>): Promise<FetcherResponse<TOutput>>;
 }

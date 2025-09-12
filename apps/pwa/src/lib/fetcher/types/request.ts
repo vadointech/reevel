@@ -1,14 +1,16 @@
 import { FetcherCacheConfig } from "./cache";
 
-export type FetcherRequestParams = Record<string, any> | null;
-export type FetcherInput = object | null;
-export type FetcherOutput = any | any[] | null;
 
-export interface FetcherRequest<
-    TInput extends FetcherInput = FetcherInput,
-    TParams extends FetcherRequestParams = FetcherRequestParams,
-    TOutput extends FetcherOutput = FetcherOutput,
-> extends Omit<RequestInit, "cache" | "body"> {
+export type FetcherRequestParams = Record<string, string | number> | null;
+export type FetcherInput =
+  string | string[] |
+  number | number[] |
+  object | object[] |
+  boolean | boolean[] |
+  null;
+export type FetcherOutput = FetcherInput;
+
+export interface FetcherRequest<TInput = any, TParams = any, TOutput = any> extends Omit<RequestInit, "cache" | "body"> {
     body?: TInput;
     params?: TParams;
     fallback?: TOutput;
@@ -19,19 +21,11 @@ export interface FetcherRequest<
     method?: FetcherRequestMethod;
 }
 
-export interface FetcherRequestWithFallback<
-    TInput extends FetcherInput,
-    TParams extends FetcherRequestParams,
-    TOutput extends FetcherOutput,
-> extends FetcherRequest<TInput, TParams, TOutput> {
+export interface FetcherRequestWithFallback<TInput, TParams, TOutput> extends FetcherRequest<TInput, TParams, TOutput> {
     fallback: TOutput;
 }
 
-export type FetcherRequestConfig<
-    TInput extends FetcherInput,
-    TParams extends FetcherRequestParams,
-    TOutput extends FetcherOutput,
-> =
+export type FetcherRequestConfig<TInput, TParams, TOutput> =
     TInput extends null ?
         TParams extends null ?
             FetcherRequest<TInput, TParams, TOutput> :
@@ -41,11 +35,7 @@ export type FetcherRequestConfig<
             RequestConfigWithBodyAndParams<FetcherRequest<TInput, TParams, TOutput>, TInput, TParams>;
 
 
-export type FetcherRequestConfigWithFallback<
-    TInput extends FetcherInput,
-    TParams extends FetcherRequestParams,
-    TOutput extends FetcherOutput,
-> =
+export type FetcherRequestConfigWithFallback<TInput, TParams, TOutput> =
   TInput extends null ?
       TParams extends null ?
           FetcherRequestWithFallback<TInput, TParams, TOutput> :
@@ -54,27 +44,18 @@ export type FetcherRequestConfigWithFallback<
           RequestConfigWithBody<FetcherRequestWithFallback<TInput, TParams, TOutput>, TInput> :
           RequestConfigWithBodyAndParams<FetcherRequestWithFallback<TInput, TParams, TOutput>, TInput, TParams>;
 
-type FetcherRequestMethod =
-  "GET" |
-  "DELETE" |
-  "HEAD" |
-  "OPTIONS" |
-  "POST" |
-  "PUT" |
-  "PATCH" |
-  "PURGE" |
-  "LINK" |
-  "UNLINK";
 
-type RequestConfigWithBody<TRequest extends FetcherRequest, TInput extends FetcherInput> = TRequest & {
+type RequestConfigWithBody<TRequest extends FetcherRequest, TInput> = TRequest & {
     body: TInput
 };
 
-type RequestConfigWithParams<TRequest extends FetcherRequest, TParams extends FetcherRequestParams> = TRequest & {
+type RequestConfigWithParams<TRequest extends FetcherRequest, TParams> = TRequest & {
     params: TParams;
 };
 
-type RequestConfigWithBodyAndParams<TRequest extends FetcherRequest, TInput extends FetcherInput, TParams> = TRequest & {
+type RequestConfigWithBodyAndParams<TRequest extends FetcherRequest, TInput, TParams> = TRequest & {
     body: TInput;
     params: TParams;
 };
+
+type FetcherRequestMethod = "GET" | "DELETE" | "HEAD" | "OPTIONS" | "POST" | "PUT" | "PATCH" | "PURGE" | "LINK" | "UNLINK";
