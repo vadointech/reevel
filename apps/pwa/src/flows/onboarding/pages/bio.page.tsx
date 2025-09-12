@@ -13,7 +13,7 @@ export namespace OnboardingBioPage {
     export type Props = never;
 }
 
-export async function OnboardingBioPage() {
+export function OnboardingBioPage() {
     const session = useSessionContext();
     return (
         <>

@@ -1,11 +1,10 @@
 "use client";
 
 import { createContext, useContext } from "react";
-import { IDiscoverCollectionStore, IDiscoverFiltersStore } from "./types";
+import { IDiscoverStore } from "./types";
 
 type DiscoverContextValues = {
-    filtersStore: IDiscoverFiltersStore;
-    collectionStore: IDiscoverCollectionStore;
+    store: IDiscoverStore;
 };
 
 export const DiscoverContext = createContext<DiscoverContextValues | null>(null);

@@ -1,11 +1,12 @@
 "use client";
 
 import { DiscoverDrawer } from "@/components/drawers/discover";
-import { useDiscoverDrawerMap } from "@/features/event/discover/hooks";
+import { useDiscoverDrawerMap } from "@/features/discover/hooks";
 
 import { EventEntity } from "@/entities/event";
 import { InterestEntity } from "@/entities/interests";
-import { GetNearbyEventsQueryBuilder } from "@/features/event/discover/queries";
+import { GetNearbyEventsQueryBuilder } from "@/features/discover/queries";
+import { DiscoverStaticCollections } from "@/features/discover/config";
 
 export namespace DiscoverScreen {
     export type Data = {
@@ -15,7 +16,7 @@ export namespace DiscoverScreen {
         eventsInit: EventEntity[];
     };
     export type Props = Data & {
-        callbackUrl: string;
+        collection: DiscoverStaticCollections;
     };
 }
 
@@ -24,13 +25,13 @@ export const DiscoverScreen = ({
     interestsInit,
     collectionsInit,
     cityHighlights,
-    callbackUrl,
+    collection,
 }: DiscoverScreen.Props) => {
     const {
         handlePickerSnapPointChange,
         handleEventInterestPick,
     } = useDiscoverDrawerMap({
-        callbackUrl,
+        collection,
         eventsInit: eventsInit,
         queryBuilder: GetNearbyEventsQueryBuilder,
     });

@@ -1,9 +1,10 @@
 import { headers } from "next/headers";
 import { DiscoverCollectionScreen } from "@/components/screens/discover";
-import { extractUniqueInterests } from "@/features/event/discover/utils";
-import { GetNearbyEventsQueryBuilder } from "@/features/event/discover/queries";
+import { extractUniqueInterests } from "@/features/discover/utils";
+import { GetNearbyEventsQueryBuilder } from "@/features/discover/queries";
 import { getUserMapInternalConfig } from "@/components/shared/map/utils";
 import { MapRootProvider } from "@/components/shared/map/map.provider";
+import { DiscoverStaticCollections } from "@/features/discover/config";
 
 export namespace DiscoverCollectionPage {
     export type Props = {
@@ -38,7 +39,7 @@ export async function DiscoverCollectionPage({ collectionId }: DiscoverCollectio
         <DiscoverCollectionScreen
             events={events}
             interests={interests}
-            callbackUrl={`/discover/${collectionId}`}
+            collection={DiscoverStaticCollections.Root + `/${collectionId}`}
         >
             { interestTitle }
         </DiscoverCollectionScreen>

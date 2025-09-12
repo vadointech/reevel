@@ -2,9 +2,10 @@ import { headers } from "next/headers";
 import { getCurrentUserInterests } from "@/api/user";
 import { getUserMapInternalConfig } from "@/components/shared/map/utils";
 import { MapRootProvider } from "@/components/shared/map/map.provider";
-import { GetCityHighlightsQueryBuilder, GetNearbyEventsQueryBuilder } from "@/features/event/discover/queries";
+import { GetCityHighlightsQueryBuilder, GetNearbyEventsQueryBuilder } from "@/features/discover/queries";
 import { DiscoverScreen } from "@/components/screens/discover";
 import { getEventCollectionsFeed } from "@/api/event";
+import { DiscoverStaticCollections } from "@/features/discover/config";
 
 export namespace DiscoverPage {
     export type Props = never;
@@ -43,7 +44,7 @@ export async function DiscoverPage() {
             collectionsInit={collectionsInit || []}
             cityHighlights={cityHighlights || []}
             eventsInit={eventsInit}
-            callbackUrl={"/discover"}
+            collection={DiscoverStaticCollections.Root}
         />
     );
 }

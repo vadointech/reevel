@@ -2,26 +2,27 @@
 
 import { DiscoverCollectionDrawer } from "@/components/drawers/discover";
 import { EventCollectionEntity } from "@/entities/event";
-import { useDiscoverDrawerMap } from "@/features/event/discover/hooks";
-import { GetCityHighlightsQueryBuilder } from "@/features/event/discover/queries";
+import { useDiscoverDrawerMap } from "@/features/discover/hooks";
+import { GetCityHighlightsQueryBuilder } from "@/features/discover/queries";
+import { DiscoverStaticCollections } from "@/features/discover/config";
 
 export namespace DiscoverHighlightsScreen {
     export type Props = EventCollectionEntity & {
-        callbackUrl: string;
+        collection: DiscoverStaticCollections;
     };
 }
 
 export const DiscoverHighlightsScreen = ({
     events,
     interests,
-    callbackUrl,
+    collection,
 }: DiscoverHighlightsScreen.Props) => {
 
     const {
         handleEventInterestPick,
         handleEventSlideChange,
     } = useDiscoverDrawerMap({
-        callbackUrl,
+        collection,
         eventsInit: events,
         queryBuilder: GetCityHighlightsQueryBuilder,
     });
@@ -30,6 +31,7 @@ export const DiscoverHighlightsScreen = ({
         <DiscoverCollectionDrawer
             events={events}
             interests={interests}
+            collection={collection}
             onEventInterestPick={handleEventInterestPick}
             onEventSlideChange={handleEventSlideChange}
         >

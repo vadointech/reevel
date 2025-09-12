@@ -67,6 +67,28 @@ export class BottomSheetRootController implements IBottomSheetRootController {
         this._store.setSettledSnapPoint(0);
     }
 
+    closeAsync() {
+        return new Promise<void>((resolve) => {
+            try {
+                const transition = generateBottomSheetTransitionParams(
+                    0,
+                    this._store.positionPx,
+                    this.snapPointController.boundBottom,
+                );
+
+                this.close();
+
+                if(transition.duration) {
+                    setTimeout(resolve, transition.duration * 1000);
+                } else {
+                    resolve();
+                }
+            } catch {
+                resolve();
+            }
+        });
+    }
+
     settleSnapPoint() {
         this._store.setSettledSnapPoint(this._store.activeSnapPoint);
     }

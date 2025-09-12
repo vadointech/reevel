@@ -1,6 +1,6 @@
 "use client";
 
-import { PropsWithChildren, useEffect, useState } from "react";
+import { PropsWithChildren, useCallback } from "react";
 import { Link } from "@/i18n/routing";
 import { motion, useMotionValue, useTransform } from "motion/react";
 
@@ -19,7 +19,8 @@ import { EventEntity } from "@/entities/event";
 
 import { DiscoverInterestsList } from "@/flows/discover/modules/interests-list";
 import { DiscoverEventsList } from "@/flows/discover/modules/events-list";
-import { useDiscoverContext } from "@/features/event/discover";
+import { useDiscoverContext } from "@/features/discover";
+import { useDiscoverCollectionDrawer } from "@/features/discover/hooks";
 
 import styles from "./styles/collection-drawer.module.scss";
 
@@ -29,6 +30,7 @@ export namespace DiscoverCollectionDrawer {
         events: EventEntity[]
     };
     export type Props = PropsWithChildren<Data> & {
+        collection: string;
         onEventInterestPick: (pointId: string | null) => void;
         onEventSlideChange: (index: number) => void;
     };
@@ -38,10 +40,11 @@ export const DiscoverCollectionDrawer = ({
     children,
     events,
     interests,
+    collection,
     onEventInterestPick,
     onEventSlideChange,
 }: DiscoverCollectionDrawer.Props) => {
-    const { collectionStore } = useDiscoverContext();
+    const discover = useDiscoverContext();
 
     const dragYProgress = useMotionValue(0);
 
@@ -57,21 +60,25 @@ export const DiscoverCollectionDrawer = ({
     const scale2 = useTransform(dragYProgress, transitionRange, [0.97, 1]);
     const blur2 = useTransform(dragYProgress, transitionRange, ["blur(2px)", "blur(0px)"]);
 
-    const [eventSlideStartIndex] = useState(() => {
-        if(collectionStore.pointToPreview) {
-            const index = events.findIndex(event => event.id === collectionStore.pointToPreview?.id);
-            if(index !== -1) return index;
-        }
+    const {
+        defaultSliderIndex,
+        defaultDrawerSnapPoint,
+        getDefaultSliderIndex,
+    } = useDiscoverCollectionDrawer(collection, events);
 
-        return 0;
-    });
-
-    useEffect(() => {
-        if(!collectionStore.initialLoad) {
-            new Promise(resolve => setTimeout(resolve, 1800))
-                .then(() => onEventSlideChange(eventSlideStartIndex));
+    const handleSnapPointChange = useCallback((index: number) => {
+        if(discover.store.interestFilter !== null) {
+            if(index === 2) {
+                onEventInterestPick(null);
+                onEventSlideChange(
+                    getDefaultSliderIndex(
+                        discover.store.pointToPreview,
+                        discover.store.collectionToPreview,
+                    ),
+                );
+            }
         }
-    }, [onEventSlideChange, eventSlideStartIndex]);
+    }, []);
 
     return (
         <BottomSheetRoot
@@ -80,7 +87,8 @@ export const DiscoverCollectionDrawer = ({
             dismissible={false}
             snapPoints={[.95, .5, .15]}
             fadeThreshold={.6}
-            defaultSnapPointIndex={2}
+            defaultSnapPointIndex={defaultDrawerSnapPoint}
+            onSnapPointChange={handleSnapPointChange}
         >
             <BottomSheetPortal>
                 <BottomSheetBody dragYProgress={dragYProgress} style={{ height: "100%" }} >
@@ -99,7 +107,7 @@ export const DiscoverCollectionDrawer = ({
                         >
                             <DiscoverEventsList
                                 events={events}
-                                startIndex={eventSlideStartIndex}
+                                startIndex={defaultSliderIndex}
                                 onChange={onEventSlideChange}
                             />
                         </motion.div>

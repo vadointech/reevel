@@ -21,8 +21,6 @@ import styles from "./styles/discover-drawer.module.scss";
 import { Link } from "@/i18n/routing";
 import { DiscoverInterestsList } from "@/flows/discover/modules/interests-list";
 import { useSessionContext } from "@/features/session";
-import { usePersistentMap } from "@/components/shared/map";
-import { useEffect } from "react";
 
 export namespace DiscoverDrawer {
     export type Props = {
@@ -44,16 +42,6 @@ export const DiscoverDrawer = ({
     onEventInterestPick,
 }: DiscoverDrawer.Props) => {
     const session = useSessionContext();
-    const map = usePersistentMap();
-
-    useEffect(() => {
-        const currentState = map.provider.current.getViewState();
-        const defaultState = map.provider.current.internalConfig.viewState;
-
-        if(currentState.zoom !== defaultState.zoom) {
-            map.provider.current.resetViewState();
-        }
-    }, []);
 
     return (
         <BottomSheetRoot

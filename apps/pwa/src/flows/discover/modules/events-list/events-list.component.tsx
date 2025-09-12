@@ -1,6 +1,9 @@
 import { RecommendationCard, Scroll } from "@/components/ui";
 import { EventEntity } from "@/entities/event";
 import { Link } from "@/i18n/routing";
+import { useEffect } from "react";
+import { DiscoverStaticCollections } from "@/features/discover/config";
+import { MAP_MOTION_TIMEOUT_MS } from "@/components/shared/map/map.config";
 
 export namespace DiscoverEventsList {
     export type Data = {
@@ -17,13 +20,19 @@ export const DiscoverEventsList = ({
     startIndex,
     onChange,
 }: DiscoverEventsList.Props) => {
+
+    useEffect(() => {
+        new Promise(resolve => setTimeout(resolve, MAP_MOTION_TIMEOUT_MS))
+            .then(() => onChange(startIndex));
+    }, []);
+
     return (
         <Scroll startIndex={startIndex} onChange={onChange} dragFree={false}>
             {
                 events.map(event => (
                     <Link
                         key={event.id}
-                        href={`/discover/event/${event.id}`}
+                        href={DiscoverStaticCollections.Root + "/event/" + event.id}
                     >
                         <RecommendationCard event={event} />
                     </Link>
