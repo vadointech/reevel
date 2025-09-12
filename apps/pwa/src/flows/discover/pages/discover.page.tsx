@@ -6,6 +6,7 @@ import { GetCityHighlightsQueryBuilder, GetNearbyEventsQueryBuilder } from "@/fe
 import { DiscoverScreen } from "@/components/screens/discover";
 import { getEventCollectionsFeed } from "@/api/event";
 import { DiscoverStaticCollections } from "@/features/discover/config";
+import { Navigation, NavigationRoutes } from "@/components/shared/navigation";
 
 export namespace DiscoverPage {
     export type Props = never;
@@ -39,12 +40,15 @@ export async function DiscoverPage() {
     });
 
     return (
-        <DiscoverScreen
-            interestsInit={interests?.map(item => item.interest) || []}
-            collectionsInit={collectionsInit || []}
-            cityHighlights={cityHighlights || []}
-            eventsInit={eventsInit}
-            collection={DiscoverStaticCollections.Root}
-        />
+        <>
+            <DiscoverScreen
+                interestsInit={interests?.map(item => item.interest) || []}
+                collectionsInit={collectionsInit || []}
+                cityHighlights={cityHighlights || []}
+                eventsInit={eventsInit}
+                collection={DiscoverStaticCollections.Root}
+            />
+            <Navigation currentPage={NavigationRoutes.Discover} />
+        </>
     );
 }

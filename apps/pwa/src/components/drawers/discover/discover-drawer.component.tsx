@@ -5,8 +5,7 @@ import {
     BottomSheetContent,
     BottomSheetHandle,
     BottomSheetPortal,
-    BottomSheetRoot,
-    BottomSheetScrollable,
+    BottomSheetRoot, BottomSheetScrollable,
 } from "@/components/shared/bottom-sheet";
 
 import { Avatar, CollectionCard, EventCard, Input, InterestButton, Scroll } from "@/components/ui";
@@ -17,10 +16,12 @@ import { BottomSheetExternalController } from "@/components/shared/bottom-sheet/
 import { EventEntity } from "@/entities/event";
 import { InterestEntity } from "@/entities/interests";
 
-import styles from "./styles/discover-drawer.module.scss";
 import { Link } from "@/i18n/routing";
 import { DiscoverInterestsList } from "@/flows/discover/modules/interests-list";
 import { useSessionContext } from "@/features/session";
+import { DiscoverStaticCollections } from "@/features/discover/config";
+
+import styles from "./styles/discover-drawer.module.scss";
 
 export namespace DiscoverDrawer {
     export type Props = {
@@ -48,7 +49,7 @@ export const DiscoverDrawer = ({
             defaultOpen
             touchEvents
             dismissible={false}
-            snapPoints={[.95, .5, .18]}
+            snapPoints={[.95, .5, .25]}
             fadeThreshold={.6}
             defaultSnapPointIndex={1}
             externalController={controller}
@@ -58,7 +59,7 @@ export const DiscoverDrawer = ({
                 <BottomSheetBody style={{ height: "100%" }}>
                     <div className={styles.drawer__scroll}>
                         <Scroll>
-                            <Link href={"/discover/randomized"}>
+                            <Link href={DiscoverStaticCollections.Randomize}>
                                 <InterestButton
                                     icon={<IconStars />}
                                     variant={"accent"}
@@ -83,14 +84,14 @@ export const DiscoverDrawer = ({
                                 title={"Don’t Miss in Vinnitsa"}
                                 cta={"See all"}
                                 variant={"text-accent"}
-                                ctaHref={"/discover/highlights"}
+                                ctaHref={DiscoverStaticCollections.Highlights}
                                 className={styles.drawer__gap}
                             >
                                 {
                                     cityHighlights.map(event => (
                                         <Link
                                             key={event.id}
-                                            href={`/discover/event/${event.id}`}
+                                            href={DiscoverStaticCollections.Root + "/event/" + event.id}
                                         >
                                             <EventCard
                                                 size={"small"}
@@ -109,7 +110,7 @@ export const DiscoverDrawer = ({
                                     collections.map(interest => (
                                         <Link
                                             key={interest.slug}
-                                            href={`/discover/${interest.slug}`}
+                                            href={DiscoverStaticCollections.Root + "/" + interest.slug}
                                         >
                                             <CollectionCard
                                                 interest={interest}

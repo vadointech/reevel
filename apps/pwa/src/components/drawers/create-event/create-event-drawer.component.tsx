@@ -1,6 +1,6 @@
 "use client";
 
-import { ComponentProps, ReactNode, useCallback, useRef } from "react";
+import { ReactNode, useCallback, useRef } from "react";
 
 import {
     BottomSheetBody,
@@ -17,12 +17,12 @@ import { IBottomSheetRootController } from "@/components/shared/bottom-sheet/typ
 import styles from "./styles.module.scss";
 
 export namespace CreateEventDrawer {
-    export type Props = ComponentProps<"div"> & {
+    export type Props = BottomSheetTrigger.Props & {
         children: ReactNode;
     };
 }
 
-export const CreateEventDrawer = ({ children }: CreateEventDrawer.Props) => {
+export const CreateEventDrawer = (props: CreateEventDrawer.Props) => {
     const controller = useRef<IBottomSheetRootController>(null);
 
     const handleClick = useCallback(() => {
@@ -34,10 +34,9 @@ export const CreateEventDrawer = ({ children }: CreateEventDrawer.Props) => {
             externalController={controller}
             snapPoints={["fit-content"]}
             fadeThreshold={0}
+            zIndex={40}
         >
-            <BottomSheetTrigger>
-                {children}
-            </BottomSheetTrigger>
+            <BottomSheetTrigger {...props} />
             <BottomSheetPortal>
                 <BottomSheetBody>
                     <BottomSheetContent>

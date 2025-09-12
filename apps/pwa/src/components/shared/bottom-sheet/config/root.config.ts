@@ -15,6 +15,7 @@ export class BottomSheetRootConfig implements IBottomSheetInternalConfig {
     handleOnly: boolean = false;
     dragListener: boolean = true;
     touchEvents: boolean = false;
+    zIndex: number = 10;
 
     onClose: undefined;
     onSnapPointChange: undefined;

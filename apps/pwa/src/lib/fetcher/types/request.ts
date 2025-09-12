@@ -1,7 +1,7 @@
 import { FetcherCacheConfig } from "./cache";
 
 
-export type FetcherRequestParams = Record<string, string | number> | null;
+export type FetcherRequestParams = Record<string, string | number | boolean> | null;
 export type FetcherInput =
   string | string[] |
   number | number[] |

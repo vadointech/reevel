@@ -79,6 +79,7 @@ export const BottomSheetBody = ({
                 controller.current.internalConfig.overlay && (
                     <BottomSheetOverlay
                         dragYProgress={dragYProgress}
+                        zIndex={controller.current.internalConfig.zIndex - 1}
                         threshold={controller.current.internalConfig.fadeThreshold}
                     />
                 )
@@ -89,6 +90,7 @@ export const BottomSheetBody = ({
                     y: dragY,
                     height: "100%",
                     touchAction: "none",
+                    zIndex: controller.current.internalConfig.zIndex,
                     paddingBottom: controller.current.dragConstraints.top,
                 }}
                 dragListener={false}
