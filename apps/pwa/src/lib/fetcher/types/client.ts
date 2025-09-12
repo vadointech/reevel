@@ -48,13 +48,13 @@ export type FetcherClientCacheOptions<
 };
 
 
-export interface FetcherClientFetchOptions<
+export type FetcherClientFetchOptions<
     TInput extends FetcherInput,
     TOutput extends FetcherOutput,
     TParams extends FetcherRequestParams,
->{
-    fetcherFunc(fetcher: IFetcher, input: FetcherRequestConfig<TInput, TParams>): Promise<FetcherResponse<TOutput>>;
-}
+> = {
+    fetcherFunc: (fetcher: IFetcher, input: FetcherRequestConfig<TInput, TParams>) => Promise<FetcherResponse<TOutput>>;
+};
 
 export interface FetcherFetchFunc<TInput extends FetcherInput, TOutput, TParams extends FetcherRequestParams> {
     (input: FetcherRequestConfigWithFallback<TInput, TParams, TOutput>): Promise<FetcherSafeResponse<TOutput>>;

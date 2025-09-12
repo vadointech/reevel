@@ -1,7 +1,6 @@
 "use client";
 
 import { useCallback, useRef } from "react";
-import { revalidateSessionTag } from "@/features/cache";
 
 import { useOnboardingProgress } from "./use-onboarding-progress.hook";
 import { useSessionContext } from "@/features/session";
@@ -39,17 +38,18 @@ export function useOnboardingUpdate({
                 profile: data,
             });
 
-            if(revalidateQueryOnSuccess) {
-                const { user } = session.store.toPlainObject();
-                revalidateSessionTag(user, revalidateQueryOnSuccess);
-            }
+            form.store.setFormValues(
+                form.getValues(),
+            );
         },
         ...params,
     });
 
     return useCallback(() => {
-        const formValues = form.getValues();
-        const diff = new ObjectDiff(form.store.defaultValues, formValues);
+        const diff = new ObjectDiff(
+            form.store.formValues,
+            form.getValues(),
+        );
         const progress = getOnboardingProgress(step + 1);
 
         if(diff.hasChanges) {

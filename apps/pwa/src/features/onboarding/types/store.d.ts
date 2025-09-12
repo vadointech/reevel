@@ -10,7 +10,8 @@ export interface IOnboardingFormStore extends IMobxStore {
      */
     version: number;
     pictureToSelect: string;
-    defaultValues: OnboardingFormSchemaValues;
+    formValues: OnboardingFormSchemaValues;
 
     setPictureToSelect(pictures: string): void;
+    setFormValues(values: Partial<OnboardingFormSchemaValues>): void;
 }

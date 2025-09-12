@@ -4,7 +4,7 @@ import { OnboardingFormSchemaValues } from "./onboarding-form.schema";
 
 export class OnboardingFormStore implements IOnboardingFormStore {
     pictureToSelect: string;
-    defaultValues: OnboardingFormSchemaValues;
+    formValues: OnboardingFormSchemaValues;
     version: number = 0;
 
     constructor(init: OnboardingFormConfigParams) {
@@ -15,7 +15,7 @@ export class OnboardingFormStore implements IOnboardingFormStore {
         });
 
         this.pictureToSelect = init.pictureToSelect;
-        this.defaultValues = init.defaultValues;
+        this.formValues = init.defaultValues;
     }
 
     dispose() {}
@@ -23,5 +23,12 @@ export class OnboardingFormStore implements IOnboardingFormStore {
     setPictureToSelect(pictures: string) {
         this.pictureToSelect = pictures;
         this.version++;
+    }
+
+    setFormValues(values: Partial<OnboardingFormSchemaValues>) {
+        this.formValues = {
+            ...this.formValues,
+            ...values,
+        };
     }
 }

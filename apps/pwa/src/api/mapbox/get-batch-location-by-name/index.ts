@@ -13,7 +13,7 @@ export namespace GetBatchPlaceByName {
 export const getBatchPlaceByName = fetcherClient.fetch<GetBatchPlaceByName.TInput, GetBatchPlaceByName.TOutput, GetBatchPlaceByName.TParams>({
     fetcherFunc: async(fetcher, input) => {
         return fetcher.post("/batch", {
-            baseURL: "https://api.mapbox.com/search/geocode/v6",
+            baseURL: "https://api.mapbox.com/search/geocode/v6", // TODO: Replace with own proxy
             credentials: "omit",
             ...input,
         });
