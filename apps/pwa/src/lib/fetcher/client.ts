@@ -25,15 +25,15 @@ export class FetcherClient implements IFetcherClient {
     }
 
     fetch<TInput extends FetcherInput = null, TOutput extends FetcherOutput = null, TParams extends FetcherRequestParams = null>({ fetcherFunc }: FetcherClientFetchOptions<TInput, TOutput, TParams>): FetcherFetchFunc<TInput, TOutput, TParams> {
-        const executor = (input: FetcherRequestConfig<TInput, TParams>) => {
+        const executor = (input: FetcherRequestConfig<TInput, TParams, TOutput>) => {
             return fetcherFunc(this.fetcher, input);
         };
 
         return executor as FetcherFetchFunc<TInput, TOutput, TParams>;
     }
 
-    cache<TInput extends FetcherInput = null, TOutput = any, TParams extends FetcherRequestParams = null>({ fetchFunc, ...options }: FetcherClientCacheOptions<TInput, TOutput, TParams>):  FetcherFetchFunc<TInput, TOutput, TParams> {
-        const executor = (input: FetcherRequestConfig<TInput, TParams>) => {
+    cache<TInput extends FetcherInput = null, TOutput extends FetcherOutput = null, TParams extends FetcherRequestParams = null>({ fetchFunc, ...options }: FetcherClientCacheOptions<TInput, TOutput, TParams>):  FetcherFetchFunc<TInput, TOutput, TParams> {
+        const executor = (input: FetcherRequestConfig<TInput, TParams, TOutput>) => {
             const cacheKeys = this.cacheManager.newRequestCacheKey(input, options.queryKey);
 
             const tags = [...cacheKeys];
@@ -54,8 +54,8 @@ export class FetcherClient implements IFetcherClient {
         return executor as FetcherFetchFunc<TInput, TOutput, TParams>;
     }
 
-    persist<TInput extends FetcherInput = null, TOutput = any, TParams extends FetcherRequestParams = null>({ fetchFunc, ...options }: FetcherClientCacheOptions<TInput, TOutput, TParams>):  FetcherFetchFunc<TInput, TOutput, TParams> {
-        const executor = (input: FetcherRequestConfig<TInput, TParams>) => {
+    persist<TInput extends FetcherInput = null, TOutput extends FetcherOutput = null, TParams extends FetcherRequestParams = null>({ fetchFunc, ...options }: FetcherClientCacheOptions<TInput, TOutput, TParams>):  FetcherFetchFunc<TInput, TOutput, TParams> {
+        const executor = (input: FetcherRequestConfig<TInput, TParams, TOutput>) => {
             return unstable_cache(
                 () => fetchFunc(input),
                 options.queryKey, {

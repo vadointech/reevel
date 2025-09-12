@@ -7,9 +7,11 @@ export type FetcherOutput = any | any[] | null;
 export interface FetcherRequest<
     TInput extends FetcherInput = FetcherInput,
     TParams extends FetcherRequestParams = FetcherRequestParams,
+    TOutput extends FetcherOutput = FetcherOutput,
 > extends Omit<RequestInit, "cache" | "body"> {
     body?: TInput;
     params?: TParams;
+    fallback?: TOutput;
     baseURL?: string | undefined;
     cache?: FetcherCacheConfig;
     headers?: Record<string, string>;
@@ -21,21 +23,22 @@ export interface FetcherRequestWithFallback<
     TInput extends FetcherInput,
     TParams extends FetcherRequestParams,
     TOutput extends FetcherOutput,
-> extends FetcherRequest<TInput, TParams> {
+> extends FetcherRequest<TInput, TParams, TOutput> {
     fallback: TOutput;
 }
 
 export type FetcherRequestConfig<
     TInput extends FetcherInput,
     TParams extends FetcherRequestParams,
+    TOutput extends FetcherOutput,
 > =
     TInput extends null ?
         TParams extends null ?
-            FetcherRequest<TInput, TParams> :
-            RequestConfigWithParams<FetcherRequest<TInput, TParams>, TParams> :
+            FetcherRequest<TInput, TParams, TOutput> :
+            RequestConfigWithParams<FetcherRequest<TInput, TParams, TOutput>, TParams> :
         TParams extends null ?
-            RequestConfigWithBody<FetcherRequest<TInput, TParams>, TInput> :
-            RequestConfigWithBodyAndParams<FetcherRequest<TInput, TParams>, TInput, TParams>;
+            RequestConfigWithBody<FetcherRequest<TInput, TParams, TOutput>, TInput> :
+            RequestConfigWithBodyAndParams<FetcherRequest<TInput, TParams, TOutput>, TInput, TParams>;
 
 
 export type FetcherRequestConfigWithFallback<

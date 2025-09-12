@@ -37,7 +37,7 @@ export class Fetcher implements IFetcher {
 
     private async request<TInput extends FetcherInput, TOutput, TParams extends FetcherRequestParams>(
         url: string,
-        config: FetcherRequest<TInput, TParams> & { fallback?: TOutput | null },
+        config: FetcherRequest<TInput, TParams>,
     ): Promise<FetcherResponse<TOutput>> {
         const {
             // Omit
