@@ -9,7 +9,6 @@ import { OnboardingNextStepButton, OnboardingProgressBar } from "../modules/prog
 import { OnboardingTextBlock } from "../modules/text-block";
 import { OnboardingInterestsPicker } from "../modules/interests-picker";
 import { InterestsPickerProvider } from "@/features/interests/picker";
-import { GetCurrentUserInterests } from "@/api/user";
 
 import { ButtonsBlock } from "@/components/ui";
 
@@ -20,7 +19,6 @@ export namespace OnboardingInterestsPickerPage {
 }
 
 export async function OnboardingInterestsPickerPage() {
-
     const initialInterestsResponse = await getInitialInterests({
         nextHeaders: await headers(),
     });
@@ -59,9 +57,7 @@ export async function OnboardingInterestsPickerPage() {
             </div>
 
             <ButtonsBlock>
-                <OnboardingNextStepButton
-                    revalidateQueryOnSuccess={GetCurrentUserInterests.queryKey}
-                >
+                <OnboardingNextStepButton>
                     Next step
                 </OnboardingNextStepButton>
             </ButtonsBlock>

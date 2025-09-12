@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useRef } from "react";
+import { useCallback, useEffect, useRef } from "react";
 import { observer } from "mobx-react-lite";
 
 import { useOnboardingFormContext } from "@/features/onboarding";
@@ -62,6 +62,14 @@ export const OnboardingAvatarPickerCarousel = observer(({
 
         controller.current.api.scrollTo(nearestIndex);
     }
+
+    useEffect(() => {
+        return () => {
+            form.store.setPictureToSelect(
+                form.getValues("picture"),
+            );
+        };
+    }, []);
 
     return (
         <div

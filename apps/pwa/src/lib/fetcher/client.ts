@@ -6,7 +6,7 @@ import { FetcherCacheManager } from "./cache";
 import {
     FetcherClientCacheOptions,
     FetcherClientFetchOptions,
-    FetcherFetchFunc, FetcherInput,
+    FetcherFetchFunc, FetcherInput, FetcherOutput,
     FetcherRequest,
     FetcherRequestConfig,
     FetcherRequestParams,
@@ -24,7 +24,7 @@ export class FetcherClient implements IFetcherClient {
         this.cacheManager = new FetcherCacheManager(defaultConfig.cache);
     }
 
-    fetch<TInput extends FetcherInput = null, TOutput = any, TParams extends FetcherRequestParams = null>({ fetcherFunc }: FetcherClientFetchOptions<TInput, TOutput, TParams>): FetcherFetchFunc<TInput, TOutput, TParams> {
+    fetch<TInput extends FetcherInput = null, TOutput extends FetcherOutput = null, TParams extends FetcherRequestParams = null>({ fetcherFunc }: FetcherClientFetchOptions<TInput, TOutput, TParams>): FetcherFetchFunc<TInput, TOutput, TParams> {
         const executor = (input: FetcherRequestConfig<TInput, TParams>) => {
             return fetcherFunc(this.fetcher, input);
         };

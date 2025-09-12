@@ -9,11 +9,9 @@ import {
 } from "../modules/avatar-picker";
 import { OnboardingTextBlock } from "../modules/text-block";
 import { ButtonsBlock, Container } from "@/components/ui";
-
-import { GetSession } from "@/api/user";
+import { SupportedFileCollections } from "@/entities/uploads";
 
 import styles from "../styles/avatar-picker-page.module.scss";
-import { SupportedFileCollections } from "@/entities/uploads";
 
 const defaultPictures = [
     "http://localhost:3000/assets/temp/carousel1.jpg",
@@ -54,9 +52,7 @@ export async function OnboardingAvatarPickerPage({ cropperPageUrl }: OnboardingA
                     uploads={data}
                     cropperPageUrl={cropperPageUrl}
                 />
-                <OnboardingNextStepButton
-                    revalidateQueryOnSuccess={GetSession.queryKey}
-                >
+                <OnboardingNextStepButton>
                     Next step
                 </OnboardingNextStepButton>
             </ButtonsBlock>

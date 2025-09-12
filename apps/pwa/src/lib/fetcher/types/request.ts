@@ -7,11 +7,9 @@ export type FetcherOutput = any | any[] | null;
 export interface FetcherRequest<
     TInput extends FetcherInput = FetcherInput,
     TParams extends FetcherRequestParams = FetcherRequestParams,
-    TOutput extends FetcherOutput = FetcherOutput,
 > extends Omit<RequestInit, "cache" | "body"> {
     body?: TInput;
     params?: TParams;
-    fallback?: TOutput;
     baseURL?: string | undefined;
     cache?: FetcherCacheConfig;
     headers?: Record<string, string>;
