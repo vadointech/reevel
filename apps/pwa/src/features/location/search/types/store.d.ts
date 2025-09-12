@@ -1,7 +1,7 @@
-import { MobxStore } from "@/types/common";
+import { IMobxStore } from "@/lib/mobx";
 import { PlaceLocationEntity } from "@/entities/place";
 
-export interface ILocationSearchStore extends MobxStore {
+export interface ILocationSearchStore extends IMobxStore {
     searchQuery: string;
     nextPageToken: string | undefined;
     searchResults: PlaceLocationEntity[] | null;

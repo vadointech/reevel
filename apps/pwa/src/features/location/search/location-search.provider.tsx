@@ -6,6 +6,7 @@ import { LocationSearchStore } from "./location-search.store";
 import { LocationSearchContext } from "./location-search.context";
 
 import { ILocationSearchStore, LocationSearchConfigParams } from "./types";
+import { useMobxStore } from "@/lib/mobx";
 
 export namespace LocationSearchProvider {
     export type Props = Partial<ILocationSearchStore> & LocationSearchConfigParams & {
@@ -37,10 +38,8 @@ export const LocationSearchProvider = ({
 
         return [storeInit];
     }, [syncFormField]);
-
-    const store = useMemo(() =>
-        new LocationSearchStore(...locationSearchStoreInit), [],
-    );
+    
+    const store = useMobxStore(LocationSearchStore, ...locationSearchStoreInit);
 
     return (
         <LocationSearchContext.Provider

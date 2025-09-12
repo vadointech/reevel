@@ -8,14 +8,14 @@ export class OnboardingFormStore implements IOnboardingFormStore {
     version: number = 0;
 
     constructor(init: OnboardingFormConfigParams) {
+        this.pictureToSelect = init.pictureToSelect;
+        this.formValues = init.defaultValues;
+
         makeObservable(this, {
             version: observable,
             pictureToSelect: observable,
             setPictureToSelect: action,
         });
-
-        this.pictureToSelect = init.pictureToSelect;
-        this.formValues = init.defaultValues;
     }
 
     dispose() {}

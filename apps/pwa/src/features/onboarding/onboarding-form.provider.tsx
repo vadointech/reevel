@@ -1,12 +1,13 @@
 "use client";
 
-import { PropsWithChildren, useState } from "react";
+import { PropsWithChildren } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 import { OnboardingFormContext } from "./onboarding-form.context";
 import { onboardingFormSchema } from "./onboarding-form.schema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { OnboardingFormConfigParams } from "./types";
 import { OnboardingFormStore } from "@/features/onboarding/onboarding-form.store";
+import { useMobxStore } from "@/lib/mobx";
 
 export namespace OnboardingFormProvider {
     export type Props = PropsWithChildren<OnboardingFormConfigParams>;
@@ -23,7 +24,7 @@ export const OnboardingFormProvider = ({
         mode: "onSubmit",
     });
 
-    const [store] = useState(() => new OnboardingFormStore(config));
+    const store = useMobxStore(OnboardingFormStore, config);
 
     return (
         <OnboardingFormContext value={{ ...form, store }}>
