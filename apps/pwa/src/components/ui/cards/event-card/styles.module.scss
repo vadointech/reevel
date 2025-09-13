@@ -46,6 +46,8 @@
     }
 
     &__title {
+        @include mixins.textEllipsis(2);
+
         &_size {
             &_default {
                 @include typography.font("lg", 700);
@@ -54,34 +56,6 @@
             &_small {
                 @include typography.font("base", 700);
                 margin-bottom: mixins.rem(6);
-            }
-        }
-    }
-
-    &__location {
-        display: flex;
-        align-items: center;
-
-        svg path {
-            fill: currentColor;
-        }
-
-        &_size {
-            &_default {
-                column-gap: mixins.rem(8);
-                @include typography.font("xs", 400);
-                svg {
-                    width: mixins.rem(12);
-                    height: mixins.rem(12);
-                }
-            }
-            &_small {
-                column-gap: mixins.rem(6);
-                @include typography.font("xxs", 400);
-                svg {
-                    width: mixins.rem(10);
-                    height: mixins.rem(10);
-                }
             }
         }
     }

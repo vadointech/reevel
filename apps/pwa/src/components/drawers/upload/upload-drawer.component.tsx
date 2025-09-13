@@ -15,7 +15,7 @@ import {
     BottomSheetTrigger,
 } from "@/components/shared/bottom-sheet";
 
-import { TabsBody, TabsRoot } from "@/components/shared/tabs";
+import { TabsBody, TabsContent, TabsRoot } from "@/components/shared/tabs";
 
 import { Header, Input } from "@/components/ui";
 import { IconArrowLeft, IconPicture } from "@/components/icons";
@@ -92,29 +92,37 @@ export const UploadDrawer = ({
                                     "Uploaded", "Art", "Marvel", "Anime",
                                 ]}
                             >
-                                <UploadFileGrid variant={gridVariant}>
-                                    <Input.File
-                                        label={"Upload"}
-                                        accept={"image/png, image/jpeg, image/webp"}
-                                        icon={<IconPicture />}
-                                        variant={"accent-muted"}
-                                        onChange={handleSelectFile}
-                                    />
-                                    {
-                                        uploads.map(item => (
-                                            <UploadFileItem
-                                                key={item.id}
-                                                imageUrl={item.fileUrl}
-                                                selected={item.fileUrl === selectedImageUrl}
-                                                onClick={() => onImagePick(item)}
-                                                onDelete={() => onImageDelete(item)}
-                                            />
-                                        ))
-                                    }
-                                </UploadFileGrid>
-                                <UploadFileGrid variant={gridVariant} />
-                                <UploadFileGrid variant={gridVariant} />
-                                <UploadFileGrid variant={gridVariant} />
+                                <TabsContent>
+                                    <UploadFileGrid variant={gridVariant}>
+                                        <Input.File
+                                            label={"Upload"}
+                                            accept={"image/png, image/jpeg, image/webp"}
+                                            icon={<IconPicture />}
+                                            variant={"accent-muted"}
+                                            onChange={handleSelectFile}
+                                        />
+                                        {
+                                            uploads.map(item => (
+                                                <UploadFileItem
+                                                    key={item.id}
+                                                    imageUrl={item.fileUrl}
+                                                    selected={item.fileUrl === selectedImageUrl}
+                                                    onClick={() => onImagePick(item)}
+                                                    onDelete={() => onImageDelete(item)}
+                                                />
+                                            ))
+                                        }
+                                    </UploadFileGrid>
+                                </TabsContent>
+                                <TabsContent>
+                                    <UploadFileGrid variant={gridVariant} />
+                                </TabsContent>
+                                <TabsContent>
+                                    <UploadFileGrid variant={gridVariant} />
+                                </TabsContent>
+                                <TabsContent>
+                                    <UploadFileGrid variant={gridVariant} />
+                                </TabsContent>
                             </TabsBody>
                         </TabsRoot>
                     </BottomSheetContent>

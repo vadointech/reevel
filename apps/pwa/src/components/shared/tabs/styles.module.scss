@@ -13,15 +13,16 @@ $content-height: calc($button-height + $control-offest * 2);
     width: 100%;
     height: 100%;
     display: flex;
+}
 
-    & > * {
-        flex: 1 0 100%;
-        overflow-x: hidden;
-        position: relative;
-        padding-inline: spacing.$container;
+.content {
+    flex: 1 0 100%;
+    overflow-x: hidden;
+    position: relative;
+    touch-action: none;
+    padding-inline: spacing.$container;
 
-        @include mixins.no-scrollbar;
-    }
+    @include mixins.no-scrollbar;
 }
 
 .controls {

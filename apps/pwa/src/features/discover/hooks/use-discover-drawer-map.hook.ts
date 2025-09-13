@@ -99,7 +99,15 @@ export function useDiscoverDrawerMap({ collection, queryBuilder, eventsInit }: P
             replaceResponse(eventsInit);
         } else {
             discover.store.setInterestFilter(interest);
-            fetchSpatialData({ viewState, filter: interest }).then(replaceResponse);
+            if(collection === DiscoverStaticCollections.Root) {
+                fetchSpatialData({ viewState, filter: interest }).then(replaceResponse);
+            } else {
+                replaceResponse(
+                    eventsInit.filter(event =>
+                        event.interests.some(item => item.interestId === interest),
+                    ),
+                );
+            }
         }
 
         if(viewState.zoom !== currentViewState.zoom) {

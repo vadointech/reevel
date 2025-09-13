@@ -56,7 +56,7 @@ export async function CreateEventFormPage({ type }: CreateEventFormPage.Props) {
             <div className={styles.page__header}>
                 <Header
                     iconBefore={
-                        <Link href={"/apps/pwa/public"}>
+                        <Link href={"/discover"}>
                             <IconArrowLeft />
                         </Link>
                     }

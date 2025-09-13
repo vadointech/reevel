@@ -177,7 +177,8 @@ export class EventService {
         const eventIdsQueryBuilder = this.eventRepository.queryBuilder("event")
         // --- ВИПРАВЛЕНО ТУТ ---
             .select("event.id", "id") // Явно вказуємо псевдонім "id"
-            .where("ST_DWithin(event.locationPoint, ST_SetSRID(ST_MakePoint(:lon, :lat), 4326)::geography, :radius)");
+            .where("ST_DWithin(event.locationPoint, ST_SetSRID(ST_MakePoint(:lon, :lat), 4326)::geography, :radius)")
+            .orderBy("\"event\".\"startDate\"", "DESC");
             // .andWhere("\"event\".\"startDate\" > NOW()")
             // .andWhere("\"event\".\"visibility\" = 'PUBLIC'");
 

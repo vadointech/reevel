@@ -1,5 +1,5 @@
 export enum DiscoverStaticCollections {
     Root = "/discover",
-    Randomize = Root + "/randomize",
+    Randomize = Root + "/randomized",
     Highlights = Root + "/highlights",
 }

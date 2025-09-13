@@ -6,6 +6,14 @@
     display: flex;
     align-items: center;
 
+    svg {
+        flex-shrink: 0;
+    }
+
+    span {
+        @include mixins.textEllipsis;
+    }
+
     &_size {
         &_default {
             column-gap: .5rem;
@@ -18,7 +26,6 @@
         &_small {
             column-gap: mixins.rem(6);
             @include typography.font("xxs");
-            //font-size: mixins.rem(10);
             svg {
                 width: mixins.rem(10);
                 height: mixins.rem(10);

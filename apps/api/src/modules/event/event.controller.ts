@@ -4,7 +4,7 @@ import {
     Delete, Get, HttpCode, HttpStatus,
     Param,
     Patch,
-    Post, Query,
+    Post,
     Req,
     UseInterceptors,
 } from "@nestjs/common";
@@ -15,7 +15,6 @@ import { ServerSession } from "@/modules/auth/dto/jwt.dto";
 import { FileUploadInterceptor } from "@/modules/uploads/uploads.interceptor";
 import { UpdateEventDto } from "@/modules/event/dto/update-event.dto";
 import { GetNearbyEventsDto } from "@/modules/event/dto/get-nearby.dto";
-import { GetEventCollectionsFeedDto } from "@/modules/event/dto/get-event-collections.dto";
 
 @Controller("events")
 export class EventController {

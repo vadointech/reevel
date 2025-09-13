@@ -1,14 +1,17 @@
 import { ComponentProps } from "react";
 import { IconLocation } from "@/components/icons";
+import { CvaUIConfig } from "@/types/common";
 
 import styles from "./styles.module.scss";
 import { cva, VariantProps } from "class-variance-authority";
 
-const location = cva(styles.location, {
+const location = cva<CvaUIConfig>(styles.location, {
     variants: {
         size: {
             default: styles.location_size_default,
             small: styles.location_size_small,
+            large: "",
+            xsmall: "",
         },
     },
     defaultVariants: {

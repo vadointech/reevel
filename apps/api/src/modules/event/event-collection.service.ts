@@ -46,7 +46,7 @@ export class EventCollectionService {
         }
 
         rankedEventsQuery
-            .orderBy("\"event\".\"startDate\"", "ASC");
+            .orderBy("\"event\".\"startDate\"", "DESC");
         // ЗБЕРЕЖЕНО: Вся логіка ранжування залишається
         // rankedEventsQuery.orderBy(
         //     "CASE WHEN \"event\".\"isFeatured\" = true THEN 0 ELSE 1 END", "ASC",

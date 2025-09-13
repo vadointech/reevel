@@ -3,8 +3,9 @@ import Image from "next/image";
 import { hexToRgba } from "@/utils/hex-to-rgba";
 
 import { Badge } from "@/components/ui";
-import { IconLock, IconLocation, IconGlobe } from "@/components/icons";
+import { IconLock, IconGlobe } from "@/components/icons";
 import { AttendersSection } from "../../attenders";
+import { LocationBadge } from "@/components/ui/location";
 
 import { EventEntity, EventVisibility } from "@/entities/event";
 import { UISize } from "@/types/common";
@@ -99,15 +100,9 @@ export const EventCard = ({
                     )`,
                 }}
             >
-                <div
-                    className={cx(
-                        styles.card__location,
-                        styles[`card__location_size_${size}`],
-                    )}
-                >
-                    <IconLocation />
+                <LocationBadge size={size}>
                     { event.locationTitle }
-                </div>
+                </LocationBadge>
                 <h3
                     className={cx(
                         styles.card__title,
@@ -116,10 +111,14 @@ export const EventCard = ({
                 >
                     { event.title }
                 </h3>
-                <AttendersSection
-                    size={size}
-                    users={event.tickets.map(item => item.user.profile)}
-                />
+                {
+                    event.tickets.length > 0 && (
+                        <AttendersSection
+                            size={size}
+                            users={event.tickets.map(item => item.user.profile)}
+                        />
+                    )
+                }
             </div>
         </div>
     );
