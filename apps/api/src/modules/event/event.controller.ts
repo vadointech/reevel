@@ -11,10 +11,10 @@ import {
 import { EventService } from "./event.service";
 import { CreateEventDto } from "./dto/create-event.dto";
 import { Session } from "@/decorators";
-import { ServerSession } from "@/modules/auth/dto/jwt.dto";
 import { FileUploadInterceptor } from "@/modules/uploads/uploads.interceptor";
 import { UpdateEventDto } from "@/modules/event/dto/update-event.dto";
 import { GetNearbyEventsDto } from "@/modules/event/dto/get-nearby.dto";
+import { ServerSession } from "@/types";
 
 @Controller("events")
 export class EventController {

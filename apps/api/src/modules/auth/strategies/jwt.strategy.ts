@@ -1,44 +1,36 @@
-import authConfig from "@/modules/auth/auth.config";
-import { JwtService } from "@nestjs/jwt";
 import {
     Injectable,
-    Logger,
 } from "@nestjs/common";
-import { Request, Response } from "express";
-import { CookieService } from "@/services/cookie.service";
-import { UserEntity } from "@/modules/user/entities/user.entity";
+import { CookieOptions, Request, Response } from "express";
 import {
-    JwtSession,
-    ServerSession,
-    SessionJwtTokenPayload,
-} from "../dto/jwt.dto";
+    JwtTokens,
+    JwtAccessToken,
+    JwtRefreshToken,
+    JwtAccessTokenPayload,
+} from "@/modules/auth/dto/jwt-token.dto";
+import { ServerSession } from "@/types";
+import { SessionResponseDto } from "@/modules/auth/dto/auth.dto";
+import { UserEntity } from "@/modules/user/entities/user.entity";
+import authConfig from "@/modules/auth/auth.config";
+import { ConfigService } from "@/config/config.service";
 
 @Injectable()
 export class JwtStrategy {
-    private logger = new Logger(JwtStrategy.name);
-
     constructor(
-        private readonly jwtService: JwtService,
-        private readonly cookieService: CookieService,
-        // private readonly sessionRepository: UserSessionRepository,
+        private readonly configService: ConfigService,
     ) {}
 
-    async createSession(user: UserEntity): Promise<JwtSession> {
-        // const initialRefreshTokenHash = crypto.randomBytes(8).toString();
+    private readonly cookieOptions: CookieOptions = {
+        httpOnly: true,
+        secure: true,
+        sameSite: "none",
+        domain: "localhost",
+        path: "/",
+    };
 
-        // const session = await this.sessionRepository.insert({
-        //     userId: user.id,
-        //     refreshTokenHash: initialRefreshTokenHash,
-        // });
-
-        // if(!session) {
-        //     this.logger.error("Unexpected error creating session: Could not create session.");
-        //     throw new InternalServerErrorException();
-        // }
-
-        const tokens = await this.generateTokens({
+    createSession(user: UserEntity): SessionResponseDto {
+        const { accessToken, refreshToken } = this.generateTokens({
             sub: user.id,
-            sid: user.id,
             email: user.email,
             completed: user.profile.completed,
             subscription: user.subscription.type,
@@ -48,37 +40,17 @@ export class JwtStrategy {
             }: undefined,
         });
 
-        // const sessionTokenHash = await bcrypt.hash(tokens.refresh_token, 10);
-        // await this.sessionRepository.updateSessionToken(session.id, sessionTokenHash, authConfig.session.expiresIn);
-
-        return tokens;
+        return {
+            payload: accessToken.payload,
+            accessToken: accessToken.signature,
+            refreshToken: refreshToken.signature,
+        };
     }
 
-    async refreshSession(refreshToken: string, payload: SessionJwtTokenPayload): Promise<JwtSession> {
-        // const session = await this.sessionRepository.findOneBy({ id: payload.sid });
-        // if(!session || new Date() > session.expiresAt) {
-        //     throw new UnauthorizedException("Session expired");
-        // }
-
-        // const isTokenMatching = await bcrypt.compare(refreshToken, session.refreshTokenHash);
-        // if(!isTokenMatching) {
-        //     await this.sessionRepository.delete({ id: payload.sid });
-        //     throw new UnauthorizedException("Invalid refresh token");
-        // }
-
-        const tokens = await this.generateTokens(payload);
-
-        // const refreshTokenHash = await bcrypt.hash(tokens.refresh_token, 10);
-        // await this.sessionRepository.updateSessionToken(session.id, refreshTokenHash, authConfig.session.expiresIn);
-
-        return tokens;
-    }
-
-    setServerSession(request: Request, payload: SessionJwtTokenPayload) {
+    setServerSession(request: Request, payload: JwtAccessTokenPayload) {
         request["user"] = {
             user: {
                 id: payload.sub,
-                sid: payload.sid,
                 email: payload.email,
                 subscription: payload.subscription,
                 location: payload.location,
@@ -86,82 +58,27 @@ export class JwtStrategy {
         } satisfies ServerSession;
     }
 
-    setJwtSession(response: Response, session: JwtSession) {
-        this.cookieService.setHttpCookie(response, authConfig.session.cookieKey, session.session_id);
-        this.cookieService.setHttpCookie(response, authConfig.accessToken.cookieKey, session.access_token);
-        this.cookieService.setHttpCookie(response, authConfig.refreshToken.cookieKey, session.refresh_token);
+    setClientSession(response: Response, session: SessionResponseDto) {
+        response.cookie(
+            authConfig.accessToken.cookieKey,
+            session.accessToken,
+            this.cookieOptions,
+        );
+        response.cookie(
+            authConfig.refreshToken.cookieKey,
+            session.refreshToken,
+            this.cookieOptions,
+        );
     }
 
-    clearJwtSession(response: Response) {
-        this.cookieService.clearHttpCookie(response, authConfig.session.cookieKey);
-        this.cookieService.clearHttpCookie(response, authConfig.accessToken.cookieKey);
-        this.cookieService.clearHttpCookie(response, authConfig.refreshToken.cookieKey);
+    clearClientSession(response: Response) {
+        response.clearCookie(authConfig.accessToken.cookieKey, this.cookieOptions);
+        response.clearCookie(authConfig.refreshToken.cookieKey, this.cookieOptions);
     }
 
-    async validateAccessToken(token: string): Promise<{
-        valid: boolean;
-        payload?: SessionJwtTokenPayload;
-    }> {
-        try {
-            const payload = await this.jwtService.verify(token, {
-                secret: authConfig.accessToken.secret,
-                maxAge: authConfig.accessToken.expiresIn,
-            });
-            return { valid: true, payload };
-        } catch {
-            return { valid: false, payload: undefined };
-        }
-    }
-
-    async validateRefreshToken(token: string): Promise<{
-        valid: boolean;
-        payload?: SessionJwtTokenPayload;
-    }> {
-        try {
-            const payload = await this.jwtService.verify(token, {
-                secret: authConfig.refreshToken.secret,
-                maxAge: authConfig.refreshToken.expiresIn,
-            });
-            return { valid: true, payload };
-        } catch {
-            return { valid: false, payload: undefined };
-        }
-    }
-
-    private async generateTokens(payload: SessionJwtTokenPayload): Promise<JwtSession> {
-
-        const accessTokenPayload: SessionJwtTokenPayload = {
-            sub: payload.sub,
-            sid: payload.sid,
-            email: payload.email,
-            completed: payload.completed,
-            subscription: payload.subscription,
-            location: payload.location,
-        };
-        const refreshTokenPayload: SessionJwtTokenPayload = { ...accessTokenPayload };
-
-        const [access_token, refresh_token] = await Promise.all([
-            this.generateAccessToken(accessTokenPayload),
-            this.generateRefreshToken(refreshTokenPayload),
-        ]);
-
-        return {
-            payload: accessTokenPayload,
-            session_id: payload.sid,
-            access_token,
-            refresh_token,
-        };
-    }
-    private async generateAccessToken(payload: SessionJwtTokenPayload) {
-        return this.jwtService.sign(payload, {
-            secret: authConfig.accessToken.secret,
-            expiresIn: authConfig.accessToken.expiresIn,
-        });
-    }
-    private async generateRefreshToken(payload: SessionJwtTokenPayload) {
-        return this.jwtService.sign(payload, {
-            secret: authConfig.refreshToken.secret,
-            expiresIn: authConfig.refreshToken.expiresIn,
-        });
+    generateTokens(payload: JwtAccessTokenPayload): JwtTokens {
+        const accessToken = new JwtAccessToken(payload);
+        const refreshToken = new JwtRefreshToken(payload);
+        return { accessToken, refreshToken };
     }
 }

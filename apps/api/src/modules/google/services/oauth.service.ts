@@ -1,6 +1,7 @@
-import { Injectable } from "@nestjs/common";
+import { BadRequestException, Injectable } from "@nestjs/common";
 import { auth, oauth2 } from "@googleapis/oauth2";
 import { oauth2_v2 } from "@googleapis/oauth2/v2";
+import { GoogleOAuthUserInfo } from "../types/oauth";
 
 @Injectable()
 export class GoogleOAuthService {
@@ -25,7 +26,7 @@ export class GoogleOAuthService {
         });
     }
 
-    generateAuthUrl() {
+    generateAuthUrl(): Promise<string> {
         return this.OAuthClient.generateAuthUrl({
             access_type: "offline",
             prompt: "consent",
@@ -41,9 +42,20 @@ export class GoogleOAuthService {
         return tokens;
     }
 
-    async getUserInfo(access_token: string) {
-        this.OAuthClient.setCredentials({ access_token });
+    async getOAuthUserInfo(code: string): Promise<GoogleOAuthUserInfo | null> {
+        const credentials = await this.getOAuthTokens(code);
+
+        if(!credentials.access_token || !credentials.refresh_token) {
+            throw new BadRequestException("Bad Request");
+        }
+
+        this.OAuthClient.setCredentials({ access_token: credentials.access_token });
         const user =  await this.client.userinfo.get();
-        return user.data;
+
+        if(!user.data.email) {
+            return null;
+        }
+
+        return user.data as GoogleOAuthUserInfo;
     }
 }

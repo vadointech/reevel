@@ -1,8 +1,8 @@
 import { Controller, Delete, Get, Param, Query } from "@nestjs/common";
 import { UserService } from "./user.service";
 import { Session } from "@/decorators";
-import { ServerSession } from "@/modules/auth/dto/jwt.dto";
 import { GetUploadedFileParamsDto } from "@/modules/uploads/dto/get-image.dto";
+import { ServerSession } from "@/types";
 
 @Controller("users")
 export class UserController {

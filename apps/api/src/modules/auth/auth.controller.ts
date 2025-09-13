@@ -1,22 +1,26 @@
-import { Controller, Get, Query, Res } from "@nestjs/common";
+import { Body, Controller, Get, Post, Query, Res } from "@nestjs/common";
 import { Response } from "express";
-import { Public } from "@/decorators";
-import { JwtStrategy } from "./strategies/jwt.strategy";
+import { Public, Session } from "@/decorators";
 import { AuthService } from "./auth.service";
 import { ConfigService } from "@/config/config.service";
+import { RefreshSessionDto } from "@/modules/auth/dto/auth.dto";
+import { ServerSession } from "@/types";
+import { GoogleOAuthProvider } from "@/modules/auth/providers/google-auth.provider";
+import { JwtStrategy } from "@/modules/auth/strategies/jwt.strategy";
 
 @Controller("auth")
 export class AuthController {
     constructor(
         private readonly authService: AuthService,
         private readonly jwtStrategy: JwtStrategy,
+        private readonly googleOAuthProvider: GoogleOAuthProvider,
         private readonly configService: ConfigService,
     ) {}
 
     @Public()
     @Get("/google")
     async getGoogleOAuthUlr() {
-        const link = await this.authService.getGoogleOAuthLink();
+        const link = await this.googleOAuthProvider.getAuthorizationLink();
         return { link };
     }
 
@@ -31,15 +35,14 @@ export class AuthController {
         }
 
         try {
-            const user = await this.authService.getGoogleOAuthUser(code);
-            const session = await this.authService.authWithGoogle(user);
+            const session = await this.googleOAuthProvider.authorize(code);
 
-            this.jwtStrategy.setJwtSession(response, session);
+            this.jwtStrategy.setClientSession(response, session);
 
             if(session.payload.completed === "true") {
                 return response.redirect(this.configService.env("PWA_PUBLIC_URL"));
             } else {
-                return response.redirect(this.configService.env("PWA_PUBLIC_URL") + "/onboarding");
+                return response.redirect(this.configService.env("PWA_PUBLIC_URL"));
             }
         } catch {
             return response.redirect(this.configService.env("PWA_PUBLIC_URL") + "/login");
@@ -47,10 +50,19 @@ export class AuthController {
     }
 
     @Get("/logout")
-    async logout(
+    logout(
+        @Session() session: ServerSession,
         @Res({ passthrough: true }) response: Response,
     ) {
-        this.jwtStrategy.clearJwtSession(response);
-        return true;
+        this.jwtStrategy.clearClientSession(response);
+        return this.authService.logout(session);
+    }
+
+    @Post("/refresh")
+    refreshSession(
+        @Session() session: ServerSession,
+        @Body() body: RefreshSessionDto,
+    ) {
+        return this.authService.refreshSession(session, body);
     }
 }

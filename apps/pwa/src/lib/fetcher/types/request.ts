@@ -21,7 +21,7 @@ export interface FetcherRequest<TInput = any, TParams = any, TOutput = any> exte
     method?: FetcherRequestMethod;
 }
 
-export interface FetcherRequestWithFallback<TInput, TParams, TOutput> extends FetcherRequest<TInput, TParams, TOutput> {
+export interface FetcherRequestWithFallback<TInput = any, TParams = any, TOutput = any> extends FetcherRequest<TInput, TParams, TOutput> {
     fallback: TOutput;
 }
 

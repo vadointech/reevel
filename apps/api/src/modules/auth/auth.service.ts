@@ -1,21 +1,17 @@
 import { BadRequestException, Injectable, Logger, NotFoundException } from "@nestjs/common";
 import { DataSource } from "typeorm";
-import { InjectGoogleOAuthService } from "@/decorators";
-import { GoogleOAuthService } from "@/modules/google/services/oauth.service";
 import { JwtStrategy } from "./strategies/jwt.strategy";
-import { JwtSession } from "./dto/jwt.dto";
-import { GoogleOAuthUserInfo } from "./dto/auth.dto";
+import { LoginUserDto, RefreshSessionDto, RegisterUserDto, SessionResponseDto } from "./dto/auth.dto";
 import { UserRepository } from "@/modules/user/repositories/user.repository";
 import { ProfileRepository } from "@/modules/profile/repositories/profile.repository";
 import { SubscriptionRepository } from "@/modules/subscription/subscription.repository";
+import { ServerSession } from "@/types";
 
 @Injectable()
 export class AuthService {
     private logger = new Logger(AuthService.name);
 
     constructor(
-        @InjectGoogleOAuthService("/auth/google/redirect")
-        private readonly googleOAuthService: GoogleOAuthService,
         private readonly jwtStrategy: JwtStrategy,
 
         private readonly userRepository: UserRepository,
@@ -25,73 +21,50 @@ export class AuthService {
         private readonly dataSource: DataSource,
     ) {}
 
-    async getGoogleOAuthLink(): Promise<string> {
-        return this.googleOAuthService.generateAuthUrl();
+    async refreshSession(session: ServerSession, input: RefreshSessionDto): Promise<void> {
+
     }
 
-    async getGoogleOAuthUser(code: string): Promise<GoogleOAuthUserInfo> {
-        const credentials = await this.googleOAuthService.getOAuthTokens(code);
-
-        if(!credentials.access_token || !credentials.refresh_token) {
-            throw new BadRequestException("Bad Request");
-        }
-
-        const user = await this.googleOAuthService.getUserInfo(credentials.access_token);
-
-        if(!user?.email) {
-            throw new BadRequestException("Bad Request");
-        }
-
-        return {
-            email: user.email,
-            name: user.name,
-            picture: user.picture,
-        } as GoogleOAuthUserInfo;
+    async logout(session: ServerSession): Promise<boolean> {
+        return true;
     }
 
-    async authWithGoogle(oauthUser: GoogleOAuthUserInfo) {
-        const dbUser = await this.userRepository.getByEmail(oauthUser.email);
+    async login(input: LoginUserDto): Promise<SessionResponseDto> {
+        const user = await this.userRepository.getByEmail(input.email);
 
-        if(dbUser) {
-            return await this.loginUser(oauthUser.email);
-        } else {
-            return await this.registerUser(oauthUser);
-        }
-    }
-
-    async registerUser(oauthUser: GoogleOAuthUserInfo): Promise<JwtSession> {
-        const user = await this.createAccount(oauthUser);
-        return this.jwtStrategy.createSession(user);
-    }
-
-    async loginUser(email: string): Promise<JwtSession> {
-        const user = await this.userRepository.getByEmail(email);
-
-        if (!user) {
+        if(!user) {
             throw new NotFoundException();
         }
 
         return this.jwtStrategy.createSession(user);
     }
 
-    async createAccount(oauthUser: GoogleOAuthUserInfo) {
+    async register(input: RegisterUserDto): Promise<SessionResponseDto> {
         try {
-            return this.dataSource.transaction(async entityManager => {
-                const user = await this.userRepository.createAndSave(oauthUser, entityManager);
+            const user = await this.dataSource.transaction(async entityManager => {
+                const user = await this.userRepository.createAndSave({
+                    email: input.email,
+                }, entityManager);
+
                 user.profile = await this.profileRepository.createAndSave({
                     userId: user.id,
-                    picture: oauthUser.picture,
-                    fullName: oauthUser.name,
+                    picture: input.picture,
+                    fullName: input.name,
                     completed: "false",
                 }, entityManager);
+
                 user.subscription = await this.subscriptionRepository.createAndSave({
                     userId: user.id,
                 }, entityManager);
 
                 return user;
             });
+
+            return this.jwtStrategy.createSession(user);
         } catch(error) {
-            this.logger.error(`Unexpected error creating account: ${error.message}`, error.stack);
+            if(error instanceof Error) {
+                this.logger.error(`Unexpected error creating account: ${error.message}`, error.stack);
+            }
             throw new BadRequestException();
         }
     }

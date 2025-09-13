@@ -3,7 +3,7 @@ import {
     ExecutionContext,
     ForbiddenException,
 } from "@nestjs/common";
-import { ServerSession } from "@/modules/auth/dto/jwt.dto";
+import { ServerSession } from "@/types";
 
 export const Session = createParamDecorator((key: keyof ServerSession["user"], context: ExecutionContext) => {
     const request = context.switchToHttp().getRequest();

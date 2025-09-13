@@ -33,7 +33,6 @@ export class UserRepository extends Repository<UserEntity> {
         return this.findOne({
             where: { id: userId },
             relations: {
-                // sessions: true,
                 profile: {
                     location: true,
                     interests: true,
@@ -43,9 +42,6 @@ export class UserRepository extends Repository<UserEntity> {
             select: {
                 id: true,
                 email: true,
-                // sessions: {
-                //     id: true,
-                // },
                 profile: {
                     picture: true,
                     fullName: true,
