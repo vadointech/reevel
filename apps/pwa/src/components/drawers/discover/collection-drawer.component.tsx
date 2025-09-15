@@ -1,6 +1,6 @@
 "use client";
 
-import { PropsWithChildren, useCallback } from "react";
+import { PropsWithChildren, useCallback, useEffect } from "react";
 import { Link } from "@/i18n/routing";
 import { motion, useMotionValue, useTransform } from "motion/react";
 
@@ -21,6 +21,7 @@ import { DiscoverInterestsList } from "@/flows/discover/modules/interests-list";
 import { DiscoverEventsList } from "@/flows/discover/modules/events-list";
 import { useDiscoverContext } from "@/features/discover";
 import { useDiscoverCollectionDrawer } from "@/features/discover/hooks";
+import { MAP_MOTION_TIMEOUT_MS } from "@/components/shared/map/map.config";
 
 import styles from "./styles/collection-drawer.module.scss";
 
@@ -77,6 +78,15 @@ export const DiscoverCollectionDrawer = ({
                     ),
                 );
             }
+        }
+    }, []);
+
+    useEffect(() => {
+        const isSameCollection = discover.store.collectionToPreview === collection;
+
+        if(!isSameCollection) {
+            new Promise(resolve => setTimeout(resolve, MAP_MOTION_TIMEOUT_MS))
+              .then(() => onEventSlideChange(defaultSliderIndex));
         }
     }, []);
 
