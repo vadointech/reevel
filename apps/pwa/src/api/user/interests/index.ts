@@ -1,5 +1,5 @@
 import { ProfileInterestsEntity } from "@/entities/profile";
-import { fetcherClient } from "@/api/fetcher-client";
+import { fetcherClient } from "@/api/client";
 
 export namespace GetCurrentUserInterests {
     export type TInput = null;

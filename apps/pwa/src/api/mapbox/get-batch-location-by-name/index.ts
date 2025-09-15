@@ -1,5 +1,5 @@
 import { MapboxBatchFeaturesResponse, MapboxRequestParams } from "../types";
-import { fetcherClient } from "@/api/fetcher-client";
+import { fetcherClient } from "@/api/client";
 
 export namespace GetBatchPlaceByName {
     export type TInput = Array<Omit<MapboxRequestParams, "access_token"> & {

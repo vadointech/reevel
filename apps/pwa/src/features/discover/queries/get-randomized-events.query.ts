@@ -1,7 +1,8 @@
 import { MapProviderGL } from "@/components/shared/map/types";
 import { EventEntity } from "@/entities/event";
 import { QueryBuilderQuery } from "@/lib/react-query";
-import { getRandomizedEvents, GetRandomizedEvents } from "@/api/event";
+import { GetRandomizedEvents } from "@/api/event";
+import { getRandomizedEvents } from "@/api/event/server";
 
 export namespace GetRandomizedEventsQueryBuilder {
     export type TInput = {
@@ -9,7 +10,6 @@ export namespace GetRandomizedEventsQueryBuilder {
         radius: number,
         regionId?: string,
         filter?: string,
-        nextHeaders?: Headers
     };
     export type TOutput = EventEntity[];
 }
@@ -25,19 +25,16 @@ export const GetRandomizedEventsQueryBuilder: QueryBuilderQuery<GetRandomizedEve
 
 GetRandomizedEventsQueryBuilder.queryFunc = (input) => {
     return getRandomizedEvents({
-        nextHeaders: input.nextHeaders,
-        body: {
-            take: input.filter ? 20 : 10,
-            interests: input.filter ? [input.filter] : undefined,
-            circle: {
-                radius: input.radius,
-                center: {
-                    longitude: input.center.lng,
-                    latitude: input.center.lat,
-                },
+        take: input.filter ? 20 : 10,
+        interests: input.filter ? [input.filter] : undefined,
+        circle: {
+            radius: input.radius,
+            center: {
+                longitude: input.center.lng,
+                latitude: input.center.lat,
             },
         },
-    }).then(response => response.data || []);
+    });
 };
 
 GetRandomizedEventsQueryBuilder.queryKey = (params = []) => {

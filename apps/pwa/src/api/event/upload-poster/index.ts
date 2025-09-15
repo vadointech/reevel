@@ -1,4 +1,4 @@
-import { fetcherClient } from "@/api/fetcher-client";
+import { fetcherClient } from "@/api/client";
 import { UserUploadsEntity } from "@/entities/uploads";
 
 export namespace UploadEventPoster {
@@ -12,16 +12,17 @@ export namespace UploadEventPoster {
 }
 
 export const uploadEventPoster = fetcherClient.fetch<UploadEventPoster.TInput, UploadEventPoster.TOutput>({
-    fetcherFunc: (fetcher, input) => {
+    fetcherFunc: (fetcher, { body, ...input }) => {
         const formData = new FormData();
 
-        if(input?.body) {
-            const croppedFile = new File([input.body.file], "test.png", { type: "image/png" });
+        if(body) {
+            const croppedFile = new File([body.file], "test.png", { type: "image/png" });
             formData.append("files", croppedFile);
         }
 
         return fetcher.post("/events/poster", {
             body: formData,
+            ...input,
         });
     },
 });

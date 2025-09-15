@@ -3,7 +3,7 @@ import { useUploadedFileDelete } from "@/features/uploader/hooks";
 import { useCallback, useRef } from "react";
 import { SupportedFileCollections, UserUploadsEntity } from "@/entities/uploads";
 import { useImageUploader } from "@/features/uploader/image/hooks";
-import { uploadProfileAvatar } from "@/api/profile/upload-avatar";
+import { uploadProfileAvatar } from "@/api/profile/server";
 import { IBottomSheetRootController } from "@/components/shared/bottom-sheet/types";
 import { revalidateSessionTag } from "@/features/cache";
 import { GetUserUploads } from "@/api/user";
@@ -26,9 +26,7 @@ export function useOnboardingAvatarUploader(callbackUrl?: string) {
 
     const { handleSelectFile, handleFileUpload } = useImageUploader({
         callbackUrl,
-        mutationFn: (body) =>
-            uploadProfileAvatar({ body })
-                .then(response => response.data ? response.data[0] : null),
+        mutationFn: uploadProfileAvatar,
         onSuccess: (upload) => {
             if(upload) handleAvatarPick(upload);
 

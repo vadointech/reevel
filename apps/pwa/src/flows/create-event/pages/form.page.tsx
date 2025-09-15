@@ -1,10 +1,9 @@
 import { ComponentType } from "react";
 
-import { headers } from "next/headers";
 import { Link } from "@/i18n/routing";
 
-import { getInitialInterests } from "@/api/interests";
-import { getCurrentUserInterests } from "@/api/user";
+import { getInitialInterests } from "@/api/interests/server";
+import { getCurrentUserInterests } from "@/api/user/server";
 
 import { Header } from "@/components/ui";
 import { IconArrowLeft } from "@/components/icons";
@@ -21,21 +20,15 @@ export namespace CreateEventFormPage {
 }
 
 export async function CreateEventFormPage({ type }: CreateEventFormPage.Props) {
-    const { data } = await getCurrentUserInterests({
-        nextHeaders: await headers(),
-    });
+    const currentUserInterests = await getCurrentUserInterests();
 
     let interests: InterestEntity[] = [];
 
-    if(data && data.length > 0) {
-        interests = data.map(item => item.interest);
+    if(currentUserInterests.length > 0) {
+        interests = currentUserInterests;
     } else {
-        const { data } = await getInitialInterests({
-            nextHeaders: await headers(),
-        });
-        if(data) {
-            interests = data.slice(0, 6);
-        }
+        const initialInterests = await getInitialInterests();
+        interests = initialInterests.slice(0, 6);
     }
 
     let FormComponent: ComponentType<{ interests: InterestEntity[] }>;

@@ -1,5 +1,5 @@
 import { BadRequestException, Injectable, NotFoundException } from "@nestjs/common";
-import { AuthService } from "@/modules/auth/auth.service";
+import { AuthService } from "../auth.service";
 import { GoogleOAuthService } from "@/modules/google/services/oauth.service";
 import { InjectGoogleOAuthService } from "@/decorators";
 

@@ -88,6 +88,5 @@ export function useOnboardingUpdate({
                 });
             }
         }
-
     }, [step, revalidateQueryOnSuccess, handleUpdateProfile]);
 }

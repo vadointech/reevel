@@ -1,6 +1,4 @@
-import { headers } from "next/headers";
-
-import { getCurrentUserUploads } from "@/api/user";
+import { getCurrentUserUploads } from "@/api/user/uploads/server";
 
 import { OnboardingNextStepButton, OnboardingProgressBar } from "../modules/progress";
 import {
@@ -28,12 +26,8 @@ export namespace OnboardingAvatarPickerPage {
 }
 
 export async function OnboardingAvatarPickerPage({ cropperPageUrl }: OnboardingAvatarPickerPage.Props) {
-    const { data } = await getCurrentUserUploads({
-        nextHeaders: await headers(),
-        params: {
-            collection: SupportedFileCollections.PROFILE_PICTURE,
-        },
-        fallback: [],
+    const uploads = await getCurrentUserUploads({
+        collection: SupportedFileCollections.PROFILE_PICTURE,
     });
 
     return (
@@ -49,7 +43,7 @@ export async function OnboardingAvatarPickerPage({ cropperPageUrl }: OnboardingA
             </Container>
             <ButtonsBlock className={styles.buttons}>
                 <OnboardingAvatarUploader
-                    uploads={data}
+                    uploads={uploads}
                     cropperPageUrl={cropperPageUrl}
                 />
                 <OnboardingNextStepButton>

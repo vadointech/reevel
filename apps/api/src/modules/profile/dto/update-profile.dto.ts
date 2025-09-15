@@ -34,7 +34,7 @@ export class UpdateProfileDto {
     @Type(() => Number)
     locationBbox: [number, number, number, number];
 
-    @IsString()
+    @IsNumber()
     @IsOptional()
-    completed: string;
+    completed: number;
 }

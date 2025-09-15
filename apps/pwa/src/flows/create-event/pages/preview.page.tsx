@@ -1,7 +1,6 @@
-import { headers } from "next/headers";
 import { Link } from "@/i18n/routing";
 
-import { getCurrentUserUploads } from "@/api/user";
+import { getCurrentUserUploads } from "@/api/user/uploads/server";
 
 import { Header } from "@/components/ui";
 import { IconArrowLeft } from "@/components/icons";
@@ -19,14 +18,8 @@ export namespace CreateEventPreviewPage {
 }
 
 export async function CreateEventPreviewPage({ callbackUrl, cropperUrl }: CreateEventPreviewPage.Props) {
-    const { data } = await getCurrentUserUploads({
-        nextHeaders: await headers(),
-        params: {
-            collection: SupportedFileCollections.EVENT_POSTER,
-        },
-        cache: {
-            tags: [SupportedFileCollections.EVENT_POSTER],
-        },
+    const uploads = await getCurrentUserUploads({
+        collection: SupportedFileCollections.EVENT_POSTER,
     });
 
     return (
@@ -42,7 +35,7 @@ export async function CreateEventPreviewPage({ callbackUrl, cropperUrl }: Create
                 Preview event
             </Header>
             <CreateEventPreview
-                uploads={data || []}
+                uploads={uploads}
                 callbackUrl={callbackUrl}
                 cropperPageUrl={cropperUrl}
             />

@@ -1,4 +1,3 @@
-import { headers } from "next/headers";
 import { DiscoverHighlightsScreen } from "@/components/screens/discover";
 import { extractUniqueInterests } from "@/features/discover/utils";
 import { GetCityHighlightsQueryBuilder } from "@/features/discover/queries";
@@ -20,7 +19,6 @@ export async function DiscoverHighlightsPage() {
     const cityHighlights = await GetCityHighlightsQueryBuilder.queryFunc({
         center,
         radius,
-        nextHeaders: await headers(),
     });
     const interests = extractUniqueInterests(cityHighlights);
   

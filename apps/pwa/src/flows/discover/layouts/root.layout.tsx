@@ -3,7 +3,6 @@ import { MapView } from "@/components/shared/map";
 import { getUserMapInternalConfig } from "@/components/shared/map/utils";
 import { MapRootProvider } from "@/components/shared/map/map.provider";
 import { GetNearbyEventsQueryBuilder } from "@/features/discover/queries";
-import { headers } from "next/headers";
 import { eventEntityMapper } from "@/entities/event/mapper";
 import { DiscoverProvider } from "@/features/discover";
 
@@ -21,7 +20,6 @@ export async function DiscoverRootLayout({ children }: DiscoverRootLayout.Props)
     const events = await GetNearbyEventsQueryBuilder.queryFunc({
         center,
         radius,
-        nextHeaders: await headers(),
     });
 
     const points = eventEntityMapper.toEventPoint(events);

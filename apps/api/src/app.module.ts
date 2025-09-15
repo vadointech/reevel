@@ -3,7 +3,7 @@ import { AppController } from "@/app.controller";
 import { ConfigModule } from "@/config/config.module";
 import { TypeOrmModule } from "@nestjs/typeorm";
 import { APP_GUARD } from "@nestjs/core";
-import { AuthGuard } from "@/modules/auth/guards/auth.guard";
+import { AccessTokenGuard } from "@/modules/auth/guards/access-token.guard";
 import { EventEmitterModule } from "@nestjs/event-emitter";
 
 import modules from "@/modules";
@@ -19,7 +19,7 @@ import dbConfig from "@/config/db.config";
     providers: [
         {
             provide: APP_GUARD,
-            useClass: AuthGuard,
+            useClass: AccessTokenGuard,
         },
     ],
     controllers: [AppController],

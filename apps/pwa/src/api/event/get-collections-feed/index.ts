@@ -1,4 +1,4 @@
-import { fetcherClient } from "@/api/fetcher-client";
+import { fetcherClient } from "@/api/client";
 import { InterestEntity } from "@/entities/interests";
 
 export namespace GetEventInterestCollectionsFeed {

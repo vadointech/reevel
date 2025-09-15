@@ -15,7 +15,7 @@ import { EventsEntity } from "./entities/events.entity";
 import { CreateEventDto } from "./dto/create-event.dto";
 import { UpdateEventDto } from "./dto/update-event.dto";
 
-import { Session } from "@/types";
+import { ISessionUser, ServerSession } from "@/types";
 import { SupportedFileCollections } from "@/modules/uploads/entities/uploads.entity";
 import { GetNearbyEventsDto } from "@/modules/event/dto/get-nearby.dto";
 
@@ -37,7 +37,7 @@ export class EventService {
         private dataSource: DataSource,
     ) {}
     
-    async createEvent(session: Session, input: CreateEventDto): Promise<EventsEntity> {
+    async createEvent(session: ServerSession<ISessionUser>, input: CreateEventDto): Promise<EventsEntity> {
         try {
             const {
                 locationPoint,
@@ -82,7 +82,7 @@ export class EventService {
         }
     }
 
-    async updateEvent(_: Session, eventId: string, input: UpdateEventDto): Promise<EventsEntity> {
+    async updateEvent(_: ServerSession, eventId: string, input: UpdateEventDto): Promise<EventsEntity> {
         try {
             const event = await this.eventRepository.findOneBy({ id: eventId });
             if(!event) {
@@ -126,7 +126,7 @@ export class EventService {
         }
     }
 
-    async deleteEvent(_: Session, eventId: string) {
+    async deleteEvent(_: ServerSession, eventId: string) {
         await this.dataSource.transaction(async entityManager => {
             await this.bookingService.reclaimTickets(eventId, entityManager);
             await this.eventRepository.delete({ id: eventId }, entityManager);
@@ -135,7 +135,7 @@ export class EventService {
         return true;
     }
 
-    async uploadPoster(session: Session, files: Express.Multer.File[]) {
+    async uploadPoster(session: ServerSession<ISessionUser>, files: Express.Multer.File[]) {
         return this.uploadService.uploadImages(
             session,
             files,

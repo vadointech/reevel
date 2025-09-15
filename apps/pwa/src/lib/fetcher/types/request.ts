@@ -17,8 +17,13 @@ export interface FetcherRequest<TInput = any, TParams = any, TOutput = any> exte
     baseURL?: string | undefined;
     cache?: FetcherCacheConfig;
     headers?: Record<string, string>;
+    authorization?: {
+        method: AuthorizationMethod;
+        token: string | undefined;
+    }
+    contentType?: FetcherRequestContentType;
     nextHeaders?: Headers;
-    method?: FetcherRequestMethod;
+    method?: FetcherRequestMethod
 }
 
 export interface FetcherRequestWithFallback<TInput = any, TParams = any, TOutput = any> extends FetcherRequest<TInput, TParams, TOutput> {
@@ -59,3 +64,11 @@ type RequestConfigWithBodyAndParams<TRequest extends FetcherRequest, TInput, TPa
 };
 
 type FetcherRequestMethod = "GET" | "DELETE" | "HEAD" | "OPTIONS" | "POST" | "PUT" | "PATCH" | "PURGE" | "LINK" | "UNLINK";
+
+type AuthorizationMethod = "Basic" | "Bearer" | "Digest" | "Hawk" | "OAuth" | "AWS4";
+
+export enum FetcherRequestContentType {
+    JSON = "application/json",
+    FORM_DATA = "multipart/form-data",
+    URL_ENCODED = "application/x-www-form-urlencoded",
+}

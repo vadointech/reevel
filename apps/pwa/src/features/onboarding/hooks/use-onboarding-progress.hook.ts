@@ -22,7 +22,7 @@ export function useOnboardingProgress() {
         }();
 
         const onboardingStatus = function(){
-            return stepIndex === OnboardingStepPath.length - 1 ? "true" : String(stepIndex);
+            return stepIndex === OnboardingStepPath.length - 1 ? -1 : stepIndex;
         }();
 
         return {

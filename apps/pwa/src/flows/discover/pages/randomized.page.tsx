@@ -1,4 +1,3 @@
-import { headers } from "next/headers";
 import { DiscoverRandomizedScreen } from "@/components/screens/discover";
 import { extractUniqueInterests } from "@/features/discover/utils";
 import { getUserMapInternalConfig } from "@/components/shared/map/utils";
@@ -20,7 +19,6 @@ export async function DiscoverRandomizedPage() {
     const randomizedEvents = await GetRandomizedEventsQueryBuilder.queryFunc({
         center,
         radius,
-        nextHeaders: await headers(),
     });
 
     const interests = extractUniqueInterests(randomizedEvents);

@@ -42,6 +42,7 @@ export class UserRepository extends Repository<UserEntity> {
             select: {
                 id: true,
                 email: true,
+                sessionTokenHash: true,
                 profile: {
                     picture: true,
                     fullName: true,

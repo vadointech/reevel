@@ -3,7 +3,7 @@ import { DataSource } from "typeorm";
 import { UpdateProfileDto } from "@/modules/profile/dto/update-profile.dto";
 import { ProfileRepository } from "@/modules/profile/repositories/profile.repository";
 import { ProfileLocationRepository } from "@/modules/profile/repositories/profile-location.repository";
-import { Session } from "@/types";
+import { ServerSession } from "@/types";
 import { SupportedFileCollections } from "@/modules/uploads/entities/uploads.entity";
 import { UploadsService } from "@/modules/uploads/uploads.service";
 import { ProfileInterestsRepository } from "@/modules/profile/repositories/profile-interests.repository";
@@ -80,7 +80,7 @@ export class ProfileService {
         });
     }
 
-    async uploadAvatar(session: Session, files: Express.Multer.File[]) {
+    async uploadAvatar(session: ServerSession, files: Express.Multer.File[]) {
         return this.uploadsService.uploadImages(
             session,
             files,

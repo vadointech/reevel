@@ -1,5 +1,5 @@
 import { IsNotEmpty, IsString } from "class-validator";
-import { JwtAccessTokenPayload } from "@/modules/auth/dto/jwt-token.dto";
+import { JwtAccessTokenPayload } from "@/modules/auth/types/tokens";
 
 export class LoginUserDto {
     @IsString()
@@ -15,12 +15,6 @@ export class RegisterUserDto extends LoginUserDto {
     @IsString()
     @IsNotEmpty()
     picture?: string;
-}
-
-export class RefreshSessionDto {
-    @IsString()
-    @IsNotEmpty()
-    refreshToken: string;
 }
 
 export class SessionResponseDto {

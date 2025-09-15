@@ -1,19 +1,14 @@
 import {
     createParamDecorator,
     ExecutionContext,
-    ForbiddenException,
+    UnauthorizedException,
 } from "@nestjs/common";
-import { ServerSession } from "@/types";
 
-export const Session = createParamDecorator((key: keyof ServerSession["user"], context: ExecutionContext) => {
+export const Session = createParamDecorator((_key: string, context: ExecutionContext) => {
     const request = context.switchToHttp().getRequest();
 
     const user = request?.user;
 
-    if(user) {
-        if(key) return user[key];
-        return user;
-    } else {
-        throw new ForbiddenException();
-    }
+    if(!user) throw new UnauthorizedException();
+    return user;
 });

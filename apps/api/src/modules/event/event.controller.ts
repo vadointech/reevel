@@ -14,7 +14,7 @@ import { Session } from "@/decorators";
 import { FileUploadInterceptor } from "@/modules/uploads/uploads.interceptor";
 import { UpdateEventDto } from "@/modules/event/dto/update-event.dto";
 import { GetNearbyEventsDto } from "@/modules/event/dto/get-nearby.dto";
-import { ServerSession } from "@/types";
+import { ISessionUser, ServerSession } from "@/types";
 
 @Controller("events")
 export class EventController {
@@ -25,7 +25,7 @@ export class EventController {
     @Post()
     async createEvent(
         @Body() body: CreateEventDto,
-        @Session() session: ServerSession,
+        @Session() session: ServerSession<ISessionUser>,
     ) {
         return this.eventService.createEvent(session, body);
     }
@@ -34,7 +34,7 @@ export class EventController {
     @UseInterceptors(FileUploadInterceptor)
     async uploadPoster(
         @Req() request: Express.Request,
-        @Session() session: ServerSession,
+        @Session() session: ServerSession<ISessionUser>,
     ) {
         const files = request.files as Express.Multer.File[];
         return this.eventService.uploadPoster(session, files);

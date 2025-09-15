@@ -6,7 +6,7 @@ import { FileUploadOptions, FileUploadResponse } from "./types";
 import { GetUploadedFileParamsDto } from "@/modules/uploads/dto/get-image.dto";
 import { UploadsRepository } from "@/modules/uploads/repositories/uploads.repository";
 import { SupportedFileCollections, SupportedFileTypes } from "@/modules/uploads/entities/uploads.entity";
-import { Session } from "@/types";
+import { ServerSession } from "@/types";
 
 @Injectable()
 export class UploadsService {
@@ -19,7 +19,7 @@ export class UploadsService {
     ) {}
 
     async uploadImages(
-        session: Session,
+        session: ServerSession,
         files: Express.Multer.File[],
         collection: SupportedFileCollections = SupportedFileCollections.UNKNOWN,
         { colorPalette, ...options }: FileUploadOptions = {},

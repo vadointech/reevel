@@ -1,4 +1,3 @@
-import { headers } from "next/headers";
 import { DiscoverCollectionScreen } from "@/components/screens/discover";
 import { extractUniqueInterests } from "@/features/discover/utils";
 import { GetNearbyEventsQueryBuilder } from "@/features/discover/queries";
@@ -22,7 +21,6 @@ export async function DiscoverCollectionPage({ collectionId }: DiscoverCollectio
     const events = await GetNearbyEventsQueryBuilder.queryFunc({
         center,
         radius,
-        nextHeaders: await headers(),
         filter: collectionId,
     });
 

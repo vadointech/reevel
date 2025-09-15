@@ -16,7 +16,7 @@ import { PaymentRepository } from "@/modules/payment/repositories/payment.reposi
 import { PaymentStatus, PaymentType } from "@/modules/payment/entities/payment.entity";
 
 import { v4 as uuidv4 } from "uuid";
-import { Session } from "@/types";
+import { ServerSession } from "@/types";
 import { ReserveTicketResponse } from "./types";
 
 @Injectable()
@@ -33,7 +33,7 @@ export class BookingService {
         private readonly dataSource: DataSource,
     ) {}
 
-    async reserveTicket(session: Session, eventId: string): Promise<ReserveTicketResponse> {
+    async reserveTicket(session: ServerSession, eventId: string): Promise<ReserveTicketResponse> {
         try {
             const [event, ticketCount, userTicket, reclaimedPayment] = await Promise.all([
                 this.eventRepository.findOneBy({ id: eventId }),

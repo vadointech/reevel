@@ -1,7 +1,5 @@
-import { headers } from "next/headers";
-
-import { getInitialInterests } from "@/api/interests";
-import { getCurrentUserInterests } from "@/api/user";
+import { getInitialInterests } from "@/api/interests/server";
+import { getCurrentUserInterests } from "@/api/user/server";
 
 import { ObjectUnique } from "@/utils/object";
 
@@ -19,15 +17,8 @@ export namespace OnboardingInterestsPickerPage {
 }
 
 export async function OnboardingInterestsPickerPage() {
-    const initialInterestsResponse = await getInitialInterests({
-        nextHeaders: await headers(),
-    });
-    const initialInterests = initialInterestsResponse.data || [];
-
-    const currentInterestsResponse= await getCurrentUserInterests({
-        nextHeaders: await headers(),
-    });
-    const currentInterests = currentInterestsResponse.data?.map(item => item.interest) || [];
+    const initialInterests = await getInitialInterests();
+    const currentInterests = await getCurrentUserInterests();
 
     const interests = [
         ...new ObjectUnique([

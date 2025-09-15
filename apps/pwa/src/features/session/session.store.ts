@@ -2,20 +2,19 @@
 
 import { UserEntity } from "@/entities/user";
 import { action, makeObservable, observable, toJS } from "mobx";
-import { constructorInit } from "@/lib/init";
 
-import { ISessionStore } from "@/features/session/types";
+import { ISessionStore, SessionStoreInit } from "@/features/session/types";
 
 export class SessionStore implements ISessionStore {
     user: Maybe<UserEntity> = null;
 
-    constructor(init: Partial<ISessionStore> = {}) {
+    constructor(init: SessionStoreInit) {
+        this.user = init.user;
+
         makeObservable(this, {
             user: observable,
             setUser: action,
         });
-
-        constructorInit(this, init);
     }
 
     toPlainObject(): Pick<ISessionStore, "user"> {

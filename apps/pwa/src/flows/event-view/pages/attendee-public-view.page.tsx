@@ -1,5 +1,4 @@
-import { headers } from "next/headers";
-import { getEvent } from "@/api/event";
+import { getEvent } from "@/api/event/server";
 
 import { EventDrawerContent, EventDrawerRoot } from "@/components/drawers/event";
 import { InterestButton, OptionsList, OptionsListItem } from "@/components/ui";
@@ -16,11 +15,7 @@ export namespace EventAttendeePublicViewPage {
 }
 
 export async function EventAttendeePublicViewPage({ eventId }: EventAttendeePublicViewPage.Props) {
-
-    const { data: event } = await getEvent({
-        nextHeaders: await headers(),
-        body: { eventId },
-    });
+    const event = await getEvent({ eventId });
 
     if(!event) {
         return null;

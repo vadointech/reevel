@@ -9,7 +9,7 @@ import { EventTicketsRepository } from "@/modules/event/repositories/event-ticke
 
 import { CreateInvoiceDto } from "@/modules/payment/dto/create-invoice.dto";
 import { PaymentStatus, PaymentType } from "@/modules/payment/entities/payment.entity";
-import { Session } from "@/types";
+import { ServerSession } from "@/types";
 
 @Injectable()
 export class PaymentService {
@@ -25,7 +25,7 @@ export class PaymentService {
         private readonly dataSource: DataSource,
     ) {}
 
-    async createInvoice(session: Session, input: CreateInvoiceDto) {
+    async createInvoice(session: ServerSession, input: CreateInvoiceDto) {
         try {
             let redirectUrl = this.configService.env("API_PUBLIC_URL_INTERFACE") + `/payments/${input.paymentId}`;
 

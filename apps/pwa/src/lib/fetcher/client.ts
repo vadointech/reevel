@@ -10,23 +10,26 @@ import {
     FetcherRequest,
     FetcherRequestConfig,
     FetcherRequestParams,
-    IFetcher,
     IFetcherCacheManager,
     IFetcherClient,
 } from "./types";
+import { FetcherInterceptor } from "@/lib/fetcher/interceptor";
 
-export class FetcherClient implements IFetcherClient {
-    private readonly fetcher: IFetcher;
+export class FetcherClient extends Fetcher implements IFetcherClient {
     private readonly cacheManager: IFetcherCacheManager;
 
+    readonly interceptor: FetcherInterceptor;
+
     constructor(defaultConfig: Partial<FetcherRequest>) {
-        this.fetcher = new Fetcher(defaultConfig);
+        const interceptors = new FetcherInterceptor();
+        super(defaultConfig, interceptors);
+        this.interceptor = interceptors;
         this.cacheManager = new FetcherCacheManager(defaultConfig.cache);
     }
 
     fetch<TInput extends FetcherInput = null, TOutput extends FetcherOutput = null, TParams extends FetcherRequestParams = null>({ fetcherFunc }: FetcherClientFetchOptions<TInput, TOutput, TParams>): FetcherFetchFunc<TInput, TOutput, TParams> {
         const executor = (input: FetcherRequestConfig<TInput, TParams, TOutput>) => {
-            return fetcherFunc(this.fetcher, input);
+            return fetcherFunc(this, input);
         };
 
         return executor as FetcherFetchFunc<TInput, TOutput, TParams>;

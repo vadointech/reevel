@@ -1,7 +1,7 @@
 import { Injectable } from "@nestjs/common";
 import { UserRepository } from "./repositories/user.repository";
 import { ProfileInterestsRepository } from "@/modules/profile/repositories/profile-interests.repository";
-import { Session } from "@/types";
+import { ServerSession } from "@/types";
 import { GetUploadedFileParamsDto } from "@/modules/uploads/dto/get-image.dto";
 import { UploadsRepository } from "@/modules/uploads/repositories/uploads.repository";
 import { ProfileRepository } from "@/modules/profile/repositories/profile.repository";
@@ -15,11 +15,11 @@ export class UserService {
         private readonly uploadsRepository: UploadsRepository,
     ) {}
 
-    async getUserSession(session: Session) {
+    async getUserSession(session: ServerSession) {
         return this.userRepository.getSession(session.user.id);
     }
 
-    getUserProfile(session: Session) {
+    getUserProfile(session: ServerSession) {
         return this.profileRepository.findOne({
             where: { userId: session.user.id },
             relations: {
@@ -30,7 +30,7 @@ export class UserService {
         });
     }
 
-    getUserInterests(session: Session) {
+    getUserInterests(session: ServerSession) {
         return this.profileInterestsRepository.findMany({
             where: { profile: { userId: session.user.id }},
             relations: {
@@ -39,7 +39,7 @@ export class UserService {
         });
     }
 
-    getUserUploads(session: Session, params: GetUploadedFileParamsDto) {
+    getUserUploads(session: ServerSession, params: GetUploadedFileParamsDto) {
         return this.uploadsRepository.findManyBy({
             userId: session.user.id,
             collection: params.collection,
@@ -47,7 +47,7 @@ export class UserService {
             isDeleted: false,
         });
     }
-    async deleteUserUploadedFile(_: Session, fileId: string) {
+    async deleteUserUploadedFile(_: ServerSession, fileId: string) {
         return this.uploadsRepository.update({ id: fileId }, { isDeleted: true });
     }
 }

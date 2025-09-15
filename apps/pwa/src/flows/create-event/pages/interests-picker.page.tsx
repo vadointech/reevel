@@ -1,13 +1,10 @@
-import { headers } from "next/headers";
-
-import { getInitialInterests } from "@/api/interests";
-import { getCurrentUserInterests } from "@/api/user";
+import { getInitialInterests } from "@/api/interests/server";
+import { getCurrentUserInterests } from "@/api/user/server";
 
 import { InterestsPickerProvider } from "@/features/interests/picker";
 import { InterestsPickerContent } from "@/components/screens/interests-picker";
 
 import { ObjectUnique } from "@/utils/object";
-import { InterestEntity } from "@/entities/interests";
 
 export namespace CreateEventInterestsPickerPage {
     export type Props = {
@@ -16,21 +13,14 @@ export namespace CreateEventInterestsPickerPage {
 }
 
 export async function CreateEventInterestsPickerPage({ callbackUrl }: CreateEventInterestsPickerPage.Props) {
-    const { data: initialInterests } = await getInitialInterests({
-        nextHeaders: await headers(),
-    });
-
-    const { data: userInterests } = await getCurrentUserInterests({
-        nextHeaders: await headers(),
-    });
+    const initialInterests = await getInitialInterests();
+    const currentInterests = await getCurrentUserInterests();
 
     const interests = [
-        ... new ObjectUnique<InterestEntity>(
-            [
-                ...(userInterests || []).map(item => item.interest),
-                ...(initialInterests || []),
-            ], "slug",
-        ),
+        ...new ObjectUnique([
+            ...initialInterests,
+            ...currentInterests,
+        ], "slug"),
     ];
 
     return (

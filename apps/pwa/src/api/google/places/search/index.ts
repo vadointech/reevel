@@ -3,7 +3,7 @@ import {
     GooglePlacesApiRequestBody,
     GooglePlacesApiRestrictionRectangle,
 } from "@/api/google/places/types";
-import { fetcherClient } from "@/api/fetcher-client";
+import { fetcherClient } from "@/api/client";
 import { getGooglePlacesApiFieldMask } from "@/api/google/places/_internal/field-mask";
 import { FetcherResponse } from "@/lib/fetcher/types";
 
