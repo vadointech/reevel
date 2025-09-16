@@ -1,4 +1,4 @@
-import { Column, Entity, JoinColumn, ManyToOne, OneToOne, PrimaryColumn, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, JoinColumn, ManyToOne, OneToOne, PrimaryColumn } from "typeorm";
 import { UserEntity } from "@/modules/user/entities/user.entity";
 import { EventTicketsEntity } from "@/modules/event/entities/event-tickets.entity";
 import { SubscriptionEntity } from "@/modules/subscription/entities/subscription.entity";

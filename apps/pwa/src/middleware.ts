@@ -6,7 +6,8 @@ import {
     StaticRoutes,
     ACCESS_JWT_SECRET,
     publicRoutes,
-    AuthAccessTokenPayload, onboardingStepRoutes,
+    AuthAccessTokenPayload,
+    onboardingStepRoutes,
 } from "@/auth.config";
 import { refreshTokens } from "@/api/auth";
 
