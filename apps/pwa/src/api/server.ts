@@ -1,7 +1,7 @@
 "use server";
 
 import { cookies } from "next/headers";
-import { AuthJwtTokens } from "@/auth.config";
+import { authCookiesParams, AuthJwtTokens } from "@/auth.config";
 
 export async function getAccessToken() {
     const cookieStore = await cookies();
@@ -9,7 +9,10 @@ export async function getAccessToken() {
 }
 export async function deleteAccessToken() {
     const cookieStore = await cookies();
-    cookieStore.delete(AuthJwtTokens.AccessToken);
+    cookieStore.delete({
+        name: AuthJwtTokens.AccessToken,
+        ...authCookiesParams,
+    });
 }
 
 export async function getRefreshToken() {

@@ -1,6 +1,6 @@
 import { FetcherClient } from "@/lib/fetcher/client";
 
 export const fetcherClient = new FetcherClient({
-    baseURL: "http://localhost:3001/api",
+    baseURL: process.env.API_URL,
     credentials: "include",
 });

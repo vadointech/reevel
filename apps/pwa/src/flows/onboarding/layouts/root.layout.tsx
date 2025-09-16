@@ -16,7 +16,7 @@ export async function OnboardingRootLayout({  children }: OnboardingRootLayout.P
 
     return (
         <OnboardingFormProvider
-            pictureToSelect={profile?.picture || "TODO: Add default picture"}
+            pictureToSelect={profile?.picture || "/assets/defaults/avatar.png"}
             defaultValues={{
                 picture: profile?.picture || "",
                 fullName: profile?.fullName || "",

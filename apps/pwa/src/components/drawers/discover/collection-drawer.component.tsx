@@ -86,7 +86,7 @@ export const DiscoverCollectionDrawer = ({
 
         if(!isSameCollection) {
             new Promise(resolve => setTimeout(resolve, MAP_MOTION_TIMEOUT_MS))
-              .then(() => onEventSlideChange(defaultSliderIndex));
+                .then(() => onEventSlideChange(defaultSliderIndex));
         }
     }, []);
 

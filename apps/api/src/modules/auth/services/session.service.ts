@@ -6,6 +6,7 @@ import { UserEntity } from "@/modules/user/entities/user.entity";
 import { AUTH_MODULE_CONFIG, AuthModuleConfig } from "../auth.config";
 import { JwtAccessTokenPayload, JwtRefreshTokenPayload } from "../types/tokens";
 import { ISessionUser, ServerSession } from "@/types";
+import { ConfigService } from "@/config/config.service";
 
 @Injectable()
 export class AuthSessionService {
@@ -13,13 +14,15 @@ export class AuthSessionService {
         @Inject(AUTH_MODULE_CONFIG)
         private readonly authConfig: AuthModuleConfig,
         private readonly tokenService: AuthTokensService,
+        private readonly configService: ConfigService,
     ) {}
 
     private readonly cookieOptions: CookieOptions = {
         httpOnly: true,
         path: "/",
-        secure: true,
+        secure: this.configService.isProduction,
         sameSite: "none",
+        domain: this.configService.env("DOMAIN"),
     };
 
     async createSession(user: UserEntity): Promise<SessionResponseDto> {

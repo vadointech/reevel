@@ -12,11 +12,11 @@ import { SupportedFileCollections } from "@/entities/uploads";
 import styles from "../styles/avatar-picker-page.module.scss";
 
 const defaultPictures = [
-    "http://localhost:3000/assets/temp/carousel1.jpg",
-    "http://localhost:3000/assets/temp/carousel3.jpg",
-    "http://localhost:3000/assets/temp/carousel5.jpg",
-    "http://localhost:3000/assets/temp/carousel7.jpg",
-    "http://localhost:3000/assets/temp/carousel2.jpg",
+    "/assets/temp/carousel1.jpg",
+    "/assets/temp/carousel3.jpg",
+    "/assets/temp/carousel5.jpg",
+    "/assets/temp/carousel7.jpg",
+    "/assets/temp/carousel2.jpg",
 ];
 
 export namespace OnboardingAvatarPickerPage {

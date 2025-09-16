@@ -1,3 +1,5 @@
+import { ResponseCookie } from "next/dist/compiled/@edge-runtime/cookies";
+
 export const ACCESS_JWT_SECRET = process.env.ACCESS_JWT_SECRET;
 
 export interface AuthAccessTokenPayload {
@@ -13,6 +15,14 @@ export enum AuthJwtTokens {
     AccessToken = "access_token",
     RefreshToken = "refresh_token",
 }
+
+export const authCookiesParams: Partial<ResponseCookie> = {
+    httpOnly: true,
+    path: "/",
+    secure: true,
+    sameSite: "none",
+    domain: process.env.DOMAIN,
+};
 
 export enum StaticRoutes {
     Root = "/",

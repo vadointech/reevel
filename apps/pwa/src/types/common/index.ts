@@ -6,7 +6,7 @@ export type PropsWithParams<P = unknown> = {
     params: Promise<P>
 };
 
-export type ParamsWithLocale<P = unknown> = PropsWithParams<P & { locale: Locale }>;
+export type ParamsWithLocale<P = unknown> = PropsWithParams<P & { locale: string }>;
 
 export type UISize = "default" | "small" | "large" | "xsmall";
 
