@@ -1,22 +1,19 @@
-import { BadRequestException, Injectable, Logger, NotFoundException } from "@nestjs/common";
+import { BadRequestException, Injectable, Logger, NotFoundException, UnauthorizedException } from "@nestjs/common";
 import { DataSource } from "typeorm";
-import { InjectGoogleOAuthService } from "@/decorators";
-import { GoogleOAuthService } from "@/modules/google/services/oauth.service";
-import { JwtStrategy } from "./strategies/jwt.strategy";
-import { JwtSession } from "./dto/jwt.dto";
-import { GoogleOAuthUserInfo } from "./dto/auth.dto";
+import { LoginUserDto, RegisterUserDto, SessionResponseDto } from "./dto/auth.dto";
 import { UserRepository } from "@/modules/user/repositories/user.repository";
 import { ProfileRepository } from "@/modules/profile/repositories/profile.repository";
 import { SubscriptionRepository } from "@/modules/subscription/subscription.repository";
+import { ServerSession } from "@/types";
+import bcrypt from "bcryptjs";
+import { AuthSessionService } from "@/modules/auth/services";
 
 @Injectable()
 export class AuthService {
     private logger = new Logger(AuthService.name);
 
     constructor(
-        @InjectGoogleOAuthService("/auth/google/redirect")
-        private readonly googleOAuthService: GoogleOAuthService,
-        private readonly jwtStrategy: JwtStrategy,
+        private readonly sessionService: AuthSessionService,
 
         private readonly userRepository: UserRepository,
         private readonly profileRepository: ProfileRepository,
@@ -25,74 +22,85 @@ export class AuthService {
         private readonly dataSource: DataSource,
     ) {}
 
-    async getGoogleOAuthLink(): Promise<string> {
-        return this.googleOAuthService.generateAuthUrl();
-    }
-
-    async getGoogleOAuthUser(code: string): Promise<GoogleOAuthUserInfo> {
-        const credentials = await this.googleOAuthService.getOAuthTokens(code);
-
-        if(!credentials.access_token || !credentials.refresh_token) {
-            throw new BadRequestException("Bad Request");
-        }
-
-        const user = await this.googleOAuthService.getUserInfo(credentials.access_token);
-
-        if(!user?.email) {
-            throw new BadRequestException("Bad Request");
-        }
-
-        return {
-            email: user.email,
-            name: user.name,
-            picture: user.picture,
-        } as GoogleOAuthUserInfo;
-    }
-
-    async authWithGoogle(oauthUser: GoogleOAuthUserInfo) {
-        const dbUser = await this.userRepository.getByEmail(oauthUser.email);
-
-        if(dbUser) {
-            return await this.loginUser(oauthUser.email);
-        } else {
-            return await this.registerUser(oauthUser);
-        }
-    }
-
-    async registerUser(oauthUser: GoogleOAuthUserInfo): Promise<JwtSession> {
-        const user = await this.createAccount(oauthUser);
-        return this.jwtStrategy.createSession(user);
-    }
-
-    async loginUser(email: string): Promise<JwtSession> {
-        const user = await this.userRepository.getByEmail(email);
-
-        if (!user) {
-            throw new NotFoundException();
-        }
-
-        return this.jwtStrategy.createSession(user);
-    }
-
-    async createAccount(oauthUser: GoogleOAuthUserInfo) {
+    async register(input: RegisterUserDto): Promise<SessionResponseDto> {
         try {
-            return this.dataSource.transaction(async entityManager => {
-                const user = await this.userRepository.createAndSave(oauthUser, entityManager);
+            const session = await this.dataSource.transaction(async entityManager => {
+                const user = await this.userRepository.createAndSave({
+                    email: input.email,
+                }, entityManager);
+
                 user.profile = await this.profileRepository.createAndSave({
                     userId: user.id,
-                    picture: oauthUser.picture,
-                    fullName: oauthUser.name,
-                    completed: "false",
+                    picture: input.picture,
+                    fullName: input.name,
                 }, entityManager);
+
                 user.subscription = await this.subscriptionRepository.createAndSave({
                     userId: user.id,
                 }, entityManager);
 
-                return user;
+                return await this.sessionService.createSession(user);
             });
+
+            await this.saveSession(session);
+
+            return session;
         } catch(error) {
-            this.logger.error(`Unexpected error creating account: ${error.message}`, error.stack);
+            if(error instanceof Error) {
+                this.logger.error(`Unexpected error creating account: ${error.message}`, error.stack);
+            }
             throw new BadRequestException();
         }
+    }
+
+    async login(input: LoginUserDto): Promise<SessionResponseDto> {
+        const user = await this.userRepository.getByEmail(input.email);
+
+        if(!user) {
+            throw new NotFoundException();
+        }
+
+        const session = await this.sessionService.createSession(user);
+
+        await this.saveSession(session);
+
+        return session;
+    }
+
+    async logout(session: ServerSession): Promise<boolean> {
+        try {
+            return this.userRepository.update({ id: session.user.id }, {
+                sessionTokenHash: undefined,
+            });
+        } catch {
+            return true;
+        }
+    }
+
+    async refreshSession(session: ServerSession): Promise<SessionResponseDto> {
+        try {
+            const user = await this.userRepository.getSession(session.user.id);
+
+            if(!user || !user.sessionTokenHash) {
+                throw new BadRequestException();
+            }
+
+            const match = await bcrypt.compare(session.user.token, user.sessionTokenHash);
+
+            if(!match) {
+                throw new BadRequestException();
+            }
+            return this.sessionService.createSession(user);
+        } catch {
+            throw new UnauthorizedException();
+        }
+    }
+
+    private async saveSession(session: SessionResponseDto) {
+        const sessionTokenHash = await bcrypt.hash(session.refreshToken, 10);
+
+        return this.userRepository.update({ id: session.payload.sub }, {
+            sessionTokenHash,
+        });
     }
 }

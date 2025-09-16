@@ -2,7 +2,7 @@ import { Injectable, Logger } from "@nestjs/common";
 import { EventRepository } from "@/modules/event/repositories/event.repository";
 import { UserRepository } from "@/modules/user/repositories/user.repository";
 import { InterestsRepository } from "@/modules/interests/repositories/interests.repository";
-import { Session } from "@/types";
+import { ServerSession } from "@/types";
 import { polygonToWkt } from "./utils";
 import { EventsEntity } from "@/modules/event/entities/events.entity";
 import { InterestsEntity } from "@/modules/interests/entities/interests.entity";
@@ -46,7 +46,7 @@ export class EventCollectionService {
         }
 
         rankedEventsQuery
-            .orderBy("\"event\".\"startDate\"", "ASC");
+            .orderBy("\"event\".\"startDate\"", "DESC");
         // ЗБЕРЕЖЕНО: Вся логіка ранжування залишається
         // rankedEventsQuery.orderBy(
         //     "CASE WHEN \"event\".\"isFeatured\" = true THEN 0 ELSE 1 END", "ASC",
@@ -99,7 +99,7 @@ export class EventCollectionService {
         ).filter(event => event !== undefined) as EventsEntity[];
     }
 
-    async getEventInterestCollectionsFeed(session: Session): Promise<InterestsEntity[]> {
+    async getEventInterestCollectionsFeed(session: ServerSession): Promise<InterestsEntity[]> {
         // --- Крок 1: Отримати інтереси та локацію користувача ---
         // Ця частина залишається такою ж ефективною
         const userProfile = await this.userRepository.queryBuilder("user")

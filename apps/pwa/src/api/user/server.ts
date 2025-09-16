@@ -1,26 +1,47 @@
-import { fetcherClient } from "@/api/fetcher-client";
+"use server";
 
-import * as GetSession from "./get-session";
-import * as GetProfileRequest from "./get-profile";
-import * as GetInterestsRequest from "./get-interests";
-import * as GetUploadsRequest from "./uploads/get-uploads";
+import { getAccessToken } from "@/api/server";
 
-export const getSession = fetcherClient.cache({
-    fetchFunc: GetSession.getSession,
-    queryKey: GetSession.GetSession.queryKey,
-});
+import * as GetSession from "./session";
+import * as GetCurrentUserProfile from "./profile";
+import * as GetCurrentUserInterests from "./interests";
 
-export const getCurrentUserProfile = fetcherClient.cache({
-    fetchFunc: GetProfileRequest.getCurrentUserProfile,
-    queryKey: GetProfileRequest.GetCurrentUserProfile.queryKey,
-});
+export async function getSession() {
+    const accessToken = await getAccessToken();
 
-export const getCurrentUserInterests = fetcherClient.cache({
-    fetchFunc: GetInterestsRequest.getCurrentUserInterests,
-    queryKey: GetInterestsRequest.GetCurrentUserInterests.queryKey,
-});
+    const response = await GetSession.getSession({
+        authorization: {
+            method: "Bearer",
+            token: accessToken,
+        },
+    });
 
-export const getCurrentUserUploads = fetcherClient.cache({
-    fetchFunc: GetUploadsRequest.getCurrentUserUploads,
-    queryKey: GetUploadsRequest.GetUserUploads.queryKey,
-});
+    return response.data;
+}
+
+export async function getCurrentUserProfile() {
+    const accessToken = await getAccessToken();
+
+    const response = await GetCurrentUserProfile.getCurrentUserProfile({
+        authorization: {
+            method: "Bearer",
+            token: accessToken,
+        },
+    });
+
+    return response.data;
+}
+
+export async function getCurrentUserInterests() {
+    const accessToken = await getAccessToken();
+
+    const response = await GetCurrentUserInterests.getCurrentUserInterests({
+        authorization: {
+            method: "Bearer",
+            token: accessToken,
+        },
+        fallback: [],
+    });
+
+    return response.data.map(item => item.interest);
+}

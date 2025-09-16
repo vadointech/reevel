@@ -1,9 +1,8 @@
 "use client";
 
-
 import { ReactNode } from "react";
 import { motion, useTransform } from "motion/react";
-import { useEventDrawer } from "@/features/event/discover/hooks";
+import { useEventDrawer } from "@/features/discover/hooks";
 
 import { useEventDrawerContext } from "./event-drawer.context";
 
@@ -39,7 +38,7 @@ export const EventDrawerContent = ({ children, event }: EventDrawerContent.Props
         [config.heroSectionOffset, 0],
     );
 
-    const { handleClose } = useEventDrawer(event.id);
+    const { handleClose } = useEventDrawer();
 
     return (
         <>

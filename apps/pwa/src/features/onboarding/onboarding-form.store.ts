@@ -3,22 +3,32 @@ import { IOnboardingFormStore, OnboardingFormConfigParams } from "./types";
 import { OnboardingFormSchemaValues } from "./onboarding-form.schema";
 
 export class OnboardingFormStore implements IOnboardingFormStore {
-    defaultValues: OnboardingFormSchemaValues;
     pictureToSelect: string;
+    formValues: OnboardingFormSchemaValues;
+    version: number = 0;
 
     constructor(init: OnboardingFormConfigParams) {
+        this.pictureToSelect = init.pictureToSelect;
+        this.formValues = init.defaultValues;
+
         makeObservable(this, {
+            version: observable,
             pictureToSelect: observable,
             setPictureToSelect: action,
         });
-
-        this.defaultValues = init.defaultValues;
-        this.pictureToSelect = init.pictureToSelect;
     }
 
     dispose() {}
 
     setPictureToSelect(pictures: string) {
         this.pictureToSelect = pictures;
+        this.version++;
+    }
+
+    setFormValues(values: Partial<OnboardingFormSchemaValues>) {
+        this.formValues = {
+            ...this.formValues,
+            ...values,
+        };
     }
 }

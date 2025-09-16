@@ -1,5 +1,5 @@
 import { EventEntity } from "@/entities/event";
-import { fetcherClient } from "@/api/fetcher-client";
+import { fetcherClient } from "@/api/client";
 
 export namespace GetNearbyEvents {
     export type TInput = {

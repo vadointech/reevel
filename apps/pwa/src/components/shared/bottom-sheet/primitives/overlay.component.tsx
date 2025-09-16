@@ -10,12 +10,14 @@ export namespace BottomSheetOverlay {
     export type Props = HTMLMotionProps<"div"> & {
         dragYProgress: MotionValue<number>;
         threshold: number;
+        zIndex: number;
     };
 }
 
 export const BottomSheetOverlay = ({
     dragYProgress,
     threshold,
+    zIndex,
     className,
     ...props
 }: BottomSheetOverlay.Props) => {
@@ -27,7 +29,7 @@ export const BottomSheetOverlay = ({
 
     return (
         <motion.div
-            style={{ opacity: overlayOpacity }}
+            style={{ opacity: overlayOpacity, zIndex }}
             className={cx(
                 styles.bottomSheet__overlay,
                 className,

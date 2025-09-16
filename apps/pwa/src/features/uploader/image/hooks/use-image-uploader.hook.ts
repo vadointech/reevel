@@ -2,14 +2,14 @@ import { ChangeEvent, useCallback } from "react";
 import { useRouter } from "@/i18n/routing";
 import { useMutation, UseMutationOptions } from "@tanstack/react-query";
 import { useImageUploaderContext } from "../image-uploader.context";
-import { FetcherError } from "@/lib/fetcher/error";
 import { UserUploadsEntity } from "@/entities/uploads";
+import { FetcherErrorResponse } from "@/lib/fetcher/types";
 
 type TMutationInput = {
     file: Blob;
 };
 
-type ConfigParams = UseMutationOptions<UserUploadsEntity | null, FetcherError, TMutationInput> & {
+type ConfigParams = UseMutationOptions<UserUploadsEntity | null, FetcherErrorResponse, TMutationInput> & {
     onFileSelected?: (src: string) => void;
     callbackUrl?: string;
 };

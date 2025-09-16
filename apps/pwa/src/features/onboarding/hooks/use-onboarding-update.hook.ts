@@ -1,13 +1,13 @@
 "use client";
 
 import { useCallback, useRef } from "react";
-import { revalidateSessionTag } from "@/features/cache";
 
 import { useOnboardingProgress } from "./use-onboarding-progress.hook";
 import { useSessionContext } from "@/features/session";
 import { useProfileUpdate, UseProfileUpdateParams } from "@/features/profile/hooks";
 import { useOnboardingFormContext } from "@/features/onboarding";
 import { ObjectDiff } from "@/utils/object";
+import { UpdateProfile } from "@/api/profile";
 
 type ConfigParams = UseProfileUpdateParams & {
     revalidateQueryOnSuccess?: string[]
@@ -38,17 +38,18 @@ export function useOnboardingUpdate({
                 profile: data,
             });
 
-            if(revalidateQueryOnSuccess) {
-                const { user } = session.store.toPlainObject();
-                return revalidateSessionTag(user, revalidateQueryOnSuccess);
-            }
+            form.store.setFormValues(
+                form.getValues(),
+            );
         },
         ...params,
     });
 
     return useCallback(() => {
-        const formValues = form.getValues();
-        const diff = new ObjectDiff(form.store.defaultValues, formValues);
+        const diff = new ObjectDiff(
+            form.store.formValues,
+            form.getValues(),
+        );
         const progress = getOnboardingProgress(step + 1);
 
         if(diff.hasChanges) {
@@ -59,19 +60,23 @@ export function useOnboardingUpdate({
                 ...changedData
             } = diff.toObject();
 
-            handleUpdateProfile({
-                ...changedData,
-                locationCenter: location ?
-                    [location.location.longitude, location.location.latitude]
-                    : undefined,
-                locationBbox: location ?
-                    location.bbox
-                    : undefined,
-                interests: interests ?
-                    interests.map(i => i.slug)
-                    : undefined,
+            const profileToUpdate: UpdateProfile.TInput = {
+                bio: changedData.bio,
+                fullName: changedData.fullName,
+                picture: changedData.picture,
                 completed: progress.status,
-            });
+            };
+
+            if(location) {
+                profileToUpdate.locationCenter = [location.location.longitude, location.location.latitude];
+                profileToUpdate.locationBbox = location.bbox;
+            }
+
+            if(interests) {
+                profileToUpdate.interests = interests.map(item => item.slug);
+            }
+
+            handleUpdateProfile(profileToUpdate);
         } else {
             const onboardingStep = Number(session.store.user?.profile.completed);
 
@@ -83,6 +88,5 @@ export function useOnboardingUpdate({
                 });
             }
         }
-
     }, [step, revalidateQueryOnSuccess, handleUpdateProfile]);
 }

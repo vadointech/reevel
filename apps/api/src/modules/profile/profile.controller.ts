@@ -2,8 +2,8 @@ import { Body, Controller, Patch, Post, Req, UseInterceptors } from "@nestjs/com
 import { ProfileService } from "./profile.service";
 import { UpdateProfileDto } from "@/modules/profile/dto/update-profile.dto";
 import { Session } from "@/decorators";
-import { ServerSession } from "@/modules/auth/dto/jwt.dto";
 import { FileUploadInterceptor } from "@/modules/uploads/uploads.interceptor";
+import { ServerSession } from "@/types";
 
 @Controller("profile")
 export class ProfileController {

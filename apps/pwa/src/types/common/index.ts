@@ -9,3 +9,7 @@ export type PropsWithParams<P = unknown> = {
 export type ParamsWithLocale<P = unknown> = PropsWithParams<P & { locale: Locale }>;
 
 export type UISize = "default" | "small" | "large" | "xsmall";
+
+export type CvaUIConfig = {
+    size: Record<UISize, string>;
+};

@@ -1,5 +1,5 @@
 import { headers } from "next/headers";
-import { getGoogleOAuthLink } from "@/api/auth/server";
+import { getGoogleOAuthLink } from "@/api/auth";
 
 import { IconLogoApple, IconLogoGoogle } from "@/components/icons";
 import { Button, ButtonsBlock, Container } from "@/components/ui";

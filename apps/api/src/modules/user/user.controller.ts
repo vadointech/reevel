@@ -1,8 +1,8 @@
 import { Controller, Delete, Get, Param, Query } from "@nestjs/common";
 import { UserService } from "./user.service";
 import { Session } from "@/decorators";
-import { ServerSession } from "@/modules/auth/dto/jwt.dto";
 import { GetUploadedFileParamsDto } from "@/modules/uploads/dto/get-image.dto";
+import { ISessionUser, ServerSession } from "@/types";
 
 @Controller("users")
 export class UserController {
@@ -11,11 +11,10 @@ export class UserController {
     ) {}
 
     @Get("/me")
-    getSession(
-        @Session() session: ServerSession,
+    async getSession(
+        @Session() session: ServerSession<ISessionUser>,
     ) {
-        console.log(">>> getting session");
-        return this.userService.getUserSession(session);
+        return await this.userService.getUserSession(session);
     }
 
     @Get("/me/profile")

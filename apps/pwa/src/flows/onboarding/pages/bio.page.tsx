@@ -1,5 +1,6 @@
-import { headers } from "next/headers";
-import { getSession } from "@/api/user/server";
+"use client";
+
+import { useSessionContext } from "@/features/session";
 
 import { OnboardingNextStepButton, OnboardingProgressBar } from "../modules/progress";
 import { OnboardingProfileBioForm } from "../modules/profile-bio";
@@ -12,18 +13,15 @@ export namespace OnboardingBioPage {
     export type Props = never;
 }
 
-export async function OnboardingBioPage() {
-    const { data } = await getSession({
-        nextHeaders: await headers(),
-    });
-
+export function OnboardingBioPage() {
+    const session = useSessionContext();
     return (
         <>
             <OnboardingProgressBar step={1} />
             <Container>
                 <div className={styles.page__info}>
                     <div className={styles.page__avatar}>
-                        <Avatar image={data?.profile?.picture} variant={"outline"} />
+                        <Avatar image={session.store.user?.profile.picture} variant={"outline"} />
                     </div>
                     <OnboardingTextBlock
                         title={"Tell us About Yourself"}

@@ -3,9 +3,9 @@ import {
     GooglePlacesApiRequestBody,
     GooglePlacesApiRestrictionRectangle,
 } from "@/api/google/places/types";
-import { fetcherClient } from "@/api/fetcher-client";
-import { FetcherResponse } from "@/lib/fetcher/response";
+import { fetcherClient } from "@/api/client";
 import { getGooglePlacesApiFieldMask } from "@/api/google/places/_internal/field-mask";
+import { FetcherResponse } from "@/lib/fetcher/types";
 
 export namespace SearchLocations {
     export type TInput = GooglePlacesApiRequestBody & {
@@ -19,15 +19,15 @@ export namespace SearchLocations {
 }
 
 export const searchLocations = fetcherClient.fetch<SearchLocations.TInput, SearchLocations.TOutput>({
-    fetcherFunc: async(fetcher, input) => {
-        const { fieldMask, body } = getGooglePlacesApiFieldMask(input?.body);
+    fetcherFunc: async(fetcher, { body, ...input }) => {
+        const mask = getGooglePlacesApiFieldMask(body);
 
         const result: FetcherResponse<SearchLocations.TOutput> = await fetcher.post(":searchText", {
             baseURL: "https://places.googleapis.com/v1/places",
             credentials: "omit",
             headers: {
                 "X-Goog-Api-Key": "AIzaSyAIfGyOk4VSltw4QnBr1r6wjK_2bkw1pU4",
-                "X-Goog-FieldMask": fieldMask + ",nextPageToken",
+                "X-Goog-FieldMask": mask.fieldMask + ",nextPageToken",
             },
             body,
             ...input,

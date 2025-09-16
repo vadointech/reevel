@@ -1,41 +1,107 @@
+import * as jose from "jose";
+import { NextResponse, NextRequest } from "next/server";
 import { intlMiddleware } from "@/i18n/middleware";
-import { NextRequest } from "next/server";
-import { cookies } from "next/headers";
-import { authRoutes, publicRoutes } from "@/routes";
+import {
+    AuthJwtTokens,
+    StaticRoutes,
+    ACCESS_JWT_SECRET,
+    publicRoutes,
+    AuthAccessTokenPayload, onboardingStepRoutes,
+} from "@/auth.config";
+import { refreshTokens } from "@/api/auth";
 
-export default async function (request: NextRequest) {
+export default async function(request: NextRequest) {
     const {
         nextUrl,
     } = request;
 
     const isPublicRoute = publicRoutes.includes(nextUrl.pathname);
-    const isAuthRoute = authRoutes.includes(nextUrl.pathname);
+    const isLoginRoute = nextUrl.pathname.startsWith(StaticRoutes.Login);
+    const isOnboardingRoute = nextUrl.pathname.startsWith(StaticRoutes.Onboarding);
 
     if(isPublicRoute) {
         return intlMiddleware(request);
     }
 
-    const cookieStore = await cookies();
+    const accessToken = request.cookies.get(AuthJwtTokens.AccessToken);
 
-    const sessionId = cookieStore.get("session_id");
-    const accessToken = cookieStore.get("access_token");
-    const refreshToken = cookieStore.get("refresh_token");
+    try {
+        if(!accessToken?.value) {
+            throw new Error("No access token");
+        }
 
-    const isAuthenticated = !!sessionId && !!accessToken && !!refreshToken;
+        const verificationResult = await jose.jwtVerify<AuthAccessTokenPayload>(
+            accessToken.value,
+            new TextEncoder().encode(ACCESS_JWT_SECRET),
+        );
 
-    if(isAuthenticated) {
-        if (isAuthRoute) {
-            return Response.redirect(new URL("/", nextUrl));
+        if(verificationResult.payload.exp) {
+            const timeLeft = verificationResult.payload.exp * 1000 - Date.now();
+            const bufferSeconds = 180; // 3 min
+
+            if (timeLeft < bufferSeconds * 1000) {
+                throw new Error("Token expired with " + timeLeft + " seconds left.");
+            }
+        }
+
+        if(verificationResult.payload.completed === -1) {
+            if(isOnboardingRoute) {
+                return NextResponse.redirect(new URL(StaticRoutes.Root, nextUrl));
+            }
+        } else {
+            if(!isOnboardingRoute) {
+                const stepPath = onboardingStepRoutes[verificationResult.payload.completed];
+                if(stepPath) {
+                    return NextResponse.redirect(new URL(stepPath, nextUrl));
+                }
+            }
+        }
+
+        if(isLoginRoute) {
+            return NextResponse.redirect(new URL(StaticRoutes.Root, nextUrl));
+        }
+
+        return intlMiddleware(request);
+    } catch(error: any) {
+        console.log("Access token verification failed: ", error.message);
+
+        const refreshToken = request.cookies.get(AuthJwtTokens.RefreshToken);
+
+        try {
+            if(!refreshToken?.value) {
+                throw new Error("No refresh token");
+            }
+
+            const tokensResponse = await refreshTokens({
+                authorization: {
+                    method: "Bearer",
+                    token: refreshToken.value,
+                },
+            });
+
+            if(!tokensResponse.ok || !tokensResponse.data) {
+                throw new Error("Failed to refresh token");
+            }
+
+            const response = isLoginRoute ? NextResponse.next() : intlMiddleware(request);
+
+            response.cookies.set(AuthJwtTokens.AccessToken, tokensResponse.data.accessToken);
+            response.cookies.set(AuthJwtTokens.RefreshToken, tokensResponse.data.refreshToken);
+
+            return response;
+        } catch(error: any) {
+            console.log("Refresh token verification failed: ", error.message);
+
+            const response = isLoginRoute ?
+                intlMiddleware(request) :
+                NextResponse.redirect(new URL(StaticRoutes.Login, nextUrl));
+
+            response.cookies.delete(AuthJwtTokens.AccessToken);
+            response.cookies.delete(AuthJwtTokens.RefreshToken);
+            
+            return response;
         }
     }
-
-    if(!isAuthenticated) {
-        if(!isAuthRoute) {
-            return Response.redirect(new URL("/login", nextUrl));
-        }
-    }
-
-    return intlMiddleware(request);
 };
 
 export const config = {

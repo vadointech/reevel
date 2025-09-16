@@ -1,19 +1,13 @@
-import { AuthConfig } from "@/modules/auth/dto/jwt.dto";
+import { IAuthModuleConfig } from "./types/config";
 
-export default {
-    accessToken: {
-        secret: "super_secret_hash",
-        expiresIn: 60 * 10, // 10 min
-        cookieKey: "access_token",
-    },
-    refreshToken: {
-        secret: "super_secret_refresh_hash",
-        expiresIn: 60 * 60 * 24 * 30, // 1 month
-        cookieKey: "refresh_token",
-    },
-    session: {
-        secret: "none",
-        cookieKey: "session_id",
-        expiresIn: 60 * 60 * 24 * 30, // 1 month
-    },
-} satisfies AuthConfig;
+export const AUTH_MODULE_CONFIG = "AUTH_MODULE_CONFIG";
+
+export class AuthModuleConfig implements IAuthModuleConfig {
+    accessToken: IAuthModuleConfig["accessToken"];
+    refreshToken: IAuthModuleConfig["refreshToken"];
+
+    constructor(params: IAuthModuleConfig) {
+        this.accessToken = params.accessToken;
+        this.refreshToken = params.refreshToken;
+    }
+}

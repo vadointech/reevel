@@ -4,18 +4,17 @@ import {
     Delete, Get, HttpCode, HttpStatus,
     Param,
     Patch,
-    Post, Query,
+    Post,
     Req,
     UseInterceptors,
 } from "@nestjs/common";
 import { EventService } from "./event.service";
 import { CreateEventDto } from "./dto/create-event.dto";
 import { Session } from "@/decorators";
-import { ServerSession } from "@/modules/auth/dto/jwt.dto";
 import { FileUploadInterceptor } from "@/modules/uploads/uploads.interceptor";
 import { UpdateEventDto } from "@/modules/event/dto/update-event.dto";
 import { GetNearbyEventsDto } from "@/modules/event/dto/get-nearby.dto";
-import { GetEventCollectionsFeedDto } from "@/modules/event/dto/get-event-collections.dto";
+import { ISessionUser, ServerSession } from "@/types";
 
 @Controller("events")
 export class EventController {
@@ -26,7 +25,7 @@ export class EventController {
     @Post()
     async createEvent(
         @Body() body: CreateEventDto,
-        @Session() session: ServerSession,
+        @Session() session: ServerSession<ISessionUser>,
     ) {
         return this.eventService.createEvent(session, body);
     }
@@ -35,7 +34,7 @@ export class EventController {
     @UseInterceptors(FileUploadInterceptor)
     async uploadPoster(
         @Req() request: Express.Request,
-        @Session() session: ServerSession,
+        @Session() session: ServerSession<ISessionUser>,
     ) {
         const files = request.files as Express.Multer.File[];
         return this.eventService.uploadPoster(session, files);

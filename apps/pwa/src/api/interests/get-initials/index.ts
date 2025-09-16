@@ -1,5 +1,5 @@
 import { InterestEntity } from "@/entities/interests";
-import { fetcherClient } from "@/api/fetcher-client";
+import { fetcherClient } from "@/api/client";
 
 export namespace GetInitialInterests {
     export type TInput = null;

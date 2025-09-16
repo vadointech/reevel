@@ -4,13 +4,14 @@ import { useCallback } from "react";
 import { useRouter } from "@/i18n/routing";
 import { useMutation, UseMutationOptions } from "@tanstack/react-query";
 import { UploadFile } from "@/api/upload";
-import { uploadEventPoster, UploadEventPoster } from "@/api/event/upload-poster";
+import { UploadEventPoster } from "@/api/event";
 import { useFormContext } from "react-hook-form";
 import { CreateEventFormSchemaValues } from "@/features/event/create";
 import { revalidateSessionTag } from "@/features/cache";
 import { useSessionContext } from "@/features/session";
 import { GetUserUploads } from "@/api/user";
 import { SupportedFileCollections } from "@/entities/uploads";
+import { uploadEventPoster } from "@/api/event/server";
 
 type Params = Partial<Omit<UseMutationOptions<UploadEventPoster.TOutput, unknown, UploadEventPoster.TInput>, "mutationFn">> & {
     callbackUrl?: string;
@@ -23,9 +24,7 @@ export function useCreateEventPosterUpload(params: Params = {}) {
 
     const uploadFileMutation = useMutation<UploadEventPoster.TOutput, unknown, UploadEventPoster.TInput>({
         mutationKey: UploadFile.queryKey,
-        mutationFn: (body) =>
-            uploadEventPoster({ body })
-                .then(response => response.data),
+        mutationFn: uploadEventPoster,
         ...params,
         onSuccess: async(data, ...args) => {
             if(data && data[0]) {

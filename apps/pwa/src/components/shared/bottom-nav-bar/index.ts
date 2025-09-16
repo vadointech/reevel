@@ -1,1 +1,0 @@
-export * from "./bottom-nav-bar.component";

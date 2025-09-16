@@ -1,12 +1,12 @@
-import { Session } from "@/types";
+import { ISessionUser, ServerSession } from "@/types";
 import { ImageColorPalettePreset } from "@/modules/uploads/vibrant/types";
 import { SubscriptionType } from "@/modules/subscription/entities/subscription.entity";
 import { TokenRegistry } from "./types";
 
 interface ISubscriptionEventRegistry {
-    hostingLimit(session: Session): number;
-    posterColor(session: Session): ImageColorPalettePreset;
-    bookingFee(session: Session, price: number): number;
+    hostingLimit(session: ServerSession): number;
+    posterColor(session: ServerSession): ImageColorPalettePreset;
+    bookingFee(session: ServerSession, price: number): number;
 }
 
 const registry: TokenRegistry<ISubscriptionEventRegistry> = {
@@ -28,15 +28,15 @@ const registry: TokenRegistry<ISubscriptionEventRegistry> = {
 };
 
 export class SubscriptionEventRegistry implements ISubscriptionEventRegistry {
-    hostingLimit(session: Session): number {
+    hostingLimit(session: ServerSession<ISessionUser>): number {
         return registry.hostingLimit[session.user.subscription];
     }
 
-    posterColor(session: Session): ImageColorPalettePreset {
+    posterColor(session: ServerSession<ISessionUser>): ImageColorPalettePreset {
         return registry.posterColor[session.user.subscription];
     }
 
-    bookingFee(session: Session, price: number): number {
+    bookingFee(session: ServerSession<ISessionUser>, price: number): number {
         return price * registry.bookingFee[session.user.subscription];
     }
 }

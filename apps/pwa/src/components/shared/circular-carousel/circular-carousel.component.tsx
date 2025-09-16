@@ -1,41 +1,96 @@
 "use client";
 
-import { forwardRef, useImperativeHandle, useRef } from "react";
-import { CircularCarousel as TCircularCarousel } from "./carousel/types";
-import { useWheel } from "./hooks/useWheel";
+import { forwardRef, ReactNode, RefObject, useEffect, useImperativeHandle, useRef } from "react";
+import { Carousel, Handlers, ICarousel, Plugin } from "./circular-carousel";
 import { Wheel, WheelRef } from "./wheel";
+import useEmblaCarousel from "embla-carousel-react";
+import { onChange, onPointerUp, onScroll } from "./circular-carousel.handlers";
 
 import styles from "./styles.module.scss";
 
 export namespace CircularCarousel {
-    export type Props = {
-        carousel: TCircularCarousel
+    export type Props = Handlers & {
+        slides: ReactNode[];
+        slideWidth: number;
+        slideHeight: number;
+        plugins?: Plugin[],
+        externalController?: RefObject<ICarousel | null>
     };
 }
 
-export const CircularCarousel = ({ carousel }: CircularCarousel.Props) => {
+export const CircularCarousel = ({
+    slides,
+    slideWidth,
+    slideHeight,
+    plugins,
+    externalController,
+    ...handlers
+}: CircularCarousel.Props) => {
+    const wheel = new Wheel({
+        items: slides,
+        itemWidth: slideWidth,
+        itemHeight: slideHeight,
+    });
 
-    const [wheelRef, sliderRef] = useWheel(carousel);
+    const wheelRef = useRef<WheelRef>({
+        wheel: null,
+        wheelItem: [],
+    });
+  
+    const [sliderRef, emblaApi] = useEmblaCarousel({
+        loop: true,
+        axis: "x",
+        direction: "ltr",
+        align: "center",
+        dragFree: true,
+        watchSlides: false,
+    });
+
+    useEffect(() => {
+        if(!emblaApi) return;
+
+        const carousel = new Carousel({
+            api: emblaApi,
+            wheel,
+            wheelRef,
+            plugins,
+            handlers,
+        });
+
+
+
+        if(externalController) {
+            externalController.current = carousel;
+        }
+
+        emblaApi.on("pointerUp", () => onPointerUp(carousel));
+        emblaApi.on("scroll", () => onScroll(carousel));
+        emblaApi.on("reInit", () => onScroll(carousel));
+        emblaApi.on("select", () => onChange(carousel));
+
+        onScroll(carousel);
+    }, [emblaApi]);
+  
 
     return (
         <div
             className={styles.wrapper}
             style={{
-                height: carousel.wheel.radius * 2,
-                width: carousel.wheel.radius * 2,
-                marginTop: carousel.wheel.itemHeight / 2,
-                marginBottom: carousel.wheel.itemHeight / 2,
+                height: wheel.radius * 2,
+                width: wheel.radius * 2,
+                marginTop: wheel.itemHeight / 2,
+                marginBottom: wheel.itemHeight / 2,
             }}
         >
             <div
                 className={styles.scene}
                 style={{
-                    width: carousel.wheel.radius * 2,
-                    height: carousel.wheel.radius * 2,
+                    width: wheel.radius * 2,
+                    height: wheel.radius * 2,
                 }}
             >
-                <CarouselComponent ref={sliderRef} {...carousel.wheel} />
-                <WheelComponent ref={wheelRef} {...carousel.wheel} />
+                <CarouselComponent ref={sliderRef} {...wheel} />
+                <WheelComponent ref={wheelRef} {...wheel} />
             </div>
         </div>
     );

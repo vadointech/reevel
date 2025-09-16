@@ -1,12 +1,12 @@
 import { UserProfileEntity } from "@/entities/profile";
-import { fetcherClient } from "@/api/fetcher-client";
+import { fetcherClient } from "@/api/client";
 
 export namespace UpdateProfile {
     export type TInput = Partial<{
         bio: string;
         fullName: string;
         picture: string;
-        completed: string;
+        completed: number;
         locationCenter: number[],
         locationBbox?: number[],
         interests: string[];

@@ -1,21 +1,16 @@
 import { PropsWithChildren } from "react";
-import { headers } from "next/headers";
-import { getSession } from "@/api/user/server";
 import { PersistentMapProvider } from "@/components/shared/map";
 import { SessionProvider } from "@/features/session";
 import { ThemeProvider } from "@/features/theme";
-import { BottomNavBar } from "@/components/shared/bottom-nav-bar";
+import { getSession } from "@/api/user/server";
 
 export default async function MainLayout({ children }: PropsWithChildren) {
+    const session = await getSession();
 
-    const { data: user } = await getSession({
-        nextHeaders: await headers(),
-    });
-
-    const location = user?.profile.location;
+    const location = session?.profile?.location;
 
     return (
-        <SessionProvider user={user}>
+        <SessionProvider user={session}>
             <ThemeProvider>
                 <PersistentMapProvider
                     accessToken={process.env.MAPBOX_ACESS_TOKEN || ""}
@@ -30,7 +25,6 @@ export default async function MainLayout({ children }: PropsWithChildren) {
                 >
                     {children}
                 </PersistentMapProvider>
-                <BottomNavBar />
             </ThemeProvider>
         </SessionProvider>
     );

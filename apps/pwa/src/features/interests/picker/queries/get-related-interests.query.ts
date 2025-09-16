@@ -1,5 +1,6 @@
 import { FetchQueryOptions } from "@tanstack/react-query";
-import { getRelatedInterests, GetRelatedInterests } from "@/api/interests";
+import { GetRelatedInterests } from "@/api/interests";
+import { getRelatedInterests } from "@/api/interests/server";
 import { QueryBuilderQuery } from "@/lib/react-query";
 
 export namespace GetRelatedInterestsQueryBuilder {
@@ -19,8 +20,7 @@ export const GetRelatedInterestsQueryBuilder: QueryBuilderQuery<GetRelatedIntere
 };
 
 GetRelatedInterestsQueryBuilder.queryFunc = (input) => {
-    return getRelatedInterests({ body: input })
-        .then(response => response.data || []);
+    return getRelatedInterests(input);
 };
 
 GetRelatedInterestsQueryBuilder.queryKey = (params = []) => {

@@ -1,20 +1,19 @@
-import { Fetcher } from "./fetcher";
-import { IFetcherCacheManager, IFetcherRequestConfig } from "./types";
+import { FetcherCacheConfig, IFetcherCacheManager, FetcherRequest } from "./types";
 
 export class FetcherCacheManager implements IFetcherCacheManager {
-    private readonly _fetcher: Fetcher;
-    constructor(fetcher: Fetcher) {
-        this._fetcher = fetcher;
+    private readonly config: FetcherCacheConfig;
+    constructor(config: Partial<FetcherCacheConfig> = {}) {
+        this.config = config;
     }
 
-    newRequestCacheKey(request: Partial<IFetcherRequestConfig>, queryKey: string[]): string[] {
+    newRequestCacheKey(request: Partial<FetcherRequest>, queryKey: string[]): string[] {
         const keyParts = [...queryKey];
         let sid: string | undefined;
 
         if(request.nextHeaders) {
             const cookies = request.nextHeaders.get("cookie");
-            if(cookies && this._fetcher.defaults.userAwareCacheKey) {
-                const key = this.getCookieValue(cookies, this._fetcher.defaults.userAwareCacheKey);
+            if(cookies && this.config.userAwareKey) {
+                const key = this.getCookieValue(cookies, this.config.userAwareKey);
                 if(key) sid = key;
             }
         }

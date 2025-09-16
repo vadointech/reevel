@@ -4,11 +4,22 @@ import { ConfigService } from "@/config/config.service";
 import corsConfig from "@/config/cors.config";
 import { Logger, ValidationPipe } from "@nestjs/common";
 import cookieParser from "cookie-parser";
+import * as path from "node:path";
+import * as fs from "node:fs";
 
 async function bootstrap() {
     const config = new ConfigService();
 
-    const app = await NestFactory.create(AppModule);
+
+    // const keyFilePath = path.join(process.cwd(), "localhost+2-key.pem");
+    // const certFilePath = path.join(process.cwd(), "localhost+2.pem");
+    const app = await NestFactory.create(AppModule, {
+        // httpsOptions: {
+        //     key: fs.readFileSync(keyFilePath),
+        //     cert: fs.readFileSync(certFilePath),
+        // },
+    });
+
     app.setGlobalPrefix("api");
 
     app.enableCors(corsConfig);

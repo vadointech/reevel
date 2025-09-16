@@ -6,7 +6,7 @@ export type UserProfileEntity = {
     fullName?: string;
     bio?: string;
     picture?: string;
-    completed: "true" | "false" | string;
+    completed: number;
     location?: ProfileLocationsEntity;
     interests?: ProfileInterestsEntity[];
 };

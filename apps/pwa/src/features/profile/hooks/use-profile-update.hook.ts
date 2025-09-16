@@ -1,14 +1,14 @@
-import { useMutation, UseMutationOptions } from "@tanstack/react-query";
-import { FetcherError } from "@/lib/fetcher/error";
-import { UpdateProfile, updateProfile } from "@/api/profile";
 import { useCallback } from "react";
+import { useMutation, UseMutationOptions } from "@tanstack/react-query";
+import { UpdateProfile } from "@/api/profile";
+import { FetcherErrorResponse } from "@/lib/fetcher/types";
+import { updateProfileAction } from "../actions";
 
-export type UseProfileUpdateParams = Omit<UseMutationOptions<UpdateProfile.TOutput, FetcherError, UpdateProfile.TInput>, "mutationFn">;
+export type UseProfileUpdateParams = Omit<UseMutationOptions<UpdateProfile.TOutput, FetcherErrorResponse, UpdateProfile.TInput>, "mutationFn">;
 
 export function useProfileUpdate(params: UseProfileUpdateParams = {}) {
-    const updateUserProfileMutation = useMutation<UpdateProfile.TOutput, FetcherError, UpdateProfile.TInput>({
-        mutationFn: (body) => updateProfile({ body })
-            .then(response => response.data),
+    const updateUserProfileMutation = useMutation<UpdateProfile.TOutput, FetcherErrorResponse, UpdateProfile.TInput>({
+        mutationFn: updateProfileAction,
         ...params,
     });
 

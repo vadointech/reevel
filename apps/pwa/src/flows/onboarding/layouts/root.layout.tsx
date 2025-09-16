@@ -1,36 +1,18 @@
 import { PropsWithChildren } from "react";
-import { headers } from "next/headers";
-import { redirect } from "@/i18n/routing";
 
-import { getSession } from "@/api/user/server";
+import { getCurrentUserProfile } from "@/api/user/server";
 import { OnboardingFormProvider } from "@/features/onboarding";
 import { ImageUploaderProvider } from "@/features/uploader/image";
 
-import { Locale } from "@/types/common";
 
 import styles from "../styles/root-layout.module.scss";
 
 export namespace OnboardingRootLayout {
-    export type Props = PropsWithChildren<{
-        locale: Locale;
-    }>;
+    export type Props = PropsWithChildren;
 }
 
-export async function OnboardingRootLayout({ locale, children }: OnboardingRootLayout.Props) {
-    const { data } = await getSession({
-        nextHeaders: await headers(),
-    });
-
-    const profile = data?.profile;
-
-    const onboardingStatus = profile?.completed;
-
-    if(onboardingStatus === "true") {
-        return redirect({
-            href: "/",
-            locale,
-        });
-    }
+export async function OnboardingRootLayout({  children }: OnboardingRootLayout.Props) {
+    const profile = await getCurrentUserProfile();
 
     return (
         <OnboardingFormProvider

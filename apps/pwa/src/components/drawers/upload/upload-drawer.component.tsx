@@ -16,7 +16,6 @@ import {
 } from "@/components/shared/bottom-sheet";
 
 import { TabsBody, TabsContent, TabsRoot } from "@/components/shared/tabs";
-import { ScrollArea } from "@/components/shared/scroll-area";
 
 import { Header, Input } from "@/components/ui";
 import { IconArrowLeft, IconPicture } from "@/components/icons";
@@ -94,45 +93,35 @@ export const UploadDrawer = ({
                                 ]}
                             >
                                 <TabsContent>
-                                    <ScrollArea>
-                                        <UploadFileGrid variant={gridVariant}>
-                                            <div>
-                                                <Input.File
-                                                    label={"Upload"}
-                                                    accept={"image/png, image/jpeg, image/webp"}
-                                                    icon={<IconPicture />}
-                                                    variant={"accent-muted"}
-                                                    onChange={handleSelectFile}
+                                    <UploadFileGrid variant={gridVariant}>
+                                        <Input.File
+                                            label={"Upload"}
+                                            accept={"image/png, image/jpeg, image/webp"}
+                                            icon={<IconPicture />}
+                                            variant={"accent-muted"}
+                                            onChange={handleSelectFile}
+                                        />
+                                        {
+                                            uploads.map(item => (
+                                                <UploadFileItem
+                                                    key={item.id}
+                                                    imageUrl={item.fileUrl}
+                                                    selected={item.fileUrl === selectedImageUrl}
+                                                    onClick={() => onImagePick(item)}
+                                                    onDelete={() => onImageDelete(item)}
                                                 />
-                                            </div>
-                                            {
-                                                uploads.map(item => (
-                                                    <UploadFileItem
-                                                        key={item.id}
-                                                        imageUrl={item.fileUrl}
-                                                        selected={item.fileUrl === selectedImageUrl}
-                                                        onClick={() => onImagePick(item)}
-                                                        onDelete={() => onImageDelete(item)}
-                                                    />
-                                                ))
-                                            }
-                                        </UploadFileGrid>
-                                    </ScrollArea>
+                                            ))
+                                        }
+                                    </UploadFileGrid>
                                 </TabsContent>
                                 <TabsContent>
-                                    <ScrollArea>
-                                        <UploadFileGrid variant={gridVariant} />
-                                    </ScrollArea>
+                                    <UploadFileGrid variant={gridVariant} />
                                 </TabsContent>
                                 <TabsContent>
-                                    <ScrollArea>
-                                        <UploadFileGrid variant={gridVariant} />
-                                    </ScrollArea>
+                                    <UploadFileGrid variant={gridVariant} />
                                 </TabsContent>
                                 <TabsContent>
-                                    <ScrollArea>
-                                        <UploadFileGrid variant={gridVariant} />
-                                    </ScrollArea>
+                                    <UploadFileGrid variant={gridVariant} />
                                 </TabsContent>
                             </TabsBody>
                         </TabsRoot>
