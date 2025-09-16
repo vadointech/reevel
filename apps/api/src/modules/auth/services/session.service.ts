@@ -20,7 +20,7 @@ export class AuthSessionService {
     private readonly cookieOptions: CookieOptions = {
         httpOnly: true,
         path: "/",
-        secure: true,
+        secure: this.configService.isProduction,
         sameSite: "none",
         domain: this.configService.env("DOMAIN"),
     };
