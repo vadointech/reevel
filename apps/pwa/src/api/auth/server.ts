@@ -6,7 +6,7 @@ import * as GetGoogleOAuthLink from "./get-google-oauth-link";
 import * as Logout from "./logout";
 
 export async function getGoogleOAuthLink() {
-    const response = await GetGoogleOAuthLink.getGoogleOAuthLink({})
+    const response = await GetGoogleOAuthLink.getGoogleOAuthLink({});
     return response.data?.link;
 }
 

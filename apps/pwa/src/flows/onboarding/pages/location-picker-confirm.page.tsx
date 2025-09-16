@@ -18,7 +18,6 @@ import { ButtonsBlock, Container } from "@/components/ui";
 import { GetSession } from "@/api/user";
 
 import styles from "../styles/location-picker-confirm.module.scss";
-import { useEffect } from "react";
 
 export namespace OnboardingLocationPickerConfirmationPage {
     export type Props = never;
