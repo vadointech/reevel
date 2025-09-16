@@ -10,7 +10,7 @@ body {
   height: 100dvh;
   overflow: hidden;
 
-  overscroll-behavior-y: contain;
+  overscroll-behavior-y: none;
 
   -webkit-touch-callout: none; /* iOS Safari */
   -webkit-user-select: none; /* Safari */
