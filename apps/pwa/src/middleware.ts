@@ -7,7 +7,7 @@ import {
     ACCESS_JWT_SECRET,
     publicRoutes,
     AuthAccessTokenPayload,
-    onboardingStepRoutes,
+    onboardingStepRoutes, authCookiesParams,
 } from "@/auth.config";
 import { refreshTokens } from "@/api/auth";
 
@@ -86,8 +86,8 @@ export default async function(request: NextRequest) {
 
             const response = isLoginRoute ? NextResponse.next() : intlMiddleware(request);
 
-            response.cookies.set(AuthJwtTokens.AccessToken, tokensResponse.data.accessToken);
-            response.cookies.set(AuthJwtTokens.RefreshToken, tokensResponse.data.refreshToken);
+            response.cookies.set(AuthJwtTokens.AccessToken, tokensResponse.data.accessToken, authCookiesParams);
+            response.cookies.set(AuthJwtTokens.RefreshToken, tokensResponse.data.refreshToken, authCookiesParams);
 
             return response;
         } catch(error: any) {
@@ -97,8 +97,14 @@ export default async function(request: NextRequest) {
                 intlMiddleware(request) :
                 NextResponse.redirect(new URL(StaticRoutes.Login, nextUrl));
 
-            response.cookies.delete(AuthJwtTokens.AccessToken);
-            response.cookies.delete(AuthJwtTokens.RefreshToken);
+            response.cookies.delete({
+                name: AuthJwtTokens.AccessToken,
+                ...authCookiesParams,
+            });
+            response.cookies.delete({
+                name: AuthJwtTokens.RefreshToken,
+                ...authCookiesParams,
+            });
             
             return response;
         }
