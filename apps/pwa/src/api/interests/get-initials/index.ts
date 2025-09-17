@@ -9,7 +9,7 @@ export namespace GetInitialInterests {
 }
 
 export const getInitialInterests = fetcherClient.fetch<GetInitialInterests.TInput, GetInitialInterests.TOutput>({
-    fetcherFunc: (fetcher, input) => {
-        return fetcher.get("/interests/initials", input);
+    fetcherFunc: (fetcher) => {
+        return fetcher.get("/interests/initials");
     },
 });

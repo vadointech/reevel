@@ -30,7 +30,7 @@ export function useOnboardingUpdate({
     const { handleUpdateProfile } = useProfileUpdate({
         onSettled: handleNextStep,
         onSuccess: (data) => {
-            if(!data || !shouldRevalidate.current) return;
+            if (!data || !shouldRevalidate.current) return;
 
             shouldRevalidate.current = false;
 
@@ -38,7 +38,7 @@ export function useOnboardingUpdate({
                 profile: data,
             });
 
-            if(revalidateQueryOnSuccess) {
+            if (revalidateQueryOnSuccess) {
                 const { user } = session.store.toPlainObject();
                 return revalidateSessionTag(user, revalidateQueryOnSuccess);
             }
@@ -51,7 +51,7 @@ export function useOnboardingUpdate({
         const diff = new ObjectDiff(form.store.defaultValues, formValues);
         const progress = getOnboardingProgress(step + 1);
 
-        if(diff.hasChanges) {
+        if (diff.hasChanges) {
             shouldRevalidate.current = true;
             const {
                 location,
@@ -61,6 +61,7 @@ export function useOnboardingUpdate({
 
             handleUpdateProfile({
                 ...changedData,
+                placeName: location ? location.displayName : undefined,
                 locationCenter: location ?
                     [location.location.longitude, location.location.latitude]
                     : undefined,
@@ -75,7 +76,7 @@ export function useOnboardingUpdate({
         } else {
             const onboardingStep = Number(session.store.user?.profile.completed);
 
-            if(isNaN(onboardingStep) || onboardingStep > step) {
+            if (isNaN(onboardingStep) || onboardingStep > step) {
                 return handleNextStep();
             } else {
                 handleUpdateProfile({

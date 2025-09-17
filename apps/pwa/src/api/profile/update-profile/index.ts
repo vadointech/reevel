@@ -7,6 +7,7 @@ export namespace UpdateProfile {
         fullName: string;
         picture: string;
         completed: string;
+        placeName: string;
         locationCenter: number[],
         locationBbox?: number[],
         interests: string[];

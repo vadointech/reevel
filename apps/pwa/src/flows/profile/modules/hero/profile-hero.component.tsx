@@ -16,6 +16,7 @@ export namespace ProfileHero {
 export const ProfileHero = () => {
     const profileContentDragYPx = useProfileContentDragYProgress();
 
+
     const contentHeight = useTransform(
         profileContentDragYPx,
         [

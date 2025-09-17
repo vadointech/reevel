@@ -2,92 +2,77 @@ import { ProfileHero } from "../modules/hero";
 import { ProfilePageHeader } from "../modules/header";
 import { ProfilePageContent } from "../modules/content";
 import { Button, Container, InterestButton } from "@/components/ui";
-import { ReviewsSection, ScrollSection } from "@/components/sections";
+import { ScrollSection } from "@/components/sections";
 
 import styles from "../styles/profile-page.module.scss";
 import cx from "classnames";
+import { getCurrentUserProfile } from "@/api/user/get-profile";
+import { headers } from "next/headers";
+import { ProfileProvider } from "../modules/profile-context";
 
 export namespace ProfilePrivateViewPage {
     export type Props = never;
 }
 
-export function ProfilePrivateViewPage() {
+export async function ProfilePrivateViewPage() {
+    const { data: user } = await getCurrentUserProfile({
+        nextHeaders: await headers(),
+    });
+
     return (
         <>
-            <ProfilePageHeader overlayVariant={"light"} variant={"private"} />
-            <ProfilePageContent>
-                <ProfileHero />
-                <div className={styles.content}>
-                    <Container className={styles.content__gap_sm}>
-                        <p className={styles.content__description}>
-                            Pick the things you’re passionate about so we can show events that match your passionate interests.
-                            <span className={styles.content__description_more}>
-                                More
-                            </span>
-                        </p>
-                    </Container>
+            <ProfileProvider user={user}>
+                <ProfilePageHeader overlayVariant={"light"} variant={"private"} />
+                <ProfilePageContent>
+                    <ProfileHero />
+                    <div className={styles.content}>
+                        <Container className={styles.content__gap_sm}>
+                            <p className={styles.content__description}>
+                                {user?.bio}
+                                <span className={styles.content__description_more}>
+                                    More
+                                </span>
+                            </p>
+                        </Container>
 
-                    <Container
-                        className={cx(
-                            styles.content__controls,
-                            styles.content__gap,
-                        )}
-                    >
-                        <Button variant={"secondary-muted"} size={"small"}>
-                            Edit profile
-                        </Button>
-                        <Button variant={"secondary-muted"} size={"small"}>
-                            Share profile
-                        </Button>
-                    </Container>
+                        <Container
+                            className={cx(
+                                styles.content__controls,
+                                styles.content__gap,
+                            )}
+                        >
+                            <Button variant={"secondary-muted"} size={"small"} href="">
+                                Edit profile
+                            </Button>
+                            <Button variant={"secondary-muted"} size={"small"}>
+                                Share profile
+                            </Button>
+                        </Container>
 
-                    <ScrollSection
-                        size={"small"}
-                        title={"My Interests"}
-                        cta={"See all"}
-                        className={styles.content__gap}
-                    >
-                        {
-                            Array.from({ length: 8 }).map((_, index) => (
-                                <InterestButton
-                                    key={index}
-                                    icon={"🥊"}
-                                >
-                                    Boxing
-                                </InterestButton>
-                            ))
-                        }
-                    </ScrollSection>
+                        <ScrollSection
+                            size={"small"}
+                            title={"My Interests"}
+                            cta={user?.interests?.length ? "See all" : false}
+                            className={styles.content__gap}
+                        >
+                            {
+                                user?.interests?.length ? user.interests.map((event, index) => (
+                                    <InterestButton
+                                        key={index}
+                                        icon={event.interest.icon}
+                                    >
+                                        {event.interest.title_uk}
+                                    </InterestButton>
+                                ))
+                                    : <div>Add your interests</div>
+                            }
+                        </ScrollSection>
 
-                    <ScrollSection
+                        {/* <ScrollSection
                         title={"My Events"}
                         cta={"See all"}
                         className={styles.content__gap}
                     >
-                        {/*<EventCard*/}
-                        {/*    size={"small"}*/}
-                        {/*    poster={"/assets/temp/poster5.png"}*/}
-                        {/*    primaryColor={"#AB002F"}*/}
-                        {/*    title={"Happy Valentine's Day Party"}*/}
-                        {/*    location={"ТЦ SkyPark"}*/}
-                        {/*    type={"Public"}*/}
-                        {/*/>*/}
-                        {/*<EventCard*/}
-                        {/*    size={"small"}*/}
-                        {/*    poster={"/assets/temp/poster5.png"}*/}
-                        {/*    primaryColor={"#AB002F"}*/}
-                        {/*    title={"Happy Valentine's Day Party"}*/}
-                        {/*    location={"ТЦ SkyPark"}*/}
-                        {/*    type={"Public"}*/}
-                        {/*/>*/}
-                        {/*<EventCard*/}
-                        {/*    size={"small"}*/}
-                        {/*    poster={"/assets/temp/poster5.png"}*/}
-                        {/*    primaryColor={"#AB002F"}*/}
-                        {/*    title={"Happy Valentine's Day Party"}*/}
-                        {/*    location={"ТЦ SkyPark"}*/}
-                        {/*    type={"Public"}*/}
-                        {/*/>*/}
                     </ScrollSection>
 
                     <ReviewsSection
@@ -95,9 +80,10 @@ export function ProfilePrivateViewPage() {
                         cta={"See all"}
                         rating={4.5}
                         count={578}
-                    />
-                </div>
-            </ProfilePageContent>
+                    /> */}
+                    </div>
+                </ProfilePageContent>
+            </ProfileProvider>
         </>
     );
 }

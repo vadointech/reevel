@@ -1,0 +1,18 @@
+@use '@/theme/colors';
+@use '@/theme/spacing';
+
+.page {
+    height: 100%;
+    flex: 1;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+
+    row-gap: 1rem;
+
+    &__header {
+        flex: 0 0 auto;
+        background: colors.$background;
+        padding-bottom: spacing.$container;
+    }
+}

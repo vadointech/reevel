@@ -10,9 +10,6 @@ export namespace GetCurrentUserInterests {
 
 export const getCurrentUserInterests = fetcherClient.fetch<GetCurrentUserInterests.TInput, GetCurrentUserInterests.TOutput>({
     fetcherFunc: (fetcher, input) => {
-        return fetcher.get("/users/me/interests", {
-            ...input,
-            cache: "no-store",
-        });
+        return fetcher.get("/users/me/interests", input);
     },
 });

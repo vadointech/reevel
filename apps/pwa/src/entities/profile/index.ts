@@ -8,8 +8,10 @@ export type UserProfileEntity = {
     picture?: string;
     completed: "true" | "false" | string;
     location?: ProfileLocationsEntity;
-    interests?: ProfileInterestsEntity[];
+    interests: ProfileInterestsEntity[];
 };
+
+
 
 export type ProfileInterestsEntity = {
     profileId: string;
@@ -20,6 +22,7 @@ export type ProfileInterestsEntity = {
 export type ProfileLocationsEntity = {
     id: string;
     profileId: string;
+    placeName: string;
     center: {
         type: "Point";
         coordinates: [number, number];

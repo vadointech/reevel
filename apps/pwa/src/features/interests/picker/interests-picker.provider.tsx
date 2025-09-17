@@ -22,12 +22,12 @@ export const InterestsPickerProvider = ({
 }: InterestsPickerProvider.Props) => {
     const form = useFormContext();
     const interestsPickerStoreInit: ConstructorParameters<typeof InterestsPickerStore> = useMemo(() => {
-        if(syncFormField) {
+        if (syncFormField) {
             initStore.selectedInterests = form.getValues(syncFormField);
             return [
                 initStore,
                 (value) => {
-                    if(syncFormField && form) {
+                    if (syncFormField && form) {
                         form.setValue(syncFormField, value);
                     }
                 },
@@ -55,7 +55,7 @@ export const InterestsPickerProvider = ({
                 },
             }}
         >
-            { children }
+            {children}
         </InterestsPickerContext.Provider>
     );
 };

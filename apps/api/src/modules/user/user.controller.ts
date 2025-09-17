@@ -8,7 +8,7 @@ import { GetUploadedFileParamsDto } from "@/modules/uploads/dto/get-image.dto";
 export class UserController {
     constructor(
         private readonly userService: UserService,
-    ) {}
+    ) { }
 
     @Get("/me")
     getSession(

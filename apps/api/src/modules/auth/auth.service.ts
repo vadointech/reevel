@@ -23,7 +23,7 @@ export class AuthService {
         private readonly subscriptionRepository: SubscriptionRepository,
 
         private readonly dataSource: DataSource,
-    ) {}
+    ) { }
 
     async getGoogleOAuthLink(): Promise<string> {
         return this.googleOAuthService.generateAuthUrl();
@@ -32,13 +32,13 @@ export class AuthService {
     async getGoogleOAuthUser(code: string): Promise<GoogleOAuthUserInfo> {
         const credentials = await this.googleOAuthService.getOAuthTokens(code);
 
-        if(!credentials.access_token || !credentials.refresh_token) {
+        if (!credentials.access_token || !credentials.refresh_token) {
             throw new BadRequestException("Bad Request");
         }
 
         const user = await this.googleOAuthService.getUserInfo(credentials.access_token);
 
-        if(!user?.email) {
+        if (!user?.email) {
             throw new BadRequestException("Bad Request");
         }
 
@@ -52,7 +52,7 @@ export class AuthService {
     async authWithGoogle(oauthUser: GoogleOAuthUserInfo) {
         const dbUser = await this.userRepository.getByEmail(oauthUser.email);
 
-        if(dbUser) {
+        if (dbUser) {
             return await this.loginUser(oauthUser.email);
         } else {
             return await this.registerUser(oauthUser);
@@ -90,7 +90,7 @@ export class AuthService {
 
                 return user;
             });
-        } catch(error) {
+        } catch (error) {
             this.logger.error(`Unexpected error creating account: ${error.message}`, error.stack);
             throw new BadRequestException();
         }

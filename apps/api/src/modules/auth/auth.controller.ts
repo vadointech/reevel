@@ -11,11 +11,13 @@ export class AuthController {
         private readonly authService: AuthService,
         private readonly jwtStrategy: JwtStrategy,
         private readonly configService: ConfigService,
-    ) {}
+    ) { }
 
     @Public()
     @Get("/google")
     async getGoogleOAuthUlr() {
+        console.log('1')
+
         const link = await this.authService.getGoogleOAuthLink();
         return { link };
     }
@@ -23,10 +25,11 @@ export class AuthController {
     @Public()
     @Get("/google/redirect")
     async getOAuthUser(
+
         @Query("code") code: string,
         @Res({ passthrough: true }) response: Response,
     ) {
-        if(!code) {
+        if (!code) {
             return response.redirect(this.configService.env("PWA_PUBLIC_URL") + "/login");
         }
 
@@ -36,12 +39,13 @@ export class AuthController {
 
             this.jwtStrategy.setJwtSession(response, session);
 
-            if(session.payload.completed === "true") {
+            if (session.payload.completed === "true") {
                 return response.redirect(this.configService.env("PWA_PUBLIC_URL"));
             } else {
                 return response.redirect(this.configService.env("PWA_PUBLIC_URL") + "/onboarding");
             }
-        } catch {
+        } catch (e) {
+            console.log(e)
             return response.redirect(this.configService.env("PWA_PUBLIC_URL") + "/login");
         }
     }

@@ -9,6 +9,9 @@ export class ProfileLocationsEntity {
     @Column("geography", { spatialFeatureType: "Point", srid: 4326 })
     center: Point;
 
+    @Column()
+    placeName: string;
+
     @Column("geography", { spatialFeatureType: "Polygon", srid: 4326 })
     bbox: Polygon;
 

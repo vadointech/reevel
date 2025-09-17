@@ -1,6 +1,6 @@
-@use "@/theme/mixins";
-@use "@/theme/colors";
-@use "@/theme/typography";
+@use '@/theme/mixins';
+@use '@/theme/colors';
+@use '@/theme/typography';
 
 .hero {
     position: relative;
@@ -22,6 +22,13 @@
         z-index: 0;
     }
 
+    &__svg {
+        bottom: 16;
+        right: 16;
+        position: absolute;
+        z-index: 1;
+    }
+
     &__content {
         position: absolute;
         left: 1rem;
@@ -39,7 +46,7 @@
 
         transform-origin: top left;
 
-        margin-bottom: .5rem;
+        margin-bottom: 0.5rem;
     }
 
     &__info {
@@ -52,7 +59,7 @@
     &__user {
         display: flex;
         align-items: center;
-        column-gap: .5rem;
+        column-gap: 0.5rem;
 
         > * {
             flex-shrink: 0;
@@ -66,22 +73,22 @@
 
     &__name {
         color: colors.$primary;
-        @include typography.font("2xl", 700);
+        @include typography.font('2xl', 700);
     }
 
     &__location {
         display: flex;
         align-items: center;
-        column-gap: .5rem;
+        column-gap: 0.5rem;
 
         color: colors.$secondary;
-        @include typography.font("sm");
+        @include typography.font('sm');
 
         svg {
             width: mixins.rem(12);
             height: mixins.rem(12);
             path {
-                fill: colors.$secondary
+                fill: colors.$secondary;
             }
         }
     }

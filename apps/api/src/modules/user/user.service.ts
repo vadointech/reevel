@@ -13,7 +13,7 @@ export class UserService {
         private readonly profileRepository: ProfileRepository,
         private readonly profileInterestsRepository: ProfileInterestsRepository,
         private readonly uploadsRepository: UploadsRepository,
-    ) {}
+    ) { }
 
     async getUserSession(session: Session) {
         return this.userRepository.getSession(session.user.id);
@@ -26,13 +26,14 @@ export class UserService {
                 interests: {
                     interest: true,
                 },
+                location: true,
             },
         });
     }
 
     getUserInterests(session: Session) {
         return this.profileInterestsRepository.findMany({
-            where: { profile: { userId: session.user.id }},
+            where: { profile: { userId: session.user.id } },
             relations: {
                 interest: true,
             },

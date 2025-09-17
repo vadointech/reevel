@@ -30,7 +30,7 @@ export default async function MainLayout({ children }: PropsWithChildren) {
                 >
                     {children}
                 </PersistentMapProvider>
-                <BottomNavBar />
+                {/* <BottomNavBar /> */}
             </ThemeProvider>
         </SessionProvider>
     );

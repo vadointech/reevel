@@ -14,6 +14,10 @@ export class UpdateProfileDto {
     @IsOptional()
     picture?: string;
 
+    @IsString()
+    @IsOptional()
+    placeName?: string;
+
     @IsArray()
     @IsOptional()
     interests?: string[];

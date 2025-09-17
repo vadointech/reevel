@@ -24,9 +24,10 @@ export async function OnboardingInterestsPickerPage() {
     const initialInterestsResponse = await getInitialInterests({
         nextHeaders: await headers(),
     });
+
     const initialInterests = initialInterestsResponse.data || [];
 
-    const currentInterestsResponse= await getCurrentUserInterests({
+    const currentInterestsResponse = await getCurrentUserInterests({
         nextHeaders: await headers(),
     });
     const currentInterests = currentInterestsResponse.data?.map(item => item.interest) || [];
