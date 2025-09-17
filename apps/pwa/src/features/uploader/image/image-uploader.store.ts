@@ -1,36 +1,46 @@
 "use client";
 
-import { IImageUploaderStore } from "./types";
+import { IImageUploaderStore, PixelCropArea, PixelCropPoint } from "./types";
 import { action, makeObservable, observable } from "mobx";
-import { Crop, PixelCrop } from "react-image-crop";
 
 export class ImageUploaderStore implements IImageUploaderStore {
-    imageSrc?: string = undefined;
+    imageSrc: string | undefined = undefined;
 
-    crop?: Crop = undefined;
-    completedCrop?: PixelCrop = undefined;
+    crop: PixelCropPoint = { x: 0, y: 0 };
+    zoom: number = 1;
+    completedCrop: PixelCropArea | undefined = undefined;
 
     constructor() {
         makeObservable(this, {
             imageSrc: observable,
             crop: observable,
+            zoom: observable,
 
             setImageSrc: action,
             setCrop: action,
+            setZoom: action,
         });
     }
 
-    dispose() {}
+    dispose() {
+        this.imageSrc = undefined;
+        this.crop = { x: 0, y: 0 };
+        this.completedCrop = undefined;
+    }
 
     setImageSrc(src?: string) {
         this.imageSrc = src;
     }
 
-    setCrop(crop?: Crop) {
+    setCrop(crop: PixelCropPoint) {
         this.crop = crop;
     }
 
-    setCompletedCrop(crop?: PixelCrop) {
+    setZoom(zoom: number) {
+        this.zoom = zoom;
+    }
+
+    setCompletedCrop(crop?: PixelCropArea) {
         this.completedCrop = crop;
     }
 }

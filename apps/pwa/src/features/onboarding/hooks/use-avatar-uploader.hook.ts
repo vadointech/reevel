@@ -1,6 +1,7 @@
 import { useSessionContext } from "@/features/session";
 import { useUploadedFileDelete } from "@/features/uploader/hooks";
 import { useCallback, useRef } from "react";
+import { useRouter } from "@/i18n/routing";
 import { SupportedFileCollections, UserUploadsEntity } from "@/entities/uploads";
 import { useImageUploader } from "@/features/uploader/image/hooks";
 import { uploadProfileAvatar } from "@/api/profile/server";
@@ -10,12 +11,15 @@ import { GetUserUploads } from "@/api/user";
 import { useOnboardingFormContext } from "@/features/onboarding";
 
 export function useOnboardingAvatarUploader(callbackUrl?: string) {
+    const router = useRouter();
     const session = useSessionContext();
     const form = useOnboardingFormContext();
 
     const uploadDrawerController = useRef<IBottomSheetRootController>(null);
 
-    const handleAvatarDelete = useUploadedFileDelete();
+    const handleAvatarDelete = useUploadedFileDelete({
+        onSuccess: () => router.refresh(),
+    });
 
     const handleAvatarPick = useCallback((upload: UserUploadsEntity) => {
         form.setValue("picture", upload.fileUrl);

@@ -1,61 +1,35 @@
 "use client";
 
 import { observer } from "mobx-react-lite";
-import ReactCrop, { ReactCropProps } from "react-image-crop";
+import Cropper, { CropperProps } from "react-easy-crop";
 import { useImageUploaderContext } from "@/features/uploader/image";
-import { useImageCropper } from "@/features/uploader/image/hooks";
-
-import "react-image-crop/dist/ReactCrop.css";
 
 export namespace ImageCropper {
-    export type Props = Omit<ReactCropProps, "onChange" | "style">;
+    export type Props = Partial<Omit<CropperProps, "maxZoom" | "minZoom">>;
 }
 
 export const ImageCropper = observer(({
     aspect = 1,
-    minWidth = 100,
+    showGrid = false,
     ...props
 }: ImageCropper.Props) => {
-    const {
-        store,
-        imageRef,
-        previewCanvasRef,
-    } = useImageUploaderContext();
-
-    const {
-        handleImageLoad,
-        handleChangeCrop,
-        handleCompleteCrop,
-    } = useImageCropper(aspect);
+    const { store, controller, config } = useImageUploaderContext();
 
     return (
-        <>
-            <ReactCrop
-                crop={store.crop}
-                onChange={handleChangeCrop}
-                onComplete={handleCompleteCrop}
-                keepSelection
-                aspect={aspect}
-                minWidth={minWidth}
-                style={{ width: "100%" }}
-                {...props}
-            >
-                {
-                    store.imageSrc ? (
-                        <img
-                            ref={imageRef}
-                            src={store.imageSrc}
-                            alt={"Image Crop"}
-                            onLoad={handleImageLoad}
-                            style={{ width: "100%", objectFit: "cover" }}
-                        />
-                    ) : null
-                }
-            </ReactCrop>
-            <canvas
-                ref={previewCanvasRef}
-                style={{ display: "none", objectFit: "cover", width: "100%" }}
-            />
-        </>
+        <Cropper
+            image={store.imageSrc}
+            crop={store.crop}
+            zoom={store.zoom}
+            onCropChange={(point) => controller.changeCrop(point)}
+            onZoomChange={(zoom) => controller.changeZoom(zoom)}
+            onCropComplete={(_croppedArea, croppedAreaPixels) => controller.completeCrop(croppedAreaPixels)}
+            aspect={aspect}
+            showGrid={showGrid}
+            objectFit={"horizontal-cover"}
+            minZoom={1}
+            maxZoom={config.cropperMaxZoom}
+            zoomSpeed={10}
+            {...props}
+        />
     );
 });

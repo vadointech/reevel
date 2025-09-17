@@ -10,7 +10,7 @@ export namespace OnboardingAvatarUploadPage {
 export const OnboardingAvatarUploadPage = ({ callbackUrl }: OnboardingAvatarUploadPage.Props) => {
     return (
         <UploadCropperView
-            circularCrop
+            cropShape={"round"}
             title={"Upload photo"}
             callbackUrl={callbackUrl}
         >

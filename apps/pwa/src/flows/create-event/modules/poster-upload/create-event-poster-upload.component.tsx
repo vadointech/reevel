@@ -1,9 +1,11 @@
 "use client";
 
-import { useImageCropper, useImageUploader } from "@/features/uploader/image/hooks";
+import { useImageUploader } from "@/features/uploader/image/hooks";
 import { useCreateEventPosterUpload } from "@/features/event/create/hooks";
 
 import { Button, Input } from "@/components/ui";
+import { useImageUploaderContext } from "@/features/uploader/image";
+import { useCallback } from "react";
 
 export namespace CreateEventPosterUploadCropper {
     export type Props = {
@@ -15,9 +17,11 @@ export const CreateEventPosterUploadCropper = ({ callbackUrl }: CreateEventPoste
     const { handleUpload } = useCreateEventPosterUpload({ callbackUrl });
 
     const { handleSelectFile } = useImageUploader();
-    const { handleCrop } = useImageCropper(1, {
-        onCropSuccess: handleUpload,
-    });
+    const { controller } = useImageUploaderContext();
+
+    const handleCrop = useCallback(() => {
+        controller.cropImage().then(handleUpload);
+    }, []);
 
     return (
         <>

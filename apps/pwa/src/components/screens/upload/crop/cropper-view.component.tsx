@@ -1,7 +1,7 @@
-import { CSSProperties } from "react";
+import { ReactNode } from "react";
 import { Link } from "@/i18n/routing";
 
-import { Header } from "@/components/ui";
+import { ButtonsBlock, Header } from "@/components/ui";
 import { IconArrowLeft } from "@/components/icons";
 
 import { ImageCropper } from "@/components/shared/cropper";
@@ -14,7 +14,7 @@ export namespace UploadCropperView {
         callbackUrl: string;
         title: string;
         className?: string;
-        style?: CSSProperties
+        children?: ReactNode;
     };
 }
 
@@ -23,13 +23,11 @@ export const UploadCropperView = ({
     title,
     children,
     className,
-    style,
     ...props
 }: UploadCropperView.Props) => {
     return (
         <div
             className={cx(styles.crop, className)}
-            style={style}
         >
             <Header
                 iconBefore={
@@ -45,9 +43,9 @@ export const UploadCropperView = ({
                 <ImageCropper {...props} />
             </div>
 
-            <div className={styles.crop__buttons}>
+            <ButtonsBlock>
                 { children }
-            </div>
+            </ButtonsBlock>
         </div>
     );
 };

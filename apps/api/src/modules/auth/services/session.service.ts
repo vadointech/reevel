@@ -21,7 +21,7 @@ export class AuthSessionService {
         httpOnly: true,
         path: "/",
         secure: this.configService.isProduction,
-        sameSite: "none",
+        sameSite: "lax",
         domain: this.configService.env("DOMAIN"),
     };
 
