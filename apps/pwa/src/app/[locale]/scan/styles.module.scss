@@ -1,11 +1,50 @@
+@use "@/theme/mixins";
+@use "@/theme/colors";
+@use "@/theme/typography";
+
 .page {
     height: 100%;
+    max-width: 70vw;
 
     display: flex;
+    column-gap: 2rem;
     align-items: center;
-    justify-content: center;
+    margin: 0 auto;
 
-    svg {
-        width: 100%;
+    &__content {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+    }
+
+    &__title {
+        @include typography.font("6xl", 700);
+        margin-bottom: .5rem;
+    }
+
+    &__subtitle {
+        @include typography.font("lg");
+        color: colors.$secondary;
+        margin-bottom: 2rem;
+    }
+
+    &__code {
+        width: fit-content;
+
+        display: flex;
+        justify-content: center;
+
+        padding: 1.5rem;
+        background: colors.$foreground;
+        border-radius: 1.5rem;
+    }
+
+    &__hero {
+        height: 100%;
+        flex: 1 0 55%;
+        position: relative;
+        img {
+            object-fit: contain;
+        }
     }
 }

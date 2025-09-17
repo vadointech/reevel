@@ -20,6 +20,7 @@ export default [
             "@typescript-eslint/no-explicit-any": "off",
             "@typescript-eslint/no-unused-vars": ["error", { "varsIgnorePattern": "^_" }],
             "@typescript-eslint/no-empty-object-type": "warn",
+            "@typescript-eslint/triple-slash-reference": "off",
 
             // Stylistic rules
             "@stylistic/indent": ["error", 4],

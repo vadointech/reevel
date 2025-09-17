@@ -2,7 +2,6 @@ import * as jose from "jose";
 import { NextResponse, NextRequest, userAgent } from "next/server";
 import { intlMiddleware } from "@/i18n/middleware";
 import {
-    Devices,
     AuthJwtTokens,
     StaticRoutes,
     ACCESS_JWT_SECRET,
