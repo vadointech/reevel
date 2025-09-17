@@ -4,16 +4,18 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { useRouter } from "@/i18n/routing";
 import { EventVisibility } from "@/entities/event";
 import { useMutation, UseMutationOptions } from "@tanstack/react-query";
-import { createEvent, CreateEvent } from "@/api/event/create";
+import { CreateEvent } from "@/api/event/create";
 import { useFormContext } from "react-hook-form";
 import { createEventFormSchema, CreateEventFormSchemaValues } from "@/features/event/create";
 import { indexedDbService } from "@/lib/indexed-db.service";
 import { useSessionContext } from "@/features/session";
 import { SupportedFileCollections, UserUploadsEntity } from "@/entities/uploads";
 import { IBottomSheetRootController } from "@/components/shared/bottom-sheet/types";
-import { DeleteUploadedFile, deleteUploadedFile, GetUserUploads } from "@/api/user/uploads";
-import { FetcherError } from "@/lib/fetcher/error";
+import { GetUserUploads } from "@/api/user/uploads";
 import { revalidateSessionTag } from "@/features/cache";
+import { FetcherErrorResponse } from "@/lib/fetcher/types";
+import { createEvent } from "@/api/event/server";
+import { useUploadedFileDelete } from "@/features/uploader/hooks";
 
 type Params = Partial<Omit<UseMutationOptions<CreateEvent.TOutput, unknown, CreateEvent.TInput>, "mutationFn">> & {
     callbackUrl?: string;
@@ -46,10 +48,9 @@ export function useCreateEventPreview(params: Params = {}) {
         }
     }, []);
 
-    const createEventMutation = useMutation<CreateEvent.TOutput, FetcherError, CreateEvent.TInput>({
+    const createEventMutation = useMutation<CreateEvent.TOutput, FetcherErrorResponse, CreateEvent.TInput>({
         mutationKey: CreateEvent.queryKey,
-        mutationFn: (body) => createEvent({ body })
-            .then(response => response.data),
+        mutationFn: createEvent,
         ...params,
         onSuccess: (...args) => {
             indexedDbService.removeItem("event_form_values");
@@ -138,22 +139,12 @@ export function useCreateEventPreview(params: Params = {}) {
         }
     }, [formValues]);
 
-    const deleteUploadedFileMutation = useMutation<DeleteUploadedFile.TOutput, FetcherError, DeleteUploadedFile.TInput>({
-        mutationFn: (body) => deleteUploadedFile({ body })
-            .then(response => response.data),
+    const handlePosterDelete = useUploadedFileDelete({
         onSuccess: () => {
             const { user } = session.store.toPlainObject();
             revalidateSessionTag(user, [...GetUserUploads.queryKey, SupportedFileCollections.EVENT_POSTER]);
         },
     });
-
-    const handlePosterDelete = useCallback((upload: UserUploadsEntity) => {
-        if(formValues?.poster?.id === upload.id) {
-            // TODO: Set to default
-        }
-
-        deleteUploadedFileMutation.mutateAsync({ fileId: upload.id });
-    }, [formValues]);
 
     return {
         session,

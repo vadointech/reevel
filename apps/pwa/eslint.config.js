@@ -1,3 +1,11 @@
-import config from "@repo/eslint-config/next";
+import baseConfig from "@repo/eslint-config";
+import nextPlugin from "@next/eslint-plugin-next";
 
-export default config;
+export default [
+    ...baseConfig,
+    {
+        plugins: {
+            "@next/next": nextPlugin,
+        },
+    },
+];

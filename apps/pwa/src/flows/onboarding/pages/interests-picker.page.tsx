@@ -1,5 +1,3 @@
-import { headers } from "next/headers";
-
 import { getInitialInterests } from "@/api/interests/server";
 import { getCurrentUserInterests } from "@/api/user/server";
 
@@ -9,7 +7,6 @@ import { OnboardingNextStepButton, OnboardingProgressBar } from "../modules/prog
 import { OnboardingTextBlock } from "../modules/text-block";
 import { OnboardingInterestsPicker } from "../modules/interests-picker";
 import { InterestsPickerProvider } from "@/features/interests/picker";
-import { GetCurrentUserInterests } from "@/api/user";
 
 import { ButtonsBlock } from "@/components/ui";
 
@@ -20,17 +17,8 @@ export namespace OnboardingInterestsPickerPage {
 }
 
 export async function OnboardingInterestsPickerPage() {
-
-    const initialInterestsResponse = await getInitialInterests({
-        nextHeaders: await headers(),
-    });
-
-    const initialInterests = initialInterestsResponse.data || [];
-
-    const currentInterestsResponse = await getCurrentUserInterests({
-        nextHeaders: await headers(),
-    });
-    const currentInterests = currentInterestsResponse.data?.map(item => item.interest) || [];
+    const initialInterests = await getInitialInterests();
+    const currentInterests = await getCurrentUserInterests();
 
     const interests = [
         ...new ObjectUnique([
@@ -60,9 +48,7 @@ export async function OnboardingInterestsPickerPage() {
             </div>
 
             <ButtonsBlock>
-                <OnboardingNextStepButton
-                    revalidateQueryOnSuccess={GetCurrentUserInterests.queryKey}
-                >
+                <OnboardingNextStepButton>
                     Next step
                 </OnboardingNextStepButton>
             </ButtonsBlock>

@@ -1,7 +1,18 @@
-import { fetcherClient } from "@/api/fetcher-client";
-import * as GetGoogleOAuthLink from "./get-google-oauth-link";
+"use server";
 
-export const getGoogleOAuthLink = fetcherClient.cache({
-    fetchFunc: GetGoogleOAuthLink.getGoogleOAuthLink,
-    queryKey: GetGoogleOAuthLink.GetGoogleOAuthLink.queryKey,
-});
+import { getAccessToken } from "@/api/server";
+
+import * as Logout from "./logout";
+
+export async function logout() {
+    const accessToken = await getAccessToken();
+
+    const response = await Logout.logout({
+        authorization: {
+            method: "Bearer",
+            token: accessToken,
+        },
+    });
+
+    return response.data;
+}

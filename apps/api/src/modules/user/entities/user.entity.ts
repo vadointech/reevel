@@ -5,7 +5,6 @@ import { EventTicketsEntity } from "@/modules/event/entities/event-tickets.entit
 import { PaymentsEntity } from "@/modules/payment/entities/payment.entity";
 import { SubscriptionEntity } from "@/modules/subscription/entities/subscription.entity";
 import { UserUploadsEntity } from "@/modules/uploads/entities/uploads.entity";
-import { UserSessionEntity } from "./user-session.entity";
 
 @Entity("users")
 export class UserEntity {
@@ -15,8 +14,8 @@ export class UserEntity {
     @Column({ unique: true })
     email: string;
 
-    @OneToMany(() => UserSessionEntity, session => session.user)
-    sessions: UserSessionEntity[];
+    @Column({ nullable: true })
+    sessionTokenHash?: string;
 
     @OneToOne(() => ProfileEntity, profile => profile.user)
     profile: ProfileEntity;

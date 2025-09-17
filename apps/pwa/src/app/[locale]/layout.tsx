@@ -3,7 +3,6 @@ import { type Metadata, Viewport } from "next";
 import { NextIntlClientProvider } from "next-intl";
 import { getMessages, setRequestLocale } from "next-intl/server";
 
-// import { locales } from "@/i18n/locales";
 import { fonts } from "@/fonts.config";
 
 import { ServiceWorkerProvider } from "@/service-worker/client";
@@ -31,10 +30,6 @@ export const viewport: Viewport = {
         { media: "(prefers-color-scheme: light)", color: "#F7F7F7" },
     ],
 };
-
-// export function generateStaticParams() {
-//     return locales.map((locale) => ({ locale }));
-// }
 
 export default async function RootLayout({ children, params }: PropsWithChildren<ParamsWithLocale>) {
     const { locale } = await params;

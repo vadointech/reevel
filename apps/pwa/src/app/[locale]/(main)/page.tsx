@@ -1,7 +1,15 @@
-import { Link } from "@/i18n/routing";
+import { Link, redirect } from "@/i18n/routing";
 import { CreateEventDrawer } from "@/components/drawers/create-event";
+import { ParamsWithLocale } from "@/types/common";
 
-export default function Home() {
+export default async function Home({ params }: ParamsWithLocale) {
+    const { locale } = await params;
+
+    redirect({
+        href: "/discover",
+        locale,
+    });
+
     return (
         <div>
             <CreateEventDrawer>

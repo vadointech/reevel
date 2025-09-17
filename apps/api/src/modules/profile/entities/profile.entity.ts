@@ -24,8 +24,8 @@ export class ProfileEntity {
     })
     location?: ProfileLocationsEntity;
 
-    @Column({ nullable: true })
-    completed: string; // "true" | "false" | "current step"
+    @Column({ default: 0 })
+    completed: number; // "current step" | "-1" (means profile completed)
 
     @Column()
     userId: string;

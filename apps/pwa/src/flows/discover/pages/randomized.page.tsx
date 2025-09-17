@@ -1,9 +1,9 @@
-import { headers } from "next/headers";
 import { DiscoverRandomizedScreen } from "@/components/screens/discover";
-import { extractUniqueInterests } from "@/features/event/discover/utils";
+import { extractUniqueInterests } from "@/features/discover/utils";
 import { getUserMapInternalConfig } from "@/components/shared/map/utils";
 import { MapRootProvider } from "@/components/shared/map/map.provider";
-import { GetRandomizedEventsQueryBuilder } from "@/features/event/discover/queries";
+import { GetRandomizedEventsQueryBuilder } from "@/features/discover/queries";
+import { DiscoverStaticCollections } from "@/features/discover/config";
 
 export namespace DiscoverRandomizedPage {
     export type Props = never;
@@ -19,7 +19,6 @@ export async function DiscoverRandomizedPage() {
     const randomizedEvents = await GetRandomizedEventsQueryBuilder.queryFunc({
         center,
         radius,
-        nextHeaders: await headers(),
     });
 
     const interests = extractUniqueInterests(randomizedEvents);
@@ -28,7 +27,7 @@ export async function DiscoverRandomizedPage() {
         <DiscoverRandomizedScreen
             events={randomizedEvents}
             interests={interests}
-            callbackUrl={"/discover/randomized"}
+            collection={DiscoverStaticCollections.Randomize}
         />
     );
 }

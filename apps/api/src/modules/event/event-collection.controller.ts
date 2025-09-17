@@ -5,9 +5,9 @@ import {
     Post,
 } from "@nestjs/common";
 import { Session } from "@/decorators";
-import { ServerSession } from "@/modules/auth/dto/jwt.dto";
 import { EventCollectionService } from "@/modules/event/event-collection.service";
 import { GetNearbyEventsDto } from "@/modules/event/dto/get-nearby.dto";
+import { ServerSession } from "@/types";
 
 @Controller("events/collections")
 export class EventCollectionController {

@@ -1,24 +1,43 @@
 "use client";
 
-import { ReactNode, useMemo } from "react";
+import { PropsWithChildren, useEffect } from "react";
+import { useMobxStore } from "@/lib/mobx";
+import { useSingleton } from "@/hooks";
+
+import { fetcherClient } from "@/api/client";
+
 import { SessionStore } from "./session.store";
 import { SessionController } from "./session.controller";
 import { SessionContext } from "./session.context";
 
-import { ISessionStore } from "./types";
+import { useRouter } from "@/i18n/routing";
+import { refreshSessionAction } from "./actions";
+
+import { SessionStoreInit } from "./types";
 
 export namespace SessionProvider {
-    export type Props = Partial<ISessionStore> & {
-        children: ReactNode
-    };
+    export type Props =  PropsWithChildren<SessionStoreInit>;
 }
 
 export const SessionProvider = ({
     children,
     ...initStore
 }: SessionProvider.Props) => {
-    const store = useMemo(() => new SessionStore(initStore), [initStore]);
-    const controller = useMemo(() => new SessionController(store), [store]);
+    const router = useRouter();
+    const store = useMobxStore(SessionStore, initStore);
+    const controller = useSingleton(SessionController, store);
+
+    useEffect(() => {
+        fetcherClient.interceptor.response(async(response) => {
+            if(response.status === 401) {
+                const actionResponse = await refreshSessionAction();
+                if(!actionResponse.ok) {
+                    router.replace("/login");
+                }
+            }
+            return response;
+        });
+    }, []);
 
     return (
         <SessionContext.Provider

@@ -11,6 +11,7 @@ export const OnboardingAvatarUploadPage = ({ callbackUrl }: OnboardingAvatarUplo
     return (
         <UploadCropperView
             circularCrop
+            title={"Upload photo"}
             callbackUrl={callbackUrl}
         >
             <OnboardingAvatarUploadCropper callbackUrl={callbackUrl} />

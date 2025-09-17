@@ -1,4 +1,4 @@
-import { fetcherClient } from "@/api/fetcher-client";
+import { fetcherClient } from "@/api/client";
 import { EventEntity, EventVisibility } from "@/entities/event";
 
 export namespace CreateEvent {
@@ -22,10 +22,8 @@ export namespace CreateEvent {
     export const queryKey = ["event/create"];
 }
 
-export const createEvent = fetcherClient.fetch({
+export const createEvent = fetcherClient.fetch<CreateEvent.TInput, CreateEvent.TOutput>({
     fetcherFunc: (fetcher, input) => {
-        return fetcher.post("/events", {
-            body: input?.body,
-        });
+        return fetcher.post("/events", input);
     },
 });

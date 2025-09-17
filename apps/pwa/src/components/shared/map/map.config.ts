@@ -27,6 +27,8 @@ export const MapProviderDefaultConfig: MapConfig.DefaultParams = {
     },
 };
 
+export const MAP_MOTION_TIMEOUT_MS = 400;
+
 export class MapProviderInternalConfig implements MapInternalConfig.IInternalConfig {
     accessToken: MapInternalConfig.IInternalConfig["accessToken"];
     mapStyle: MapInternalConfig.IInternalConfig["mapStyle"];

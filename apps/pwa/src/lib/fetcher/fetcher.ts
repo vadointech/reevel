@@ -1,100 +1,175 @@
-import { FetcherResponse } from "./response";
+import { IFetcher } from "./types/fetcher";
 import {
-    IFetcher,
-    FetcherInitDefaults,
-    IFetcherRequestConfig, IFetcherResponse,
-} from "./types";
-// import { FetcherError } from "@/lib/fetcher/error";
+    FetcherInput,
+    FetcherOutput,
+    FetcherRequest,
+    FetcherRequestContentType,
+    FetcherRequestParams,
+} from "./types/request";
+import { FetcherResponse } from "./types/response";
+import { FetcherInterceptor } from "@/lib/fetcher/interceptor";
+
+interface InternalRequest<TInput, TParams, TOutput> extends FetcherRequest<TInput, TParams, TOutput> {
+    _isInternalCall?: boolean
+}
 
 export class Fetcher implements IFetcher {
-    readonly defaults: FetcherInitDefaults;
+    private readonly internalFetcher: IFetcher;
 
-    constructor(defaults: FetcherInitDefaults) {
-        this.defaults = defaults;
+    constructor(
+        private readonly defaults: FetcherRequest,
+        private readonly interceptors: FetcherInterceptor,
+    ) {
+        this.internalFetcher = {
+            get: (url, config) => this.request(url, { ...config, method: "GET", _isInternalCall: true }),
+            post: (url, config) => this.request(url, { ...config, method: "POST", _isInternalCall: true }),
+            patch: (url, config) => this.request(url, { ...config, method: "PATCH", _isInternalCall: true }),
+            delete: (url, config) => this.request(url, { ...config, method: "DELETE", _isInternalCall: true }),
+        };
     }
 
-    async get<Input extends null = null, Output = any, Params extends Record<string, any> = object>(url: string, config: Partial<IFetcherRequestConfig<Input, Params>> = {}): Promise<FetcherResponse<Output>> {
-        return this.request<Output>(url, {
+    get<TInput extends FetcherInput = null, TOutput extends FetcherOutput = null, TParams extends FetcherRequestParams = null>(
+        url: string,
+        config: FetcherRequest<TInput, TParams, TOutput>,
+    ): Promise<FetcherResponse<TOutput>> {
+        return this.request<TInput, TParams, TOutput>(url, {
             ...config,
             method: "GET",
         });
     }
 
-    async post<Input = any, Output = any, Params extends Record<string, any> = object>(url: string, config: Partial<IFetcherRequestConfig<Input, Params>> = {}): Promise<FetcherResponse<Output>> {
-        return this.request<Output>(url, {
+    post<TInput extends FetcherInput = null, TOutput extends FetcherOutput = null, TParams extends FetcherRequestParams = null>(
+        url: string,
+        config: FetcherRequest<TInput, TParams, TOutput>,
+    ): Promise<FetcherResponse<TOutput>> {
+        return this.request<TInput, TParams, TOutput>(url, {
             ...config,
             method: "POST",
         });
     }
 
-    async patch<Input = any, Output = any, Params extends Record<string, any> = object>(url: string, config: Partial<IFetcherRequestConfig<Input, Params>> = {}): Promise<FetcherResponse<Output>> {
-        return this.request<Output>(url, {
+    patch<TInput extends FetcherInput = null, TOutput extends FetcherOutput = null, TParams extends FetcherRequestParams = null>(
+        url: string,
+        config: FetcherRequest<TInput, TParams, TOutput>,
+    ): Promise<FetcherResponse<TOutput>> {
+        return this.request<TInput, TParams, TOutput>(url, {
             ...config,
             method: "PATCH",
         });
     }
 
-    async delete<Input extends null = null, Output = any, Params extends Record<string, any> = object>(url: string, config: Partial<IFetcherRequestConfig<Input, Params>> = {}): Promise<FetcherResponse<Output>> {
-        return this.request<Output>(url, {
+    delete<TInput extends FetcherInput = null, TOutput extends FetcherOutput = null, TParams extends FetcherRequestParams = null>(
+        url: string,
+        config: FetcherRequest<TInput, TParams, TOutput>,
+    ): Promise<FetcherResponse<TOutput>> {
+        return this.request<TInput, TParams, TOutput>(url, {
             ...config,
             method: "DELETE",
         });
     }
 
-    private async request<Output = any>(
+    private async request<TInput, TParams, TOutput>(
         url: string,
-        config: Partial<IFetcherRequestConfig> = {},
-    ): Promise<FetcherResponse<Output>> {
-        const {
-            method = "GET",
-            headers = {},
-            nextHeaders,
-            params = {},
-            body,
-            baseURL = this.defaults.baseURL || "",
-            credentials = this.defaults.credentials,
-            cache = this.defaults.cache,
-        } = config;
+        config: InternalRequest<TInput, TParams, TOutput>,
+    ): Promise<FetcherResponse<TOutput>> {
+        try {
+            let processedConfig = config;
 
-        // Merge default headers with request-specific headers
-        const mergedHeaders = {
-            ...this.defaults.headers,
-            ...headers,
-            ...Object.fromEntries(nextHeaders?.entries() || []),
-        };
-
-        const fullURL = new URL(baseURL + url);
-
-        Object.entries(params).forEach(([key, value]) => {
-            if (value !== undefined && value !== null) {
-                fullURL.searchParams.append(key, String(value));
+            if(!config._isInternalCall) {
+                for(const interceptor of this.interceptors.requestInterceptorsChain) {
+                    processedConfig = await interceptor(
+                        processedConfig,
+                        this.internalFetcher,
+                    );
+                }
             }
-        });
 
-        const requestOptions: RequestInit = {
-            method,
-            headers: mergedHeaders,
-            credentials,
-            cache,
-        };
+            const {
+                // Custom properties (omit from request)
+                params,
+                authorization,
+                nextHeaders,
+                fallback = null,
+                baseURL = this.defaults.baseURL,
+                contentType = FetcherRequestContentType.JSON,
 
-        if (method !== "GET" && body !== undefined) {
-            if (typeof body === "string" || body instanceof FormData) {
-                requestOptions.body = body;
-            } else {
-                mergedHeaders["Content-Type"] = "application/json";
-                requestOptions.body = JSON.stringify(body);
+                // Default RequestInit (modify and pass)
+                body,
+                cache = this.defaults.cache,
+                credentials = this.defaults.credentials,
+
+                // Default RequestInit (pass)
+                ...requestInit
+            } = processedConfig;
+
+
+            // Merge default headers with request-specific headers
+            requestInit.headers = {
+                ...this.defaults.headers,
+                ...requestInit.headers,
+                ...Object.fromEntries(nextHeaders?.entries() || []),
+            };
+
+            if(authorization) {
+                requestInit.headers["Authorization"] = `${authorization.method} ${authorization.token}`;
             }
+
+            const fullURL = new URL(baseURL + url);
+
+            if(params) {
+                Object.entries(params).forEach(([key, value]) => {
+                    if (value !== undefined && value !== null) {
+                        fullURL.searchParams.append(key, String(value));
+                    }
+                });
+            }
+
+            const requestOptions: RequestInit = {
+                ...requestInit,
+                cache: cache?.mode,
+                credentials: credentials,
+            };
+
+            if(body !== undefined) {
+                if(body instanceof FormData) {
+                    requestOptions.body = body;
+                } else {
+                    requestOptions.body = JSON.stringify(body);
+                    requestInit.headers["Content-Type"] = contentType;
+                }
+            }
+
+            const response = await fetch(fullURL.toString(), requestOptions);
+
+            let fetcherResponse = await this.parseResponse(response, fallback);
+
+            if(!config._isInternalCall) {
+                for(const interceptor of this.interceptors.responseInterceptorsChain) {
+                    fetcherResponse = await interceptor(
+                        fetcherResponse,
+                        processedConfig,
+                        this.internalFetcher,
+                    );
+                }
+            }
+
+            return fetcherResponse;
+        } catch(error) {
+            console.log(error);
+            return {
+                url,
+                data: config.fallback || null,
+                ok: false,
+                status: 0,
+                statusText: error instanceof Error ? error.message : "Network Error",
+                redirected: false,
+            };
         }
-
-        const response = await fetch(fullURL.toString(), requestOptions);
-        return this.parseResponse(response);
     }
 
-
-    private async parseResponse<Output>(response: Response): Promise<IFetcherResponse<Output>> {
-        const fetcherResponse = new FetcherResponse<Output>({
-            data: null,
+    private async parseResponse<TOutput>(response: Response, fallback: TOutput | null): Promise<FetcherResponse<TOutput>> {
+        const fetcherResponse: FetcherResponse<TOutput> = {
+            data: fallback,
             url: response.url,
             ok: response.ok,
             status: response.status,
@@ -102,24 +177,23 @@ export class Fetcher implements IFetcher {
             headers: response.headers,
             type: response.type,
             redirected: response.redirected,
-        });
+        };
 
         if (!response.ok) {
             return fetcherResponse;
-            // throw new FetcherError(fetcherResponse);
         }
 
         const contentType = response.headers.get("Content-Type");
 
         if (contentType && contentType.includes("application/json")) {
-            fetcherResponse.data = await response.json() as Output;
+            fetcherResponse.data = await response.json() as TOutput;
         } else {
             // Handle text-area or other response types
             const text = await response.text();
             try {
-                fetcherResponse.data = JSON.parse(text) as Output;
+                fetcherResponse.data = JSON.parse(text) as TOutput;
             } catch {
-                fetcherResponse.data = text as unknown as Output;
+                fetcherResponse.data = text as unknown as TOutput;
             }
         }
 

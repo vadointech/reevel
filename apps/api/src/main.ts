@@ -9,6 +9,7 @@ async function bootstrap() {
     const config = new ConfigService();
 
     const app = await NestFactory.create(AppModule);
+
     app.setGlobalPrefix("api");
 
     app.enableCors(corsConfig);

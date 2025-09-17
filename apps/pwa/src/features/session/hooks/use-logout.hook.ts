@@ -1,5 +1,5 @@
 import { useMutation } from "@tanstack/react-query";
-import { logout } from "@/api/auth/logout";
+import { logout } from "@/api/auth/server";
 import { useRouter } from "@/i18n/routing";
 import { useSessionContext } from "../session.context";
 
@@ -16,7 +16,7 @@ export function useLogout() {
     });
 
     const handleLogout = () => {
-        mutate({});
+        mutate();
     };
 
     return {

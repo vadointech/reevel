@@ -10,15 +10,14 @@ import {
     BottomSheetRoot,
 } from "@/components/shared/bottom-sheet";
 
-import { EventDrawerConfigParams } from "./types";
+import { EventDrawerConfig } from "./types";
 
 export namespace EventDrawerRoot {
-    export type Props = PropsWithChildren<EventDrawerConfigParams>;
+    export type Props = PropsWithChildren<Partial<EventDrawerConfig>>;
 }
 
 export const EventDrawerRoot = ({
     children,
-    callbackUrl,
     heroSectionOffset = 350,
 }: EventDrawerRoot.Props) => {
     const drawerDragYProgress = useMotionValue(0);
@@ -37,7 +36,7 @@ export const EventDrawerRoot = ({
                 drawerDragYProgress,
                 drawerContentDragYPx,
                 drawerContentDragYProgress,
-                config: { heroSectionOffset, callbackUrl },
+                config: { heroSectionOffset },
             }}
         >
             <BottomSheetRoot
@@ -50,7 +49,7 @@ export const EventDrawerRoot = ({
                 defaultSnapPointIndex={0}
             >
                 <BottomSheetPortal>
-                    <BottomSheetBody dragYProgress={drawerDragYProgress}  style={{ height: "100%" }}>
+                    <BottomSheetBody dragYProgress={drawerDragYProgress} style={{ height: "100%" }}>
                         <BottomSheetContent>
                             { children }
                         </BottomSheetContent>

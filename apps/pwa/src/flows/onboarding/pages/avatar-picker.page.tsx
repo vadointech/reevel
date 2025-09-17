@@ -1,26 +1,22 @@
-import { headers } from "next/headers";
-
-import { getCurrentUserUploads } from "@/api/user/server";
+import { getCurrentUserUploads } from "@/api/user/uploads/server";
 
 import { OnboardingNextStepButton, OnboardingProgressBar } from "../modules/progress";
 import {
     OnboardingAvatarPickerCarousel,
-    OnboardingPhotoUploader,
+    OnboardingAvatarUploader,
 } from "../modules/avatar-picker";
 import { OnboardingTextBlock } from "../modules/text-block";
 import { ButtonsBlock, Container } from "@/components/ui";
-
 import { SupportedFileCollections } from "@/entities/uploads";
 
 import styles from "../styles/avatar-picker-page.module.scss";
-import { GetSession } from "@/api/user";
 
 const defaultPictures = [
-    "http://localhost:3000/assets/temp/carousel1.jpg",
-    "http://localhost:3000/assets/temp/carousel3.jpg",
-    "http://localhost:3000/assets/temp/carousel5.jpg",
-    "http://localhost:3000/assets/temp/carousel7.jpg",
-    "http://localhost:3000/assets/temp/carousel2.jpg",
+    "/assets/temp/carousel1.jpg",
+    "/assets/temp/carousel3.jpg",
+    "/assets/temp/carousel5.jpg",
+    "/assets/temp/carousel7.jpg",
+    "/assets/temp/carousel2.jpg",
 ];
 
 export namespace OnboardingAvatarPickerPage {
@@ -30,11 +26,8 @@ export namespace OnboardingAvatarPickerPage {
 }
 
 export async function OnboardingAvatarPickerPage({ cropperPageUrl }: OnboardingAvatarPickerPage.Props) {
-    const { data } = await getCurrentUserUploads({
-        nextHeaders: await headers(),
-        params: {
-            collection: SupportedFileCollections.PROFILE_PICTURE,
-        },
+    const uploads = await getCurrentUserUploads({
+        collection: SupportedFileCollections.PROFILE_PICTURE,
     });
 
     return (
@@ -49,13 +42,11 @@ export async function OnboardingAvatarPickerPage({ cropperPageUrl }: OnboardingA
                 <OnboardingAvatarPickerCarousel defaultAvatars={defaultPictures} />
             </Container>
             <ButtonsBlock className={styles.buttons}>
-                <OnboardingPhotoUploader
-                    uploads={data || []}
+                <OnboardingAvatarUploader
+                    uploads={uploads}
                     cropperPageUrl={cropperPageUrl}
                 />
-                <OnboardingNextStepButton
-                    revalidateQueryOnSuccess={GetSession.queryKey}
-                >
+                <OnboardingNextStepButton>
                     Next step
                 </OnboardingNextStepButton>
             </ButtonsBlock>

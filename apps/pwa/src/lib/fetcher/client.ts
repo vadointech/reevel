@@ -1,59 +1,73 @@
 import { unstable_cache } from "next/cache";
+
 import { Fetcher } from "./fetcher";
-import { FetcherRequest } from "./request";
 import { FetcherCacheManager } from "./cache";
 
 import {
     FetcherClientCacheOptions,
     FetcherClientFetchOptions,
-    FetcherFetchFunc,
+    FetcherFetchFunc, FetcherInput, FetcherOutput,
+    FetcherRequest,
+    FetcherRequestConfig,
+    FetcherRequestParams,
+    IFetcherCacheManager,
     IFetcherClient,
 } from "./types";
+import { FetcherInterceptor } from "@/lib/fetcher/interceptor";
 
-export class FetcherClient implements IFetcherClient {
-    private readonly _fetcher: Fetcher;
-    private readonly _cacheManager: FetcherCacheManager;
+export class FetcherClient extends Fetcher implements IFetcherClient {
+    private readonly cacheManager: IFetcherCacheManager;
 
-    constructor(defaultConfig: Partial<FetcherRequest> = {}) {
-        this._fetcher = new Fetcher(defaultConfig);
-        this._cacheManager = new FetcherCacheManager(this._fetcher);
+    readonly interceptor: FetcherInterceptor;
+
+    constructor(defaultConfig: Partial<FetcherRequest>) {
+        const interceptors = new FetcherInterceptor();
+        super(defaultConfig, interceptors);
+        this.interceptor = interceptors;
+        this.cacheManager = new FetcherCacheManager(defaultConfig.cache);
     }
 
-    fetch<Input = any, Output = any, Params extends Record<string, any> = object>({ fetcherFunc }: FetcherClientFetchOptions<Input, Output, Params>): FetcherFetchFunc<Input, Output, Params> {
-        return (input = new FetcherRequest({})) => {
-            return fetcherFunc(this._fetcher, input);
+    fetch<TInput extends FetcherInput = null, TOutput extends FetcherOutput = null, TParams extends FetcherRequestParams = null>({ fetcherFunc }: FetcherClientFetchOptions<TInput, TOutput, TParams>): FetcherFetchFunc<TInput, TOutput, TParams> {
+        const executor = (input: FetcherRequestConfig<TInput, TParams, TOutput>) => {
+            return fetcherFunc(this, input);
         };
+
+        return executor as FetcherFetchFunc<TInput, TOutput, TParams>;
     }
 
-    cache<Input = any, Output = any, Params extends Record<string, any> = object>(options: FetcherClientCacheOptions<Input, Output, Params>): FetcherFetchFunc<Input, Output, Params> {
-        return (input = new FetcherRequest({})) => {
-            const cacheKeys = this._cacheManager.newRequestCacheKey(input, options.queryKey);
+    cache<TInput extends FetcherInput = null, TOutput extends FetcherOutput = null, TParams extends FetcherRequestParams = null>({ fetchFunc, ...options }: FetcherClientCacheOptions<TInput, TOutput, TParams>):  FetcherFetchFunc<TInput, TOutput, TParams> {
+        const executor = (input: FetcherRequestConfig<TInput, TParams, TOutput>) => {
+            const cacheKeys = this.cacheManager.newRequestCacheKey(input, options.queryKey);
 
             const tags = [...cacheKeys];
             let revalidate: number | undefined = undefined;
 
-            if(input.cacheTags) tags.push(...input.cacheTags);
+            if(input.cache?.tags) tags.push(...input.cache.tags);
             else if(options.cache?.tags) tags.push(...options.cache.tags);
 
-            if(input.cacheRevalidate) revalidate = input.cacheRevalidate;
+            if(input.cache?.revalidate) revalidate = input.cache.revalidate;
             else if(options.cache?.revalidate) revalidate = options.cache.revalidate;
 
             return unstable_cache(
-                () => options.fetchFunc(input),
+                () => fetchFunc(input),
                 cacheKeys, { tags, revalidate },
             )();
         };
+
+        return executor as FetcherFetchFunc<TInput, TOutput, TParams>;
     }
 
-    persist<Input = any, Output = any, Params extends Record<string, any> = object>(options: FetcherClientCacheOptions<Input, Output, Params>): FetcherFetchFunc<Input, Output, Params> {
-        return (input = new FetcherRequest({})) => {
+    persist<TInput extends FetcherInput = null, TOutput extends FetcherOutput = null, TParams extends FetcherRequestParams = null>({ fetchFunc, ...options }: FetcherClientCacheOptions<TInput, TOutput, TParams>):  FetcherFetchFunc<TInput, TOutput, TParams> {
+        const executor = (input: FetcherRequestConfig<TInput, TParams, TOutput>) => {
             return unstable_cache(
-                () => options.fetchFunc(input),
+                () => fetchFunc(input),
                 options.queryKey, {
                     tags: options.queryKey,
-                    revalidate: input.cacheRevalidate,
+                    revalidate: input.cache?.revalidate,
                 },
             )();
         };
+
+        return executor as FetcherFetchFunc<TInput, TOutput, TParams>;
     }
 }

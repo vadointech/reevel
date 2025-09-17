@@ -1,6 +1,7 @@
 import { RecommendationCard, Scroll } from "@/components/ui";
 import { EventEntity } from "@/entities/event";
 import { Link } from "@/i18n/routing";
+import { DiscoverStaticCollections } from "@/features/discover/config";
 
 export namespace DiscoverEventsList {
     export type Data = {
@@ -23,7 +24,7 @@ export const DiscoverEventsList = ({
                 events.map(event => (
                     <Link
                         key={event.id}
-                        href={`/discover/event/${event.id}`}
+                        href={DiscoverStaticCollections.Root + "/event/" + event.id}
                     >
                         <RecommendationCard event={event} />
                     </Link>

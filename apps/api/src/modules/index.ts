@@ -11,7 +11,7 @@ import { PaymentModule } from "@/modules/payment/payment.module";
 import { SubscriptionModule } from "@/modules/subscription/subscription.module";
 
 export default [
-    AuthModule,
+    AuthModule.forRoot(),
     GoogleModule,
     UserModule,
     ProfileModule,

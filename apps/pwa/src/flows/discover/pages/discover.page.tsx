@@ -1,10 +1,11 @@
-import { headers } from "next/headers";
 import { getCurrentUserInterests } from "@/api/user/server";
 import { getUserMapInternalConfig } from "@/components/shared/map/utils";
 import { MapRootProvider } from "@/components/shared/map/map.provider";
-import { GetCityHighlightsQueryBuilder, GetNearbyEventsQueryBuilder } from "@/features/event/discover/queries";
+import { GetCityHighlightsQueryBuilder, GetNearbyEventsQueryBuilder } from "@/features/discover/queries";
 import { DiscoverScreen } from "@/components/screens/discover";
-import { getEventCollectionsFeed } from "@/api/event";
+import { getEventCollectionsFeed } from "@/api/event/server";
+import { DiscoverStaticCollections } from "@/features/discover/config";
+import { Navigation, NavigationRoutes } from "@/components/shared/navigation";
 
 export namespace DiscoverPage {
     export type Props = never;
@@ -20,30 +21,27 @@ export async function DiscoverPage() {
     const eventsInit = await GetNearbyEventsQueryBuilder.queryFunc({
         center,
         radius,
-        nextHeaders: await headers(),
     });
 
-    const { data: interests } = await getCurrentUserInterests({
-        nextHeaders: await headers(),
-    });
+    const interests = await getCurrentUserInterests();
 
     const cityHighlights = await GetCityHighlightsQueryBuilder.queryFunc({
         center,
         radius,
-        nextHeaders: await headers(),
     });
 
-    const { data: collectionsInit } = await getEventCollectionsFeed({
-        nextHeaders: await headers(),
-    });
+    const collectionsInit = await getEventCollectionsFeed();
 
     return (
-        <DiscoverScreen
-            interestsInit={interests?.map(item => item.interest) || []}
-            collectionsInit={collectionsInit || []}
-            cityHighlights={cityHighlights || []}
-            eventsInit={eventsInit}
-            callbackUrl={"/discover"}
-        />
+        <>
+            <DiscoverScreen
+                interestsInit={interests}
+                collectionsInit={collectionsInit || []}
+                cityHighlights={cityHighlights || []}
+                eventsInit={eventsInit}
+                collection={DiscoverStaticCollections.Root}
+            />
+            <Navigation currentPage={NavigationRoutes.Discover} />
+        </>
     );
 }

@@ -9,5 +9,6 @@
     column-gap: mixins.rem(20);
 
     overflow-y: scroll;
+    overflow-x: hidden;
     @include mixins.no-scrollbar;
 }

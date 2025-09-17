@@ -35,7 +35,7 @@ export const InterestsPickerProvider = ({
         }
 
         return [initStore];
-    }, [syncFormField]);
+    }, []);
 
     const store = useMemo(() => {
         return new InterestsPickerStore(...interestsPickerStoreInit);

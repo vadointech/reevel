@@ -12,6 +12,7 @@ export interface IBottomSheetConfigParams extends Partial<IBottomSheetHandlers> 
     handleOnly: boolean;
     touchEvents: boolean;
     dragListener: boolean | undefined;
+    zIndex: number;
 }
 
 export interface IBottomSheetInternalConfig extends IBottomSheetConfigParams {

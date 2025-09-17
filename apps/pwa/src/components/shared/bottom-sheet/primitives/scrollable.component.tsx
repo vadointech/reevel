@@ -63,6 +63,7 @@ export const BottomSheetScrollable = ({
             style={{
                 flex: 1,
                 overflowY: "auto",
+                overflowX: "hidden",
                 touchAction: "pan-y",
                 overscrollBehavior: "auto",
                 ...style,

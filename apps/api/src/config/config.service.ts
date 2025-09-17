@@ -12,6 +12,10 @@ const environmentVariables = [
     "API_PUBLIC_URL_INTERFACE",
     "PWA_PUBLIC_URL",
 
+    // Authentification
+    "ACCESS_JWT_SECRET",
+    "REFRESH_JWT_SECRET",
+
     // Database
     "DB_HOST",
     "DB_PORT",
@@ -44,9 +48,9 @@ export class ConfigService {
         return process.env[key] as string;
     }
 
-    public isDevelopment() {
+    get isProduction() {
         const mode = this.env("MODE");
-        return mode === "DEV";
+        return mode === "PROD";
     }
 
     private ensureValues() {

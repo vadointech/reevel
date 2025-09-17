@@ -18,11 +18,13 @@ export class GoogleModule {
                 ],
                 useFactory: (
                     configService: ConfigService,
-                ) => new GoogleOAuthService({
-                    clientId: configService.env("GOOGLE_CLIENT_ID"),
-                    clientSecret: configService.env("GOOGLE_CLIENT_SECRET"),
-                    redirectUrl: configService.env("API_PUBLIC_URL") + dependencyName,
-                }),
+                ) => {
+                    return new GoogleOAuthService({
+                        clientId: configService.env("GOOGLE_CLIENT_ID"),
+                        clientSecret: configService.env("GOOGLE_CLIENT_SECRET"),
+                        redirectUrl: configService.env("API_PUBLIC_URL") + dependencyName,
+                    });
+                },
             };
         });
 

@@ -1,24 +1,27 @@
-import { Controller, Get, Query, Res } from "@nestjs/common";
+import { Controller, Get, Post, Query, Res, UseGuards } from "@nestjs/common";
 import { Response } from "express";
-import { Public } from "@/decorators";
-import { JwtStrategy } from "./strategies/jwt.strategy";
-import { AuthService } from "./auth.service";
+import { Public, Session } from "@/decorators";
 import { ConfigService } from "@/config/config.service";
+import { AuthSessionService } from "./services";
+import { AuthService } from "./auth.service";
+import { RefreshTokenGuard } from "./guards";
+import { GoogleOAuthProvider } from "./providers";
+import { ServerSession } from "@/types";
 
 @Controller("auth")
 export class AuthController {
     constructor(
         private readonly authService: AuthService,
-        private readonly jwtStrategy: JwtStrategy,
+        private readonly sessionService: AuthSessionService,
         private readonly configService: ConfigService,
-    ) { }
+
+        private readonly googleOAuthProvider: GoogleOAuthProvider,
+    ) {}
 
     @Public()
     @Get("/google")
     async getGoogleOAuthUlr() {
-        console.log('1')
-
-        const link = await this.authService.getGoogleOAuthLink();
+        const link = await this.googleOAuthProvider.getAuthorizationLink();
         return { link };
     }
 
@@ -34,27 +37,32 @@ export class AuthController {
         }
 
         try {
-            const user = await this.authService.getGoogleOAuthUser(code);
-            const session = await this.authService.authWithGoogle(user);
+            const session = await this.googleOAuthProvider.authorize(code);
 
-            this.jwtStrategy.setJwtSession(response, session);
+            this.sessionService.setClientSession(response, session);
 
-            if (session.payload.completed === "true") {
-                return response.redirect(this.configService.env("PWA_PUBLIC_URL"));
-            } else {
-                return response.redirect(this.configService.env("PWA_PUBLIC_URL") + "/onboarding");
-            }
-        } catch (e) {
-            console.log(e)
+            return response.redirect(this.configService.env("PWA_PUBLIC_URL"));
+        } catch {
             return response.redirect(this.configService.env("PWA_PUBLIC_URL") + "/login");
         }
     }
 
     @Get("/logout")
-    async logout(
+    logout(
+        @Session() session: ServerSession,
         @Res({ passthrough: true }) response: Response,
     ) {
-        this.jwtStrategy.clearJwtSession(response);
-        return true;
+        this.sessionService.clearClientSession(response);
+        return this.authService.logout(session);
+    }
+
+    @Public()
+    @UseGuards(RefreshTokenGuard)
+    @Post("/refresh")
+    async refreshSession(
+        @Session() session: ServerSession,
+    ) {
+        const { payload: _, ...tokens } = await this.authService.refreshSession(session);
+        return tokens;
     }
 }

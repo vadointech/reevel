@@ -1,4 +1,4 @@
-import { fetcherClient } from "@/api/fetcher-client";
+import { fetcherClient } from "@/api/client";
 
 export namespace Logout {
     export type TInput = null;
@@ -7,6 +7,6 @@ export namespace Logout {
 
 export const logout = fetcherClient.fetch<Logout.TInput, Logout.TOutput>({
     fetcherFunc: (fetcher, input) => {
-        return fetcher.get<Logout.TInput, Logout.TOutput>("/auth/logout", input);
+        return fetcher.get("/auth/logout", input);
     },
 });
