@@ -1,25 +1,37 @@
 import * as jose from "jose";
-import { NextResponse, NextRequest } from "next/server";
+import { NextResponse, NextRequest, userAgent } from "next/server";
 import { intlMiddleware } from "@/i18n/middleware";
 import {
+    Devices,
     AuthJwtTokens,
     StaticRoutes,
     ACCESS_JWT_SECRET,
     publicRoutes,
+    allowedDevices,
     AuthAccessTokenPayload,
     onboardingStepRoutes, authCookiesParams,
 } from "@/auth.config";
 import { refreshTokens } from "@/api/auth";
 
 export default async function(request: NextRequest) {
-    const {
-        nextUrl,
-    } = request;
+    const { nextUrl } = request;
+
+    const ua = userAgent(request);
+    const deviceType = ua.device.type;
+
+    const isAllowedDevice = allowedDevices.includes(deviceType);
+    const isScanPage = nextUrl.pathname.startsWith(StaticRoutes.Scan);
+
+    if(!isAllowedDevice) {
+        if(!isScanPage) {
+            return NextResponse.redirect(new URL(StaticRoutes.Scan, nextUrl));
+        }
+        return intlMiddleware(request);
+    }
 
     const isPublicRoute = publicRoutes.includes(nextUrl.pathname);
     const isLoginRoute = nextUrl.pathname.startsWith(StaticRoutes.Login);
     const isOnboardingRoute = nextUrl.pathname.startsWith(StaticRoutes.Onboarding);
-
 
     if(nextUrl.pathname === StaticRoutes.Root) {
         return NextResponse.redirect(new URL(StaticRoutes.Discover, nextUrl));
