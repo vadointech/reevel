@@ -28,6 +28,7 @@ export enum StaticRoutes {
     Root = "/",
     Login = "/login",
     Onboarding = "/onboarding",
+    Discover = "/discover",
 }
 
 export const publicRoutes: string[] = [];
@@ -39,5 +40,5 @@ export const onboardingStepRoutes: string[] = [
     "/onboarding/location",
     "/onboarding/location/pick",
     "/onboarding/location/confirm",
-    StaticRoutes.Root,
+    StaticRoutes.Discover,
 ];
