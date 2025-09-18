@@ -1,4 +1,4 @@
-import { initStore } from "@/lib/mobx";
+import { constructorInit } from "@/lib/init";
 import { BottomSheetDisplayMode, IBottomSheetConfigParams, IBottomSheetInternalConfig } from "../types";
 
 export class BottomSheetRootConfig implements IBottomSheetInternalConfig {
@@ -22,7 +22,7 @@ export class BottomSheetRootConfig implements IBottomSheetInternalConfig {
     onSnapPointChange: undefined;
 
     constructor(init: Partial<IBottomSheetConfigParams>) {
-        initStore(this, init);
+        constructorInit(this, init);
         this.snapPointsCount = this.snapPoints.length;
 
         if(typeof window !== "undefined") {
