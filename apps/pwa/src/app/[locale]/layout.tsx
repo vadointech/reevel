@@ -9,11 +9,12 @@ import { ServiceWorkerProvider } from "@/service-worker/client";
 import { ReactQueryClientProvider } from "@/providers/react-query-provider";
 import { StandaloneProvider } from "@/providers/standalone.provider";
 import { QuerySelectorProvider } from "@/providers/query-selector.provider";
+import { pwaStandaloneChecker } from "@/lib/standalone";
 
 import { type ParamsWithLocale } from "@/types/common";
 
 import "../globals.scss";
-import { pwaStandaloneChecker } from "@/lib/standalone";
+import { SharedClassNames } from "@/theme/shared/class-names";
 
 export const metadata: Metadata = {
     title: "Reevel",
@@ -58,7 +59,7 @@ export default async function RootLayout({ children, params }: PropsWithChildren
                         <ReactQueryClientProvider>
                             <StandaloneProvider>
                                 <QuerySelectorProvider>
-                                    <main id={"main"}>
+                                    <main id={"main"} className={SharedClassNames.PbStandalone}>
                                         {children}
                                     </main>
                                     <div id={"modal-root"} />

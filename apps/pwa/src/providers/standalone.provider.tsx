@@ -9,7 +9,8 @@ export const StandaloneProvider = ({ children }: PropsWithChildren) => {
         if(typeof window === "undefined") {
             return false;
         }
-        return ("standalone" in window.navigator) && (!!window.navigator["standalone"]);
+        return window.matchMedia("(display-mode: standalone)").matches ||
+          (("standalone" in window.navigator) && (!!window.navigator["standalone"]));;
     });
 
     return (
