@@ -49,7 +49,7 @@ export const DiscoverDrawer = ({
             defaultOpen
             touchEvents
             dismissible={false}
-            snapPoints={[.95, .5, .25]}
+            snapPoints={[.95, .5, "206px"]}
             fadeThreshold={.6}
             defaultSnapPointIndex={1}
             externalController={controller}

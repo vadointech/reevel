@@ -1,6 +1,6 @@
 import { IBottomSheetHandlers } from "./handlers";
 
-export type BottomSheetSnapPoint = number | "fit-content";
+export type BottomSheetSnapPoint = number | `${number}px` | "fit-content";
 
 export interface IBottomSheetConfigParams extends Partial<IBottomSheetHandlers> {
     snapPoints: BottomSheetSnapPoint[];

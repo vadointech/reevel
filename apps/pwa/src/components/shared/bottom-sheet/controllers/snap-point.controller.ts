@@ -15,7 +15,14 @@ export class BottomSheetSnapPointController implements IBottomSheetSnapPointCont
          * Order is important (ASC)
          */
         this.snapPointsArrPx = config.snapPoints
-            .map(ratio => this.getSnapPointValuePxByRation(ratio))
+            .map(ratio =>
+                BottomSheetSnapPointController.getSnapPointValuePxByRatio(
+                    ratio,
+                    config.clientHeight,
+                    config.contentHeight,
+                    config.clientHeight,
+                ),
+            )
             .sort((a, b) => a - b);
     }
 
@@ -31,17 +38,23 @@ export class BottomSheetSnapPointController implements IBottomSheetSnapPointCont
         return this.snapPointsArrPx[index] || this.boundTop;
     }
 
-    getSnapPointValuePxByRation(ratio: BottomSheetSnapPoint): number {
-        if(ratio === "fit-content") return this.config.contentHeight;
+    static getSnapPointValuePxByRatio(
+        ratio: BottomSheetSnapPoint,
+        clientHeight: number,
+        contentHeight: number,
+        fallbackPx: number,
+    ): number {
+        if(ratio === "fit-content") return contentHeight;
 
-        if (ratio === undefined || ratio < 0 || ratio > 1) {
-            return this.boundTop;
+        if(typeof ratio === "number") {
+            if(ratio < 0 || ratio > 1) {
+                return fallbackPx;
+            }
+            return clientHeight - (clientHeight * ratio);
         }
-        return this.config.clientHeight - this.config.clientHeight * ratio;
-    }
 
-    getSnapPointRatioByValuePx(px: number): number {
-        return 1 - px / this.config.clientHeight;
+        const pxValue = parseInt(ratio, 10);
+        return isNaN(pxValue) ? fallbackPx : clientHeight - pxValue;
     }
 
     determineSnapPointIndex(
