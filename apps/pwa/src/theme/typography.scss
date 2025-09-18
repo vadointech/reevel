@@ -39,6 +39,14 @@ $font-size: (
         "size": 2rem, // 32px
         "height": 2.25rem, // 36px
     ),
+    "5xl": (
+        "size": 2.5rem, // 40px
+        "height": 3.5rem, // 44px
+    ),
+    "6xl": (
+        "size": 2.75rem, // 44px
+        "height": 3.5rem, // 46px
+    ),
 );
 
 @mixin font($font-size-key: "base", $font-weight: normal) {

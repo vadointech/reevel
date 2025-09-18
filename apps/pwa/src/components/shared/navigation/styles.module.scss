@@ -3,9 +3,9 @@
 @use "@/theme/spacing";
 @use "@/theme/typography";
 
-
 .navbar {
-    padding: mixins.rem(12) spacing.$container mixins.rem(28);
+    padding: mixins.rem(12) spacing.$container mixins.rem(12);
+    //padding: mixins.rem(12) spacing.$container mixins.rem(28);
 
     position: fixed;
     z-index: 20;

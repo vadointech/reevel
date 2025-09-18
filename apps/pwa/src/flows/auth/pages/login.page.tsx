@@ -1,5 +1,4 @@
-import { headers } from "next/headers";
-import { getGoogleOAuthLink } from "@/api/auth";
+import { getGoogleOAuthLink } from "@/api/auth/server";
 
 import { IconLogoApple, IconLogoGoogle } from "@/components/icons";
 import { Button, ButtonsBlock, Container } from "@/components/ui";
@@ -12,10 +11,7 @@ export namespace AuthLoginPage {
 }
 
 export async function AuthLoginPage() {
-
-    const { data } = await getGoogleOAuthLink({
-        nextHeaders: await headers(),
-    });
+    const link = await getGoogleOAuthLink();
 
     return (
         <div className={styles.page}>
@@ -35,7 +31,7 @@ export async function AuthLoginPage() {
                     <Button
                         variant={"secondary-muted"}
                         iconBefore={<IconLogoGoogle />}
-                        href={data?.link}
+                        href={link}
                     >
                         Sign in with Google
                     </Button>

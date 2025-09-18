@@ -1,13 +1,12 @@
 "use client";
 
-import { createContext, RefObject, useContext } from "react";
-import { IImageUploaderController, IImageUploaderStore } from "./types";
+import { createContext, useContext } from "react";
+import { IImageUploaderConfig, IImageUploaderController, IImageUploaderStore } from "./types";
 
 type ImageUploaderContextValues = {
     store: IImageUploaderStore;
+    config: IImageUploaderConfig;
     controller: IImageUploaderController;
-    imageRef: RefObject<HTMLImageElement | null>
-    previewCanvasRef: RefObject<HTMLCanvasElement | null>
 };
 
 export const ImageUploaderContext = createContext<ImageUploaderContextValues | null>(null);
