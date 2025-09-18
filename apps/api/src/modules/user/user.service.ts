@@ -16,7 +16,7 @@ export class UserService {
     ) {}
 
     async getUserSession(session: ServerSession) {
-        return this.userRepository.getSession(session.user.id);
+        return await this.userRepository.getSession(session.user.id);
     }
 
     getUserProfile(session: ServerSession) {

@@ -1,6 +1,8 @@
+@use "@/theme/mixins";
+@use "@/theme/colors";
+@use "@/theme/spacing";
 @use "@/theme/typography";
 @use "@/theme/colors/scheme";
-@use "@/theme/colors";
 
 html,
 body {
@@ -52,7 +54,7 @@ a {
 
 .standalone {
   height: 100%;
-  padding-bottom: 36px;
+  padding-bottom: spacing.$standalone;
 }
 
 .bottom-sheet-root {

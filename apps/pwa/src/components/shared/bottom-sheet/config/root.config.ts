@@ -1,5 +1,5 @@
 import { initStore } from "@/lib/mobx";
-import { IBottomSheetConfigParams, IBottomSheetInternalConfig } from "../types";
+import { BottomSheetDisplayMode, IBottomSheetConfigParams, IBottomSheetInternalConfig } from "../types";
 
 export class BottomSheetRootConfig implements IBottomSheetInternalConfig {
     clientHeight: number = 0;
@@ -16,6 +16,7 @@ export class BottomSheetRootConfig implements IBottomSheetInternalConfig {
     dragListener: boolean = true;
     touchEvents: boolean = false;
     zIndex: number = 10;
+    displayMode: BottomSheetDisplayMode = BottomSheetDisplayMode.Browser;
 
     onClose: undefined;
     onSnapPointChange: undefined;
@@ -23,8 +24,10 @@ export class BottomSheetRootConfig implements IBottomSheetInternalConfig {
     constructor(init: Partial<IBottomSheetConfigParams>) {
         initStore(this, init);
         this.snapPointsCount = this.snapPoints.length;
+
         if(typeof window !== "undefined") {
             this.clientHeight = BottomSheetRootConfig.getDynamicViewportHeight();
+            this.displayMode = BottomSheetRootConfig.getDisplayMode();
         }
 
         if(init.handleOnly) {
@@ -57,5 +60,10 @@ export class BottomSheetRootConfig implements IBottomSheetInternalConfig {
         document.body.removeChild(helperElement);
 
         return dynamicHeight;
+    }
+
+    static getDisplayMode(): BottomSheetDisplayMode {
+        const isStandalone = ("standalone" in window.navigator) && (!!window.navigator["standalone"]);
+        return isStandalone ? BottomSheetDisplayMode.Standalone : BottomSheetDisplayMode.Browser;
     }
 }

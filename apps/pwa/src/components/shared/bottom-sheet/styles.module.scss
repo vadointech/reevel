@@ -1,5 +1,6 @@
 @use "@/theme/colors";
 @use "@/theme/mixins";
+@use "@/theme/spacing";
 
 .bottomSheet {
     &__dragger {
@@ -15,6 +16,10 @@
     &__body {
         display: flex;
         flex-direction: column;
+
+        &_standalone {
+            padding-bottom: spacing.$standalone;
+        }
 
         & > :last-child {
             flex: 1 1 auto;
