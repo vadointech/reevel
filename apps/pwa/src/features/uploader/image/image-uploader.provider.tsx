@@ -1,35 +1,37 @@
 "use client";
 
-import { PropsWithChildren, useRef } from "react";
+import { PropsWithChildren } from "react";
 
 import { ImageUploaderContext } from "./image-uploader.context";
 import { ImageUploaderController } from "./image-uploader.controller";
 import { ImageUploaderStore } from "./image-uploader.store";
+import { ImageUploaderConfig } from "./image-uploader.config";
+import { useMobxStore } from "@/lib/mobx";
+import { useSingleton } from "@/hooks";
+import { ImageUploaderConfigParams } from "./types";
 
 export namespace ImageUploaderProvider {
-    export type Props = PropsWithChildren;
+    export type Props = PropsWithChildren<ImageUploaderConfigParams>;
 }
 
-export const ImageUploaderProvider = ({ children }: ImageUploaderProvider.Props) => {
-    const imageRef = useRef<HTMLImageElement | null>(null);
-    const previewCanvasRef = useRef<HTMLCanvasElement | null>(null);
-
-    const store = useRef(new ImageUploaderStore()).current;
-    const controller = useRef(
-        new ImageUploaderController(
-            store,
-            imageRef,
-            previewCanvasRef,
-        ),
-    ).current;
+export const ImageUploaderProvider = ({
+    children,
+    ...configParams
+}: ImageUploaderProvider.Props) => {
+    const config = useSingleton(ImageUploaderConfig, configParams);
+    const store = useMobxStore(ImageUploaderStore);
+    const controller = useSingleton(
+        ImageUploaderController,
+        config,
+        store,
+    );
 
     return (
         <ImageUploaderContext.Provider
             value={{
                 store,
+                config,
                 controller,
-                imageRef,
-                previewCanvasRef,
             }}
         >
             { children }

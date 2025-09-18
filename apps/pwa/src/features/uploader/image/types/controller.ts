@@ -1,10 +1,9 @@
-import { PercentCrop, PixelCrop } from "react-image-crop";
+import { PixelCropArea, PixelCropPoint } from "@/features/uploader/image/types/store";
 
 export interface IImageUploaderController {
     setImageSrc(src: string): void;
-    changeCrop(crop: PercentCrop): void;
-    completeCrop(crop: PixelCrop): void;
-    cleanUp(): void;
+    changeCrop(crop: PixelCropPoint): void;
+    changeZoom(zoom: number): void;
+    completeCrop(crop: PixelCropArea): void;
     cropImage(): Promise<Blob | null>;
-    centerAspectCrop(mediaWidth: number, mediaHeight: number, aspect: number): PercentCrop;
 }

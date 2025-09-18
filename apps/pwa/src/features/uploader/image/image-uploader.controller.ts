@@ -1,164 +1,96 @@
 "use client";
 
-import { RefObject } from "react";
-import { IImageUploaderController, IImageUploaderStore } from "./types";
-import { centerCrop, makeAspectCrop, PercentCrop, PixelCrop } from "react-image-crop";
+import {
+    IImageUploaderConfig,
+    IImageUploaderController,
+    IImageUploaderStore,
+    PixelCropArea,
+    PixelCropPoint,
+} from "./types";
 
 export class ImageUploaderController implements IImageUploaderController {
-    private readonly _store: IImageUploaderStore;
-
-    private readonly _imageRef: RefObject<HTMLImageElement | null>;
-    private readonly _previewCanvasRef: RefObject<HTMLCanvasElement | null>;
-
     constructor(
-        store: IImageUploaderStore,
-        imageRef: RefObject<HTMLImageElement | null>,
-        previewCanvasRef: RefObject<HTMLCanvasElement | null>,
-    ) {
-        this._store = store;
-        this._imageRef = imageRef;
-        this._previewCanvasRef = previewCanvasRef;
-    }
+        private readonly internalConfig: IImageUploaderConfig,
+        private readonly store: IImageUploaderStore,
+    ) {}
 
     setImageSrc(src: string): void {
-        this._store.setImageSrc(src);
+        this.store.setImageSrc(src);
     }
 
-    changeCrop(crop: PercentCrop) {
-        this._store.setCrop(crop);
+    changeCrop(crop: PixelCropPoint) {
+        if(this.store.zoom === 1 && crop.x < 0 && crop.y < 0) {
+            return;
+        }
+        this.store.setCrop(crop);
     }
 
-    completeCrop(crop: PixelCrop) {
-        this._store.setCompletedCrop(crop);
+    changeZoom(zoom: number) {
+        if(zoom === this.internalConfig.cropperMaxZoom) return;
+        this.store.setZoom(zoom);
     }
 
-    cleanUp() {
-        this._store.setCrop(undefined);
-        this._store.setImageSrc(undefined);
-        this._store.setCompletedCrop(undefined);
-    }
-
-    centerAspectCrop(mediaWidth: number, mediaHeight: number, aspect: number): PercentCrop {
-        return centerCrop(
-            makeAspectCrop(
-                { unit: "%", width: 75 },
-                aspect,
-                mediaWidth,
-                mediaHeight,
-            ),
-            mediaWidth,
-            mediaHeight,
-        );
+    completeCrop(crop: PixelCropArea) {
+        this.store.setCompletedCrop(crop);
     }
 
     async cropImage(): Promise<Blob | null> {
-        if(!this._imageRef.current) return null;
-        if(!this._store.completedCrop) return null;
         try {
-            return this.canvasPreview(this._store.completedCrop)
-                .then(() => this.getCroppedImage(this._store.completedCrop));
+            if(!this.store.imageSrc) throw new Error("No image");
+            if(!this.store.completedCrop) throw new Error("No crop");
+
+            return this.getCroppedImage(this.store.imageSrc, this.store.completedCrop);
         } catch {
             return null;
         }
     }
 
-    private async canvasPreview(crop: PixelCrop) {
-        const image = this._imageRef.current;
-        const canvas = this._previewCanvasRef.current;
+    private createImage(url: string): Promise<HTMLImageElement> {
+        return new Promise((resolve, reject) => {
+            const image = new Image();
+            image.addEventListener("load", () => resolve(image));
+            image.addEventListener("error", error => reject(error));
+            image.src = url;
+        });
+    }
 
-        if (!image || !canvas) {
-            throw new Error("Crop canvas does not exist");
-        }
+    private async getCroppedImage(imageSrc: string, pixelCrop: PixelCropArea) {
+        const image = await this.createImage(imageSrc);
+
+        const canvas = document.createElement("canvas");
+        canvas.width = pixelCrop.width;
+        canvas.height = pixelCrop.height;
 
         const ctx = canvas.getContext("2d");
 
-        if (!ctx) {
+        if(!ctx) {
             throw new Error("No 2d context");
         }
 
-        const scaleX = image.naturalWidth / image.width;
-        const scaleY = image.naturalHeight / image.height;
-        // devicePixelRatio slightly increases sharpness on retina devices
-        // at the expense of slightly slower render times and needing to
-        // size the image back down if you want to download/uploads and be
-        // true to the image natural size.
-        const pixelRatio = window.devicePixelRatio;
-        // const pixelRatio = 1;
-
-        canvas.width = Math.floor(crop.width * scaleX * pixelRatio);
-        canvas.height = Math.floor(crop.height * scaleY * pixelRatio);
-
-        ctx.scale(pixelRatio, pixelRatio);
-        ctx.imageSmoothingQuality = "high";
-
-        const cropX = crop.x * scaleX;
-        const cropY = crop.y * scaleY;
-
-        const centerX = image.naturalWidth / 2;
-        const centerY = image.naturalHeight / 2;
-
-        ctx.save();
-
-        // 3) Move the crop origin to the canvas origin (0,0)
-        ctx.translate(-cropX, -cropY);
-        // 2) Move the origin to the center of the original position
-        ctx.translate(centerX, centerY);
-        // 1) Move the center of the image to the origin (0,0)
-        ctx.translate(-centerX, -centerY);
+        ctx.fillStyle = "#ffffff";
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
         ctx.drawImage(
             image,
+            pixelCrop.x,
+            pixelCrop.y,
+            pixelCrop.width,
+            pixelCrop.height,
             0,
             0,
-            image.naturalWidth,
-            image.naturalHeight,
-            0,
-            0,
-            image.naturalWidth,
-            image.naturalHeight,
+            pixelCrop.width,
+            pixelCrop.height,
         );
 
-        ctx.restore();
-    }
-
-    private getCroppedImage(completedCrop?: PixelCrop): Promise<Blob> {
-        const image = this._imageRef.current;
-        const previewCanvas = this._previewCanvasRef.current;
-
-        if (!image || !previewCanvas || !completedCrop) {
-            throw new Error("Crop canvas does not exist");
-        }
-
-        // This will size relative to the uploaded image
-        // size. If you want to size according to what they
-        // are looking at on screen, remove scaleX + scaleY
-        const scaleX = image.naturalWidth / image.width;
-        const scaleY = image.naturalHeight / image.height;
-
-        const offscreen = new OffscreenCanvas(
-            completedCrop.width * scaleX,
-            completedCrop.height * scaleY,
-        );
-        const ctx = offscreen.getContext("2d");
-        if (!ctx) {
-            throw new Error("No 2d context");
-        }
-
-        ctx.drawImage(
-            previewCanvas,
-            0,
-            0,
-            previewCanvas.width,
-            previewCanvas.height,
-            0,
-            0,
-            offscreen.width,
-            offscreen.height,
-        );
-
-        const quality = this.calculateCompression(image.width, image.height);
-        return offscreen.convertToBlob({
-            type: "image/jpeg",
-            quality: quality,
+        // As a blob
+        return new Promise<Blob>((resolve, reject) => {
+            const quality = this.calculateCompression(pixelCrop.width, pixelCrop.height);
+            canvas.toBlob(file => {
+                if(file) {
+                    resolve(file);
+                } else {
+                    reject(new Error("Canvas is empty"));
+                }
+            }, "image/jpeg", quality);
         });
     }
 

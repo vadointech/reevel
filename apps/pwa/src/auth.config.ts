@@ -24,10 +24,27 @@ export const authCookiesParams: Partial<ResponseCookie> = {
     domain: process.env.DOMAIN,
 };
 
+export enum Devices {
+    Mobile = "mobile",
+    Desktop = "desktop",
+    Tablet = "tablet",
+    Console = "console",
+    SmartTV = "smarttv",
+    Wearable = "wearable",
+    Embedded = "embedded",
+}
+
+export const allowedDevices: Array<string | undefined> = [
+    Devices.Mobile,
+    Devices.Tablet,
+];
+
 export enum StaticRoutes {
     Root = "/",
+    Scan = "/scan",
     Login = "/login",
     Onboarding = "/onboarding",
+    Discover = "/discover",
 }
 
 export const publicRoutes: string[] = [];
@@ -39,5 +56,5 @@ export const onboardingStepRoutes: string[] = [
     "/onboarding/location",
     "/onboarding/location/pick",
     "/onboarding/location/confirm",
-    StaticRoutes.Root,
+    StaticRoutes.Discover,
 ];

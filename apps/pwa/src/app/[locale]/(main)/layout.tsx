@@ -3,6 +3,7 @@ import { PersistentMapProvider } from "@/components/shared/map";
 import { SessionProvider } from "@/features/session";
 import { ThemeProvider } from "@/features/theme";
 import { getSession } from "@/api/user/server";
+import { MapProviderDefaultConfig } from "@/components/shared/map/map.config";
 
 export default async function MainLayout({ children }: PropsWithChildren) {
     const session = await getSession();
@@ -17,10 +18,9 @@ export default async function MainLayout({ children }: PropsWithChildren) {
                     mapStyleDark={process.env.MAPBOX_MAP_STYLE_DARK || ""}
                     mapStyleLight={process.env.MAPBOX_MAP_STYLE_LIGHT || ""}
                     viewState={{
+                        ...MapProviderDefaultConfig.viewState,
                         center: location?.center.coordinates,
                         bboxPolygon: location?.bbox.coordinates,
-                        zoom: 12,
-                        pitch: 0,
                     }}
                 >
                     {children}

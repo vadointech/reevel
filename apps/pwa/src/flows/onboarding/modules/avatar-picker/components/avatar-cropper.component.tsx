@@ -2,8 +2,9 @@
 
 import { Button, Input } from "@/components/ui";
 
-import { useImageCropper } from "@/features/uploader/image/hooks";
 import { useOnboardingAvatarUploader } from "@/features/onboarding/hooks";
+import { useCallback } from "react";
+import { useImageUploaderContext } from "@/features/uploader/image";
 
 export namespace OnboardingAvatarUploadCropper {
     export type Props = {
@@ -18,9 +19,11 @@ export const OnboardingAvatarUploadCropper = ({ callbackUrl }: OnboardingAvatarU
         handleFileUpload,
     } = useOnboardingAvatarUploader(callbackUrl);
 
-    const { handleCrop } = useImageCropper(1, {
-        onCropSuccess: handleFileUpload,
-    });
+    const { controller } = useImageUploaderContext();
+
+    const handleCrop = useCallback(() => {
+        controller.cropImage().then(handleFileUpload);
+    }, []);
 
     return (
         <>
