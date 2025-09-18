@@ -61,18 +61,19 @@ export function useOnboardingUpdate({
             } = diff.toObject();
 
             const profileToUpdate: UpdateProfile.TInput = {
+                placeName: location?.displayName,
                 bio: changedData.bio,
                 fullName: changedData.fullName,
                 picture: changedData.picture,
                 completed: progress.status,
             };
 
-            if(location) {
+            if (location) {
                 profileToUpdate.locationCenter = [location.location.longitude, location.location.latitude];
                 profileToUpdate.locationBbox = location.bbox;
             }
 
-            if(interests) {
+            if (interests) {
                 profileToUpdate.interests = interests.map(item => item.slug);
             }
 

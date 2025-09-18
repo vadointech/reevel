@@ -3,6 +3,7 @@ import { formInterestsEntitySchema } from "@/features/interests/picker";
 import { placeLocationEntity } from "@/entities/place";
 
 export const onboardingFormSchema = z.object({
+    placeName: z.string(),
     picture: z.string(),
     fullName: z.string(),
     bio: z.string(),
