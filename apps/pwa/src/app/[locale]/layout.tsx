@@ -13,6 +13,7 @@ import { QuerySelectorProvider } from "@/providers/query-selector.provider";
 import { type ParamsWithLocale } from "@/types/common";
 
 import "../globals.scss";
+import { pwaStandaloneChecker } from "@/lib/standalone";
 
 export const metadata: Metadata = {
     title: "Reevel",
@@ -37,9 +38,18 @@ export default async function RootLayout({ children, params }: PropsWithChildren
     setRequestLocale(locale);
     const messages = await getMessages();
 
+    const pwaScript = `(${pwaStandaloneChecker.toString()})();`;
+
     return (
-        <html lang={locale} suppressHydrationWarning>
-            <body className={fonts} >
+        <html lang={locale} suppressHydrationWarning className={"display-browser"}>
+            <head>
+                <script
+                    dangerouslySetInnerHTML={{
+                        __html: pwaScript,
+                    }}
+                />
+            </head>
+            <body className={fonts}>
                 <ServiceWorkerProvider register={process.env.SERVICE_WORKER === "true"}>
                     <NextIntlClientProvider
                         locale={locale}

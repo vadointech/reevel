@@ -12,16 +12,6 @@ export const StandaloneProvider = ({ children }: PropsWithChildren) => {
         return ("standalone" in window.navigator) && (!!window.navigator["standalone"]);
     });
 
-    if(isStandalone) {
-        return (
-            <StandaloneContext.Provider value={isStandalone}>
-                <div className={"standalone"}>
-                    { children }
-                </div>
-            </StandaloneContext.Provider>
-        );
-    }
-
     return (
         <StandaloneContext.Provider value={isStandalone}>
             { children }
