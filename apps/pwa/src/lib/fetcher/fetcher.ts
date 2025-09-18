@@ -155,7 +155,6 @@ export class Fetcher implements IFetcher {
 
             return fetcherResponse;
         } catch(error) {
-            console.log(error);
             return {
                 url,
                 data: config.fallback || null,
