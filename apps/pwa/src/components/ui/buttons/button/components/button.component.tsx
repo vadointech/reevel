@@ -1,5 +1,8 @@
+"use client";
+
 import { ComponentProps, HTMLAttributeAnchorTarget, ReactNode } from "react";
 import { Link } from "@/i18n/routing";
+import { Spinner } from "./spinner.component";
 
 import { UISize } from "@/types/common";
 
@@ -17,13 +20,13 @@ export namespace Button {
         "accent-muted" |
         "text-primary" |
         "text-accent";
-    export type Props = ComponentProps<"button"> & {
+    export type Props = ComponentProps<"button">  & ComponentProps<"a"> & {
         size?: Size;
         variant?: Variant;
         iconBefore?: ReactNode;
         iconAfter?: ReactNode;
         arrowAfter?: ReactNode;
-        href?: string;
+        loading?: boolean;
         target?: HTMLAttributeAnchorTarget
     };
 }
@@ -38,44 +41,55 @@ export const Button = ({
     className,
     type = "button",
     href,
+    loading,
     target,
     ...props
 }: Button.Props) => {
-    const Component = () => {
+    const buttonContent = (
+        <>
+            <Spinner loading={loading} />
+            { iconBefore }
+            <span>
+                { children }
+            </span>
+            {iconAfter}
+            {
+                arrowAfter ? (
+                    <div className={styles["button__arrow-after"]}>
+                        { arrowAfter }
+                    </div>
+                ) : null
+            }
+        </>
+    );
+
+    const buttonClasses = cx(
+        styles.button,
+        styles[`button_size_${size}`],
+        styles[`button_variant_${variant}`],
+        className,
+    );
+
+    if (href) {
         return (
-            <button
-                className={cx(
-                    styles.button,
-                    styles[`button_size_${size}`],
-                    styles[`button_variant_${variant}`],
-                    className,
-                )}
-                type={type}
+            <Link
+                href={href}
+                target={target}
+                className={buttonClasses}
                 {...props}
             >
-                { iconBefore }
-                <span>
-                    { children }
-                </span>
-                { iconAfter }
-                {
-                    arrowAfter ? (
-                        <div className={styles["button__arrow-after"]}>
-                            { arrowAfter }
-                        </div>
-                    ) : null
-                }
-            </button>
-        );
-    };
-
-    if(href) {
-        return (
-            <Link href={href} target={target}>
-                <Component />
+                { buttonContent }
             </Link>
         );
     }
 
-    return <Component />;
+    return (
+        <button
+            className={buttonClasses}
+            type={type}
+            {...props}
+        >
+            { buttonContent }
+        </button>
+    );
 };
