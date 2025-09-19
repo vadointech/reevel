@@ -1,5 +1,6 @@
 import { constructorInit } from "@/lib/init";
 import { BottomSheetDisplayMode, IBottomSheetConfigParams, IBottomSheetInternalConfig } from "../types";
+import { isStandalone } from "@/utils/display-mode";
 
 export class BottomSheetRootConfig implements IBottomSheetInternalConfig {
     clientHeight: number = 0;
@@ -63,7 +64,6 @@ export class BottomSheetRootConfig implements IBottomSheetInternalConfig {
     }
 
     static getDisplayMode(): BottomSheetDisplayMode {
-        const isStandalone = ("standalone" in window.navigator) && (!!window.navigator["standalone"]);
-        return isStandalone ? BottomSheetDisplayMode.Standalone : BottomSheetDisplayMode.Browser;
+        return isStandalone() ? BottomSheetDisplayMode.Standalone : BottomSheetDisplayMode.Browser;
     }
 }

@@ -9,7 +9,7 @@ import { ServiceWorkerProvider } from "@/service-worker/client";
 import { ReactQueryClientProvider } from "@/providers/react-query-provider";
 import { StandaloneProvider } from "@/providers/standalone.provider";
 import { QuerySelectorProvider } from "@/providers/query-selector.provider";
-import { pwaStandaloneChecker } from "@/lib/standalone";
+import { standaloneDocumentChecker } from "@/utils/display-mode";
 
 import { type ParamsWithLocale } from "@/types/common";
 
@@ -39,7 +39,7 @@ export default async function RootLayout({ children, params }: PropsWithChildren
     setRequestLocale(locale);
     const messages = await getMessages();
 
-    const pwaScript = `(${pwaStandaloneChecker.toString()})();`;
+    const pwaScript = `(${standaloneDocumentChecker.toString()})();`;
 
     return (
         <html lang={locale} suppressHydrationWarning className={"display-browser"}>
