@@ -4,18 +4,18 @@ import { useCallback, useRef } from "react";
 
 import { useOnboardingProgress } from "./use-onboarding-progress.hook";
 import { useSessionContext } from "@/features/session";
-import { useProfileUpdate, UseProfileUpdateParams } from "@/features/profile/hooks";
 import { useOnboardingFormContext } from "@/features/onboarding";
 import { ObjectDiff } from "@/utils/object";
 import { UpdateProfile } from "@/api/profile";
+import { useMutation } from "@tanstack/react-query";
+import { updateProfileAction } from "@/features/profile/actions";
 
-type ConfigParams = UseProfileUpdateParams & {
+type ConfigParams = {
     revalidateQueryOnSuccess?: string[]
 };
 
 export function useOnboardingUpdate({
     revalidateQueryOnSuccess,
-    ...params
 }: ConfigParams = {}) {
     const session = useSessionContext();
     const form = useOnboardingFormContext();
@@ -27,7 +27,8 @@ export function useOnboardingUpdate({
         getOnboardingProgress,
     } = useOnboardingProgress();
 
-    const { handleUpdateProfile } = useProfileUpdate({
+    const updateProfileMutation = useMutation({
+        mutationFn: updateProfileAction,
         onSettled: handleNextStep,
         onSuccess: (data) => {
             if(!data || !shouldRevalidate.current) return;
@@ -42,10 +43,9 @@ export function useOnboardingUpdate({
                 form.getValues(),
             );
         },
-        ...params,
     });
 
-    return useCallback(() => {
+    const handleUpdate = useCallback(() => {
         const diff = new ObjectDiff(
             form.store.formValues,
             form.getValues(),
@@ -76,17 +76,23 @@ export function useOnboardingUpdate({
                 profileToUpdate.interests = interests.map(item => item.slug);
             }
 
-            handleUpdateProfile(profileToUpdate);
+            updateProfileMutation.mutate(profileToUpdate);
         } else {
-            const onboardingStep = Number(session.store.user?.profile.completed);
+            return handleNextStep();
+            // const onboardingStep = session.store.user?.profile.completed;
 
-            if(isNaN(onboardingStep) || onboardingStep > step) {
-                return handleNextStep();
-            } else {
-                handleUpdateProfile({
-                    completed: progress.status,
-                });
-            }
+            // if(isNaN(onboardingStep) || onboardingStep > step) {
+            //     return handleNextStep();
+            // } else {
+            //     updateProfileMutation.mutate({
+            //         completed: progress.status,
+            //     });
+            // }
         }
-    }, [step, revalidateQueryOnSuccess, handleUpdateProfile]);
+    }, [step, revalidateQueryOnSuccess]);
+
+    return {
+        handleUpdate,
+        isUpdating: updateProfileMutation.isPending,
+    };
 }

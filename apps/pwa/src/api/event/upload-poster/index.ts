@@ -2,9 +2,7 @@ import { fetcherClient } from "@/api/client";
 import { UserUploadsEntity } from "@/entities/uploads";
 
 export namespace UploadEventPoster {
-    export type TInput = {
-        file: Blob;
-    };
+    export type TInput = Blob;
 
     export type TOutput = UserUploadsEntity[] | null;
 
@@ -16,7 +14,7 @@ export const uploadEventPoster = fetcherClient.fetch<UploadEventPoster.TInput, U
         const formData = new FormData();
 
         if(body) {
-            const croppedFile = new File([body.file], "test.png", { type: "image/png" });
+            const croppedFile = new File([body], "test.png", { type: "image/png" });
             formData.append("files", croppedFile);
         }
 

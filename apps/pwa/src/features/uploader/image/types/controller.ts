@@ -5,5 +5,5 @@ export interface IImageUploaderController {
     changeCrop(crop: PixelCropPoint): void;
     changeZoom(zoom: number): void;
     completeCrop(crop: PixelCropArea): void;
-    cropImage(): Promise<Blob | null>;
+    cropImage(): Promise<Blob>;
 }

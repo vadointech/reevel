@@ -20,13 +20,14 @@ export namespace Button {
         "accent-muted" |
         "text-primary" |
         "text-accent";
-    export type Props = ComponentProps<"button">  & ComponentProps<"a"> & {
+    export type Props = ComponentProps<"button"> & {
         size?: Size;
         variant?: Variant;
         iconBefore?: ReactNode;
         iconAfter?: ReactNode;
         arrowAfter?: ReactNode;
         loading?: boolean;
+        href?: string;
         target?: HTMLAttributeAnchorTarget
     };
 }
@@ -76,7 +77,7 @@ export const Button = ({
                 href={href}
                 target={target}
                 className={buttonClasses}
-                {...props}
+                {...props as ComponentProps<"a">}
             >
                 { buttonContent }
             </Link>
