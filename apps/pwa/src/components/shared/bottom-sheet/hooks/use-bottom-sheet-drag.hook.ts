@@ -27,7 +27,7 @@ export function useBottomSheetDrag() {
     );
 
     const handleDragEnd = (_: any, info: PanInfo) => {
-        if (Math.abs(info.offset.x) > Math.abs(info.offset.y)) return;
+        if(Math.abs(info.offset.x) > Math.abs(info.offset.y)) return;
         controller.current.drag(info);
     };
 
