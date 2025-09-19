@@ -34,15 +34,16 @@ export class ImageUploaderController implements IImageUploaderController {
         this.store.setCompletedCrop(crop);
     }
 
-    async cropImage(): Promise<Blob | null> {
-        try {
-            if(!this.store.imageSrc) throw new Error("No image");
-            if(!this.store.completedCrop) throw new Error("No crop");
-
-            return this.getCroppedImage(this.store.imageSrc, this.store.completedCrop);
-        } catch {
-            return null;
-        }
+    cropImage(): Promise<Blob> {
+        return new Promise<Blob>((resolve, reject) => {
+            try {
+                if(!this.store.imageSrc) throw new Error("No image");
+                if(!this.store.completedCrop) throw new Error("No crop");
+                resolve(this.getCroppedImage(this.store.imageSrc, this.store.completedCrop));
+            } catch(error) {
+                reject(error);
+            }
+        });
     }
 
     private createImage(url: string): Promise<HTMLImageElement> {

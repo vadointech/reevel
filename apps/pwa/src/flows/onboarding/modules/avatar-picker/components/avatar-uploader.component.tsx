@@ -20,10 +20,11 @@ export const OnboardingAvatarUploader = ({
     cropperPageUrl,
 }: OnboardingAvatarUploader.Props) => {
     const {
-        handleAvatarPick,
-        handleAvatarDelete,
+        handlePickAvatar,
+        handleDeleteAvatar,
+        handleSelectFile,
         uploadDrawerController,
-    } = useOnboardingAvatarUploader();
+    } = useOnboardingAvatarUploader(cropperPageUrl);
 
     return (
         <Controller
@@ -32,10 +33,10 @@ export const OnboardingAvatarUploader = ({
                 <UploadDrawer
                     uploads={uploads}
                     gridVariant={"rounded"}
-                    cropperPageUrl={cropperPageUrl}
                     selectedImageUrl={field.value}
-                    onImagePick={handleAvatarPick}
-                    onImageDelete={handleAvatarDelete}
+                    onImagePick={handlePickAvatar}
+                    onImageDelete={handleDeleteAvatar}
+                    onFileSelect={handleSelectFile}
                     controller={uploadDrawerController}
                 >
                     <Button variant={"accent-muted"}>

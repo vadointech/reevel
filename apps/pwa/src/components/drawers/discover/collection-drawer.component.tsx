@@ -95,7 +95,7 @@ export const DiscoverCollectionDrawer = ({
             defaultOpen
             touchEvents
             dismissible={false}
-            snapPoints={[.95, .5, .15]}
+            snapPoints={[.95, .5, .18]}
             fadeThreshold={.6}
             defaultSnapPointIndex={defaultDrawerSnapPoint}
             onSnapPointChange={handleSnapPointChange}

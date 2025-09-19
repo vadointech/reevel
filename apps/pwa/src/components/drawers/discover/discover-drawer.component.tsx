@@ -11,7 +11,7 @@ import {
 import { Avatar, CollectionCard, EventCard, Input, InterestButton, Scroll } from "@/components/ui";
 import { IconStars } from "@/components/icons";
 import { ScrollSection } from "@/components/sections";
-import { BottomSheetExternalController } from "@/components/shared/bottom-sheet/types";
+import { BottomSheetExternalController, BottomSheetSnapPoint } from "@/components/shared/bottom-sheet/types";
 
 import { EventEntity } from "@/entities/event";
 import { InterestEntity } from "@/entities/interests";
@@ -22,6 +22,7 @@ import { useSessionContext } from "@/features/session";
 import { DiscoverStaticCollections } from "@/features/discover/config";
 
 import styles from "./styles/discover-drawer.module.scss";
+import { useStandaloneContext } from "@/providers/standalone.provider";
 
 export namespace DiscoverDrawer {
     export type Props = {
@@ -43,13 +44,16 @@ export const DiscoverDrawer = ({
     onEventInterestPick,
 }: DiscoverDrawer.Props) => {
     const session = useSessionContext();
+    const isStandalone = useStandaloneContext();
+
+    const snapPoints: BottomSheetSnapPoint[] = isStandalone ? [.95, .5, "226px"] : [.95, .5, "206px"];
 
     return (
         <BottomSheetRoot
             defaultOpen
             touchEvents
             dismissible={false}
-            snapPoints={[.95, .5, .25]}
+            snapPoints={snapPoints}
             fadeThreshold={.6}
             defaultSnapPointIndex={1}
             externalController={controller}

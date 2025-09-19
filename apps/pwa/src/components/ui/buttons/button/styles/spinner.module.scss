@@ -1,0 +1,37 @@
+@use "@/theme/mixins";
+@use "@/theme/motions";
+
+.wrapper {
+    display: inline-block;
+    width: 0;
+    opacity: 0;
+    overflow: hidden;
+    vertical-align: middle;
+    transition:
+            width motions.$motion-duration-mid motions.$motion-ease-in-out,
+            opacity motions.$motion-duration-mid motions.$motion-ease-in-out;
+
+    &_visible {
+        width: mixins.rem(20);
+        opacity: 1;
+    }
+}
+
+.spinner {
+    display: inline-block;
+    width: mixins.rem(20);
+    height: mixins.rem(20);
+    border-radius: 9999px;
+    border: mixins.rem(2) solid currentColor;
+    border-left-color: transparent;
+    border-right-color: transparent;
+    border-bottom-color: transparent;
+    box-sizing: border-box;
+    animation: spin .8s linear infinite;
+}
+
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+}

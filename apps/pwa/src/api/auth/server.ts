@@ -1,6 +1,6 @@
 "use server";
 
-import { getAccessToken } from "@/api/server";
+import { deleteAccessToken, deleteRefreshToken, getAccessToken } from "@/api/server";
 
 import * as GetGoogleOAuthLink from "./get-google-oauth-link";
 import * as Logout from "./logout";
@@ -13,12 +13,16 @@ export async function getGoogleOAuthLink() {
 export async function logout() {
     const accessToken = await getAccessToken();
 
-    const response = await Logout.logout({
-        authorization: {
-            method: "Bearer",
-            token: accessToken,
-        },
-    });
+    await Promise.all([
+        deleteAccessToken(),
+        deleteRefreshToken(),
+        Logout.logout({
+            authorization: {
+                method: "Bearer",
+                token: accessToken,
+            },
+        }),
+    ]);
 
-    return response.data;
+    return true;
 }

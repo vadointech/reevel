@@ -2,10 +2,11 @@ import { ComponentProps, ReactNode } from "react";
 import Link, { LinkProps } from "next/link";
 import { IconCalendar, IconCalendarOutline, IconCompas, IconCompasOutline, IconCreate } from "@/components/icons";
 import { NavigationRoutes } from "./navigation.config";
+import { CreateEventDrawer } from "@/components/drawers/create-event";
 
 import styles from "./styles.module.scss";
 import cx from "classnames";
-import { CreateEventDrawer } from "@/components/drawers/create-event";
+import { SharedClassNames } from "@/theme/shared/class-names";
 
 export namespace Navigation {
     export type Props = ComponentProps<"nav"> & {
@@ -28,6 +29,7 @@ export const Navigation = ({
             role={"navigation"}
             className={cx(
                 styles.navbar,
+                SharedClassNames.PbStandalone,
                 className,
             )}
             {...props}

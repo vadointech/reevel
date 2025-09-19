@@ -37,12 +37,14 @@ export const CreateEventPreview = ({
 
     const {
         formValues,
+        isPublishing,
+        handleSelectFile,
         handlePosterPick,
         handlePosterDelete,
         handlePublishEvent,
         handlePosterPrimaryColorChange,
         uploadDrawerController,
-    } = useCreateEventPreview({ callbackUrl });
+    } = useCreateEventPreview({ callbackUrl, cropperPageUrl });
 
     return (
         <>
@@ -57,9 +59,9 @@ export const CreateEventPreview = ({
             <div className={styles.screen__buttons}>
                 <UploadDrawer
                     uploads={uploads}
-                    cropperPageUrl={cropperPageUrl}
                     onImagePick={handlePosterPick}
                     onImageDelete={handlePosterDelete}
+                    onFileSelect={handleSelectFile}
                     selectedImageUrl={formValues?.poster?.fileUrl}
                     controller={uploadDrawerController}
                 >
@@ -69,6 +71,7 @@ export const CreateEventPreview = ({
                 </UploadDrawer>
                 <Button
                     variant={"primary"}
+                    loading={isPublishing}
                     onClick={handlePublishEvent}
                 >
                     Publish event
@@ -89,7 +92,6 @@ const PosterPicker = ({
         return uploads.find(item => item.id === formValues?.poster?.id);
     }, [uploads, formValues]);
 
-
     if(pickerCarouselData?.colorPalette && pickerCarouselData.colorPalette.length > 1) {
         return (
             <div
@@ -99,7 +101,7 @@ const PosterPicker = ({
             >
                 <CreateEventPreviewCarousel
                     host={session.store.user?.profile}
-                    posterUrl={pickerCarouselData?.fileUrl}
+                    posterUrl={pickerCarouselData.fileUrl}
                     posterColorPalette={pickerCarouselData?.colorPalette}
                     eventData={formValues}
                     onPrimaryColorChange={onPrimaryColorChange}
