@@ -6,10 +6,10 @@ node_modules
 .pnp.js
 
 # Local env files
-.env
-.env.*.local
+.env*
+!.env*.example
 
-!env/*.example
+*.local.yml
 
 # Testing
 coverage
