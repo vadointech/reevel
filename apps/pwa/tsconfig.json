@@ -2,6 +2,8 @@
   "extends": "../../tsconfig.json",
   "compilerOptions": {
     "baseUrl": "./",
+    "allowJs": true,
+    "noEmit": true,
     "jsx": "preserve",
     "moduleResolution": "node",
     "plugins": [

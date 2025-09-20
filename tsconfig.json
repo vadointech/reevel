@@ -13,8 +13,6 @@
     "noImplicitAny": false,
     "useUnknownInCatchVariables": false,
 
-    "allowJs": true,
-    "noEmit": true,
     "declaration": true,
     "sourceMap": true,
     "incremental": true,
