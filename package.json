@@ -1,6 +1,7 @@
 {
   "name": "reevel-app",
   "private": true,
+  "type": "module",
   "scripts": {
     "build": "turbo build",
     "dev": "turbo dev",
@@ -9,7 +10,11 @@
   },
   "devDependencies": {
     "turbo": "^2.4.0",
-    "typescript": "5.7.3"
+    "typescript": "5.7.3",
+    "eslint": "^9.19.0",
+    "@eslint/js": "^9.19.0",
+    "@stylistic/eslint-plugin": "^3.1.0",
+    "typescript-eslint": "^8.22.0"
   },
   "packageManager": "pnpm@9.0.0",
   "engines": {

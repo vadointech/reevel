@@ -8,12 +8,24 @@ importers:
 
   .:
     devDependencies:
+      '@eslint/js':
+        specifier: ^9.19.0
+        version: 9.19.0
+      '@stylistic/eslint-plugin':
+        specifier: ^3.1.0
+        version: 3.1.0(eslint@9.19.0)(typescript@5.7.3)
+      eslint:
+        specifier: ^9.19.0
+        version: 9.19.0
       turbo:
         specifier: ^2.4.0
         version: 2.4.0
       typescript:
         specifier: 5.7.3
         version: 5.7.3
+      typescript-eslint:
+        specifier: ^8.22.0
+        version: 8.23.0(eslint@9.19.0)(typescript@5.7.3)
 
   apps/api:
     dependencies:
@@ -99,9 +111,6 @@ importers:
       '@nestjs/schematics':
         specifier: ^10.0.0
         version: 10.2.3(chokidar@3.6.0)(typescript@5.7.3)
-      '@repo/eslint-config':
-        specifier: workspace:*
-        version: link:../../packages/eslint-config
       '@types/cookie-parser':
         specifier: ^1.4.9
         version: 1.4.9(@types/express@5.0.0)
@@ -250,9 +259,6 @@ importers:
         specifier: ^3.24.4
         version: 3.24.4
     devDependencies:
-      '@repo/eslint-config':
-        specifier: workspace:*
-        version: link:../../packages/eslint-config
       '@types/mapbox-gl':
         specifier: ^3.4.1
         version: 3.4.1
@@ -277,21 +283,6 @@ importers:
       typescript:
         specifier: ^5
         version: 5.7.3
-
-  packages/eslint-config:
-    devDependencies:
-      '@eslint/js':
-        specifier: ^9.19.0
-        version: 9.19.0
-      '@stylistic/eslint-plugin':
-        specifier: ^3.1.0
-        version: 3.1.0(eslint@9.19.0)(typescript@5.7.3)
-      eslint:
-        specifier: ^9.19.0
-        version: 9.19.0
-      typescript-eslint:
-        specifier: ^8.22.0
-        version: 8.23.0(eslint@9.19.0)(typescript@5.7.3)
 
 packages:
 

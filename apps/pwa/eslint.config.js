@@ -1,4 +1,4 @@
-import baseConfig from "@repo/eslint-config";
+import baseConfig from "../../eslint.config.js";
 import nextPlugin from "@next/eslint-plugin-next";
 
 export default [
