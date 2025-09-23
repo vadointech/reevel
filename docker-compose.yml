@@ -16,7 +16,7 @@ services:
       - nginx
       - postgres
     env_file:
-      - .env.api.local
+      - .env.api
     build:
       context: .
       dockerfile: ./apps/api/Dockerfile
