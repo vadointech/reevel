@@ -21,10 +21,11 @@ export const EditProfileAvatarUploader = ({
     cropperPageUrl,
 }: EditProfileAvatarUploader.Props) => {
     const {
-        handleAvatarPick,
-        handleAvatarDelete,
+        handlePickAvatar,
+        handleDeleteAvatar,
+        handleSelectFile,
         uploadDrawerController,
-    } = useEditProfileAvatarUploader();
+    } = useEditProfileAvatarUploader(cropperPageUrl);
 
     return (
         <Controller
@@ -33,10 +34,10 @@ export const EditProfileAvatarUploader = ({
                 <UploadDrawer
                     uploads={uploads}
                     gridVariant={"rounded"}
-                    cropperPageUrl={cropperPageUrl}
                     selectedImageUrl={field.value}
-                    onImagePick={handleAvatarPick}
-                    onImageDelete={handleAvatarDelete}
+                    onImagePick={handlePickAvatar}
+                    onImageDelete={handleDeleteAvatar}
+                    onFileSelect={handleSelectFile}
                     controller={uploadDrawerController}
                 >
                     <Avatar image={avatar} variant="edit" />

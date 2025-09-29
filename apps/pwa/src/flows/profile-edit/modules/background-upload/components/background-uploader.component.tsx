@@ -22,10 +22,11 @@ export const EditProfileBackGroundUploader = ({
     cropperPageUrl,
 }: EditProfileBackGroundUploader.Props) => {
     const {
-        handleBackGroundPick,
-        handleBackGroundDelete,
+        handlePickAvatar,
+        handleDeleteAvatar,
+        handleSelectFile,
         uploadDrawerController,
-    } = useEditProfileBackGroundUploader();
+    } = useEditProfileBackGroundUploader(cropperPageUrl);
 
     return (
         <Controller
@@ -34,13 +35,16 @@ export const EditProfileBackGroundUploader = ({
                 <UploadDrawer
                     uploads={uploads}
                     gridVariant={"rounded"}
-                    cropperPageUrl={cropperPageUrl}
                     selectedImageUrl={field.value}
-                    onImagePick={handleBackGroundPick}
-                    onImageDelete={handleBackGroundDelete}
+                    onImagePick={handlePickAvatar}
+                    onImageDelete={handleDeleteAvatar}
+                    onFileSelect={handleSelectFile}
                     controller={uploadDrawerController}
                 >
-                    <ProfileHeroCover image={background} onChangeBackground />
+                    <ProfileHeroCover
+                        image={background}
+                        onChangeBackground
+                    />
                 </UploadDrawer>
             )}
         />

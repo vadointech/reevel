@@ -47,7 +47,7 @@ export function useCreateEventFormInterestsPicker(interestsInit: InterestEntity[
         interest: InterestEntity,
     ) => {
         const selected = isSelected(interest);
-        if(selected) {
+        if (selected) {
             handleRemoveInterest(field, interest);
         } else {
             handleAddInterest(field, interest);

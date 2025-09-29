@@ -2,9 +2,7 @@
 
 import { Button, Input } from "@/components/ui";
 
-import { useCallback } from "react";
-import { useImageUploaderContext } from "@/features/uploader/image";
-import { useEditProfileAvatarUploader } from "@/features/profile/edit/hooks/use-avatar-uploader.hook";
+import { useEditProfileAvatarUploader } from "@/features/profile/edit/hooks";
 
 export namespace EditProfileAvatarUploadCropper {
     export type Props = {
@@ -15,15 +13,10 @@ export namespace EditProfileAvatarUploadCropper {
 export const EditProfileAvatarUploadCropper = ({ callbackUrl }: EditProfileAvatarUploadCropper.Props) => {
 
     const {
+        isUploading,
         handleSelectFile,
-        handleFileUpload,
+        handleCropAvatar,
     } = useEditProfileAvatarUploader(callbackUrl);
-
-    const { controller } = useImageUploaderContext();
-
-    const handleCrop = useCallback(() => {
-        controller.cropImage().then(handleFileUpload);
-    }, []);
 
     return (
         <>
@@ -32,7 +25,9 @@ export const EditProfileAvatarUploadCropper = ({ callbackUrl }: EditProfileAvata
                 accept={"image/png, image/jpeg, image/webp"}
                 onChange={handleSelectFile}
             />
-            <Button onClick={handleCrop}>
+            <Button
+                loading={isUploading}
+                onClick={() => handleCropAvatar()}>
                 Confirm
             </Button>
         </>
