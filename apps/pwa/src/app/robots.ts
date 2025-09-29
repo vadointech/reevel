@@ -1,8 +1,7 @@
 import { MetadataRoute } from "next";
+import { BASE_URL } from "@/auth.config";
 
 export default function robots(): MetadataRoute.Robots {
-    const baseUrl = process.env.PWA_PUBLIC_URL || "https://reevel.site";
-  
     return {
         rules: [
             {
@@ -19,6 +18,6 @@ export default function robots(): MetadataRoute.Robots {
                 ],
             },
         ],
-        sitemap: `${baseUrl}/sitemap.xml`,
+        sitemap: `${BASE_URL}/sitemap.xml`,
     };
 }

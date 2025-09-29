@@ -1,16 +1,11 @@
 import { Metadata } from "next";
 import { PropsWithParams } from "@/types/common";
 import { EventAttendeePublicViewPage } from "@/flows/event-view/pages";
-import { getAllEvents, getEvent } from "@/api/event/server";
+import { getEvent } from "@/api/event/server";
 import { defaultMetadata } from "@/metadata.config";
 import { BASE_URL } from "@/auth.config";
 
 export const revalidate = 86400;
-
-export async function generateStaticParams() {
-    const events = await getAllEvents();
-    return events.map(item => ({ slug: item.id }));
-}
 
 export async function generateMetadata({ params }: PropsWithParams<{ slug: string }>): Promise<Metadata> {
     const { slug } = await params;
