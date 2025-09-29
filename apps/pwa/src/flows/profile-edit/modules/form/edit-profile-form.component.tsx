@@ -117,12 +117,6 @@ export const EditProfileForm = ({
                                         contentLeft={<IconLocation />}
                                         href={"/event/private/create/location"}
                                     />
-                                    <OptionsListItem
-                                        label={"Location"}
-                                        description={user?.location?.placeName}
-                                        contentLeft={<IconLocation />}
-                                        href={"/event/private/create/location"}
-                                    />
                                 </OptionsList>
                             </FormField>
                         )}
