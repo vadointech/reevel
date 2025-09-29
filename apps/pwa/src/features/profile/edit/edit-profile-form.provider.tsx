@@ -6,25 +6,25 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { indexedDbService } from "@/lib/indexed-db.service";
 
 import { editProfileFormSchema, EditProfileFormSchemaValues } from "@/features/profile/edit";
+import { EditProfileFormConfigParams } from "./types/config";
+import { EditProfileFormContext } from "./edit-profile-form.context";
+import { useMobxStore } from "@/lib/mobx";
+import { EditProfileFormStore } from "./edit-profile-form.store";
 
 export namespace EditProfileFormProvider {
-    export type Props = PropsWithChildren<Partial<EditProfileFormSchemaValues>>;
+    export type Props = PropsWithChildren<EditProfileFormConfigParams>;
 }
 
-export const EditProfileFormProvider = ({ children, ...defaultValues }: EditProfileFormProvider.Props) => {
+export const EditProfileFormProvider = ({
+    children,
+    ...config
+}: EditProfileFormProvider.Props) => {
     const form = useForm<EditProfileFormSchemaValues>({
         resolver: zodResolver(editProfileFormSchema),
-        defaultValues: {
-            fullName: "",
-            bio: "",
-            background: "",
-            picture: "",
-            interests: [],
-            location: undefined as any,
-            ...defaultValues,
-        },
+        defaultValues: config.defaultValues,
         mode: "onChange",
     });
+
 
     useEffect(() => {
         const formValues = form.getValues();
@@ -42,9 +42,14 @@ export const EditProfileFormProvider = ({ children, ...defaultValues }: EditProf
             });
     }, []);
 
+    const store = useMobxStore(EditProfileFormStore, config);
+
     return (
         <FormProvider {...form}>
-            {children}
+            <EditProfileFormContext.Provider value={{ ...form, store }}>
+
+                {children}
+            </EditProfileFormContext.Provider>
         </FormProvider>
     );
 };

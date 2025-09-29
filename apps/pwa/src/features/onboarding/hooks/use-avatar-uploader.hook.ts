@@ -32,7 +32,7 @@ export function useOnboardingAvatarUploader(callbackUrl?: string) {
         callbackUrl,
         mutationFn: uploadProfileAvatar,
         onSuccess: (upload) => {
-            if(upload) handleAvatarPick(upload);
+            if (upload) handleAvatarPick(upload);
 
             const { user } = session.store.toPlainObject();
             return revalidateSessionTag(user, [...GetUserUploads.queryKey, SupportedFileCollections.PROFILE_PICTURE]);

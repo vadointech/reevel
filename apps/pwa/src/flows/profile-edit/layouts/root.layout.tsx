@@ -2,16 +2,30 @@ import { PropsWithChildren } from "react";
 
 import { ImageUploaderProvider } from "@/features/uploader/image";
 import { EditProfileFormProvider } from "@/features/profile/edit";
+import { getCurrentUserProfile } from "@/api/user/server";
 
 export namespace EditProfileRootLayout {
     export type Props = PropsWithChildren;
 }
 
-export const EditProfileRootLayout = ({
+export const EditProfileRootLayout = async({
     children,
 }: EditProfileRootLayout.Props) => {
+    const profile = await getCurrentUserProfile();
+
+
     return (
-        <EditProfileFormProvider>
+        <EditProfileFormProvider
+            pictureToSelect={profile?.picture || "/assets/defaults/avatar.png"}
+
+            defaultValues={{
+                background: "",
+                avatar: profile?.picture || "",
+                fullName: profile?.fullName || "",
+                bio: profile?.bio || "",
+                interests: profile?.interests?.map(item => item.interest) || [],
+            }}
+        >
             <ImageUploaderProvider>
                 {children}
             </ImageUploaderProvider>

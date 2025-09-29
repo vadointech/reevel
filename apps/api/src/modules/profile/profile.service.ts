@@ -40,7 +40,7 @@ export class ProfileService {
             ...newData
         } = input;
 
-        return this.dataSource.transaction(async(entityManager) => {
+        return this.dataSource.transaction(async (entityManager) => {
 
             for (const [key, value] of Object.entries(newData)) {
                 if (value !== undefined) {

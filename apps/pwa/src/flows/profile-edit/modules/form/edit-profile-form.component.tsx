@@ -7,21 +7,28 @@ import { useCreateEventForm } from "@/features/event/create";
 
 
 import { IconArrowNext, IconLocation } from "@/components/icons";
-import { Avatar, Button, FormField, Input, OptionsList, OptionsListItem } from "@/components/ui";
+import { Button, FormField, Input, OptionsList, OptionsListItem } from "@/components/ui";
 import { Section } from "@/components/sections";
 
 import { InterestEntity } from "@/entities/interests";
 
 import styles from "./styles/edit-profile-form.module.scss";
 import { EditProfileFormSchemaValues } from "@/features/profile/edit";
-import { ProfileHeroCover } from "@/flows/profile/modules/hero/primitives";
 import { UserProfileEntity } from "@/entities/profile";
-import { CreateEventFormInterestsPicker } from "@/flows/create-event/modules/form/components";
+
+import { EditProfileAvatarUploader } from "../avatar-picker";
+import { EditProfileBackGroundUploader } from "../background-upload";
+import { useEditProfileFormContext } from "@/features/profile/edit/edit-profile-form.context";
+
+
+import { GetUserUploads } from "@/api/user/uploads";
+import { EditProfileFormInterestsPicker } from "./components";
 
 export namespace EditProfileForm {
     export type Data = {
         interests: InterestEntity[]
         user: UserProfileEntity | null
+        uploads: GetUserUploads.TOutput;
     };
     export type Props = ComponentProps<"form"> & Data;
 }
@@ -29,11 +36,14 @@ export namespace EditProfileForm {
 export const EditProfileForm = ({
     user,
     interests,
+    uploads,
     ...props
 }: EditProfileForm.Props) => {
     const { handleSubmit } = useCreateEventForm({
         nextStepUrl: "/event/private/create/preview",
     });
+
+    const { store } = useEditProfileFormContext();
 
     return (
         <form
@@ -44,13 +54,13 @@ export const EditProfileForm = ({
             <div className={styles.form__content}>
                 <div className={styles.form__hero}>
                     <div className={styles.form__hero__background}>
-                        <ProfileHeroCover image={"/assets/temp/amazon_bg.jpg"} onChangeBackground />
+                        <EditProfileBackGroundUploader uploads={uploads} cropperPageUrl="edit/upload" background={store.pictureToSelect} />
                     </div>
 
                     <div
                         className={styles.form__hero__avatar}
                     >
-                        <Avatar image={user?.picture} />
+                        <EditProfileAvatarUploader uploads={uploads} cropperPageUrl="edit/upload" avatar={store.pictureToSelect} />
                     </div>
 
                 </div>
@@ -58,13 +68,13 @@ export const EditProfileForm = ({
                 <Section className={styles.form__gap} title="Personal information">
                     <div className={styles.form__gap_sm}>
                         <Controller
-                            name={"title"}
+                            name={"fullName"}
                             render={({ field, fieldState }) => (
                                 <FormField gap={"small"} state={fieldState}>
                                     <Input
 
                                         {...field}
-                                        label={"Title"}
+                                        label={"Full Name"}
                                         placeholder={user?.fullName}
                                     />
                                 </FormField>
@@ -72,12 +82,12 @@ export const EditProfileForm = ({
                         />
                     </div>
                     <Controller
-                        name={"description"}
+                        name={"bio"}
                         render={({ field, fieldState }) => (
                             <FormField state={fieldState}>
                                 <Input.TextArea
                                     {...field}
-                                    label={"Description"}
+                                    label={"Profile Bio"}
                                     placeholder={user?.bio}
                                 />
                             </FormField>
@@ -88,15 +98,15 @@ export const EditProfileForm = ({
                 <Section
                     title={"Interests"}
                     cta={"See all"}
-                    ctaHref={"/event/private/create/interests"}
+                    ctaHref={"/profile/edit/interests"}
                 >
-                    <CreateEventFormInterestsPicker interests={interests} />
+                    <EditProfileFormInterestsPicker interests={interests} />
                 </Section>
 
                 <Section className={styles.form__gap}>
                     <Controller<EditProfileFormSchemaValues, "location">
                         name={"location"}
-                        render={({ field, fieldState }) => (
+                        render={({ fieldState }) => (
                             <FormField
                                 state={fieldState}
                             >

@@ -23,9 +23,6 @@ export class UserService {
         return this.profileRepository.findOne({
             where: { userId: session.user.id },
             relations: {
-                interests: {
-                    interest: true,
-                },
                 location: true,
             },
         });

@@ -12,7 +12,7 @@ import {
 } from "@/auth.config";
 import { refreshTokens } from "@/api/auth";
 
-export default async function(request: NextRequest) {
+export default async function (request: NextRequest) {
     const { nextUrl } = request;
 
     const ua = userAgent(request);
@@ -21,31 +21,31 @@ export default async function(request: NextRequest) {
     const isAllowedDevice = allowedDevices.includes(deviceType);
     const isScanPage = nextUrl.pathname.startsWith(StaticRoutes.Scan);
 
-    if(!isAllowedDevice) {
-        if(!isScanPage) {
+    if (!isAllowedDevice) {
+        if (!isScanPage) {
             return NextResponse.redirect(new URL(StaticRoutes.Scan, nextUrl));
         }
         return intlMiddleware(request);
     }
 
-    // return intlMiddleware(request);
+    return intlMiddleware(request);
 
     const isPublicRoute = publicRoutes.includes(nextUrl.pathname);
     const isLoginRoute = nextUrl.pathname.startsWith(StaticRoutes.Login);
     const isOnboardingRoute = nextUrl.pathname.startsWith(StaticRoutes.Onboarding);
 
-    if(nextUrl.pathname === StaticRoutes.Root) {
+    if (nextUrl.pathname === StaticRoutes.Root) {
         return NextResponse.redirect(new URL(StaticRoutes.Discover, nextUrl));
     }
 
-    if(isPublicRoute) {
+    if (isPublicRoute) {
         return intlMiddleware(request);
     }
 
     const accessToken = request.cookies.get(AuthJwtTokens.AccessToken);
 
     try {
-        if(!accessToken?.value) {
+        if (!accessToken?.value) {
             throw new Error("No access token");
         }
 
@@ -54,7 +54,7 @@ export default async function(request: NextRequest) {
             new TextEncoder().encode(ACCESS_JWT_SECRET),
         );
 
-        if(verificationResult.payload.exp) {
+        if (verificationResult.payload.exp) {
             const timeLeft = verificationResult.payload.exp * 1000 - Date.now();
             const bufferSeconds = 180; // 3 min
 
@@ -63,31 +63,31 @@ export default async function(request: NextRequest) {
             }
         }
 
-        if(verificationResult.payload.completed === -1) {
-            if(isOnboardingRoute) {
+        if (verificationResult.payload.completed === -1) {
+            if (isOnboardingRoute) {
                 return NextResponse.redirect(new URL(StaticRoutes.Discover, nextUrl));
             }
         } else {
-            if(!isOnboardingRoute) {
+            if (!isOnboardingRoute) {
                 const stepPath = onboardingStepRoutes[verificationResult.payload.completed];
-                if(stepPath) {
+                if (stepPath) {
                     return NextResponse.redirect(new URL(stepPath, nextUrl));
                 }
             }
         }
 
-        if(isLoginRoute) {
+        if (isLoginRoute) {
             return NextResponse.redirect(new URL(StaticRoutes.Discover, nextUrl));
         }
 
         return intlMiddleware(request);
-    } catch(error: any) {
+    } catch (error: any) {
         console.log("Access token verification failed: ", error.message);
 
         const refreshToken = request.cookies.get(AuthJwtTokens.RefreshToken);
 
         try {
-            if(!refreshToken?.value) {
+            if (!refreshToken?.value) {
                 throw new Error("No refresh token");
             }
 
@@ -98,7 +98,7 @@ export default async function(request: NextRequest) {
                 },
             });
 
-            if(!tokensResponse.ok || !tokensResponse.data) {
+            if (!tokensResponse.ok || !tokensResponse.data) {
                 throw new Error("Failed to refresh token");
             }
 
@@ -108,7 +108,7 @@ export default async function(request: NextRequest) {
             response.cookies.set(AuthJwtTokens.RefreshToken, tokensResponse.data.refreshToken, authCookiesParams);
 
             return response;
-        } catch(error: any) {
+        } catch (error: any) {
             console.log("Refresh token verification failed: ", error.message);
 
             const response = isLoginRoute ?
@@ -123,7 +123,7 @@ export default async function(request: NextRequest) {
                 name: AuthJwtTokens.RefreshToken,
                 ...authCookiesParams,
             });
-            
+
             return response;
         }
     }

@@ -6,18 +6,15 @@ import { ScrollSection } from "@/components/sections";
 
 import styles from "../styles/profile-page.module.scss";
 import cx from "classnames";
-import { getCurrentUserProfile } from "@/api/user/get-profile";
-import { headers } from "next/headers";
 import { ProfileProvider } from "../modules/profile-context";
+import { getCurrentUserProfile } from "@/api/user/server";
 
 export namespace ProfilePrivateViewPage {
     export type Props = never;
 }
 
 export async function ProfilePrivateViewPage() {
-    const { data: user } = await getCurrentUserProfile({
-        nextHeaders: await headers(),
-    });
+    const user = await getCurrentUserProfile();
 
     return (
         <>

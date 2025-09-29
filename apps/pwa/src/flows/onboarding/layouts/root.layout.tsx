@@ -11,13 +11,14 @@ export namespace OnboardingRootLayout {
     export type Props = PropsWithChildren;
 }
 
-export async function OnboardingRootLayout({  children }: OnboardingRootLayout.Props) {
+export async function OnboardingRootLayout({ children }: OnboardingRootLayout.Props) {
     const profile = await getCurrentUserProfile();
 
     return (
         <OnboardingFormProvider
             pictureToSelect={profile?.picture || "/assets/defaults/avatar.png"}
             defaultValues={{
+                placeName: profile?.location?.placeName || "",
                 picture: profile?.picture || "",
                 fullName: profile?.fullName || "",
                 bio: profile?.bio || "",
@@ -26,7 +27,7 @@ export async function OnboardingRootLayout({  children }: OnboardingRootLayout.P
         >
             <ImageUploaderProvider>
                 <div className={styles.layout}>
-                    { children }
+                    {children}
                 </div>
             </ImageUploaderProvider>
         </OnboardingFormProvider>

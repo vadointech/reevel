@@ -3,7 +3,7 @@ import { formInterestsEntitySchema } from "@/features/interests/picker";
 import { placeLocationEntity } from "@/entities/place";
 
 export const editProfileFormSchema = z.object({
-    picture: z.string(),
+    avatar: z.string(),
     background: z.string(),
     fullName: z.string(),
     bio: z.string(),
