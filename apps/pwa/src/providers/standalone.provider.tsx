@@ -1,15 +1,29 @@
 "use client";
 
-import { PropsWithChildren } from "react";
+import { createContext, PropsWithChildren, useContext, useState } from "react";
+import { isStandalone } from "@/utils/display-mode";
+
+const StandaloneContext = createContext<boolean | null>(null);
 
 export const StandaloneProvider = ({ children }: PropsWithChildren) => {
-    const isStandalone = typeof window !== "undefined" && ("standalone" in window.navigator) && (window.navigator["standalone"]);
+    const [standalone] = useState(() => {
+        if(typeof window === "undefined") {
+            return false;
+        }
+        return isStandalone();
+    });
 
-    if(isStandalone) return (
-        <div className={"standalone"}>
+    return (
+        <StandaloneContext.Provider value={standalone}>
             { children }
-        </div>
+        </StandaloneContext.Provider>
     );
-
-    return children;
 };
+
+export function useStandaloneContext() {
+    const ctx = useContext(StandaloneContext);
+    if(ctx === null) {
+        throw new Error("useStandaloneContext must be used within <StandaloneProvider />");
+    }
+    return ctx;
+}

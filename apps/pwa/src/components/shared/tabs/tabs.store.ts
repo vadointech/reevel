@@ -1,4 +1,5 @@
-import { createMobxStoreProvider, initStore } from "@/lib/mobx";
+import { constructorInit } from "@/lib/init";
+import { createMobxStoreProvider } from "@/lib/mobx";
 import { action, makeObservable, observable } from "mobx";
 
 interface ITabsStore {
@@ -9,11 +10,11 @@ class TabsStore implements ITabsStore {
     activeTabIndex = 0;
 
     constructor(init: Partial<ITabsStore>) {
+        constructorInit(this, init);
         makeObservable(this, {
             activeTabIndex: observable,
             setActiveTabIndex: action,
         });
-        initStore(this, init);
     }
 
     dispose() {}

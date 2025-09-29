@@ -1,6 +1,6 @@
 import { ILocationSearchStore } from "@/features/location/search/types";
 import { action, makeObservable, observable, reaction } from "mobx";
-import { initStore } from "@/lib/mobx";
+import { constructorInit } from "@/lib/init";
 import { PlaceLocationEntity } from "@/entities/place";
 
 export class LocationSearchStore implements ILocationSearchStore {
@@ -15,7 +15,7 @@ export class LocationSearchStore implements ILocationSearchStore {
         init?: Partial<ILocationSearchStore>,
         syncLocationToConfirm?: (location: PlaceLocationEntity | null) => void,
     ) {
-        initStore(this, init);
+        constructorInit(this, init);
 
         makeObservable(this, {
             searchQuery: observable,

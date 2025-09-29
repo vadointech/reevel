@@ -155,7 +155,6 @@ export class Fetcher implements IFetcher {
 
             return fetcherResponse;
         } catch(error) {
-            console.log(error);
             return {
                 url,
                 data: config.fallback || null,
@@ -185,11 +184,14 @@ export class Fetcher implements IFetcher {
 
         const contentType = response.headers.get("Content-Type");
 
-        if (contentType && contentType.includes("application/json")) {
+        if (contentType && contentType.includes(FetcherRequestContentType.JSON)) {
             fetcherResponse.data = await response.json() as TOutput;
         } else {
             // Handle text-area or other response types
             const text = await response.text();
+
+            if(text.length === 0) return fetcherResponse;
+
             try {
                 fetcherResponse.data = JSON.parse(text) as TOutput;
             } catch {

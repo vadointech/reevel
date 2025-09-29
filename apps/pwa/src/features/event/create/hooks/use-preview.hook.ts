@@ -3,30 +3,39 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { useRouter } from "@/i18n/routing";
 import { EventVisibility } from "@/entities/event";
-import { useMutation, UseMutationOptions } from "@tanstack/react-query";
+import { useMutation } from "@tanstack/react-query";
 import { CreateEvent } from "@/api/event/create";
 import { useFormContext } from "react-hook-form";
 import { createEventFormSchema, CreateEventFormSchemaValues } from "@/features/event/create";
 import { indexedDbService } from "@/lib/indexed-db.service";
 import { useSessionContext } from "@/features/session";
-import { SupportedFileCollections, UserUploadsEntity } from "@/entities/uploads";
+import { UserUploadsEntity } from "@/entities/uploads";
 import { IBottomSheetRootController } from "@/components/shared/bottom-sheet/types";
-import { GetUserUploads } from "@/api/user/uploads";
-import { revalidateSessionTag } from "@/features/cache";
 import { FetcherErrorResponse } from "@/lib/fetcher/types";
 import { createEvent } from "@/api/event/server";
-import { useUploadedFileDelete } from "@/features/uploader/hooks";
+import { useFileSelect, useUploadedFileDelete } from "@/features/uploader/hooks";
+import { StaticRoutes } from "@/auth.config";
+import { useImageUploaderContext } from "@/features/uploader/image";
 
-type Params = Partial<Omit<UseMutationOptions<CreateEvent.TOutput, unknown, CreateEvent.TInput>, "mutationFn">> & {
-    callbackUrl?: string;
+type Params = {
+    callbackUrl: string;
+    cropperPageUrl?: string;
 };
 
-export function useCreateEventPreview(params: Params = {}) {
+export function useCreateEventPreview(params: Params) {
     const form = useFormContext<CreateEventFormSchemaValues>();
     const router = useRouter();
     const session = useSessionContext();
+    const imageUploader = useImageUploaderContext();
     
     const uploadDrawerController = useRef<IBottomSheetRootController>(null);
+
+    const handleSelectFile = useFileSelect({
+        onFileSelected: (src) => {
+            imageUploader.controller.setImageSrc(src);
+            if(params.cropperPageUrl) router.push(params.cropperPageUrl);
+        },
+    });
 
     const [formValues, setFormValues] = useState<CreateEventFormSchemaValues | undefined>(() => {
         const formValues = form.getValues();
@@ -42,7 +51,7 @@ export function useCreateEventPreview(params: Params = {}) {
                     if(data) {
                         setFormValues(data);
                     } else {
-                        router.push(params.callbackUrl || "/");
+                        router.push(params.callbackUrl);
                     }
                 });
         }
@@ -51,26 +60,22 @@ export function useCreateEventPreview(params: Params = {}) {
     const createEventMutation = useMutation<CreateEvent.TOutput, FetcherErrorResponse, CreateEvent.TInput>({
         mutationKey: CreateEvent.queryKey,
         mutationFn: createEvent,
-        ...params,
-        onSuccess: (...args) => {
+        onSuccess: () => {
             indexedDbService.removeItem("event_form_values");
-            router.push("/");
-            params.onSuccess?.(...args);
+            router.push(StaticRoutes.Discover);
         },
     });
   
     const handlePublishEvent = useCallback(async() => {
         if(!formValues) return;
-        const { success, data } = createEventFormSchema.safeParse(formValues);
-        if(!success || !data) return;
 
-        const interests = data.interests.map(item => item.slug);
-        const visibility = data.visibility as EventVisibility;
+        const interests = formValues.interests.map(item => item.slug);
+        const visibility = formValues.visibility as EventVisibility;
 
-        const startDate = new Date(data.startDate);
+        const startDate = new Date(formValues.startDate);
 
-        if(data.startTime) {
-            const startTime = new Date(data.startTime);
+        if(formValues.startTime) {
+            const startTime = new Date(formValues.startTime);
             startDate.setHours(
                 startTime.getHours(),
                 startTime.getMinutes(),
@@ -78,11 +83,11 @@ export function useCreateEventPreview(params: Params = {}) {
         }
 
         let endDate: Date | undefined = undefined;
-        if(data.endDate) {
-            endDate = new Date(data.endDate);
+        if(formValues.endDate) {
+            endDate = new Date(formValues.endDate);
         }
-        if(data.endTime) {
-            const endTime = new Date(data.endTime);
+        if(formValues.endTime) {
+            const endTime = new Date(formValues.endTime);
             if(endDate) {
                 endDate.setHours(
                     endTime.getHours(),
@@ -94,12 +99,12 @@ export function useCreateEventPreview(params: Params = {}) {
         }
 
         createEventMutation.mutate({
-            ...data,
-            poster: data.poster.fileUrl,
-            posterFieldId: data.poster.id,
+            ...formValues,
+            poster: formValues.poster.fileUrl,
+            posterFieldId: formValues.poster.id,
             visibility,
-            locationPoint: data.location.geometry.coordinates,
-            locationTitle: data.location.properties.label,
+            locationPoint: formValues.location.geometry.coordinates,
+            locationTitle: formValues.location.properties.label,
             interests,
             startDate,
             endDate,
@@ -141,18 +146,20 @@ export function useCreateEventPreview(params: Params = {}) {
 
     const handlePosterDelete = useUploadedFileDelete({
         onSuccess: () => {
-            const { user } = session.store.toPlainObject();
-            revalidateSessionTag(user, [...GetUserUploads.queryKey, SupportedFileCollections.EVENT_POSTER]);
+            router.refresh();
         },
     });
 
     return {
         session,
         formValues,
+        handleSelectFile,
         handlePosterPick,
         handlePosterDelete,
         handlePublishEvent,
         handlePosterPrimaryColorChange,
+
+        isPublishing: createEventMutation.isPending,
 
         uploadDrawerController,
     };

@@ -12,13 +12,17 @@ export namespace OnboardingNextStepButton {
 
 export const OnboardingNextStepButton = ({ revalidateQueryOnSuccess, ...props }: OnboardingNextStepButton.Props) => {
 
-    const handleUpdate = useOnboardingUpdate({ revalidateQueryOnSuccess });
+    const {
+        isUpdating,
+        handleUpdate,
+    } = useOnboardingUpdate({ revalidateQueryOnSuccess });
 
     return (
         <Button
             variant={"accent"}
             arrowAfter={<IconArrowNext />}
             onClick={handleUpdate}
+            loading={isUpdating}
             {...props}
         />
     );

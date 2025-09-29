@@ -1,22 +1,24 @@
 "use server";
 
 import { cookies } from "next/headers";
-import { refreshTokens } from "@/api/auth/refresh";
+import { getRefreshToken } from "@/api/server";
+import { refreshTokens } from "@/api/auth";
+import { authCookiesParams, AuthJwtTokens } from "@/auth.config";
 import { ActionResponse } from "@/lib/action";
 
 export async function refreshSessionAction() {
     const cookieStore = await cookies();
-    const refreshToken = cookieStore.get("refresh_token");
+    const refreshToken = await getRefreshToken();
 
     try {
-        if(!refreshToken?.value) {
+        if(!refreshToken) {
             throw new Error("No refresh token");
         }
 
         const tokensResponse = await refreshTokens({
             authorization: {
                 method: "Bearer",
-                token: refreshToken.value,
+                token: refreshToken,
             },
         });
 
@@ -24,25 +26,22 @@ export async function refreshSessionAction() {
             throw new Error("Failed to refresh token");
         }
 
-        cookieStore.set("access_token", tokensResponse.data.accessToken, {
-            httpOnly: true,
-            path: "/",
-            secure: true,
-            sameSite: "strict",
-        });
-        cookieStore.set("refresh_token", tokensResponse.data.refreshToken, {
-            httpOnly: true,
-            path: "/",
-            secure: true,
-            sameSite: "strict",
-        });
+
+        cookieStore.set(AuthJwtTokens.AccessToken, tokensResponse.data.accessToken, authCookiesParams);
+        cookieStore.set(AuthJwtTokens.RefreshToken, tokensResponse.data.refreshToken, authCookiesParams);
 
         return ActionResponse.Success();
     } catch(error: any) {
         console.log("Refresh token verification failed: ", error.message);
 
-        cookieStore.delete("access_token");
-        cookieStore.delete("refresh_token");
+        cookieStore.delete({
+            name: AuthJwtTokens.AccessToken,
+            ...authCookiesParams,
+        });
+        cookieStore.delete({
+            name: AuthJwtTokens.RefreshToken,
+            ...authCookiesParams,
+        });
 
         return ActionResponse.Error();
     }

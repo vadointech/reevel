@@ -1,5 +1,8 @@
+"use client";
+
 import { ComponentProps, HTMLAttributeAnchorTarget, ReactNode } from "react";
 import { Link } from "@/i18n/routing";
+import { Spinner } from "./spinner.component";
 
 import { UISize } from "@/types/common";
 
@@ -23,6 +26,7 @@ export namespace Button {
         iconBefore?: ReactNode;
         iconAfter?: ReactNode;
         arrowAfter?: ReactNode;
+        loading?: boolean;
         href?: string;
         target?: HTMLAttributeAnchorTarget
     };
@@ -38,44 +42,55 @@ export const Button = ({
     className,
     type = "button",
     href,
+    loading,
     target,
     ...props
 }: Button.Props) => {
-    const Component = () => {
-        return (
-            <button
-                className={cx(
-                    styles.button,
-                    styles[`button_size_${size}`],
-                    styles[`button_variant_${variant}`],
-                    className,
-                )}
-                type={type}
-                {...props}
-            >
-                { iconBefore }
-                <span>
-                    { children }
-                </span>
-                { iconAfter }
-                {
-                    arrowAfter ? (
-                        <div className={styles["button__arrow-after"]}>
-                            { arrowAfter }
-                        </div>
-                    ) : null
-                }
-            </button>
-        );
-    };
+    const buttonContent = (
+        <>
+            <Spinner loading={loading} />
+            { iconBefore }
+            <span>
+                { children }
+            </span>
+            {iconAfter}
+            {
+                arrowAfter ? (
+                    <div className={styles["button__arrow-after"]}>
+                        { arrowAfter }
+                    </div>
+                ) : null
+            }
+        </>
+    );
 
-    if(href) {
+    const buttonClasses = cx(
+        styles.button,
+        styles[`button_size_${size}`],
+        styles[`button_variant_${variant}`],
+        className,
+    );
+
+    if (href) {
         return (
-            <Link href={href} target={target}>
-                <Component />
+            <Link
+                href={href}
+                target={target}
+                className={buttonClasses}
+                {...props as ComponentProps<"a">}
+            >
+                { buttonContent }
             </Link>
         );
     }
 
-    return <Component />;
+    return (
+        <button
+            className={buttonClasses}
+            type={type}
+            {...props}
+        >
+            { buttonContent }
+        </button>
+    );
 };

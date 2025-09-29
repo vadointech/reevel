@@ -9,10 +9,12 @@ import { ServiceWorkerProvider } from "@/service-worker/client";
 import { ReactQueryClientProvider } from "@/providers/react-query-provider";
 import { StandaloneProvider } from "@/providers/standalone.provider";
 import { QuerySelectorProvider } from "@/providers/query-selector.provider";
+import { standaloneDocumentChecker } from "@/utils/display-mode";
 
 import { type ParamsWithLocale } from "@/types/common";
 
 import "../globals.scss";
+import { SharedClassNames } from "@/theme/shared/class-names";
 
 export const metadata: Metadata = {
     title: "Reevel",
@@ -37,9 +39,18 @@ export default async function RootLayout({ children, params }: PropsWithChildren
     setRequestLocale(locale);
     const messages = await getMessages();
 
+    const pwaScript = `(${standaloneDocumentChecker.toString()})();`;
+
     return (
-        <html lang={locale} suppressHydrationWarning>
-            <body className={fonts} >
+        <html lang={locale} suppressHydrationWarning className={"display-browser"}>
+            <head>
+                <script
+                    dangerouslySetInnerHTML={{
+                        __html: pwaScript,
+                    }}
+                />
+            </head>
+            <body className={fonts}>
                 <ServiceWorkerProvider register={process.env.SERVICE_WORKER === "true"}>
                     <NextIntlClientProvider
                         locale={locale}
@@ -48,7 +59,7 @@ export default async function RootLayout({ children, params }: PropsWithChildren
                         <ReactQueryClientProvider>
                             <StandaloneProvider>
                                 <QuerySelectorProvider>
-                                    <main id={"main"}>
+                                    <main id={"main"} className={SharedClassNames.PbStandalone}>
                                         {children}
                                     </main>
                                     <div id={"modal-root"} />

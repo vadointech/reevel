@@ -15,6 +15,7 @@ import { BottomSheetOverlay } from "./overlay.component";
 
 import styles from "../styles.module.scss";
 import cx from "classnames";
+import { BottomSheetDisplayMode } from "@/components/shared/bottom-sheet/types";
 
 export namespace BottomSheetBody {
     export type Props = HTMLMotionProps<"div"> & {
@@ -73,6 +74,8 @@ export const BottomSheetBody = ({
         },
     );
 
+    const isStandalone = controller.current.internalConfig.displayMode === BottomSheetDisplayMode.Standalone;
+
     return (
         <>
             {
@@ -118,6 +121,7 @@ export const BottomSheetBody = ({
                     }}
                     className={cx(
                         styles.bottomSheet__body,
+                        isStandalone && styles.bottomSheet__body_standalone,
                         className,
                     )}
                     onPointerDown={(event) => {

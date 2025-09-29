@@ -111,7 +111,7 @@ export class BottomSheetRootController implements IBottomSheetRootController {
         const lastSnapPointIndex = this._internalConfig.snapPointsCount - 1;
         const isAtBottom = currentSnapPointIndex === lastSnapPointIndex;
 
-        if (velocity >= 30 && isAtBottom) {
+        if(velocity >= 30 && isAtBottom) {
             if(this._internalConfig.dismissible) {
                 this.close();
             }
@@ -131,7 +131,6 @@ export class BottomSheetRootController implements IBottomSheetRootController {
         if(index < 0 || index >= this._internalConfig.snapPointsCount) return;
 
         const y = this.snapPointController.getPositionPxByIndex(index);
-        if(y === this._store.positionPx) return;
 
         this.animationControls.start(
             { y },

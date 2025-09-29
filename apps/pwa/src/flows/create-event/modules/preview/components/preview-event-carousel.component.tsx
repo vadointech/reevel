@@ -11,7 +11,7 @@ import styles from "../styles/create-event-preview-carousel.module.scss";
 
 export namespace CreateEventPreviewCarousel {
     export type Data = {
-        posterUrl: string | undefined;
+        posterUrl: string;
         posterColorPalette: string[];
         eventData: CreateEventFormSchemaValues;
         host?: UserProfileEntity;

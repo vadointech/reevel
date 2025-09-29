@@ -19,3 +19,10 @@ export async function getRefreshToken() {
     const cookieStore = await cookies();
     return cookieStore.get(AuthJwtTokens.RefreshToken)?.value;
 }
+export async function deleteRefreshToken() {
+    const cookieStore = await cookies();
+    cookieStore.delete({
+        name: AuthJwtTokens.RefreshToken,
+        ...authCookiesParams,
+    });
+}

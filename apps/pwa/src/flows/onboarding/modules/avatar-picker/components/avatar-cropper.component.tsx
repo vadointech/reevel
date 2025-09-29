@@ -1,10 +1,7 @@
 "use client";
 
 import { Button, Input } from "@/components/ui";
-
 import { useOnboardingAvatarUploader } from "@/features/onboarding/hooks";
-import { useCallback } from "react";
-import { useImageUploaderContext } from "@/features/uploader/image";
 
 export namespace OnboardingAvatarUploadCropper {
     export type Props = {
@@ -13,17 +10,11 @@ export namespace OnboardingAvatarUploadCropper {
 }
 
 export const OnboardingAvatarUploadCropper = ({ callbackUrl }: OnboardingAvatarUploadCropper.Props) => {
-
     const {
+        isUploading,
         handleSelectFile,
-        handleFileUpload,
+        handleCropAvatar,
     } = useOnboardingAvatarUploader(callbackUrl);
-
-    const { controller } = useImageUploaderContext();
-
-    const handleCrop = useCallback(() => {
-        controller.cropImage().then(handleFileUpload);
-    }, []);
 
     return (
         <>
@@ -32,7 +23,10 @@ export const OnboardingAvatarUploadCropper = ({ callbackUrl }: OnboardingAvatarU
                 accept={"image/png, image/jpeg, image/webp"}
                 onChange={handleSelectFile}
             />
-            <Button onClick={handleCrop}>
+            <Button
+                loading={isUploading}
+                onClick={() => handleCropAvatar()}
+            >
                 Confirm
             </Button>
         </>

@@ -1,5 +1,5 @@
 import { action, makeObservable, observable, reaction } from "mobx";
-import { initStore } from "@/lib/mobx";
+import { constructorInit } from "@/lib/init";
 import { InterestEntity } from "@/entities/interests";
 import { IInterestsPickerStore } from "./types";
 
@@ -16,6 +16,8 @@ export class InterestsPickerStore implements IInterestsPickerStore {
         init: Partial<IInterestsPickerStore>,
         syncSelectedInterests?: (interests: InterestEntity[]) => void,
     ) {
+        constructorInit(this, init);
+
         makeObservable(this, {
             interests: observable.shallow,
             selectedInterests: observable.shallow,
@@ -27,7 +29,6 @@ export class InterestsPickerStore implements IInterestsPickerStore {
             setSearchTerm: action,
         });
 
-        initStore(this, init);
 
         if(syncSelectedInterests) {
             this.disposeReaction = reaction(
