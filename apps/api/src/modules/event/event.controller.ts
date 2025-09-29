@@ -10,7 +10,7 @@ import {
 } from "@nestjs/common";
 import { EventService } from "./event.service";
 import { CreateEventDto } from "./dto/create-event.dto";
-import { Session } from "@/decorators";
+import { Public, Session } from "@/decorators";
 import { FileUploadInterceptor } from "@/modules/uploads/uploads.interceptor";
 import { UpdateEventDto } from "@/modules/event/dto/update-event.dto";
 import { GetNearbyEventsDto } from "@/modules/event/dto/get-nearby.dto";
@@ -21,6 +21,12 @@ export class EventController {
     constructor(
         private eventService: EventService,
     ) {}
+
+    @Public()
+    @Get()
+    getEvents() {
+        return this.eventService.getEvents();
+    }
 
     @Post()
     async createEvent(

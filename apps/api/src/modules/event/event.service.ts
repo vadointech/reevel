@@ -36,6 +36,10 @@ export class EventService {
 
         private dataSource: DataSource,
     ) {}
+
+    async getEvents() {
+        return this.eventRepository.findMany();
+    }
     
     async createEvent(session: ServerSession<ISessionUser>, input: CreateEventDto): Promise<EventsEntity> {
         try {

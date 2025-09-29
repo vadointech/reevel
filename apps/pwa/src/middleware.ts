@@ -23,18 +23,18 @@ export default async function(request: NextRequest) {
 
     if(!isAllowedDevice) {
         if(!isScanPage) {
-            return NextResponse.redirect(new URL(StaticRoutes.Scan, nextUrl));
+            return NextResponse.redirect(new URL(StaticRoutes.Scan, nextUrl), 302);
         }
         return intlMiddleware(request);
+    } else {
+        if(isScanPage) {
+            return NextResponse.redirect(new URL(StaticRoutes.Discover, nextUrl), 302);
+        }
     }
 
     const isPublicRoute = publicRoutes.includes(nextUrl.pathname);
     const isLoginRoute = nextUrl.pathname.startsWith(StaticRoutes.Login);
     const isOnboardingRoute = nextUrl.pathname.startsWith(StaticRoutes.Onboarding);
-
-    if(nextUrl.pathname === StaticRoutes.Root) {
-        return NextResponse.redirect(new URL(StaticRoutes.Discover, nextUrl));
-    }
 
     if(isPublicRoute) {
         return intlMiddleware(request);
@@ -63,19 +63,19 @@ export default async function(request: NextRequest) {
 
         if(verificationResult.payload.completed === -1) {
             if(isOnboardingRoute) {
-                return NextResponse.redirect(new URL(StaticRoutes.Discover, nextUrl));
+                return NextResponse.redirect(new URL(StaticRoutes.Discover, nextUrl), 302);
             }
         } else {
             if(!isOnboardingRoute) {
                 const stepPath = onboardingStepRoutes[verificationResult.payload.completed];
                 if(stepPath) {
-                    return NextResponse.redirect(new URL(stepPath, nextUrl));
+                    return NextResponse.redirect(new URL(stepPath, nextUrl), 302);
                 }
             }
         }
 
         if(isLoginRoute) {
-            return NextResponse.redirect(new URL(StaticRoutes.Discover, nextUrl));
+            return NextResponse.redirect(new URL(StaticRoutes.Discover, nextUrl), 302);
         }
 
         return intlMiddleware(request);
@@ -111,7 +111,7 @@ export default async function(request: NextRequest) {
 
             const response = isLoginRoute ?
                 intlMiddleware(request) :
-                NextResponse.redirect(new URL(StaticRoutes.Login, nextUrl));
+                NextResponse.redirect(new URL(StaticRoutes.Login, nextUrl), 302);
 
             response.cookies.delete({
                 name: AuthJwtTokens.AccessToken,
@@ -121,7 +121,7 @@ export default async function(request: NextRequest) {
                 name: AuthJwtTokens.RefreshToken,
                 ...authCookiesParams,
             });
-            
+
             return response;
         }
     }
