@@ -22,12 +22,6 @@ export class EventController {
         private eventService: EventService,
     ) {}
 
-    @Public()
-    @Get()
-    getEvents() {
-        return this.eventService.getEvents();
-    }
-
     @Post()
     async createEvent(
         @Body() body: CreateEventDto,
@@ -71,6 +65,14 @@ export class EventController {
         return this.eventService.getNearbyEvents(body);
     }
 
+
+    @Public()
+    @Get()
+    getEvents() {
+        return this.eventService.getEvents();
+    }
+
+    @Public()
     @Get(":eventId")
     async getEventById(
         @Param("eventId") eventId: string,

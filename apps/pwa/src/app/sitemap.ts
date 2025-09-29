@@ -1,5 +1,5 @@
 import { MetadataRoute } from "next";
-import { getAllEvents } from "@/api/event/server";
+import { getAllEvents } from "@/api/event";
 
 const rootRoute = "/discover";
 const staticRoutes = [
@@ -8,9 +8,12 @@ const staticRoutes = [
 ];
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-    const baseUrl = process.env.PWA_PUBLIC_URL || "https://reevel.site";
+    const baseUrl = process.env.NEXT_PUBLIC_URL;
 
-    const events = await getAllEvents();
+    const { data: events } = await getAllEvents({
+        baseURL: process.env.NEXT_PUBLIC_API_URL,
+        fallback: [],
+    });
 
     const staticUrls = staticRoutes.map(route => ({
         url: `${baseUrl}${route}`,

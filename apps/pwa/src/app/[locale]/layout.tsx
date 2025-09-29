@@ -19,13 +19,9 @@ import { type ParamsWithLocale } from "@/types/common";
 import "../globals.scss";
 
 export const metadata: Metadata = {
-    title: "Reevel | Find Local Events & Meet New People Near You",
+    title: "Reevel – Find Local Events & Meet New People Near You",
     description: "Reevel is a social app that helps you find local events and meet new people nearby. From board games and live music to casual hangouts — explore things to do tonight or create your own event in minutes.",
     keywords: ["events", "meetups", "find friends", "social platform", "local events", "hobbies", "community"],
-
-    alternates: {
-        canonical: "/discover",
-    },
 
     robots: {
         index: true,

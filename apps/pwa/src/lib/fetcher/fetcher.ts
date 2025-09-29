@@ -17,8 +17,8 @@ export class Fetcher implements IFetcher {
     private readonly internalFetcher: IFetcher;
 
     constructor(
-        private readonly defaults: FetcherRequest,
-        private readonly interceptors: FetcherInterceptor,
+        private readonly defaults: FetcherRequest = {},
+        private readonly interceptors?: FetcherInterceptor,
     ) {
         this.internalFetcher = {
             get: (url, config) => this.request(url, { ...config, method: "GET", _isInternalCall: true }),
@@ -75,7 +75,7 @@ export class Fetcher implements IFetcher {
         try {
             let processedConfig = config;
 
-            if(!config._isInternalCall) {
+            if(!config._isInternalCall && this.interceptors !== undefined) {
                 for(const interceptor of this.interceptors.requestInterceptorsChain) {
                     processedConfig = await interceptor(
                         processedConfig,
@@ -143,7 +143,7 @@ export class Fetcher implements IFetcher {
 
             let fetcherResponse = await this.parseResponse(response, fallback);
 
-            if(!config._isInternalCall) {
+            if(!config._isInternalCall && this.interceptors !== undefined) {
                 for(const interceptor of this.interceptors.responseInterceptorsChain) {
                     fetcherResponse = await interceptor(
                         fetcherResponse,
