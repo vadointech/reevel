@@ -11,10 +11,11 @@ import { StandaloneProvider } from "@/providers/standalone.provider";
 import { QuerySelectorProvider } from "@/providers/query-selector.provider";
 import { standaloneDocumentChecker } from "@/utils/display-mode";
 
+import { SharedClassNames } from "@/theme/shared/class-names";
+
 import { type ParamsWithLocale } from "@/types/common";
 
 import "../globals.scss";
-import { SharedClassNames } from "@/theme/shared/class-names";
 
 export const metadata: Metadata = {
     title: "Reevel",
