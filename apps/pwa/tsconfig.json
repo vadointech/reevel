@@ -1,7 +1,6 @@
 {
   "extends": "../../tsconfig.json",
   "compilerOptions": {
-    "baseUrl": "./",
     "allowJs": true,
     "noEmit": true,
     "jsx": "preserve",
@@ -10,7 +9,10 @@
       {
         "name": "next"
       }
-    ]
+    ],
+    "paths": {
+      "@/*": ["./src/*"],
+    }
   },
   "include": [
     "next-env.d.ts",
