@@ -1,0 +1,31 @@
+services:
+  nginx:
+    container_name: revl-nginx
+    restart: always
+    build:
+      context: ./apps/nginx
+    ports:
+      - 80:80
+    networks:
+      - app-net
+
+  api:
+    container_name: revl-api
+    restart: always
+    depends_on:
+      - nginx
+    env_file:
+      - .env.api
+    build:
+      context: .
+      dockerfile: ./apps/api/Dockerfile
+      args:
+        PACKAGE_NAME: api
+    ports:
+      - 80
+    networks:
+      - app-net
+
+networks:
+  app-net:
+    driver: bridge

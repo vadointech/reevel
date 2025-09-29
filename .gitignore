@@ -6,10 +6,10 @@ node_modules
 .pnp.js
 
 # Local env files
-.env
-.env.*.local
+.env*
+!.env*.example
 
-!env/*.example
+*.local.yml
 
 # Testing
 coverage
@@ -39,6 +39,11 @@ dist
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+
+# Build output
+*.jsx
+*.jsx.map
+*.d.ts
 
 # Misc
 .DS_Store
