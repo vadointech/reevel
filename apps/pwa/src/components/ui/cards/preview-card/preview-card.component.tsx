@@ -2,7 +2,7 @@ import { ComponentProps } from "react";
 import Image from "next/image";
 import { useCreateEventFormFieldFormatter } from "@/features/event/create";
 import { IconCalendar } from "@/components/icons";
-import { AttendersSection } from "@/components/ui";
+import { AttendeesBadge } from "@/components/ui";
 
 import { EventEntity } from "@/entities/event";
 
@@ -48,7 +48,7 @@ export const PreviewCard = ({
                         { event.title }
                     </div>
 
-                    <AttendersSection size={"small"} users={event.tickets.map(item => item.user.profile)} />
+                    <AttendeesBadge size={"small"} users={event.tickets.map(item => item.user.profile)} />
                 </div>
             </div>
         </div>

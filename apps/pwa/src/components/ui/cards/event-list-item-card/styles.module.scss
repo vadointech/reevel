@@ -1,0 +1,46 @@
+@use "@/theme/mixins";
+@use "@/theme/colors";
+@use "@/theme/typography";
+
+.card {
+    //position: relative;
+    //z-index: 2;
+
+    height: mixins.rem(100);
+
+    display: flex;
+    align-items: center;
+    column-gap: mixins.rem(18);
+
+    color: colors.$primary;
+
+    &__image {
+        flex-shrink: 0;
+
+        aspect-ratio: 1;
+        position: relative;
+        height: 100%;
+
+        border-radius: mixins.rem(12);
+        overflow: hidden;
+
+        img {
+            object-fit: cover;
+        }
+    }
+
+    &__content {
+        display: flex;
+        flex-direction: column;
+        row-gap: mixins.rem(4);
+    }
+
+    &__date {
+        color: colors.$secondary;
+    }
+
+    &__title {
+        @include typography.font("base", 500);
+        @include mixins.textEllipsis(2);
+    }
+}

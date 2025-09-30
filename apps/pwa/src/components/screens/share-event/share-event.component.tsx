@@ -69,7 +69,7 @@ export const ShareEvent = ({
                 {/*    poster={"/assets/temp/poster5.png"}*/}
                 {/*    primaryColor={"#AB002F"}*/}
                 {/*    title={"Happy Valentine's Day Party"}*/}
-                {/*    location={"ТЦ SkyPark"}*/}
+                {/*    location-badge={"ТЦ SkyPark"}*/}
                 {/*    type={"Public"}*/}
                 {/*    className={styles.event__card}*/}
                 {/*/>*/}

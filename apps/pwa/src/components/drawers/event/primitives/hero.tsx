@@ -9,7 +9,7 @@ import { hexToRgba } from "@/utils/hex-to-rgba";
 import { EventDrawerHeroButtons } from "./buttons";
 import { EventDrawerContentDescription } from "./description";
 import { IconCalendar, IconLocation } from "@/components/icons";
-import { AttendersSection } from "@/components/ui/attenders";
+import { AttendeesBadge } from "@/components/ui";
 
 import { EventEntity } from "@/entities/event";
 
@@ -102,7 +102,7 @@ export const EventDrawerContentHero = ({
                             ticketPrice + " ₴"
                         ) : "Free"
                     }
-                    <AttendersSection users={tickets.map(item => item.user.profile)} />
+                    <AttendeesBadge users={tickets.map(item => item.user.profile)} />
                 </div>
                 <EventDrawerContentDescription>
                     { description }

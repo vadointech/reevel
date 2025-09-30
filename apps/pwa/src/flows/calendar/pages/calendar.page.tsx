@@ -9,8 +9,10 @@ import { getUserMapInternalConfig } from "@/components/shared/map/utils";
 import { MapRootProvider } from "@/components/shared/map/map.provider";
 import { GetCityHighlightsQueryBuilder } from "@/features/discover/queries";
 import { TabsBody, TabsContent, TabsRoot } from "@/components/shared/tabs";
+import { EventListItemCard } from "@/components/ui";
 
 import styles from "../styles/calendar-page.module.scss";
+import { seedEventUsers } from "@/features/event/utils/users";
 
 export namespace CalendarPage {
     export type Props = never;
@@ -23,12 +25,15 @@ export async function CalendarPage() {
     const { bounds, center } = mapProvider.internalConfig.viewState;
     const radius = mapProvider.getHorizontalRadius(bounds, center);
 
-    const cityHighlights = await GetCityHighlightsQueryBuilder.queryFunc({
+    let cityHighlights = await GetCityHighlightsQueryBuilder.queryFunc({
         center,
         radius,
     });
+
+    cityHighlights = seedEventUsers(cityHighlights);
+
     return (
-        <div>
+        <div className={styles.page}>
             <header className={styles.header}>
                 <Link
                     href={"/profile"}
@@ -51,7 +56,7 @@ export async function CalendarPage() {
                     </Link>
                 </div>
             </header>
-            <div>
+            <div className={styles.page__gap}>
                 <ScrollSection
                     title={"Events for today"}
                 >
@@ -61,9 +66,7 @@ export async function CalendarPage() {
                                 key={event.id}
                                 href={DiscoverStaticCollections.Root + "/event/" + event.id}
                             >
-                                <EventCard
-                                    event={event}
-                                />
+                                <EventCard event={event} />
                             </Link>
                         ))
                     }
@@ -72,19 +75,52 @@ export async function CalendarPage() {
                     <TabsRoot>
                         <TabsBody
                             items={[
-                                "Upcoming • 3", "Hosting • 2", "Attending • 12",
+                                "Upcoming • 3", "Hosting • 2", "Attending • 9",
                             ]}
                         >
                             <TabsContent>
-                                <div className={styles.box}>1</div>
+                                <div className={styles.list}>
+                                    {
+                                        cityHighlights.slice(0, 3).map(event => (
+                                            <Link
+                                                key={event.id}
+                                                href={DiscoverStaticCollections.Root + "/event/" + event.id}
+                                            >
+                                                <EventListItemCard event={event} />
+                                            </Link>
+                                        ))
+                                    }
+                                </div>
                             </TabsContent>
 
                             <TabsContent>
-                                <div className={styles.box}>1</div>
+                                <div className={styles.list}>
+                                    {
+                                        cityHighlights.slice(0, 2).map(event => (
+                                            <Link
+                                                key={event.id}
+                                                href={DiscoverStaticCollections.Root + "/event/" + event.id}
+                                            >
+                                                <EventListItemCard event={event} />
+                                            </Link>
+                                        ))
+                                    }
+                                </div>
                             </TabsContent>
 
                             <TabsContent>
-                                <div className={styles.box}>1</div>
+                                <div className={styles.list}>
+                                    {
+                                        cityHighlights.slice(0, 9).map(event => (
+                                            <Link
+                                                key={event.id}
+                                                href={DiscoverStaticCollections.Root + "/event/" + event.id}
+                                            >
+                                                <EventListItemCard event={event} />
+                                            </Link>
+                                        ))
+                                    }
+                                </div>
                             </TabsContent>
                         </TabsBody>
                     </TabsRoot>

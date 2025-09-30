@@ -56,7 +56,7 @@ export function ProfilePublicViewPage() {
                         {/*    poster={"/assets/temp/poster5.png"}*/}
                         {/*    primaryColor={"#AB002F"}*/}
                         {/*    title={"Happy Valentine's Day Party"}*/}
-                        {/*    location={"ТЦ SkyPark"}*/}
+                        {/*    location-badge={"ТЦ SkyPark"}*/}
                         {/*    type={"Public"}*/}
                         {/*/>*/}
                         {/*<EventCard*/}
@@ -64,7 +64,7 @@ export function ProfilePublicViewPage() {
                         {/*    poster={"/assets/temp/poster5.png"}*/}
                         {/*    primaryColor={"#AB002F"}*/}
                         {/*    title={"Happy Valentine's Day Party"}*/}
-                        {/*    location={"ТЦ SkyPark"}*/}
+                        {/*    location-badge={"ТЦ SkyPark"}*/}
                         {/*    type={"Public"}*/}
                         {/*/>*/}
                         {/*<EventCard*/}
@@ -72,7 +72,7 @@ export function ProfilePublicViewPage() {
                         {/*    poster={"/assets/temp/poster5.png"}*/}
                         {/*    primaryColor={"#AB002F"}*/}
                         {/*    title={"Happy Valentine's Day Party"}*/}
-                        {/*    location={"ТЦ SkyPark"}*/}
+                        {/*    location-badge={"ТЦ SkyPark"}*/}
                         {/*    type={"Public"}*/}
                         {/*/>*/}
                     </ScrollSection>

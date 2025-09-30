@@ -23,7 +23,7 @@ export function OnboardingLocationAccessRequestPage() {
                 </div>
                 <OnboardingTextBlock
                     title={"What is Your Location?"}
-                    subtitle={"To find nearby events share your location with us"}
+                    subtitle={"To find nearby events share your location-badge with us"}
                 />
             </Container>
 

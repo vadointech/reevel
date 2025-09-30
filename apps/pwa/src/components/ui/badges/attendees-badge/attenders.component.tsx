@@ -7,19 +7,19 @@ import { UISize } from "@/types/common";
 import cx from "classnames";
 import styles from "./styles.module.scss";
 
-export namespace AttendersSection {
+export namespace AttendeesBadge {
     export type Props = ComponentProps<"div"> & {
         users: UserProfileEntity[]
         size?: UISize,
     };
 }
 
-export const AttendersSection = ({
+export const AttendeesBadge = ({
     size = "default",
     users,
     className,
     ...props
-}: AttendersSection.Props) => {
+}: AttendeesBadge.Props) => {
     const displayedUsers = users.slice(0, 3);
     const remainingCount = Math.max(0, users.length - 3);
 

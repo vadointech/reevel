@@ -6,7 +6,7 @@ export default function Layout({ children }: PropsWithChildren) {
         <CreateEventLocationPickerLayout
             children={children}
             callbackUrl={"/event/public/create"}
-            locationSearchUrl={"/event/public/create/location/search"}
+            locationSearchUrl={"/event/public/create/location-badge/search"}
         />
     );
 }

@@ -3,6 +3,19 @@
 @use "@/theme/spacing";
 @use "@/theme/typography";
 
+.page {
+    height: 100%;
+    overflow-y: auto;
+    overflow-x: hidden;
+    padding-bottom: mixins.rem(66);
+
+    @include mixins.no-scrollbar;
+
+    &__gap {
+        margin-bottom: mixins.rem(24);
+    }
+}
+
 .header {
     display: grid;
     align-items: center;
@@ -10,6 +23,8 @@
     height: mixins.rem(36);
 
     padding-inline: spacing.$container;
+
+    margin-bottom: mixins.rem(32);
 
     &__title {
         text-align: center;
@@ -61,7 +76,14 @@
     }
 }
 
-.box {
-    height: mixins.rem(300);
+.list {
+    border-radius: mixins.rem(17);
+    overflow: hidden;
     background: colors.$foreground;
+
+    display: flex;
+    flex-direction: column;
+    row-gap: mixins.rem(32);
+
+    padding: mixins.rem(16) mixins.rem(18);
 }

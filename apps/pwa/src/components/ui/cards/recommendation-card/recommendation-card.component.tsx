@@ -3,7 +3,7 @@ import { ComponentProps } from "react";
 
 import cx from "classnames";
 import styles from "./styles.module.scss";
-import { LocationBadge } from "@/components/ui/location";
+import { LocationBadge } from "@/components/ui/badges/location-badge";
 import { hexToRgba } from "@/utils/hex-to-rgba";
 import { EventEntity } from "@/entities/event";
 

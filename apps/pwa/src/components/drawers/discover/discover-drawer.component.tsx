@@ -101,6 +101,7 @@ export const DiscoverDrawer = ({
                                         >
                                             <EventCard
                                                 size={"small"}
+                                                displayMode={"date"}
                                                 event={event}
                                             />
                                         </Link>

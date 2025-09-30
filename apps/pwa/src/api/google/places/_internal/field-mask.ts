@@ -1,7 +1,7 @@
 import { GooglePlacesApiRequestBody } from "@/api/google/places/types";
 
 export function getGooglePlacesApiFieldMask(body?: GooglePlacesApiRequestBody) {
-    let fieldMask = "places.id,places.displayName,places.location";
+    let fieldMask = "places.id,places.displayName,places.location-badge";
 
 
     if(body?.fieldMask) {
