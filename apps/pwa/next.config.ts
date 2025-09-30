@@ -35,6 +35,15 @@ const nextConfig: NextConfig = {
             },
         ],
     },
+    async redirects() {
+        return [
+            {
+                source: "/",
+                destination: "/discover",
+                permanent: true,
+            },
+        ];
+    },
 };
 
 export default withNextIntl(nextConfig);

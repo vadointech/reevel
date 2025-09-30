@@ -1,4 +1,6 @@
+import { Metadata } from "next";
 import Image from "next/image";
+
 import styles from "./styles.module.scss";
 
 import qrCode from "@/../public/assets/qr.png";
@@ -6,6 +8,18 @@ import render from "@/../public/assets/render.png";
 
 export const dynamic = "force-static";
 export const revalidate = false;
+
+export const metadata: Metadata = {
+    alternates: {
+        canonical: "/scan",
+    },
+
+    robots: {
+        index: false,
+        follow: true,
+        nocache: true,
+    },
+};
 
 export default function Page() {
     return (

@@ -28,7 +28,7 @@ export type EventEntity = {
     interests: EventInterestEntity[];
     tickets: EventTicketEntity[];
 
-    createdAt?: Date;
+    createdAt: Date;
     updatedAt?: Date;
 };
 
