@@ -9,7 +9,7 @@
         padding-inline: spacing.$container;
         margin-bottom: mixins.rem(18);
 
-        & > div {
+        & > * {
             height: mixins.rem(44);
         }
     }
