@@ -1,12 +1,9 @@
 import { constructorInit } from "@/lib/init";
-import { createMobxStoreProvider } from "@/lib/mobx";
 import { action, makeObservable, observable } from "mobx";
 
-interface ITabsStore {
-    activeTabIndex: number;
-}
+import { ITabsStore } from "./types";
 
-class TabsStore implements ITabsStore {
+export class TabsStore implements ITabsStore {
     activeTabIndex = 0;
 
     constructor(init: Partial<ITabsStore>) {
@@ -23,5 +20,3 @@ class TabsStore implements ITabsStore {
         this.activeTabIndex = tab;
     }
 }
-
-export const [TabsStoreProvider, useTabsStore] = createMobxStoreProvider(TabsStore);

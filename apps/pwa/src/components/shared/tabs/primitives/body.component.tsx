@@ -3,13 +3,13 @@
 import { useEffect, MouseEvent } from "react";
 
 import { HTMLMotionProps, motion } from "motion/react";
+import { useTabsContext } from "../tabs.context";
 import {
     useTabsContentDrag,
     useTabButtons,
     useTabsContainer,
     useTabsContentContainer,
 } from "../hooks";
-import { useTabsStore } from "../tabs.store";
 
 import { Container } from "@/components/ui";
 import { TabsTabButton } from "./tab-button.component";
@@ -28,7 +28,7 @@ export const TabsBody = ({
     className,
     ...props
 }: TabsBody.Props) => {
-    const tabsStore = useTabsStore();
+    const tabs = useTabsContext();
 
     const {
         tabsContainerDragX,
@@ -91,7 +91,7 @@ export const TabsBody = ({
 
     const handleSelect = (event: MouseEvent<HTMLButtonElement>, index: number) => {
         if(isTabsContainerDrag.current) return;
-        if(index === tabsStore.activeTabIndex) return;
+        if(index === tabs.store.activeTabIndex) return;
 
         const target = event.target;
         if(target instanceof HTMLButtonElement) {

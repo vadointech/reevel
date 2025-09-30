@@ -2,8 +2,7 @@
 
 import { ComponentProps, forwardRef } from "react";
 import { observer } from "mobx-react-lite";
-
-import { useTabsStore } from "../tabs.store";
+import { useTabsContext } from "../tabs.context";
 
 import styles from "../styles.module.scss";
 import cx from "classnames";
@@ -18,13 +17,13 @@ export const TabsTabButton = observer(forwardRef<HTMLButtonElement, TabsTabButto
     index,
     ...props
 }, ref) => {
-    const tabStore = useTabsStore();
+    const tabs = useTabsContext();
     return (
         <button
             ref={ref}
             className={cx(
                 styles.controls__item,
-                index === tabStore.activeTabIndex && styles.controls__item_active,
+                index === tabs.store.activeTabIndex && styles.controls__item_active,
             )}
             {...props}
         />
