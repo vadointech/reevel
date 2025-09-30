@@ -1,10 +1,11 @@
 import { Metadata } from "next";
 import { DiscoverRandomizedPage } from "@/flows/discover/pages";
 import { defaultMetadata } from "@/metadata.config";
+import { BASE_URL } from "@/auth.config";
 
 export function generateMetadata(): Metadata {
     const title =  "Random Events Near You | Reevel – Discover Fun Things To Do";
-    const url = "/discover/randomized";
+    const url = `${BASE_URL}/discover/randomized`;
 
     return {
         title,

@@ -1,5 +1,6 @@
 import { MetadataRoute } from "next";
 import { getAllEvents } from "@/api/event";
+import { API_URL, BASE_URL } from "@/auth.config";
 
 const rootRoute = "/discover";
 const staticRoutes = [
@@ -7,23 +8,23 @@ const staticRoutes = [
     "/discover/highlights",
 ];
 
-export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-    const baseUrl = process.env.NEXT_PUBLIC_URL;
+const lastModified = new Date("2025-09-30");
 
+export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     const { data: events } = await getAllEvents({
-        baseURL: process.env.NEXT_PUBLIC_API_URL,
+        baseURL: API_URL,
         fallback: [],
     });
 
     const staticUrls = staticRoutes.map(route => ({
-        url: `${baseUrl}${route}`,
-        lastModified: new Date("2025-09-17"),
+        url: `${BASE_URL}${route}`,
+        lastModified: lastModified,
         changeFrequency: "weekly" as const,
         priority: 0.9,
     }));
 
     const eventUrls = events.map(event => ({
-        url: `${baseUrl}/discover/event/${event.id}`,
+        url: `${BASE_URL}/discover/event/${event.id}`,
         lastModified: new Date(event.updatedAt || event.createdAt),
         changeFrequency: "weekly" as const,
         priority: 0.8,
@@ -31,8 +32,8 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 
     return [
         {
-            url: `${baseUrl}${rootRoute}`,
-            lastModified: new Date("2025-09-17"),
+            url: `${BASE_URL}${rootRoute}`,
+            lastModified: lastModified,
             changeFrequency: "weekly" as const,
             priority: 1,
         },
