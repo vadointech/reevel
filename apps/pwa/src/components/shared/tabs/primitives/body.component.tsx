@@ -129,7 +129,6 @@ export const TabsBody = ({
                     }
                     <motion.div
                         animate={tabButtonOverlayAnimate}
-                        initial={{ x: 0, width: 103 }}
                         className={styles.controls__overlay}
                     />
                 </motion.div>

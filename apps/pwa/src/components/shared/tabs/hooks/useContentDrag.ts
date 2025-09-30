@@ -74,12 +74,13 @@ export function useTabsContentDrag(
         direction.current = info.offset.x > 0 ? -1 : 1;
 
         const position = tabsContentDragX.get() + info.offset.x;
-
         const activeSnap = getActiveIndex(position);
 
         if(activeSnap !== tabsStore.activeTabIndex) {
+            callbacks.onDragStart?.(tabsStore.activeTabIndex, direction.current);
+
             tabsStore.setActiveTabIndex(activeSnap);
-            callbacks.onActiveChange?.(tabsStore.activeTabIndex, direction.current);
+            callbacks.onActiveChange?.(activeSnap, direction.current);
         }
     };
 

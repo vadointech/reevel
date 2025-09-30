@@ -54,6 +54,7 @@ $content-height: calc($button-height + $control-offest * 2);
         -webkit-tap-highlight-color: transparent;
 
         @include typography.font("sm");
+        text-wrap: nowrap;
         color: colors.$secondary;
 
         transition: color motions.$motion-duration-slow motions.$motion-ease-in;

@@ -25,6 +25,8 @@ export * from "./create";
 export * from "./flag";
 export * from "./clock";
 export * from "./arrow";
+export * from "./bell";
+export * from "./map";
 export * from "./settings";
 export * from "./picture";
 export * from "./verified";
