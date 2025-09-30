@@ -6,10 +6,10 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { indexedDbService } from "@/lib/indexed-db.service";
 
 import { editProfileFormSchema, EditProfileFormSchemaValues } from "@/features/profile/edit";
-import { EditProfileFormConfigParams } from "./types/config";
 import { EditProfileFormContext } from "./edit-profile-form.context";
 import { useMobxStore } from "@/lib/mobx";
 import { EditProfileFormStore } from "./edit-profile-form.store";
+import { EditProfileFormConfigParams } from "./types";
 
 export namespace EditProfileFormProvider {
     export type Props = PropsWithChildren<EditProfileFormConfigParams>;
@@ -25,6 +25,7 @@ export const EditProfileFormProvider = ({
         mode: "onChange",
     });
 
+    console.log(form.watch());
 
     useEffect(() => {
         const formValues = form.getValues();

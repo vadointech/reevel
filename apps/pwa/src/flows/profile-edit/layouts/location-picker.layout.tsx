@@ -1,25 +1,18 @@
 import { PropsWithChildren } from "react";
-import { LocationPickerProvider } from "@/features/location/picker";
+import { LocationSearchProvider } from "@/features/location/search";
 
 export namespace EditProfileLocationPickerLayout {
-    export type Props = PropsWithChildren<{
-        callbackUrl: string;
-        locationSearchUrl: string;
-    }>;
+    export type Props = never;
 }
 
-export const EditProfileLocationPickerLayout = ({
-    children,
-    callbackUrl,
-    locationSearchUrl,
-}: EditProfileLocationPickerLayout.Props) => {
+export function EditProfileLocationPickerLayout({ children }: PropsWithChildren) {
     return (
-        <LocationPickerProvider
+        <LocationSearchProvider
             syncFormField={"location"}
-            callbackUrl={callbackUrl}
-            locationSearchUrl={locationSearchUrl}
+            callbackUrl={"/profile/edit"}
+            confirmUrl={"/profile/edit/location/confirm"}
         >
-            { children }
-        </LocationPickerProvider>
+            {children}
+        </LocationSearchProvider>
     );
-};
+}

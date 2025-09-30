@@ -1,14 +1,14 @@
 import { PropsWithChildren } from "react";
 
 import { ImageUploaderProvider } from "@/features/uploader/image";
-import { EditProfileFormProvider } from "@/features/profile/edit";
+import { EditProfileFormProvider, mapProfileLocationToForm } from "@/features/profile/edit";
 import { getCurrentUserProfile } from "@/api/user/server";
 
 export namespace EditProfileRootLayout {
     export type Props = PropsWithChildren;
 }
 
-export const EditProfileRootLayout = async({
+export const EditProfileRootLayout = async ({
     children,
 }: EditProfileRootLayout.Props) => {
     const profile = await getCurrentUserProfile();
@@ -24,6 +24,9 @@ export const EditProfileRootLayout = async({
                 fullName: profile?.fullName || "",
                 bio: profile?.bio || "",
                 interests: profile?.interests?.map(item => item.interest) || [],
+                location: profile?.location
+                    ? mapProfileLocationToForm(profile.location)
+                    : undefined,
             }}
         >
             <ImageUploaderProvider>

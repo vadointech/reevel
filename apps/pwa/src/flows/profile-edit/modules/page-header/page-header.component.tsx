@@ -1,0 +1,37 @@
+"use client";
+
+import { Link } from "@/i18n/routing";
+import { Header } from "@/components/ui";
+import { IconArrowLeft } from "@/components/icons";
+import { Button } from "@/components/ui";
+import { useProfileUpdate } from "@/features/profile/edit/hooks";
+
+import styles from "./styles.module.scss";
+
+export function EditProfileFormHeader() {
+    const { handleSubmit, isUpdating } = useProfileUpdate();
+
+    return (
+        <Header
+            iconAfter={
+                <Button
+                    className={styles.button}
+                    loading={isUpdating}
+                    variant="text-primary"
+                    size="small"
+                    onClick={handleSubmit}
+                    disabled={isUpdating}
+                >
+                    Save
+                </Button>
+            }
+            iconBefore={
+                <Link href={"/apps/pwa/public"}>
+                    <IconArrowLeft />
+                </Link>
+            }
+        >
+            Edit profile
+        </Header>
+    );
+}

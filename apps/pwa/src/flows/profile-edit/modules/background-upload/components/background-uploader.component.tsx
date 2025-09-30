@@ -17,7 +17,7 @@ export namespace EditProfileBackGroundUploader {
 }
 
 export const EditProfileBackGroundUploader = ({
-    background = "/assets/defaults/avatar.png",
+    background = "/assets/defaults/background.png",
     uploads,
     cropperPageUrl,
 }: EditProfileBackGroundUploader.Props) => {
@@ -32,20 +32,19 @@ export const EditProfileBackGroundUploader = ({
         <Controller
             name={"background"}
             render={({ field }) => (
-                <UploadDrawer
-                    uploads={uploads}
-                    gridVariant={"rounded"}
-                    selectedImageUrl={field.value}
-                    onImagePick={handlePickAvatar}
-                    onImageDelete={handleDeleteAvatar}
-                    onFileSelect={handleSelectFile}
-                    controller={uploadDrawerController}
-                >
-                    <ProfileHeroCover
-                        image={background}
-                        onChangeBackground
-                    />
-                </UploadDrawer>
+                // <UploadDrawer
+                //     uploads={uploads}
+                //     gridVariant={"rounded"}
+                //     selectedImageUrl={field.value}
+                //     onImagePick={handlePickAvatar}
+                //     onImageDelete={handleDeleteAvatar}
+                //     onFileSelect={handleSelectFile}
+                //     controller={uploadDrawerController}
+                // >
+                <ProfileHeroCover
+                    image={background}
+                />
+                // </UploadDrawer>
             )}
         />
     );

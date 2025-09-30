@@ -1,4 +1,4 @@
-import { EditProfileAvatarUploadPage } from "@/flows/profile-edit/pages/avatar-upload.page";
+import { EditProfileAvatarUploadPage } from "@/flows/profile-edit/pages";
 
 export default function Page() {
     return (

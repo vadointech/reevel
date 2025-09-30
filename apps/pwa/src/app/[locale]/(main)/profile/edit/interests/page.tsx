@@ -1,4 +1,4 @@
-import { EditProfileInterestsPickerPage } from "@/flows/profile-edit/pages/interests-picker.page";
+import { EditProfileInterestsPickerPage } from "@/flows/profile-edit/pages";
 
 export default async function CreateEventInterestsPage() {
     return (

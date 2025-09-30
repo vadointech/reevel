@@ -34,15 +34,21 @@ export const InterestsPickerContent = () => {
             () => store.searchTerm,
             (searchTerm) => {
                 if (searchTerm.length > 0) {
-                    selectedSectionAnimate.start({ opacity: 0, y: -10, height: 0 }, TRANSITION_PARAMS);
+                    selectedSectionAnimate.start(
+                        { opacity: 0, y: -10, height: 0 },
+                        TRANSITION_PARAMS,
+                    );
                 } else {
-                    selectedSectionAnimate.start({ opacity: 1, y: 0, height: "auto" }, TRANSITION_PARAMS);
+                    selectedSectionAnimate.start(
+                        { opacity: 1, y: 0, height: "auto" },
+                        TRANSITION_PARAMS,
+                    );
                 }
             },
         );
 
         return () => disposer();
-    }, []);
+    }, [selectedSectionAnimate, store.searchTerm]);
 
     return (
         <SearchScreen>

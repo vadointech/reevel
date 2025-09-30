@@ -1,6 +1,5 @@
 import { action, makeObservable, observable } from "mobx";
-import { IEditProfileFormStore } from "./types";
-import { EditProfileFormConfigParams } from "./types/config";
+import { EditProfileFormConfigParams, IEditProfileFormStore } from "./types";
 import { EditProfileFormSchemaValues } from "./edit-profile-form.scheme";
 
 export class EditProfileFormStore implements IEditProfileFormStore {
