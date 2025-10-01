@@ -10,6 +10,7 @@ import { Event, WithContext } from "schema-dts";
 import styles from "../styles/event-view-page.module.scss";
 import cx from "classnames";
 import { BASE_URL } from "@/auth.config";
+import { seedEventUsers } from "@/features/event/utils";
 
 export namespace EventAttendeePublicViewPage {
     export type Props = {
@@ -18,11 +19,13 @@ export namespace EventAttendeePublicViewPage {
 }
 
 export async function EventAttendeePublicViewPage({ eventId }: EventAttendeePublicViewPage.Props) {
-    const event = await getEvent({ eventId });
+    let event = await getEvent({ eventId });
 
     if(!event) {
         return null;
     }
+
+    event = seedEventUsers(event);
 
     const jsonLd: WithContext<Event> = {
         "@context": "https://schema.org",

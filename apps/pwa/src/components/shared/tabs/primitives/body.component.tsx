@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, MouseEvent } from "react";
+import { useEffect, MouseEvent, ReactNode } from "react";
 
 import { HTMLMotionProps, motion } from "motion/react";
 import { useTabsContext } from "../tabs.context";
@@ -17,14 +17,19 @@ import { TabsTabButton } from "./tab-button.component";
 import styles from "../styles.module.scss";
 import cx from "classnames";
 
+type TabsContentValue = {
+    label: ReactNode;
+    value: ReactNode;
+};
+
 export namespace TabsBody {
-    export type Props = HTMLMotionProps<"div"> & {
-        items: string[]
+    export type Props = Omit<HTMLMotionProps<"div">, "children" | "content"> & {
+        content: TabsContentValue[]
     };
 }
 
 export const TabsBody = ({
-    items,
+    content = [],
     className,
     ...props
 }: TabsBody.Props) => {
@@ -59,6 +64,7 @@ export const TabsBody = ({
     const {
         tabsContentDragX,
         tabsContentAnimate,
+        tabsContentItemsRef,
         tabsContentDragXProgress,
 
         scrollTo,
@@ -114,7 +120,7 @@ export const TabsBody = ({
                     className={styles.controls}
                 >
                     {
-                        items.map((item, index) => (
+                        content.map((item, index) => (
                             <TabsTabButton
                                 index={index}
                                 key={"tab-control-item" + index}
@@ -123,7 +129,7 @@ export const TabsBody = ({
                                 }}
                                 onClick={(event) => handleSelect(event, index)}
                             >
-                                { item }
+                                { item.label }
                             </TabsTabButton>
                         ))
                     }
@@ -133,7 +139,7 @@ export const TabsBody = ({
                     />
                 </motion.div>
             </Container>
-            <div style={{ flex: "auto", overflow: "hidden" }}>
+            <motion.div style={{ flex: "auto", overflow: "hidden" }}>
                 <motion.div
                     drag={"x"}
                     ref={tabsContentRefHandler}
@@ -146,11 +152,26 @@ export const TabsBody = ({
                     onDragStart={handleDragStart}
                     className={cx(
                         styles.tabs,
+                        tabs.config.fitContent && styles.tabs_fit,
                         className,
                     )}
                     {...props}
-                />
-            </div>
+                >
+                    {
+                        content.map((item, index) => (
+                            <div
+                                ref={(element) => {
+                                    tabsContentItemsRef.current[index] = element;
+                                }}
+                                key={"tab-content-item" + index}
+                                className={styles.content}
+                            >
+                                { item.value }
+                            </div>
+                        ))
+                    }
+                </motion.div>
+            </motion.div>
         </>
     );
 };

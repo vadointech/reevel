@@ -93,7 +93,7 @@ export const CreatePrivateEventForm = ({
                                             return `${field.value.properties.label} • ${field.value.properties.address}`;
                                         })()}
                                         contentLeft={<IconLocation />}
-                                        href={"/event/private/create/location-badge"}
+                                        href={"/event/private/create/location"}
                                     />
                                 </OptionsList>
                             </FormField>

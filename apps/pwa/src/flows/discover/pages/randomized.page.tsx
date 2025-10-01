@@ -4,6 +4,7 @@ import { getUserMapInternalConfig } from "@/components/shared/map/utils";
 import { MapRootProvider } from "@/components/shared/map/map.provider";
 import { GetRandomizedEventsQueryBuilder } from "@/features/discover/queries";
 import { DiscoverStaticCollections } from "@/features/discover/config";
+import { seedEventUsers } from "@/features/event/utils";
 
 export namespace DiscoverRandomizedPage {
     export type Props = never;
@@ -16,10 +17,11 @@ export async function DiscoverRandomizedPage() {
     const { bounds, center } = mapProvider.internalConfig.viewState;
     const radius = mapProvider.getHorizontalRadius(bounds, center);
 
-    const randomizedEvents = await GetRandomizedEventsQueryBuilder.queryFunc({
+    let randomizedEvents = await GetRandomizedEventsQueryBuilder.queryFunc({
         center,
         radius,
     });
+    randomizedEvents = seedEventUsers(randomizedEvents);
 
     const interests = extractUniqueInterests(randomizedEvents);
 

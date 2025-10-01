@@ -55,8 +55,8 @@ export const onboardingStepRoutes: string[] = [
     "/onboarding/photo",
     "/onboarding/bio",
     "/onboarding/interests",
-    "/onboarding/location-badge",
-    "/onboarding/location-badge/pick",
-    "/onboarding/location-badge/confirm",
+    "/onboarding/location",
+    "/onboarding/location/pick",
+    "/onboarding/location/confirm",
     StaticRoutes.Discover,
 ];

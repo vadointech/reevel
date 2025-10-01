@@ -26,6 +26,7 @@ export function useTabsContentDrag(
     const direction = useRef<1 | -1>(1);
 
     const tabsContentAnimate = useAnimation();
+    const tabsContentItemsRef = useRef<Array<HTMLDivElement | null>>([]);
 
     const tabsContentDragX = useMotionValue(0);
     const tabsContentDragXProgress = useTransform(
@@ -38,6 +39,10 @@ export function useTabsContentDrag(
         tabsContentAnimate.set({
             x: getActiveSnap(tabs.store.activeTabIndex),
         });
+
+        if(tabs.config.fitContent) {
+            updateContentHeight(tabs.store.activeTabIndex);
+        }
     }, []);
 
     const getActiveIndex = (position: number) => {
@@ -49,6 +54,20 @@ export function useTabsContentDrag(
         return -snapPoints.current[index];
     };
 
+    const updateContentHeight = (index: number) => {
+        const activeContent = tabsContentItemsRef.current[index];
+        if(activeContent) {
+            const newHeight = activeContent.scrollHeight;
+            if(newHeight > 0) {
+                tabsContentAnimate.start({ height: newHeight }, tabsTransitionParams);
+            } else {
+                tabsContentAnimate.start({ height: "auto" }, tabsTransitionParams);
+            }
+        } else {
+            tabsContentAnimate.start({ height: "auto" }, tabsTransitionParams);
+        }
+    };
+
     const handleDragEnd = (_: any, info: PanInfo) => {
         const position = tabsContentDragX.get() + info.offset.x;
 
@@ -57,6 +76,10 @@ export function useTabsContentDrag(
         );
 
         const newX = getActiveSnap(tabs.store.activeTabIndex);
+
+        if(tabs.config.fitContent) {
+            updateContentHeight(tabs.store.activeTabIndex);
+        }
 
         callbacks.onDragEnd?.(tabs.store.activeTabIndex, direction.current, {
             ...info,
@@ -98,6 +121,10 @@ export function useTabsContentDrag(
         tabs.store.setActiveTabIndex(index);
         const newX = -snapPoints.current[tabs.store.activeTabIndex];
 
+        if(tabs.config.fitContent) {
+            updateContentHeight(index);
+        }
+
         callbacks.onDragEnd?.(index, direction.current, {
             currentX: newX,
         });
@@ -110,6 +137,7 @@ export function useTabsContentDrag(
     return {
         direction,
         tabsContentAnimate,
+        tabsContentItemsRef,
         tabsContentDragX,
         tabsContentDragXProgress,
 

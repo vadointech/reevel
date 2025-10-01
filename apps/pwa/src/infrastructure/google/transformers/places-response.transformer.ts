@@ -8,7 +8,7 @@ class GooglePlacesApiResponseTransformer {
     /**
      * Filters an array of points, removing points that are too close to each other.
      *
-     * @param input An array of objects, each containing a `location-badge` property of type `MapProviderGL.LngLat`.
+     * @param input An array of objects, each containing a `location` property of type `MapProviderGL.LngLat`.
      *               Additional properties can be included in the objects.
      * @param minDistanceInMeters The minimum distance, in meters, that must exist between points to include both. Defaults to 50 meters.
      * @return An array of points where no two points are closer than the specified minimum distance.

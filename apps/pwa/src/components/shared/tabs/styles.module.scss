@@ -13,6 +13,11 @@ $content-height: calc($button-height + $control-offest * 2);
     width: 100%;
     height: 100%;
     display: flex;
+
+    &_fit {
+        height: auto;
+        align-items: flex-start;
+    }
 }
 
 .content {

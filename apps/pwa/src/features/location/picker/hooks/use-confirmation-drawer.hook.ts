@@ -186,7 +186,7 @@ export function useConfirmationDrawer(placesInit: PlaceLocationEntity[]) {
             confirmationDrawerControls.current?.open();
         },
         onFailure: () => {
-            // TODO: Show modal "We're unable to get your location-badge. (Enter it manually)"
+            // TODO: Show modal "We're unable to get your location. (Enter it manually)"
         },
     });
 

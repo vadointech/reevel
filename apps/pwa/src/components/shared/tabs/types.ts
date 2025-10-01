@@ -5,6 +5,11 @@ export interface ITabsStore extends IMobxStore {
     setActiveTabIndex(tab: number): void;
 }
 
+export interface ITabsConfig {
+    defaultIndex: number;
+    fitContent: boolean;
+}
+
 export type TabsContentParams = {
     scrollWidth: number;
     clientWidth: number;

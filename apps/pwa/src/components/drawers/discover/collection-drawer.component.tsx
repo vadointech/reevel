@@ -11,7 +11,7 @@ import {
     BottomSheetPortal,
     BottomSheetRoot, BottomSheetScrollable,
 } from "@/components/shared/bottom-sheet";
-import { Header, InterestButton, OptionsList, PreviewCard, Scroll } from "@/components/ui";
+import { EventListItemCard, Header, InterestButton, OptionsList, Scroll } from "@/components/ui";
 import { IconArrowLeft, IconSearch } from "@/components/icons";
 
 import { InterestEntity } from "@/entities/interests";
@@ -164,7 +164,7 @@ export const DiscoverCollectionDrawer = ({
                                             href={`/discover/event/${event.id}`}
                                             onClick={() => onEventSlideChange(index)}
                                         >
-                                            <PreviewCard event={event} />
+                                            <EventListItemCard event={event} />
                                         </Link>
                                     ))
                                 }

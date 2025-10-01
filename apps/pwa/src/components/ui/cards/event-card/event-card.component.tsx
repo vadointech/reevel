@@ -5,6 +5,7 @@ import { hexToRgba } from "@/utils/hex-to-rgba";
 import { Badge, DateBadge } from "@/components/ui";
 import { IconLock, IconGlobe, IconCalendar } from "@/components/icons";
 import { LocationBadge, AttendeesBadge } from "@/components/ui";
+import { dateTime } from "@/features/event/utils";
 
 import { EventEntity, EventVisibility } from "@/entities/event";
 import { UISize } from "@/types/common";
@@ -74,7 +75,7 @@ export const EventCard = ({
                             size={"small"}
                             iconBefore={<IconCalendar />}
                         >
-                            14 Feb
+                            { dateTime.shortFormat(event.startDate) }
                         </Badge>
                     )
                 }
@@ -98,7 +99,7 @@ export const EventCard = ({
                 {
                     displayMode === "location" ? (
                         <DateBadge size={"small"}>
-                            Tuesday, Aug 4 • 14:00
+                            { dateTime.formatRelative(event.startDate) } • { dateTime.formatTime(event.startDate) }
                         </DateBadge>
                     ) : (
                         <LocationBadge size={size}>

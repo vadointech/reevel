@@ -105,7 +105,7 @@ export class EventCollectionService {
         const userProfile = await this.userRepository.queryBuilder("user")
             .leftJoinAndSelect("user.profile", "profile")
             .leftJoinAndSelect("profile.interests", "profileInterests")
-            .leftJoinAndSelect("profile.location-badge", "profileLocation")
+            .leftJoinAndSelect("profile.location", "profileLocation")
             .where("user.id = :userId", { userId: session.user.id })
             .getOne();
 

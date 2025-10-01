@@ -1,6 +1,7 @@
 import { ComponentProps } from "react";
 import Image from "next/image";
 import { AttendeesBadge, DateBadge } from "@/components/ui";
+import { dateTime } from "@/features/event/utils";
 
 import { EventEntity } from "@/entities/event";
 
@@ -39,7 +40,7 @@ export const EventListItemCard = ({
                     size={"small"}
                     className={styles.card__date}
                 >
-                    Tuesday, Aug 4 • 14:00
+                    { dateTime.formatRelative(event.startDate) } • { dateTime.formatTime(event.startDate) }
                 </DateBadge>
                 <h3 className={styles.card__title}>
                     { event.title }

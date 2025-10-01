@@ -7,9 +7,18 @@ class DateTime {
         const inputDate = date instanceof Date ? date : new Date(date);
         switch(locale) {
             case "en":
-                return this.formatConfig(inputDate, locale, DateTimeConfigEn);
+                return this.formatConfig(inputDate, DateTimeConfigEn, locale);
             case "uk":
-                return this.formatConfig(inputDate, locale, DateTimeConfigUk);
+                return this.formatConfig(inputDate, DateTimeConfigUk, locale);
+        }
+    }
+    shortFormat(date: Date | string, locale: Locale = "en") {
+        const inputDate = date instanceof Date ? date : new Date(date);
+        switch(locale) {
+            case "en":
+                return this.shortFormatConfig(inputDate, DateTimeConfigEn, locale);
+            case "uk":
+                return this.shortFormatConfig(inputDate, DateTimeConfigUk, locale);
         }
     }
 
@@ -23,9 +32,9 @@ class DateTime {
         const compareDate = new Date(date);
         compareDate.setHours(0, 0, 0, 0);
 
-        if (compareDate.getTime() === today.getTime()) {
+        if(compareDate.getTime() === today.getTime()) {
             return DateFormatMessages[locale].today;
-        } else if (compareDate.getTime() === tomorrow.getTime()) {
+        } else if(compareDate.getTime() === tomorrow.getTime()) {
             return DateFormatMessages[locale].tomorrow;
         } else {
             return this.format(date, locale);
@@ -49,13 +58,23 @@ class DateTime {
         });
     }
 
-    private formatConfig(date: Date, locale: Locale, config: DateTimeConfig) {
+    private formatConfig(date: Date, config: DateTimeConfig, locale: Locale = "en") {
         const weekday = config.weekdays[date.getDay()];
         const day = date.getDate();
         const month = config.months[date.getMonth()];
 
         return DateFormatMessages[locale].dateFormat({
             weekday,
+            day: String(day),
+            month,
+        });
+    }
+
+    private shortFormatConfig(date: Date, config: DateTimeConfig, locale: Locale = "en") {
+        const day = date.getDate();
+        const month = config.months[date.getMonth()];
+
+        return DateFormatMessages[locale].shortDateFormat({
             day: String(day),
             month,
         });

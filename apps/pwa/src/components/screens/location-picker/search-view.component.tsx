@@ -55,7 +55,7 @@ export const LocationSearch = ({ placesInit }: LocationSearch.Props) => {
     return (
         <SearchScreen>
             <SearchScreenSearchBar
-                controlHref={config.callbackUrl + "/location-badge"}
+                controlHref={config.callbackUrl + "/location"}
                 onChange={(value) => searchStore.setSearchQuery(value)}
             />
             <SearchScreenContent>

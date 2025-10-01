@@ -1,10 +1,11 @@
 "use client";
 
 import { createContext, useContext } from "react";
-import { ITabsStore } from "./types";
+import { ITabsConfig, ITabsStore } from "./types";
 
 type TabsContextValues = {
     store: ITabsStore;
+    config: ITabsConfig;
 };
 
 export const TabsContext = createContext<TabsContextValues | null>(null);

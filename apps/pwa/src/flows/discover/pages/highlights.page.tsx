@@ -4,6 +4,7 @@ import { GetCityHighlightsQueryBuilder } from "@/features/discover/queries";
 import { MapRootProvider } from "@/components/shared/map/map.provider";
 import { getUserMapInternalConfig } from "@/components/shared/map/utils";
 import { DiscoverStaticCollections } from "@/features/discover/config";
+import { seedEventUsers } from "@/features/event/utils";
 
 export namespace DiscoverHighlightsPage {
     export type Props = never;
@@ -16,10 +17,11 @@ export async function DiscoverHighlightsPage() {
     const { bounds, center } = mapProvider.internalConfig.viewState;
     const radius = mapProvider.getHorizontalRadius(bounds, center);
 
-    const cityHighlights = await GetCityHighlightsQueryBuilder.queryFunc({
+    let cityHighlights = await GetCityHighlightsQueryBuilder.queryFunc({
         center,
         radius,
     });
+    cityHighlights = seedEventUsers(cityHighlights);
     const interests = extractUniqueInterests(cityHighlights);
   
     return (

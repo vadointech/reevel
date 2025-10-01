@@ -1,6 +1,6 @@
 import { IconBell, IconMap } from "@/components/icons";
 
-import { Avatar, EventCard } from "@/components/ui";
+import { Avatar, EventCard, OptionsList } from "@/components/ui";
 import { Link } from "@/i18n/routing";
 
 import { ScrollSection } from "@/components/sections";
@@ -8,11 +8,11 @@ import { DiscoverStaticCollections } from "@/features/discover/config";
 import { getUserMapInternalConfig } from "@/components/shared/map/utils";
 import { MapRootProvider } from "@/components/shared/map/map.provider";
 import { GetCityHighlightsQueryBuilder } from "@/features/discover/queries";
-import { TabsBody, TabsContent, TabsRoot } from "@/components/shared/tabs";
+import { TabsBody, TabsRoot } from "@/components/shared/tabs";
 import { EventListItemCard } from "@/components/ui";
+import { seedEventUsers } from "@/features/event/utils";
 
 import styles from "../styles/calendar-page.module.scss";
-import { seedEventUsers } from "@/features/event/utils/users";
 
 export namespace CalendarPage {
     export type Props = never;
@@ -72,57 +72,62 @@ export async function CalendarPage() {
                     }
                 </ScrollSection>
                 <div>
-                    <TabsRoot>
+                    <TabsRoot fitContent>
                         <TabsBody
-                            items={[
-                                "Upcoming • 3", "Hosting • 2", "Attending • 9",
+                            content={[
+                                {
+                                    label: "Upcoming • 3",
+                                    value: (
+                                        <OptionsList>
+                                            {
+                                                cityHighlights.slice(0, 3).map(event => (
+                                                    <Link
+                                                        key={event.id}
+                                                        href={DiscoverStaticCollections.Root + "/event/" + event.id}
+                                                    >
+                                                        <EventListItemCard event={event} />
+                                                    </Link>
+                                                ))
+                                            }
+                                        </OptionsList>
+                                    ),
+                                },
+                                {
+                                    label: "Hosting • 2",
+                                    value: (
+                                        <OptionsList>
+                                            {
+                                                cityHighlights.slice(0, 2).map(event => (
+                                                    <Link
+                                                        key={event.id}
+                                                        href={DiscoverStaticCollections.Root + "/event/" + event.id}
+                                                    >
+                                                        <EventListItemCard event={event} />
+                                                    </Link>
+                                                ))
+                                            }
+                                        </OptionsList>
+                                    ),
+                                },
+                                {
+                                    label: "Attending • 9",
+                                    value: (
+                                        <OptionsList>
+                                            {
+                                                cityHighlights.slice(0, 9).map(event => (
+                                                    <Link
+                                                        key={event.id}
+                                                        href={DiscoverStaticCollections.Root + "/event/" + event.id}
+                                                    >
+                                                        <EventListItemCard event={event} />
+                                                    </Link>
+                                                ))
+                                            }
+                                        </OptionsList>
+                                    ),
+                                },
                             ]}
-                        >
-                            <TabsContent>
-                                <div className={styles.list}>
-                                    {
-                                        cityHighlights.slice(0, 3).map(event => (
-                                            <Link
-                                                key={event.id}
-                                                href={DiscoverStaticCollections.Root + "/event/" + event.id}
-                                            >
-                                                <EventListItemCard event={event} />
-                                            </Link>
-                                        ))
-                                    }
-                                </div>
-                            </TabsContent>
-
-                            <TabsContent>
-                                <div className={styles.list}>
-                                    {
-                                        cityHighlights.slice(0, 2).map(event => (
-                                            <Link
-                                                key={event.id}
-                                                href={DiscoverStaticCollections.Root + "/event/" + event.id}
-                                            >
-                                                <EventListItemCard event={event} />
-                                            </Link>
-                                        ))
-                                    }
-                                </div>
-                            </TabsContent>
-
-                            <TabsContent>
-                                <div className={styles.list}>
-                                    {
-                                        cityHighlights.slice(0, 9).map(event => (
-                                            <Link
-                                                key={event.id}
-                                                href={DiscoverStaticCollections.Root + "/event/" + event.id}
-                                            >
-                                                <EventListItemCard event={event} />
-                                            </Link>
-                                        ))
-                                    }
-                                </div>
-                            </TabsContent>
-                        </TabsBody>
+                        />
                     </TabsRoot>
                 </div>
             </div>
