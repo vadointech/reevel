@@ -12,7 +12,7 @@
     @include mixins.no-scrollbar;
 
     &__gap {
-        margin-bottom: mixins.rem(24);
+        margin-bottom: .5rem;
     }
 }
 
@@ -74,16 +74,4 @@
         font-size: mixins.rem(8);
         line-height: 1;
     }
-}
-
-.list {
-    border-radius: mixins.rem(17);
-    overflow: hidden;
-    background: colors.$foreground;
-
-    display: flex;
-    flex-direction: column;
-    row-gap: mixins.rem(32);
-
-    padding: mixins.rem(16) mixins.rem(18);
 }

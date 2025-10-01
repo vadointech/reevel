@@ -1,0 +1,29 @@
+@use "@/theme/mixins";
+@use "@/theme/spacing";
+
+.carousel {
+    display: flex;
+
+    &__size {
+        &_default {
+            column-gap: mixins.rem(12);
+        }
+        &_small {
+            column-gap: .5rem;
+        }
+    }
+
+    overflow-x: auto;
+    scroll-behavior: smooth;
+
+    padding: 0 spacing.$container;
+
+    scroll-padding: 0 mixins.rem(16);
+
+    @include mixins.no-scrollbar;
+
+    & > * {
+        flex: 0 0 auto;
+        scroll-snap-align: start;
+    }
+}

@@ -14,6 +14,8 @@ $content-height: calc($button-height + $control-offest * 2);
     height: 100%;
     display: flex;
 
+    touch-action: pan-y;
+
     &_fit {
         height: auto;
         align-items: flex-start;
@@ -24,7 +26,7 @@ $content-height: calc($button-height + $control-offest * 2);
     flex: 1 0 100%;
     overflow-x: hidden;
     position: relative;
-    touch-action: none;
+    touch-action: pan-y;
     padding-inline: spacing.$container;
 
     @include mixins.no-scrollbar;
