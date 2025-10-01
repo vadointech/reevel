@@ -6,37 +6,33 @@ import { Controller } from "react-hook-form";
 import { IconLocation } from "@/components/icons";
 import { FormField, Input, OptionsList, OptionsListItem } from "@/components/ui";
 import { Section } from "@/components/sections";
+import { EditProfileFormInterestsPicker } from "./components";
 
-import { InterestEntity } from "@/entities/interests";
-
-import styles from "./styles/edit-profile-form.module.scss";
 import { EditProfileFormSchemaValues } from "@/features/profile/edit";
+import { useEditProfileFormContext } from "@/features/profile/edit/edit-profile-form.context";
 
 import { EditProfileAvatarUploader } from "../avatar-picker";
 import { EditProfileBackGroundUploader } from "../background-upload";
-import { useEditProfileFormContext } from "@/features/profile/edit/edit-profile-form.context";
 
 
 import { GetUserUploads } from "@/api/user/uploads";
-import { EditProfileFormInterestsPicker } from "./components";
+
+import styles from "./styles/edit-profile-form.module.scss";
+
 
 export namespace EditProfileForm {
     export type Data = {
-        interests: InterestEntity[]
         uploads: GetUserUploads.TOutput;
     };
     export type Props = ComponentProps<"form"> & Data;
 }
 
 export const EditProfileForm = ({
-    interests,
     uploads,
     ...props
 }: EditProfileForm.Props) => {
 
     const { store } = useEditProfileFormContext();
-
-    console.log(store, 'store');
 
     return (
         <form
@@ -91,7 +87,14 @@ export const EditProfileForm = ({
                     cta={"See all"}
                     ctaHref={"/profile/edit/interests"}
                 >
-                    <EditProfileFormInterestsPicker interests={interests} />
+                    <Controller
+                        name={"interests"}
+                        render={({ field, fieldState }) => (
+                            <FormField state={fieldState}>
+                                <EditProfileFormInterestsPicker interests={field.value} />
+                            </FormField>
+                        )}
+                    />
                 </Section>
 
                 <Section className={styles.form__gap}>

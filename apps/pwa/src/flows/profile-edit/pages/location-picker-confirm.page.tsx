@@ -60,10 +60,10 @@ export function EditProfileLocationPickerConfirmationPage() {
 
                             <ButtonsBlock>
                                 <Button
-                                    variant={"accent"}
+                                    variant={"primary"}
                                     onClick={() => router.push("/profile/edit")}
                                 >
-                                    Yes, browse events
+                                    Yes
                                 </Button>
                             </ButtonsBlock>
                         </BottomSheetContent>

@@ -1,6 +1,3 @@
-
-import { getCurrentUserInterests } from "@/api/user/server";
-
 import { EditProfileForm } from "../modules/form";
 import { getCurrentUserUploads } from "@/api/user/uploads/server";
 import { SupportedFileCollections } from "@/entities/uploads";
@@ -13,10 +10,8 @@ export namespace EditProfileFormPage {
 }
 
 export async function EditProfileFormPage({ }: EditProfileFormPage.Props) {
-    const [currentUserInterests, uploads] = await Promise.all([
-        getCurrentUserInterests(),
-        getCurrentUserUploads({ collection: SupportedFileCollections.PROFILE_PICTURE }),
-    ]);
+
+    const uploads = await getCurrentUserUploads({ collection: SupportedFileCollections.PROFILE_PICTURE });
 
 
     return (
@@ -24,7 +19,7 @@ export async function EditProfileFormPage({ }: EditProfileFormPage.Props) {
             <div className={styles.page__header}>
                 <EditProfileFormHeader />
             </div>
-            <EditProfileForm interests={currentUserInterests} uploads={uploads} />
+            <EditProfileForm uploads={uploads} />
         </div>
     );
 }
