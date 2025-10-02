@@ -26,6 +26,7 @@ import styles from "./styles.module.scss";
 
 export namespace UploadDrawer {
     export type Props = ComponentProps<"div"> & {
+        title: string;
         uploads?: GetUserUploads.TOutput;
         onImagePick: (upload: UserUploadsEntity) => void;
         onImageDelete: (upload: UserUploadsEntity) => void;
@@ -37,6 +38,7 @@ export namespace UploadDrawer {
 }
 
 export const UploadDrawer = ({
+    title,
     uploads = [],
     onImagePick,
     onImageDelete,
@@ -68,7 +70,7 @@ export const UploadDrawer = ({
                                     />
                                 }
                             >
-                                Event poster
+                                {title}
                             </Header>
                         </BottomSheetHandle>
                         <TabsRoot>

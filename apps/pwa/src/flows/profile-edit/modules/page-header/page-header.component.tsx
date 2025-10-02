@@ -18,7 +18,7 @@ export function EditProfileFormHeader() {
                     className={styles.button}
                     loading={isUpdating}
                     variant="text-accent"
-                    size="small"
+                    size="default"
                     onClick={handleSubmit}
                     disabled={isUpdating}
                 >

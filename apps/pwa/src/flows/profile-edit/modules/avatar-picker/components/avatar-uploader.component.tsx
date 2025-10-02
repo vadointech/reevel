@@ -32,6 +32,7 @@ export const EditProfileAvatarUploader = ({
             name={"avatar"}
             render={({ field }) => (
                 <UploadDrawer
+                    title="Profile picture"
                     uploads={uploads}
                     gridVariant={"rounded"}
                     selectedImageUrl={field.value}
