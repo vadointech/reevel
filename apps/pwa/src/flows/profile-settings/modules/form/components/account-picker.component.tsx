@@ -44,9 +44,9 @@ export const ProfileSettingsAccountPicker = () => {
                     <OptionsListItem
                         weight={"bold"}
                         variant={"avatar"}
-                        label="Jimmy Smdasith"
-                        description="jimmy_smith@gmail.com"
-                        contentLeft={<Avatar image={"/assets/temp/avatar.png"} />}
+                        label={session.store.user?.profile?.fullName}
+                        description={session.store.user?.email}
+                        contentLeft={<Avatar image={session.store.user?.profile?.picture} />}
                         contentRight={<Checkbox checked />}
                     />
                     <OptionsListItem

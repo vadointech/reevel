@@ -33,6 +33,14 @@ export class UserController {
         return this.userService.getUserInterests(session);
     }
 
+    @Get("/me/events")
+    async getUserEvents(
+        @Session() session: ServerSession,
+    ) {
+        console.log(">>> getting user events");
+        return this.userService.getUserEvents(session);
+    }
+
     @Get("/me/uploads")
     getUserUploads(
         @Query() params: GetUploadedFileParamsDto,

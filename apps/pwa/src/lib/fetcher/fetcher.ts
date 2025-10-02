@@ -138,7 +138,7 @@ export class Fetcher implements IFetcher {
                     requestInit.headers["Content-Type"] = contentType;
                 }
             }
-
+            
             const response = await fetch(fullURL.toString(), requestOptions);
 
             let fetcherResponse = await this.parseResponse(response, fallback);

@@ -25,8 +25,6 @@ export const EditProfileFormProvider = ({
         mode: "onChange",
     });
 
-    console.log(form.watch());
-
     useEffect(() => {
         const formValues = form.getValues();
         const validatedFormValues = editProfileFormSchema.safeParse(formValues);

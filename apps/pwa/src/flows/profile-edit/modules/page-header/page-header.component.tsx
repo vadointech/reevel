@@ -26,7 +26,7 @@ export function EditProfileFormHeader() {
                 </Button>
             }
             iconBefore={
-                <Link href={"/apps/pwa/public"}>
+                <Link href={"/profile"}>
                     <IconArrowLeft />
                 </Link>
             }

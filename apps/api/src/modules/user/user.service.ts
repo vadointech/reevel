@@ -5,6 +5,7 @@ import { ServerSession } from "@/types";
 import { GetUploadedFileParamsDto } from "@/modules/uploads/dto/get-image.dto";
 import { UploadsRepository } from "@/modules/uploads/repositories/uploads.repository";
 import { ProfileRepository } from "@/modules/profile/repositories/profile.repository";
+import { EventHostsRepository } from "../event/repositories/event-hosts.repository";
 
 @Injectable()
 export class UserService {
@@ -13,6 +14,7 @@ export class UserService {
         private readonly profileRepository: ProfileRepository,
         private readonly profileInterestsRepository: ProfileInterestsRepository,
         private readonly uploadsRepository: UploadsRepository,
+        private readonly eventHostsRepository: EventHostsRepository,
     ) { }
 
     async getUserSession(session: ServerSession) {
@@ -26,6 +28,19 @@ export class UserService {
                 location: true,
             },
         });
+    }
+
+
+    getUserEvents(session: ServerSession) {
+        return this.eventHostsRepository.findMany({
+            where: { userId: session.user.id },
+            relations: {
+                event: {
+                    interests: true,
+                    tickets: true,
+                },
+            },
+        }).then((hosts) => hosts.map((host) => host.event));
     }
 
     getUserInterests(session: ServerSession) {
