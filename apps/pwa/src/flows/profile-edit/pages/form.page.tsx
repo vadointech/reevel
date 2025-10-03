@@ -6,10 +6,10 @@ import { EditProfileFormHeader } from "../modules/page-header";
 import styles from "../styles/page.module.scss";
 
 export namespace EditProfileFormPage {
-    export type Props = {};
+    export type Props = never;
 }
 
-export async function EditProfileFormPage({ }: EditProfileFormPage.Props) {
+export async function EditProfileFormPage() {
 
     const uploads = await getCurrentUserUploads({ collection: SupportedFileCollections.PROFILE_PICTURE });
 

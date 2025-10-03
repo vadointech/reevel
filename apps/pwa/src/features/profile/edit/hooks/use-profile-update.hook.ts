@@ -30,7 +30,6 @@ export function useProfileUpdate() {
         },
         onError: (error) => {
             console.error("Failed to update profile:", error);
-            // Тут можна показати toast з помилкою
         },
     });
 
@@ -41,7 +40,6 @@ export function useProfileUpdate() {
         );
 
         if (!diff.hasChanges) {
-            // Якщо змін немає - просто редірект
             router.push("/profile");
             return;
         }

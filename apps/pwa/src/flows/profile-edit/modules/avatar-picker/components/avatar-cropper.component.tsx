@@ -1,8 +1,8 @@
 "use client";
 
 import { Button, Input } from "@/components/ui";
-
 import { useEditProfileAvatarUploader } from "@/features/profile/edit/hooks";
+
 
 export namespace EditProfileAvatarUploadCropper {
     export type Props = {

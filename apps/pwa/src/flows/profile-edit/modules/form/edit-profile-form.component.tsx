@@ -14,6 +14,7 @@ import { useEditProfileFormContext } from "@/features/profile/edit/edit-profile-
 import { EditProfileAvatarUploader } from "../avatar-picker";
 import { EditProfileBackGroundUploader } from "../background-upload";
 
+import { useRouter } from "@/i18n/routing";
 
 import { GetUserUploads } from "@/api/user/uploads";
 
@@ -33,6 +34,7 @@ export const EditProfileForm = ({
 }: EditProfileForm.Props) => {
 
     const { store } = useEditProfileFormContext();
+    const router = useRouter();
 
     return (
         <form
@@ -84,7 +86,8 @@ export const EditProfileForm = ({
 
                 <Section
                     title={"Interests"}
-                    cta={"See all"}
+                    cta={"Edit"}
+                    onCtaClick={() => router.push("/profile/edit")}
                     ctaHref={"/profile/edit/interests"}
                 >
                     <Controller
@@ -97,7 +100,7 @@ export const EditProfileForm = ({
                     />
                 </Section>
 
-                <Section className={styles.form__gap}>
+                <Section className={styles.form__gap} title="Additional information">
                     <Controller<EditProfileFormSchemaValues, "location">
                         name={"location"}
                         render={({ field, fieldState }) => (

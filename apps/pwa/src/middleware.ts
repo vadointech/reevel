@@ -12,7 +12,7 @@ import {
 } from "@/auth.config";
 import { refreshTokens } from "@/api/auth";
 
-export default async function (request: NextRequest) {
+export default async function(request: NextRequest) {
     const { nextUrl } = request;
 
     const ua = userAgent(request);
@@ -27,8 +27,6 @@ export default async function (request: NextRequest) {
         }
         return intlMiddleware(request);
     }
-
-    return intlMiddleware(request);
 
     const isPublicRoute = publicRoutes.includes(nextUrl.pathname);
     const isLoginRoute = nextUrl.pathname.startsWith(StaticRoutes.Login);

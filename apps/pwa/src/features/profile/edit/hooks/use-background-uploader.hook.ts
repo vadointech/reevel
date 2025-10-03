@@ -24,28 +24,28 @@ export function useEditProfileBackGroundUploader(callbackUrl?: string) {
         },
     });
 
-    const deleteAvatarMutation = useMutation({
+    const deleteBackgroundMutation = useMutation({
         mutationFn: deleteUploadedFile,
         onSuccess: () => {
             router.refresh();
         },
     });
-    const handleDeleteAvatar = useCallback((upload: UserUploadsEntity) => {
-        deleteAvatarMutation.mutate({ fileId: upload.id });
+    const handleDeleteBackground = useCallback((upload: UserUploadsEntity) => {
+        deleteBackgroundMutation.mutate({ fileId: upload.id });
     }, []);
 
-    const uploadAvatarMutation = useMutation({
+    const uploadBackgroundMutation = useMutation({
         mutationFn: uploadProfileAvatar,
         onSuccess: (upload) => {
-            if (upload) handlePickAvatar(upload);
+            if (upload) handlePickBackground(upload);
             if (callbackUrl) router.replace(callbackUrl);
         },
     });
-    const handleCropAvatar = useCallback(() => {
-        imageUploader.controller.cropImage().then(uploadAvatarMutation.mutate);
+    const handleCropBackground = useCallback(() => {
+        imageUploader.controller.cropImage().then(uploadBackgroundMutation.mutate);
     }, []);
 
-    const handlePickAvatar = useCallback((upload: UserUploadsEntity) => {
+    const handlePickBackground = useCallback((upload: UserUploadsEntity) => {
         form.setValue("background", upload.fileUrl);
         form.store.setPictureToSelect(upload.fileUrl);
 
@@ -54,12 +54,12 @@ export function useEditProfileBackGroundUploader(callbackUrl?: string) {
 
     return {
         handleSelectFile,
-        handlePickAvatar,
-        handleCropAvatar,
-        handleDeleteAvatar,
+        handlePickBackground,
+        handleCropBackground,
+        handleDeleteBackground,
         uploadDrawerController,
 
-        isDeleting: deleteAvatarMutation.isPending,
-        isUploading: uploadAvatarMutation.isPending,
+        isDeleting: deleteBackgroundMutation.isPending,
+        isUploading: uploadBackgroundMutation.isPending,
     };
 }

@@ -1,9 +1,8 @@
 "use client";
 
-import { PropsWithChildren, useEffect } from "react";
-import { FormProvider, useForm } from "react-hook-form";
+import { PropsWithChildren } from "react";
+import { FormProvider, useForm } from    "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { indexedDbService } from "@/lib/indexed-db.service";
 
 import { editProfileFormSchema, EditProfileFormSchemaValues } from "@/features/profile/edit";
 import { EditProfileFormContext } from "./edit-profile-form.context";
@@ -24,22 +23,6 @@ export const EditProfileFormProvider = ({
         defaultValues: config.defaultValues,
         mode: "onChange",
     });
-
-    useEffect(() => {
-        const formValues = form.getValues();
-        const validatedFormValues = editProfileFormSchema.safeParse(formValues);
-
-        if (validatedFormValues.success) return;
-
-        indexedDbService.getItem<EditProfileFormSchemaValues>("event_form_values")
-            .then(data => {
-                if (data) {
-                    for (const key of Object.keys(data) as (keyof EditProfileFormSchemaValues)[]) {
-                        form.setValue(key, data[key]);
-                    }
-                }
-            });
-    }, []);
 
     const store = useMobxStore(EditProfileFormStore, config);
 

@@ -1,8 +1,7 @@
 "use client";
 
 import { Button, Input } from "@/components/ui";
-
-import { useEditProfileAvatarUploader } from "@/features/profile/edit/hooks";
+import { useEditProfileBackGroundUploader } from "@/features/profile/edit/hooks";
 
 export namespace EditProfileBackGroundUploadCropper {
     export type Props = {
@@ -15,8 +14,8 @@ export const EditProfileBackGroundUploadCropper = ({ callbackUrl }: EditProfileB
     const {
         isUploading,
         handleSelectFile,
-        handleCropAvatar,
-    } = useEditProfileAvatarUploader(callbackUrl);
+        handleCropBackground,
+    } = useEditProfileBackGroundUploader(callbackUrl);
 
     return (
         <>
@@ -27,7 +26,7 @@ export const EditProfileBackGroundUploadCropper = ({ callbackUrl }: EditProfileB
             />
             <Button
                 loading={isUploading}
-                onClick={() => handleCropAvatar()}>
+                onClick={() => handleCropBackground()}>
                 Confirm
             </Button>
         </>

@@ -6,7 +6,7 @@ export namespace UpdateProfile {
         bio: string;
         fullName: string;
         picture: string;
-        completed: string;
+        completed: number;
         placeName: string;
         locationCenter: number[],
         locationBbox?: number[],

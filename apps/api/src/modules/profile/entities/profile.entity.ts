@@ -37,5 +37,4 @@ export class ProfileEntity {
         cascade: true,
     })
     interests: ProfileInterestsEntity[];
-    profile: { events: import("e:/Reevel/reevel-app/apps/api/src/modules/event/entities/event-hosts.entity").EventHostsEntity[]; };
 }

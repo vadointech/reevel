@@ -7,10 +7,10 @@ import styles from "../styles/confirm-bottom-header.module.scss";
 import { useRouter } from "@/i18n/routing";
 
 export namespace ConfirmBottomHeader {
-    export type Props = {};
+    export type Props = never;
 }
 
-export const ConfirmBottomHeader = ({ }: ConfirmBottomHeader.Props) => {
+export const ConfirmBottomHeader = () => {
     const router = useRouter();
 
     const ControlAfter = (

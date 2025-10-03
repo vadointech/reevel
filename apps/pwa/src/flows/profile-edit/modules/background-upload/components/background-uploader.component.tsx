@@ -1,12 +1,9 @@
 "use client";
 
-import { UploadDrawer } from "@/components/drawers/upload";
-
 import { GetUserUploads } from "@/api/user/uploads";
 import { Controller } from "react-hook-form";
 
 import { ProfileHeroCover } from "@/flows/profile/modules/hero/primitives";
-import { useEditProfileBackGroundUploader } from "@/features/profile/edit/hooks";
 
 export namespace EditProfileBackGroundUploader {
     export type Props = {
@@ -18,20 +15,18 @@ export namespace EditProfileBackGroundUploader {
 
 export const EditProfileBackGroundUploader = ({
     background = "/assets/defaults/background.png",
-    uploads,
-    cropperPageUrl,
 }: EditProfileBackGroundUploader.Props) => {
-    const {
-        handlePickAvatar,
-        handleDeleteAvatar,
-        handleSelectFile,
-        uploadDrawerController,
-    } = useEditProfileBackGroundUploader(cropperPageUrl);
+    // const {
+    //     handlePickBackground,
+    //     handleDeleteBackground,
+    //     handleSelectFile,
+    //     uploadDrawerController,
+    // } = useEditProfileBackGroundUploader(cropperPageUrl);
 
     return (
         <Controller
             name={"background"}
-            render={({ field }) => (
+            render={() => (
                 // <UploadDrawer
                 //     title={Profile background}
                 //     uploads={uploads}

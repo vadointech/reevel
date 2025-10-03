@@ -1,12 +1,11 @@
 "use client";
 
-import { useOnboardingAvatarUploader } from "@/features/onboarding/hooks";
-
 import { UploadDrawer } from "@/components/drawers/upload";
 import { Button } from "@/components/ui";
 
 import { GetUserUploads } from "@/api/user/uploads";
 import { Controller } from "react-hook-form";
+import { useEditProfileAvatarUploader } from "@/features/profile/edit/hooks";
 
 export namespace OnboardingAvatarUploader {
     export type Props = {
@@ -24,7 +23,7 @@ export const OnboardingAvatarUploader = ({
         handleDeleteAvatar,
         handleSelectFile,
         uploadDrawerController,
-    } = useOnboardingAvatarUploader(cropperPageUrl);
+    } = useEditProfileAvatarUploader(cropperPageUrl);
 
     return (
         <Controller
