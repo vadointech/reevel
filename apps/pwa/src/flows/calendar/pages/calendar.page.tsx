@@ -1,4 +1,4 @@
-import { IconBell, IconMap, IconSearch } from "@/components/icons";
+import { IconMap, IconSearch } from "@/components/icons";
 
 import { Avatar, EventCard, InterestButton, OptionsList } from "@/components/ui";
 import { Link } from "@/i18n/routing";
@@ -48,12 +48,12 @@ export async function CalendarPage() {
                     <Link href={"/calendar/map"}>
                         <IconMap />
                     </Link>
-                    <Link href={"/activity"}>
-                        <IconBell />
-                        <span className={styles.header__badge}>
-                            2
-                        </span>
-                    </Link>
+                    {/*<Link href={"/activity"}>*/}
+                    {/*    <IconBell />*/}
+                    {/*    <span className={styles.header__badge}>*/}
+                    {/*        2*/}
+                    {/*    </span>*/}
+                    {/*</Link>*/}
                 </div>
             </header>
 

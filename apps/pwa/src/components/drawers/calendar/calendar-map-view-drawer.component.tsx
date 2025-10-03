@@ -16,6 +16,7 @@ import {
 import { Carousel } from "@/components/shared/carousel";
 import { EventListItemCard, Header, InterestButton, OptionsList } from "@/components/ui";
 import { IconArrowLeft, IconSearch } from "@/components/icons";
+
 import { EventEntity } from "@/entities/event";
 
 import styles from "./styles.module.scss";
@@ -51,10 +52,12 @@ export const CalendarMapViewDrawer = ({
                         style={{ position: "relative", height: 38 }}
                     >
                         <Carousel>
-                            <InterestButton
-                                icon={<IconSearch />}
-                                layout={"icon"}
-                            />
+                            <Link href={"/calendar/search"}>
+                                <InterestButton
+                                    icon={<IconSearch />}
+                                    layout={"icon"}
+                                />
+                            </Link>
                             <InterestButton>
                                 Upcoming • 3
                             </InterestButton>
