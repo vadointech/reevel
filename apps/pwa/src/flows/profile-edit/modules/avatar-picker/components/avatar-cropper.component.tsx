@@ -1,8 +1,7 @@
 "use client";
 
 import { Button, Input } from "@/components/ui";
-import { useEditProfileAvatarUploader } from "@/features/profile/edit/hooks";
-
+import { useProfileAvatarUploader } from "@/features/profile/update/hooks";
 
 export namespace EditProfileAvatarUploadCropper {
     export type Props = {
@@ -16,7 +15,7 @@ export const EditProfileAvatarUploadCropper = ({ callbackUrl }: EditProfileAvata
         isUploading,
         handleSelectFile,
         handleCropAvatar,
-    } = useEditProfileAvatarUploader(callbackUrl);
+    } = useProfileAvatarUploader(callbackUrl);
 
     return (
         <>

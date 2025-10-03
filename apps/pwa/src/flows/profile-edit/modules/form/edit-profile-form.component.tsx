@@ -8,8 +8,8 @@ import { FormField, Input, OptionsList, OptionsListItem } from "@/components/ui"
 import { Section } from "@/components/sections";
 import { EditProfileFormInterestsPicker } from "./components";
 
-import { EditProfileFormSchemaValues } from "@/features/profile/edit";
-import { useEditProfileFormContext } from "@/features/profile/edit/edit-profile-form.context";
+import { EditProfileFormSchemaValues } from "@/features/profile/update";
+import { useEditProfileFormContext } from "@/features/profile/update/edit-profile-form.context";
 
 import { EditProfileAvatarUploader } from "../avatar-picker";
 import { EditProfileBackGroundUploader } from "../background-upload";
@@ -88,7 +88,7 @@ export const EditProfileForm = ({
                     title={"Interests"}
                     cta={"Edit"}
                     onCtaClick={() => router.push("/profile/edit")}
-                    ctaHref={"/profile/edit/interests"}
+                    ctaHref={"/profile/update/interests"}
                 >
                     <Controller
                         name={"interests"}
@@ -112,7 +112,7 @@ export const EditProfileForm = ({
                                         label={"Location"}
                                         description={field.value?.displayName}
                                         contentLeft={<IconLocation />}
-                                        href={"/profile/edit/location/pick"}
+                                        href={"/profile/update/location/pick"}
                                     />
                                 </OptionsList>
                             </FormField>

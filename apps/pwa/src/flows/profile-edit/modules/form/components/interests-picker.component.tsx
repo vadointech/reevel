@@ -2,7 +2,7 @@
 
 import { Controller } from "react-hook-form";
 import { FormField, InterestButton } from "@/components/ui";
-import { EditProfileFormSchemaValues } from "@/features/profile/edit";
+import { EditProfileFormSchemaValues } from "@/features/profile/update";
 import { useFormInterestsPicker } from "@/features/interests/picker/hooks";
 
 import { InterestEntity } from "@/entities/interests";

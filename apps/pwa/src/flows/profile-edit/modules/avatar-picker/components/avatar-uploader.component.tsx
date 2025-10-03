@@ -3,9 +3,10 @@
 import { UploadDrawer } from "@/components/drawers/upload";
 import { Avatar } from "@/components/ui";
 
-import { GetUserUploads } from "@/api/user/uploads";
 import { Controller } from "react-hook-form";
-import { useEditProfileAvatarUploader } from "@/features/profile/edit/hooks/use-avatar-uploader.hook";
+import { useProfileAvatarUploader } from "@/features/profile/update/hooks";
+
+import { GetUserUploads } from "@/api/user/uploads";
 
 export namespace EditProfileAvatarUploader {
     export type Props = {
@@ -25,7 +26,7 @@ export const EditProfileAvatarUploader = ({
         handleDeleteAvatar,
         handleSelectFile,
         uploadDrawerController,
-    } = useEditProfileAvatarUploader(cropperPageUrl);
+    } = useProfileAvatarUploader(cropperPageUrl);
 
     return (
         <Controller

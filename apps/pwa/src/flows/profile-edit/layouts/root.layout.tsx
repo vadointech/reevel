@@ -1,9 +1,10 @@
 import { PropsWithChildren } from "react";
 
 import { ImageUploaderProvider } from "@/features/uploader/image";
-import { EditProfileFormProvider } from "@/features/profile/edit";
+import { EditProfileFormProvider } from "@/features/profile/update";
 import { getCurrentUserInterests, getCurrentUserProfile } from "@/api/user/server";
-import { mapProfileLocationToForm } from "@/infrastructure/profile";
+import { ProfileLocationMapper } from "@/features/profile/mappers";
+
 export namespace EditProfileRootLayout {
     export type Props = PropsWithChildren;
 }
@@ -18,7 +19,6 @@ export const EditProfileRootLayout = async({
     return (
         <EditProfileFormProvider
             pictureToSelect={profile?.picture || "/assets/defaults/avatar.png"}
-
             defaultValues={{
                 background: "",
                 avatar: profile?.picture || "",
@@ -26,7 +26,7 @@ export const EditProfileRootLayout = async({
                 bio: profile?.bio || "",
                 interests: interests || [],
                 location: profile?.location
-                    ? mapProfileLocationToForm(profile.location)
+                    ? ProfileLocationMapper.toPlaceLocationEntity(profile.location)
                     : undefined,
             }}
         >

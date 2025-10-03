@@ -1,7 +1,7 @@
 "use client";
 
 import { Button, Input } from "@/components/ui";
-import { useEditProfileAvatarUploader } from "@/features/profile/edit/hooks";
+import { useProfileAvatarUploader } from "@/features/profile/update/hooks";
 
 export namespace OnboardingAvatarUploadCropper {
     export type Props = {
@@ -14,7 +14,7 @@ export const OnboardingAvatarUploadCropper = ({ callbackUrl }: OnboardingAvatarU
         isUploading,
         handleSelectFile,
         handleCropAvatar,
-    } = useEditProfileAvatarUploader(callbackUrl);
+    } = useProfileAvatarUploader(callbackUrl);
 
     return (
         <>

@@ -3,7 +3,7 @@
 import { createContext, useContext } from "react";
 import { UseFormReturn } from "react-hook-form";
 import { IEditProfileFormStore } from "./types";
-import { EditProfileFormSchemaValues } from "./edit-profile-form.scheme";
+import { EditProfileFormSchemaValues } from "./edit-profile-form.schema";
 
 export type EditProfileFormContextValues = UseFormReturn<EditProfileFormSchemaValues> & {
     store: IEditProfileFormStore;
@@ -13,6 +13,6 @@ export const EditProfileFormContext = createContext<EditProfileFormContextValues
 
 export function useEditProfileFormContext() {
     const ctx = useContext(EditProfileFormContext);
-    if (!ctx) throw new Error("useEditProfileFormContext must be used within a useEditProfileFormContext");
+    if(!ctx) throw new Error("useEditProfileFormContext must be used within a useEditProfileFormContext");
     return ctx;
 }

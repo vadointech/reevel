@@ -3,9 +3,11 @@
 import { UploadDrawer } from "@/components/drawers/upload";
 import { Button } from "@/components/ui";
 
-import { GetUserUploads } from "@/api/user/uploads";
 import { Controller } from "react-hook-form";
-import { useEditProfileAvatarUploader } from "@/features/profile/edit/hooks";
+import { useProfileAvatarUploader } from "@/features/profile/update/hooks";
+
+import { GetUserUploads } from "@/api/user/uploads";
+import { EditProfileFormSchemaValues } from "@/features/profile/update";
 
 export namespace OnboardingAvatarUploader {
     export type Props = {
@@ -23,11 +25,11 @@ export const OnboardingAvatarUploader = ({
         handleDeleteAvatar,
         handleSelectFile,
         uploadDrawerController,
-    } = useEditProfileAvatarUploader(cropperPageUrl);
+    } = useProfileAvatarUploader(cropperPageUrl);
 
     return (
-        <Controller
-            name={"picture"}
+        <Controller<EditProfileFormSchemaValues, "avatar">
+            name={"avatar"}
             render={({ field }) => (
                 <UploadDrawer
                     title="Profile picture"

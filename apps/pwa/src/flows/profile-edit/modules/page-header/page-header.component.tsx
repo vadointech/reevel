@@ -4,7 +4,7 @@ import { Link } from "@/i18n/routing";
 import { Header } from "@/components/ui";
 import { IconArrowLeft } from "@/components/icons";
 import { Button } from "@/components/ui";
-import { useProfileUpdate } from "@/features/profile/edit/hooks";
+import { useProfileUpdate } from "@/features/profile/update/hooks";
 
 import styles from "./styles.module.scss";
 

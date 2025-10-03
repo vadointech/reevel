@@ -3,7 +3,8 @@
 import { OnboardingStepPath } from "@/features/onboarding";
 import { usePathname, useRouter } from "@/i18n/routing";
 import { useLogout } from "@/features/session/hooks";
-import { useProfileUpdate } from "@/features/profile/hooks";
+import { useMutation } from "@tanstack/react-query";
+import { updateProfileAction } from "@/features/profile/update/actions";
 
 export function useOnboardingProgress() {
 
@@ -14,7 +15,9 @@ export function useOnboardingProgress() {
 
     const step = OnboardingStepPath.indexOf(pathname as OnboardingStepPath);
 
-    const { handleUpdateProfile } = useProfileUpdate();
+    const updateUserProfileMutation = useMutation({
+        mutationFn: updateProfileAction,
+    });
 
     function getOnboardingProgress(step: OnboardingStepPath | number) {
         const stepIndex = function(){
@@ -33,7 +36,7 @@ export function useOnboardingProgress() {
 
     async function updateOnboardingProgressAsync(step: OnboardingStepPath | number) {
         const progress = getOnboardingProgress(step);
-        handleUpdateProfile({
+        updateUserProfileMutation.mutateAsync({
             completed: progress.status,
         }).then(() => router.push(OnboardingStepPath[progress.index]));
     }

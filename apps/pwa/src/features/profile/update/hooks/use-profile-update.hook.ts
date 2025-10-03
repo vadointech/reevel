@@ -4,11 +4,13 @@ import { useCallback } from "react";
 import { useMutation } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
 
-import { useEditProfileFormContext } from "@/features/profile/edit/edit-profile-form.context";
-import { useSessionContext } from "@/features/session";
-import { updateProfileAction } from "@/features/profile/actions";
 import { ObjectDiff } from "@/utils/object";
-import { UpdateProfile } from "@/api/profile";
+import { useSessionContext } from "@/features/session";
+import { updateProfileAction } from "@/features/profile/update/actions";
+
+import { useEditProfileFormContext } from "../edit-profile-form.context";
+
+import { EditProfileFormMapper } from "@/features/profile/mappers";
 
 export function useProfileUpdate() {
     const router = useRouter();
@@ -39,39 +41,16 @@ export function useProfileUpdate() {
             form.getValues(),
         );
 
-        if (!diff.hasChanges) {
+        if(!diff.hasChanges) {
             router.push("/profile");
             return;
         }
 
-        const {
-            location,
-            interests,
-            avatar,
-            ...changedData
-        } = diff.toObject();
-
-        const profileToUpdate: UpdateProfile.TInput = {
-            ...changedData,
-            picture: avatar,
-        };
-
-        if (location) {
-            profileToUpdate.placeName = location.displayName;
-            profileToUpdate.locationCenter = [
-                location.location.longitude,
-                location.location.latitude,
-            ];
-            profileToUpdate.locationBbox = location.bbox;
-        }
-
-        if (interests) {
-            profileToUpdate.interests = interests.map(item =>
-                typeof item === "string" ? item : item.slug,
-            );
-        }
-
-        updateProfileMutation.mutate(profileToUpdate);
+        updateProfileMutation.mutate(
+            EditProfileFormMapper.toUpdateProfileRequestInput(
+                diff.toObject(),
+            ),
+        );
     }, [form, router, updateProfileMutation]);
 
     return {

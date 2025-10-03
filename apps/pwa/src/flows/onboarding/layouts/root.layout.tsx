@@ -1,9 +1,9 @@
 import { PropsWithChildren } from "react";
 
 import { getCurrentUserProfile } from "@/api/user/server";
-import { OnboardingFormProvider } from "@/features/onboarding";
 import { ImageUploaderProvider } from "@/features/uploader/image";
-
+import { EditProfileFormProvider } from "@/features/profile/update";
+import { ProfileLocationMapper } from "@/features/profile/mappers";
 
 import styles from "../styles/root-layout.module.scss";
 
@@ -15,14 +15,17 @@ export async function OnboardingRootLayout({ children }: OnboardingRootLayout.Pr
     const profile = await getCurrentUserProfile();
 
     return (
-        <OnboardingFormProvider
+        <EditProfileFormProvider
             pictureToSelect={profile?.picture || "/assets/defaults/avatar.png"}
             defaultValues={{
-                placeName: profile?.location?.placeName || "",
-                picture: profile?.picture || "",
+                background: "",
+                avatar: profile?.picture || "",
                 fullName: profile?.fullName || "",
                 bio: profile?.bio || "",
                 interests: profile?.interests?.map(item => item.interest) || [],
+                location: profile?.location
+                    ? ProfileLocationMapper.toPlaceLocationEntity(profile.location)
+                    : undefined,
             }}
         >
             <ImageUploaderProvider>
@@ -30,6 +33,6 @@ export async function OnboardingRootLayout({ children }: OnboardingRootLayout.Pr
                     {children}
                 </div>
             </ImageUploaderProvider>
-        </OnboardingFormProvider>
+        </EditProfileFormProvider>
     );
 }

@@ -1,13 +1,14 @@
 "use client";
 
 import { PropsWithChildren } from "react";
-import { FormProvider, useForm } from    "react-hook-form";
+import { FormProvider, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-
-import { editProfileFormSchema, EditProfileFormSchemaValues } from "@/features/profile/edit";
-import { EditProfileFormContext } from "./edit-profile-form.context";
 import { useMobxStore } from "@/lib/mobx";
+
+import { editProfileFormSchema, EditProfileFormSchemaValues } from "./edit-profile-form.schema";
+import { EditProfileFormContext } from "./edit-profile-form.context";
 import { EditProfileFormStore } from "./edit-profile-form.store";
+
 import { EditProfileFormConfigParams } from "./types";
 
 export namespace EditProfileFormProvider {
@@ -29,8 +30,7 @@ export const EditProfileFormProvider = ({
     return (
         <FormProvider {...form}>
             <EditProfileFormContext.Provider value={{ ...form, store }}>
-
-                {children}
+                { children }
             </EditProfileFormContext.Provider>
         </FormProvider>
     );

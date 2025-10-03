@@ -9,8 +9,8 @@ export function EditProfileLocationPickerLayout({ children }: PropsWithChildren)
     return (
         <LocationSearchProvider
             syncFormField={"location"}
-            callbackUrl={"/profile/edit"}
-            confirmUrl={"/profile/edit/location/confirm"}
+            callbackUrl={"/profile/update"}
+            confirmUrl={"/profile/update/location/confirm"}
         >
             {children}
         </LocationSearchProvider>

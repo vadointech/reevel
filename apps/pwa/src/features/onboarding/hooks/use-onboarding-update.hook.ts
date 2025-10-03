@@ -1,14 +1,14 @@
 "use client";
 
-import { useCallback, useRef } from "react";
+import { useCallback } from "react";
 
 import { useOnboardingProgress } from "./use-onboarding-progress.hook";
 import { useSessionContext } from "@/features/session";
-import { useOnboardingFormContext } from "@/features/onboarding";
 import { ObjectDiff } from "@/utils/object";
-import { UpdateProfile } from "@/api/profile";
 import { useMutation } from "@tanstack/react-query";
-import { updateProfileAction } from "@/features/profile/actions";
+import { updateProfileAction } from "@/features/profile/update/actions";
+import { useEditProfileFormContext } from "@/features/profile/update";
+import { EditProfileFormMapper } from "@/features/profile/mappers";
 
 type ConfigParams = {
     revalidateQueryOnSuccess?: string[]
@@ -18,8 +18,7 @@ export function useOnboardingUpdate({
     revalidateQueryOnSuccess,
 }: ConfigParams = {}) {
     const session = useSessionContext();
-    const form = useOnboardingFormContext();
-    const shouldRevalidate = useRef(false);
+    const form = useEditProfileFormContext();
 
     const {
         step,
@@ -31,9 +30,7 @@ export function useOnboardingUpdate({
         mutationFn: updateProfileAction,
         onSettled: handleNextStep,
         onSuccess: (data) => {
-            if (!data || !shouldRevalidate.current) return;
-
-            shouldRevalidate.current = false;
+            if (!data) return;
 
             session.updateSession({
                 profile: data,
@@ -52,44 +49,16 @@ export function useOnboardingUpdate({
         );
         const progress = getOnboardingProgress(step + 1);
 
-        if (diff.hasChanges) {
-            shouldRevalidate.current = true;
-            const {
-                location,
-                interests,
-                ...changedData
-            } = diff.toObject();
-
-            const profileToUpdate: UpdateProfile.TInput = {
-                placeName: location?.displayName,
-                bio: changedData.bio,
-                fullName: changedData.fullName,
-                picture: changedData.picture,
-                completed: progress.status,
-            };
-
-            if (location) {
-                profileToUpdate.locationCenter = [location.location.longitude, location.location.latitude];
-                profileToUpdate.locationBbox = location.bbox;
-            }
-
-            if (interests) {
-                profileToUpdate.interests = interests.map(item => item.slug);
-            }
-
-            updateProfileMutation.mutate(profileToUpdate);
-        } else {
+        if(!diff.hasChanges) {
             return handleNextStep();
-            // const onboardingStep = session.store.user?.profile.completed;
-
-            // if(isNaN(onboardingStep) || onboardingStep > step) {
-            //     return handleNextStep();
-            // } else {
-            //     updateProfileMutation.mutate({
-            //         completed: progress.status,
-            //     });
-            // }
         }
+
+        updateProfileMutation.mutate({
+            ...EditProfileFormMapper.toUpdateProfileRequestInput(
+                diff.toObject(),
+            ),
+            completed: progress.status,
+        });
     }, [step, revalidateQueryOnSuccess]);
 
     return {
