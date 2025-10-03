@@ -50,28 +50,28 @@
         }
 
         svg {
-            height: mixins.rem(20);
+            height: mixins.rem(22);
         }
     }
 
     &__badge {
         position: absolute;
         top: mixins.rem(-2);
-        right: mixins.rem(-2);
+        right: mixins.rem(-4);
 
         display: flex;
         align-items: center;
         justify-content: center;
 
-        width: mixins.rem(12);
-        height: mixins.rem(12);
+        width: mixins.rem(14);
+        height: mixins.rem(14);
         border-radius: 50%;
 
         color: colors.$foreground;
         background-color: colors.$danger;
 
         @include typography.font("xxs", 500);
-        font-size: mixins.rem(8);
+        font-size: mixins.rem(9);
         line-height: 1;
     }
 }
