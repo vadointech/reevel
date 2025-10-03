@@ -20,7 +20,7 @@ export class FetcherClient extends Fetcher implements IFetcherClient {
 
     readonly interceptor: FetcherInterceptor;
 
-    constructor(defaultConfig: Partial<FetcherRequest>) {
+    constructor(defaultConfig: Partial<FetcherRequest> = {}) {
         const interceptors = new FetcherInterceptor();
         super(defaultConfig, interceptors);
         this.interceptor = interceptors;

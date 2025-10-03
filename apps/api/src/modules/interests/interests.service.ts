@@ -54,7 +54,7 @@ export class InterestsService {
         const queryBuilder = await this.interestsRepository
             .queryBuilder("interests");
 
-        Object.entries(params).forEach(([key, value]: [keyof InterestsFilterParamsDto, any]) => {
+        (Object.entries(params) as Array<[keyof InterestsFilterParamsDto, any]>).forEach(([key, value]) => {
             switch(key) {
                 case "title_en":
                     queryBuilder.where("interests.title_en ILIKE :title", { title: `%${value}%` });

@@ -7,11 +7,11 @@ export default function manifest(): MetadataRoute.Manifest {
         start_url: "/?source=pwa",
 
         display: "standalone",
-        orientation: "landscape",
+        orientation: "portrait",
 
         short_name: "Reevel",
-        name: "Reevel: Make every moment count",
-        description: "Easily bring people together. Reevel turns simple moments into lasting memories.",
+        name: "Reevel",
+        description: "Make every moment count. Easily bring people together. Reevel turns simple moments into lasting memories.",
 
         icons: [
             {

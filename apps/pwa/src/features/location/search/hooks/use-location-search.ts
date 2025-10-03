@@ -75,7 +75,7 @@ export function useLocationSearch(resultsInit: PlaceLocationEntity[] = []) {
 
         const containerHeight = element.clientHeight;
 
-        for(const [index, child] of list.childNodes.entries()) {
+        for(const [index, child] of Array.from(list.childNodes).entries()) {
             const childNode = child instanceof HTMLElement ? child : null;
             if(!childNode) continue;
 
