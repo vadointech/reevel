@@ -3,13 +3,18 @@
 import { InterestEntity } from "@/entities/interests";
 import { useRef, useState } from "react";
 import { ControllerRenderProps, useFormContext } from "react-hook-form";
-import { CreateEventFormSchemaValues } from "@/features/event/create";
 import { ObjectUnique } from "@/utils/object";
 
-export function useCreateEventFormInterestsPicker(interestsInit: InterestEntity[]) {
-    const { getValues } = useFormContext<CreateEventFormSchemaValues>();
+interface IFromValues {
+    interests: InterestEntity[];
+}
 
-    const formInterestsRef = useRef<InterestEntity[]>(getValues("interests"));
+export function useFormInterestsPicker<T extends IFromValues>(interestsInit: InterestEntity[]) {
+    const { getValues } = useFormContext<IFromValues>();
+
+    const formInterestsRef = useRef<InterestEntity[]>(
+        getValues("interests"),
+    );
 
     const [interests] = useState<InterestEntity[]>(() => {
         return [
@@ -23,7 +28,7 @@ export function useCreateEventFormInterestsPicker(interestsInit: InterestEntity[
     });
 
     const handleAddInterest = (
-        field: ControllerRenderProps<CreateEventFormSchemaValues>,
+        field: ControllerRenderProps<T>,
         interest: InterestEntity,
     ) => {
         formInterestsRef.current = [...formInterestsRef.current, interest];
@@ -31,7 +36,7 @@ export function useCreateEventFormInterestsPicker(interestsInit: InterestEntity[
     };
 
     const handleRemoveInterest = (
-        field: ControllerRenderProps<CreateEventFormSchemaValues>,
+        field: ControllerRenderProps<T>,
         interest: InterestEntity,
     ) => {
         formInterestsRef.current = formInterestsRef.current.filter(item => item.slug !== interest.slug);
@@ -43,7 +48,7 @@ export function useCreateEventFormInterestsPicker(interestsInit: InterestEntity[
     };
 
     const handleToggle = (
-        field: ControllerRenderProps<CreateEventFormSchemaValues>,
+        field: ControllerRenderProps<T>,
         interest: InterestEntity,
     ) => {
         const selected = isSelected(interest);

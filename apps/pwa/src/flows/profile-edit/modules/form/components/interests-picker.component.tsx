@@ -3,7 +3,7 @@
 import { Controller } from "react-hook-form";
 import { FormField, InterestButton } from "@/components/ui";
 import { EditProfileFormSchemaValues } from "@/features/profile/edit";
-import { useEditProfileFormInterestsPicker } from "@/features/profile/edit/hooks";
+import { useFormInterestsPicker } from "@/features/interests/picker/hooks";
 
 import { InterestEntity } from "@/entities/interests";
 
@@ -22,7 +22,7 @@ export const EditProfileFormInterestsPicker = ({
 }: EditProfileFormInterestsPicker.Props) => {
     const {
         interests,
-    } = useEditProfileFormInterestsPicker(interestsInit);
+    } = useFormInterestsPicker<EditProfileFormSchemaValues>(interestsInit);
 
     return (
         <Controller<EditProfileFormSchemaValues, "interests">
