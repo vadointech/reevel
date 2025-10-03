@@ -88,7 +88,7 @@ export const EditProfileForm = ({
                     title={"Interests"}
                     cta={"Edit"}
                     onCtaClick={() => router.push("/profile/edit")}
-                    ctaHref={"/profile/update/interests"}
+                    ctaHref={"/profile/edit/interests"}
                 >
                     <Controller
                         name={"interests"}
@@ -112,7 +112,7 @@ export const EditProfileForm = ({
                                         label={"Location"}
                                         description={field.value?.displayName}
                                         contentLeft={<IconLocation />}
-                                        href={"/profile/update/location/pick"}
+                                        href={"/profile/edit/location/pick"}
                                     />
                                 </OptionsList>
                             </FormField>
