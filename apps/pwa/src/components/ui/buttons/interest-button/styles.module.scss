@@ -4,6 +4,8 @@
 @use "@/theme/typography";
 
 .button {
+    flex-shrink: 0;
+
     height: mixins.rem(38);
     width: fit-content;
     border-radius: mixins.rem(100);

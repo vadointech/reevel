@@ -28,7 +28,7 @@ export function useTabsContainer() {
     const tabsContainerAnimate = useAnimation();
     const tabsContainerDragX = useMotionValue(0);
 
-    const handleTabsContainerDragSnapTo = (target: HTMLButtonElement, direction: number) => {
+    const handleTabsContainerDragSnapTo = (target: HTMLButtonElement, direction: number, index: number) => {
         const tabsContainer = tabsContainerRef.current;
         if (!tabsContainer) {
             return;
@@ -51,7 +51,11 @@ export function useTabsContainer() {
         if (!isFullyVisible) {
             if (direction < 0) {
                 // Bind to the left edge
-                newScrollX = tabStart;
+                if(index === 0) {
+                    newScrollX = 0;
+                } else {
+                    newScrollX = tabStart;
+                }
             } else if (direction > 0) {
                 // Bind to the right edge
                 newScrollX = Math.max(0, tabEnd - containerWidth);

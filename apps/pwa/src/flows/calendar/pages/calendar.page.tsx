@@ -1,6 +1,6 @@
-import { IconBell, IconMap } from "@/components/icons";
+import { IconBell, IconMap, IconSearch } from "@/components/icons";
 
-import { Avatar, EventCard, OptionsList } from "@/components/ui";
+import { Avatar, EventCard, InterestButton, OptionsList } from "@/components/ui";
 import { Link } from "@/i18n/routing";
 
 import { ScrollSection } from "@/components/sections";
@@ -75,6 +75,14 @@ export async function CalendarPage() {
 
             <TabsRoot fitContent>
                 <TabsBody
+                    controlBefore={
+                        <Link href={"/calendar/search"}>
+                            <InterestButton
+                                icon={<IconSearch />}
+                                layout={"icon"}
+                            />
+                        </Link>
+                    }
                     content={[
                         {
                             label: "Upcoming • 3",

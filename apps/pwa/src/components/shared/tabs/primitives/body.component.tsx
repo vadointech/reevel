@@ -24,12 +24,14 @@ type TabsContentValue = {
 
 export namespace TabsBody {
     export type Props = Omit<HTMLMotionProps<"div">, "children" | "content"> & {
-        content: TabsContentValue[]
+        content: TabsContentValue[];
+        controlBefore?: ReactNode;
     };
 }
 
 export const TabsBody = ({
     content = [],
+    controlBefore,
     className,
     ...props
 }: TabsBody.Props) => {
@@ -85,7 +87,7 @@ export const TabsBody = ({
             onDragEnd: (index, direction) => {
                 const target = tabsRef.current[index];
                 if(!target) return;
-                handleTabsContainerDragSnapTo(target, direction);
+                handleTabsContainerDragSnapTo(target, direction, index);
             },
         },
     );
@@ -119,6 +121,7 @@ export const TabsBody = ({
                     onDragEnd={handleTabsContainerDragEnd}
                     className={styles.controls}
                 >
+                    { controlBefore }
                     {
                         content.map((item, index) => (
                             <TabsTabButton
