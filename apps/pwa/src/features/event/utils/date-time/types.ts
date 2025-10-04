@@ -6,7 +6,8 @@ export type DateTimeConfig = {
 export type DateFormatOptions = {
     today: string,
     tomorrow: string,
-    dateFormat: (args: { weekday: string, month: string, day: string}) => string
+    dateFormat: (args: { weekday: string, month: string, day: string }) => string
+    shortDateFormat: (args: { month: string, day: string }) => string
 };
 
 export type TimeFormatOptions = {

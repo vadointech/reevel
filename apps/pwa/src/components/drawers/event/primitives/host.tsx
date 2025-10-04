@@ -59,7 +59,10 @@ export const EventDrawerContentHost = ({
         >
             {
                 hosts.map(item => (
-                    <HostedBy avatar={item.user.profile.picture}>
+                    <HostedBy
+                        key={item.userId}
+                        avatar={item.user.profile.picture}
+                    >
                         { item.user.profile.fullName }
                     </HostedBy>
                 ))

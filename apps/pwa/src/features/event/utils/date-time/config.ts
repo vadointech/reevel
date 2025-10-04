@@ -24,12 +24,18 @@ export const DateFormatMessages: Record<Locale, DateFormatOptions> = {
         dateFormat: ({ weekday, month, day }) => {
             return `${weekday}, ${month} ${day}`;
         },
+        shortDateFormat: ({ month, day }) => {
+            return `${month.slice(0, 3)} ${day}`;
+        },
     },
     uk: {
         today: "Сьогодні",
         tomorrow: "Завтра",
         dateFormat: ({ weekday, month, day }) => {
-            return `${weekday}, ${month} ${day}`;
+            return `${weekday}, ${day} ${month}`;
+        },
+        shortDateFormat: ({ month, day }) => {
+            return `${day} ${month.slice(0, 3)}`;
         },
     },
 };

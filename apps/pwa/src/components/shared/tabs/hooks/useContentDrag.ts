@@ -1,7 +1,7 @@
 import { RefObject, useEffect, useRef } from "react";
 import { PanInfo, useAnimation, useTransform, useMotionValue } from "motion/react";
+import { useTabsContext } from "../tabs.context";
 import { tabsTransitionParams } from "../config";
-import { useTabsStore } from "../tabs.store";
 
 import { TabsContentParams } from "../types";
 
@@ -22,10 +22,11 @@ export function useTabsContentDrag(
     snapPoints: RefObject<number[]>,
     callbacks: Partial<Callbacks> = {},
 ) {
-    const tabsStore = useTabsStore();
+    const tabs = useTabsContext();
     const direction = useRef<1 | -1>(1);
 
     const tabsContentAnimate = useAnimation();
+    const tabsContentItemsRef = useRef<Array<HTMLDivElement | null>>([]);
 
     const tabsContentDragX = useMotionValue(0);
     const tabsContentDragXProgress = useTransform(
@@ -36,8 +37,12 @@ export function useTabsContentDrag(
 
     useEffect(() => {
         tabsContentAnimate.set({
-            x: getActiveSnap(tabsStore.activeTabIndex),
+            x: getActiveSnap(tabs.store.activeTabIndex),
         });
+
+        if(tabs.config.fitContent) {
+            updateContentHeight(tabs.store.activeTabIndex);
+        }
     }, []);
 
     const getActiveIndex = (position: number) => {
@@ -49,16 +54,34 @@ export function useTabsContentDrag(
         return -snapPoints.current[index];
     };
 
+    const updateContentHeight = (index: number) => {
+        const activeContent = tabsContentItemsRef.current[index];
+        if(activeContent) {
+            const newHeight = activeContent.scrollHeight;
+            if(newHeight > 0) {
+                tabsContentAnimate.start({ height: newHeight }, tabsTransitionParams);
+            } else {
+                tabsContentAnimate.start({ height: "auto" }, tabsTransitionParams);
+            }
+        } else {
+            tabsContentAnimate.start({ height: "auto" }, tabsTransitionParams);
+        }
+    };
+
     const handleDragEnd = (_: any, info: PanInfo) => {
         const position = tabsContentDragX.get() + info.offset.x;
 
-        tabsStore.setActiveTabIndex(
+        tabs.store.setActiveTabIndex(
             getActiveIndex(position),
         );
 
-        const newX = getActiveSnap(tabsStore.activeTabIndex);
+        const newX = getActiveSnap(tabs.store.activeTabIndex);
 
-        callbacks.onDragEnd?.(tabsStore.activeTabIndex, direction.current, {
+        if(tabs.config.fitContent) {
+            updateContentHeight(tabs.store.activeTabIndex);
+        }
+
+        callbacks.onDragEnd?.(tabs.store.activeTabIndex, direction.current, {
             ...info,
             currentX: newX,
         });
@@ -74,28 +97,33 @@ export function useTabsContentDrag(
         direction.current = info.offset.x > 0 ? -1 : 1;
 
         const position = tabsContentDragX.get() + info.offset.x;
-
         const activeSnap = getActiveIndex(position);
 
-        if(activeSnap !== tabsStore.activeTabIndex) {
-            tabsStore.setActiveTabIndex(activeSnap);
-            callbacks.onActiveChange?.(tabsStore.activeTabIndex, direction.current);
+        if(activeSnap !== tabs.store.activeTabIndex) {
+            callbacks.onDragStart?.(tabs.store.activeTabIndex, direction.current);
+
+            tabs.store.setActiveTabIndex(activeSnap);
+            callbacks.onActiveChange?.(activeSnap, direction.current);
         }
     };
 
     const handleDragStart = (_: any, info: PanInfo) => {
         if(Math.abs(info.offset.y) > Math.abs(info.offset.x)) return;
-        callbacks.onDragStart?.(tabsStore.activeTabIndex, direction.current);
+        callbacks.onDragStart?.(tabs.store.activeTabIndex, direction.current);
     };
 
     const scrollTo = (index: number) => {
-        direction.current = index > tabsStore.activeTabIndex ? 1 : -1;
+        direction.current = index > tabs.store.activeTabIndex ? 1 : -1;
 
-        callbacks.onDragStart?.(tabsStore.activeTabIndex, direction.current);
+        callbacks.onDragStart?.(tabs.store.activeTabIndex, direction.current);
         callbacks.onActiveChange?.(index, direction.current);
 
-        tabsStore.setActiveTabIndex(index);
-        const newX = -snapPoints.current[tabsStore.activeTabIndex];
+        tabs.store.setActiveTabIndex(index);
+        const newX = -snapPoints.current[tabs.store.activeTabIndex];
+
+        if(tabs.config.fitContent) {
+            updateContentHeight(index);
+        }
 
         callbacks.onDragEnd?.(index, direction.current, {
             currentX: newX,
@@ -109,6 +137,7 @@ export function useTabsContentDrag(
     return {
         direction,
         tabsContentAnimate,
+        tabsContentItemsRef,
         tabsContentDragX,
         tabsContentDragXProgress,
 

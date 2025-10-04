@@ -1,0 +1,29 @@
+@use "@/theme/mixins";
+@use "@/theme/colors";
+@use "@/theme/typography";
+
+.badge {
+    display: flex;
+    align-items: center;
+
+    &__size {
+        &_default {
+            column-gap: .5rem;
+            @include typography.font("sm");
+
+            svg {
+                width: mixins.rem(14);
+                height: mixins.rem(14);
+            }
+        }
+        &_small {
+            column-gap: mixins.rem(6);
+            @include typography.font("xs");
+
+            svg {
+                width: mixins.rem(12);
+                height: mixins.rem(12);
+            }
+        }
+    }
+}

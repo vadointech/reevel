@@ -14,13 +14,13 @@ export const EventDrawerContentDescription = ({ children }: EventDrawerContentDe
     });
 
     return (
-        <div>
-            <p
-                ref={ref}
-                className={styles.hero__description}
-                style={{ maxHeight: 61 }}
-                onClick={handleToggle}
-            >
+        <div
+            ref={ref}
+            className={styles.hero__description}
+            style={{ maxHeight: 61 }}
+            onClick={handleToggle}
+        >
+            <p>
                 { children }
             </p>
         </div>

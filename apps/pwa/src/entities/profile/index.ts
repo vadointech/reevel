@@ -8,10 +8,8 @@ export type UserProfileEntity = {
     picture?: string;
     completed: number;
     location?: ProfileLocationsEntity;
-    interests: ProfileInterestsEntity[];
+    interests?: ProfileInterestsEntity[];
 };
-
-
 
 export type ProfileInterestsEntity = {
     profileId: string;

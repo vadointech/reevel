@@ -1,47 +1,22 @@
-import { ComponentProps } from "react";
-
-import { Scroll } from "@/components/ui";
 import { Section } from "../section.component";
-
+import { Carousel } from "@/components/shared/carousel";
 import { UISize } from "@/types/common";
 
 export namespace ScrollSection {
-    export type Props = ComponentProps<"div"> & Section.Props & {
+    export type Props = Section.Props & {
         size?: UISize;
-        variant?: Section.Variant;
     };
 }
 
 export const ScrollSection = ({
     children,
-    container = true,
-    size,
     ...props
 }: ScrollSection.Props) => {
     return (
-        <Section {...props} container={container}>
-            <Scroll size={size}>
-                {children}
-            </Scroll>
-        </Section>
-    );
-};
-
-export const NativeScrollSection = ({
-    container = true,
-    children,
-    ...props
-}: ScrollSection.Props) => {
-    return (
-        <Section {...props} container={container}>
-            <div style={{
-                display: "flex",
-                columnGap: 12,
-                width: "100%",
-                overflow: "auto",
-            }}>
+        <Section {...props} container={false}>
+            <Carousel>
                 { children }
-            </div>
+            </Carousel>
         </Section>
     );
 };

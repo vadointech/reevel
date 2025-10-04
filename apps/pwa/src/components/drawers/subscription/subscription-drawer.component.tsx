@@ -9,7 +9,7 @@ import {
     BottomSheetHandle,
 } from "@/components/shared/bottom-sheet";
 
-import { TabsBody, TabsContent, TabsRoot } from "@/components/shared/tabs";
+import { TabsBody, TabsRoot } from "@/components/shared/tabs";
 
 import { Button, ButtonsBlock, Header, OptionsListItem } from "@/components/ui";
 import { IconStar } from "@/components/icons";
@@ -130,21 +130,20 @@ export const SubscriptionDrawer = () => {
                         </BottomSheetHandle>
                         <TabsRoot>
                             <TabsBody
-                                items={data.map(item => item.title)}
-                            >
-                                {
-                                    data.map((item, i) => (
-                                        <TabsContent key={i}>
+                                content={data.map(item => ({
+                                    label: item.title,
+                                    value: (
+                                        <>
                                             <Plan data={item} />
                                             <ButtonsBlock className={styles.buttons}>
                                                 <Button>
                                                     Upgrade for {item.price} €/m
                                                 </Button>
                                             </ButtonsBlock>
-                                        </TabsContent>
-                                    ))
-                                }
-                            </TabsBody>
+                                        </>
+                                    ),
+                                }))}
+                            />
                         </TabsRoot>
                     </BottomSheetContent>
                 </BottomSheetBody>
