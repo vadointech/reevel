@@ -23,16 +23,18 @@ import styles from "./styles.module.scss";
 
 export namespace CalendarMapViewDrawer {
     export type Data = {
-        events: EventEntity[]
+        upcomingEvents: EventEntity[];
+        hostingEvents: EventEntity[];
+        attendingEvents: EventEntity[];
     };
-    export type Props = PropsWithChildren<Data> & {
-        collection: string;
-    };
+    export type Props = PropsWithChildren<Data>;
 }
 
 export const CalendarMapViewDrawer = ({
     children,
-    events,
+    upcomingEvents,
+    hostingEvents,
+    attendingEvents,
 }: CalendarMapViewDrawer.Props) => {
     const dragYProgress = useMotionValue(0);
 
@@ -58,17 +60,31 @@ export const CalendarMapViewDrawer = ({
                                     layout={"icon"}
                                 />
                             </Link>
-                            <InterestButton>
-                                Upcoming • 3
-                            </InterestButton>
 
-                            <InterestButton>
-                                Hosting • 2
-                            </InterestButton>
+                            {
+                                upcomingEvents.length > 0 && (
+                                    <InterestButton>
+                                        Upcoming • { upcomingEvents.length }
+                                    </InterestButton>
+                                )
+                            }
 
-                            <InterestButton>
-                                Attending • 9
-                            </InterestButton>
+                            {
+                                hostingEvents.length > 0 && (
+
+                                    <InterestButton>
+                                        Hosting • { hostingEvents.length }
+                                    </InterestButton>
+                                )
+                            }
+
+                            {
+                                attendingEvents.length > 0 && (
+                                    <InterestButton>
+                                        Attending • { attendingEvents.length }
+                                    </InterestButton>
+                                )
+                            }
                         </Carousel>
                     </div>
                     <BottomSheetContent>
@@ -87,7 +103,7 @@ export const CalendarMapViewDrawer = ({
                         <BottomSheetScrollable className={styles.drawer__list}>
                             <OptionsList>
                                 {
-                                    events.map(event => (
+                                    upcomingEvents.map(event => (
                                         <Link
                                             key={event.id}
                                             href={`/discover/event/${event.id}`}

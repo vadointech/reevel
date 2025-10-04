@@ -8,6 +8,11 @@ export enum EventVisibility {
     PRIVATE = "PRIVATE",
 }
 
+export enum EventParticipationType {
+    HOSTING = "hosting",
+    ATTENDING = "attending",
+}
+
 export type EventEntity = {
     id: string;
     title: string;

@@ -1,34 +1,33 @@
-import { getUserMapInternalConfig } from "@/components/shared/map/utils";
-import { MapRootProvider } from "@/components/shared/map/map.provider";
-import { GetCityHighlightsQueryBuilder } from "@/features/discover/queries";
-import { seedEventUsers } from "@/features/event/utils";
-import { extractUniqueInterests } from "@/features/discover/utils";
-import { DiscoverStaticCollections } from "@/features/discover/config";
 import { CalendarMapScreen } from "@/components/screens/calendar";
+import { getUserCalendarEvents } from "@/api/calendar/server";
+import { format, startOfToday } from "date-fns";
+import { EventParticipationType } from "@/entities/event";
 
 export namespace CalendarMapPage {
     export type Props = never;
 }
 
 export async function CalendarMapPage() {
-    const mapConfig = await getUserMapInternalConfig();
-    const mapProvider = new MapRootProvider(mapConfig);
-
-    const { bounds, center } = mapProvider.internalConfig.viewState;
-    const radius = mapProvider.getHorizontalRadius(bounds, center);
-
-    let cityHighlights = await GetCityHighlightsQueryBuilder.queryFunc({
-        center,
-        radius,
+    const upcomingEvents = await getUserCalendarEvents({
+        startDate: format(startOfToday(), "yyyy-MM-dd"),
     });
-    cityHighlights = seedEventUsers(cityHighlights);
-    const interests = extractUniqueInterests(cityHighlights);
+
+
+    const hostingEvents = await getUserCalendarEvents({
+        startDate: format(startOfToday(), "yyyy-MM-dd"),
+        participationType: EventParticipationType.HOSTING,
+    });
+
+    const attendingEvents = await getUserCalendarEvents({
+        startDate: format(startOfToday(), "yyyy-MM-dd"),
+        participationType: EventParticipationType.ATTENDING,
+    });
 
     return (
         <CalendarMapScreen
-            events={cityHighlights}
-            interests={interests}
-            collection={DiscoverStaticCollections.Highlights}
+            upcomingEvents={upcomingEvents.events}
+            hostingEvents={hostingEvents.events}
+            attendingEvents={attendingEvents.events}
         />
     );
 }

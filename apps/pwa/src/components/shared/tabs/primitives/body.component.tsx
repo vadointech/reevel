@@ -17,14 +17,14 @@ import { TabsTabButton } from "./tab-button.component";
 import styles from "../styles.module.scss";
 import cx from "classnames";
 
-type TabsContentValue = {
-    label: ReactNode;
-    value: ReactNode;
-};
 
 export namespace TabsBody {
+    export type Content = {
+        label: ReactNode;
+        value: ReactNode;
+    };
     export type Props = Omit<HTMLMotionProps<"div">, "children" | "content"> & {
-        content: TabsContentValue[];
+        content: Content[];
         controlBefore?: ReactNode;
     };
 }

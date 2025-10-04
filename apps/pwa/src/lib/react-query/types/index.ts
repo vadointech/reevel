@@ -1,6 +1,6 @@
 import { FetchQueryOptions } from "@tanstack/react-query";
 
-export interface IQueryBuilderMethods<TInput extends object, TData, TInjected = null> {
+export interface IQueryBuilderMethods<TInput, TData, TInjected = null> {
     queryKey: (params?: unknown[]) => unknown[];
     queryFunc:
     TInjected extends object
@@ -9,7 +9,7 @@ export interface IQueryBuilderMethods<TInput extends object, TData, TInjected = 
 }
 
 export type QueryBuilderQuery<
-    TInput extends object = Record<string, any>,
+    TInput,
     TData = unknown,
     TMethods extends IQueryBuilderMethods<TInput, TData> | null = IQueryBuilderMethods<TInput, TData>,
 > = (
@@ -19,7 +19,7 @@ export type QueryBuilderQuery<
 );
 
 export type QueryBuilder<
-    TInput extends object = Record<string, any>,
+    TInput,
     TData = unknown,
     TInjected extends object | null = null,
     TMethods extends IQueryBuilderMethods<TInput, TData, TInjected> = IQueryBuilderMethods<TInput, TData, TInjected>,
