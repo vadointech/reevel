@@ -81,7 +81,9 @@ export const DiscoverDrawer = ({
                     <BottomSheetContent>
                         <BottomSheetHandle className={styles.drawer__handle}>
                             <Input.Search placeholder={"Search"} />
-                            <Avatar image={session.store.user?.profile?.picture}/>
+                            <Link href={"/profile"}>
+                                <Avatar image={session.store.user?.profile?.picture}/>
+                            </Link>
                         </BottomSheetHandle>
                         <BottomSheetScrollable>
                             <ScrollSection
@@ -99,6 +101,7 @@ export const DiscoverDrawer = ({
                                         >
                                             <EventCard
                                                 size={"small"}
+                                                displayMode={"date"}
                                                 event={event}
                                             />
                                         </Link>

@@ -1,15 +1,15 @@
 "use client";
 
-import { useEffect, MouseEvent } from "react";
+import { useEffect, MouseEvent, ReactNode } from "react";
 
 import { HTMLMotionProps, motion } from "motion/react";
+import { useTabsContext } from "../tabs.context";
 import {
     useTabsContentDrag,
     useTabButtons,
     useTabsContainer,
     useTabsContentContainer,
 } from "../hooks";
-import { useTabsStore } from "../tabs.store";
 
 import { Container } from "@/components/ui";
 import { TabsTabButton } from "./tab-button.component";
@@ -17,18 +17,25 @@ import { TabsTabButton } from "./tab-button.component";
 import styles from "../styles.module.scss";
 import cx from "classnames";
 
+type TabsContentValue = {
+    label: ReactNode;
+    value: ReactNode;
+};
+
 export namespace TabsBody {
-    export type Props = HTMLMotionProps<"div"> & {
-        items: string[]
+    export type Props = Omit<HTMLMotionProps<"div">, "children" | "content"> & {
+        content: TabsContentValue[];
+        controlBefore?: ReactNode;
     };
 }
 
 export const TabsBody = ({
-    items,
+    content = [],
+    controlBefore,
     className,
     ...props
 }: TabsBody.Props) => {
-    const tabsStore = useTabsStore();
+    const tabs = useTabsContext();
 
     const {
         tabsContainerDragX,
@@ -59,6 +66,7 @@ export const TabsBody = ({
     const {
         tabsContentDragX,
         tabsContentAnimate,
+        tabsContentItemsRef,
         tabsContentDragXProgress,
 
         scrollTo,
@@ -79,7 +87,7 @@ export const TabsBody = ({
             onDragEnd: (index, direction) => {
                 const target = tabsRef.current[index];
                 if(!target) return;
-                handleTabsContainerDragSnapTo(target, direction);
+                handleTabsContainerDragSnapTo(target, direction, index);
             },
         },
     );
@@ -91,7 +99,7 @@ export const TabsBody = ({
 
     const handleSelect = (event: MouseEvent<HTMLButtonElement>, index: number) => {
         if(isTabsContainerDrag.current) return;
-        if(index === tabsStore.activeTabIndex) return;
+        if(index === tabs.store.activeTabIndex) return;
 
         const target = event.target;
         if(target instanceof HTMLButtonElement) {
@@ -113,8 +121,9 @@ export const TabsBody = ({
                     onDragEnd={handleTabsContainerDragEnd}
                     className={styles.controls}
                 >
+                    { controlBefore }
                     {
-                        items.map((item, index) => (
+                        content.map((item, index) => (
                             <TabsTabButton
                                 index={index}
                                 key={"tab-control-item" + index}
@@ -123,18 +132,17 @@ export const TabsBody = ({
                                 }}
                                 onClick={(event) => handleSelect(event, index)}
                             >
-                                { item }
+                                { item.label }
                             </TabsTabButton>
                         ))
                     }
                     <motion.div
                         animate={tabButtonOverlayAnimate}
-                        initial={{ x: 0, width: 103 }}
                         className={styles.controls__overlay}
                     />
                 </motion.div>
             </Container>
-            <div style={{ flex: "auto", overflow: "hidden" }}>
+            <motion.div style={{ flex: "auto", overflow: "hidden" }}>
                 <motion.div
                     drag={"x"}
                     ref={tabsContentRefHandler}
@@ -147,11 +155,26 @@ export const TabsBody = ({
                     onDragStart={handleDragStart}
                     className={cx(
                         styles.tabs,
+                        tabs.config.fitContent && styles.tabs_fit,
                         className,
                     )}
                     {...props}
-                />
-            </div>
+                >
+                    {
+                        content.map((item, index) => (
+                            <div
+                                ref={(element) => {
+                                    tabsContentItemsRef.current[index] = element;
+                                }}
+                                key={"tab-content-item" + index}
+                                className={styles.content}
+                            >
+                                { item.value }
+                            </div>
+                        ))
+                    }
+                </motion.div>
+            </motion.div>
         </>
     );
 };

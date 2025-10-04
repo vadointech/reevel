@@ -4,6 +4,7 @@ import { GetNearbyEventsQueryBuilder } from "@/features/discover/queries";
 import { getUserMapInternalConfig } from "@/components/shared/map/utils";
 import { MapRootProvider } from "@/components/shared/map/map.provider";
 import { DiscoverStaticCollections } from "@/features/discover/config";
+import { seedEventUsers } from "@/features/event/utils";
 
 export namespace DiscoverCollectionPage {
     export type Props = {
@@ -18,11 +19,12 @@ export async function DiscoverCollectionPage({ collectionId }: DiscoverCollectio
     const { bounds, center } = mapProvider.internalConfig.viewState;
     const radius = mapProvider.getHorizontalRadius(bounds, center);
 
-    const events = await GetNearbyEventsQueryBuilder.queryFunc({
+    let events = await GetNearbyEventsQueryBuilder.queryFunc({
         center,
         radius,
         filter: collectionId,
     });
+    events = seedEventUsers(events);
 
     const interests = extractUniqueInterests(events);
 

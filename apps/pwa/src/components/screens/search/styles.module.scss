@@ -15,6 +15,10 @@
         flex: 1 1 auto;
         overflow-y: auto;
         position: relative;
+
+        display: flex;
+        flex-direction: column;
+        row-gap: mixins.rem(24);
     }
 
     &__more {

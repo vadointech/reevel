@@ -1,6 +1,6 @@
 /**
  * Represents a constant array of entity types included for use with the Google Places API.
- * These types are organized into specific categories to help in filtering place results based on the desired type of location or establishment.
+ * These types are organized into specific categories to help in filtering place results based on the desired type of location-badge or establishment.
  *
  * Items in one row will be displayed with the same color and icon.
  *

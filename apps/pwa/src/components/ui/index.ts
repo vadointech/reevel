@@ -1,6 +1,5 @@
-export * from "./attenders";
 export * from "./avatar";
-export * from "./badge";
+export * from "./badges";
 export * from "./carousel";
 export * from "./container";
 export * from "./header";

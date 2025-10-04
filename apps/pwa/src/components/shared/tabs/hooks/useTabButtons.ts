@@ -1,8 +1,8 @@
 import { useEffect, useRef } from "react";
 import { useAnimation } from "motion/react";
+import { useTabsContext } from "../tabs.context";
 
 import { normalize } from "@/utils/normalize";
-import { useTabsStore } from "../tabs.store";
 import { useTabsOverlayInterpolate } from "./useOverlayInterpolate";
 
 export type EstimatedTabRef = {
@@ -11,7 +11,7 @@ export type EstimatedTabRef = {
 };
 
 export function useTabButtons() {
-    const tabsStore = useTabsStore();
+    const tabs = useTabsContext();
 
     const tabsRef = useRef<Array<HTMLButtonElement | null>>([]);
 
@@ -19,7 +19,7 @@ export function useTabButtons() {
     const interpolateOverlay = useTabsOverlayInterpolate();
 
     useEffect(() => {
-        const tab = tabsRef.current[tabsStore.activeTabIndex];
+        const tab = tabsRef.current[tabs.store.activeTabIndex];
         if(tab) {
             tabButtonOverlayAnimate.set({
                 x: tab.offsetLeft,

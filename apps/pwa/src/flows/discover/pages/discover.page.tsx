@@ -6,6 +6,7 @@ import { DiscoverScreen } from "@/components/screens/discover";
 import { getEventCollectionsFeed } from "@/api/event/server";
 import { DiscoverStaticCollections } from "@/features/discover/config";
 import { Navigation, NavigationRoutes } from "@/components/shared/navigation";
+import { seedEventUsers } from "@/features/event/utils";
 
 export namespace DiscoverPage {
     export type Props = never;
@@ -25,10 +26,11 @@ export async function DiscoverPage() {
 
     const interests = await getCurrentUserInterests();
 
-    const cityHighlights = await GetCityHighlightsQueryBuilder.queryFunc({
+    let cityHighlights = await GetCityHighlightsQueryBuilder.queryFunc({
         center,
         radius,
     });
+    cityHighlights = seedEventUsers(cityHighlights);
 
     const collectionsInit = await getEventCollectionsFeed();
 

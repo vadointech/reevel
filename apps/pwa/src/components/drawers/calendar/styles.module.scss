@@ -1,0 +1,26 @@
+@use "@/theme/mixins";
+@use "@/theme/spacing";
+
+.drawer {
+    &__handle {
+        margin-bottom: mixins.rem(18);
+    }
+
+    &__scroll {
+        position: relative;
+        margin-bottom: spacing.$container;
+        padding-inline: spacing.$container;
+
+        & > * {
+            padding-inline: spacing.$container;
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+        }
+    }
+
+    &__list {
+        padding-inline: spacing.$container;
+    }
+}

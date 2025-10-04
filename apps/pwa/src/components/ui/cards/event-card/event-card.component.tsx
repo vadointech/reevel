@@ -2,10 +2,10 @@ import { ComponentProps } from "react";
 import Image from "next/image";
 import { hexToRgba } from "@/utils/hex-to-rgba";
 
-import { Badge } from "@/components/ui";
-import { IconLock, IconGlobe } from "@/components/icons";
-import { AttendersSection } from "../../attenders";
-import { LocationBadge } from "@/components/ui/location";
+import { Badge, DateBadge } from "@/components/ui";
+import { IconLock, IconGlobe, IconCalendar } from "@/components/icons";
+import { LocationBadge, AttendeesBadge } from "@/components/ui";
+import { dateTime } from "@/features/event/utils";
 
 import { EventEntity, EventVisibility } from "@/entities/event";
 import { UISize } from "@/types/common";
@@ -20,6 +20,7 @@ export namespace EventCard {
 
     export type Props = ComponentProps<"div"> & Data & {
         size?: UISize;
+        displayMode?: "date" | "location"
     };
 }
 
@@ -27,6 +28,7 @@ export namespace EventCard {
 export const EventCard = ({
     event,
     size = "default",
+    displayMode = "location",
     className,
     ...props
 }: EventCard.Props) => {
@@ -65,21 +67,15 @@ export const EventCard = ({
                 }}
             >
                 {
-                    event.visibility === EventVisibility.PRIVATE ? (
-                        <Badge
-                            variant={"ghost"}
-                            size={"small"}
-                            iconBefore={<IconLock />}
-                        >
-                            Private
-                        </Badge>
+                    displayMode === "location" ? (
+                        <VisibilityIndicator visibility={event.visibility} />
                     ) : (
                         <Badge
                             variant={"ghost"}
                             size={"small"}
-                            iconBefore={<IconGlobe />}
+                            iconBefore={<IconCalendar />}
                         >
-                            Public
+                            { dateTime.shortFormat(event.startDate) }
                         </Badge>
                     )
                 }
@@ -100,9 +96,17 @@ export const EventCard = ({
                     )`,
                 }}
             >
-                <LocationBadge size={size}>
-                    { event.locationTitle }
-                </LocationBadge>
+                {
+                    displayMode === "location" ? (
+                        <DateBadge size={"small"}>
+                            { dateTime.formatRelative(event.startDate) } • { dateTime.formatTime(event.startDate) }
+                        </DateBadge>
+                    ) : (
+                        <LocationBadge size={size}>
+                            { event.locationTitle }
+                        </LocationBadge>
+                    )
+                }
                 <h3
                     className={cx(
                         styles.card__title,
@@ -113,7 +117,7 @@ export const EventCard = ({
                 </h3>
                 {
                     event.tickets.length > 0 && (
-                        <AttendersSection
+                        <AttendeesBadge
                             size={size}
                             users={event.tickets.map(item => item.user.profile)}
                         />
@@ -121,5 +125,29 @@ export const EventCard = ({
                 }
             </div>
         </div>
+    );
+};
+
+const VisibilityIndicator = ({ visibility }: { visibility: EventVisibility }) => {
+    if(visibility === EventVisibility.PRIVATE) {
+        return (
+            <Badge
+                variant={"ghost"}
+                size={"small"}
+                iconBefore={<IconLock />}
+            >
+                Private
+            </Badge>
+        );
+    }
+
+    return (
+        <Badge
+            variant={"ghost"}
+            size={"small"}
+            iconBefore={<IconGlobe />}
+        >
+            Public
+        </Badge>
     );
 };

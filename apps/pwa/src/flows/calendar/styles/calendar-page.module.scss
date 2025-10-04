@@ -1,0 +1,77 @@
+@use "@/theme/mixins";
+@use "@/theme/colors";
+@use "@/theme/spacing";
+@use "@/theme/typography";
+
+.page {
+    height: 100%;
+    overflow-y: auto;
+    overflow-x: hidden;
+    padding-bottom: mixins.rem(66);
+
+    @include mixins.no-scrollbar;
+
+    &__gap {
+        margin-bottom: .5rem;
+    }
+}
+
+.header {
+    display: grid;
+    align-items: center;
+    grid-template-columns: 1fr 5fr 1fr;
+    height: mixins.rem(36);
+
+    padding-inline: spacing.$container;
+
+    margin-bottom: mixins.rem(32);
+
+    &__title {
+        text-align: center;
+        @include typography.font("xl", 500);
+    }
+
+    &__avatar {
+        height: 100%;
+        justify-self: flex-start;
+    }
+
+    &__controls {
+        justify-self: flex-end;
+
+        display: flex;
+        align-items: center;
+
+        gap: mixins.rem(18);
+
+        & > * {
+            display: flex;
+            position: relative;
+        }
+
+        svg {
+            height: mixins.rem(22);
+        }
+    }
+
+    &__badge {
+        position: absolute;
+        top: mixins.rem(-2);
+        right: mixins.rem(-4);
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        width: mixins.rem(14);
+        height: mixins.rem(14);
+        border-radius: 50%;
+
+        color: colors.$foreground;
+        background-color: colors.$danger;
+
+        @include typography.font("xxs", 500);
+        font-size: mixins.rem(9);
+        line-height: 1;
+    }
+}
