@@ -1,6 +1,6 @@
 import { Controller, Get, Query } from "@nestjs/common";
 import { CalendarService } from "./calendar.service";
-import { GetUserCalendarParamsDto } from "@/modules/calendar/dto/calendar.dto";
+import { GetUserCalendarParamsDto } from "@/modules/calendar/dto";
 import { Session } from "@/decorators";
 import { ServerSession } from "@/types";
 

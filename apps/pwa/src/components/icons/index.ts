@@ -11,6 +11,7 @@ export * from "./ticket";
 export * from "./dollar";
 export * from "./share";
 export * from "./lock";
+export * from "./crown";
 export * from "./star";
 export * from "./report";
 export * from "./clock";

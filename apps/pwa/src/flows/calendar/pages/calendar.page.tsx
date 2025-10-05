@@ -13,12 +13,15 @@ import { format, startOfToday, endOfToday } from "date-fns";
 import { EventParticipationType } from "@/entities/event";
 
 import styles from "../styles/calendar-page.module.scss";
+import { getSession } from "@/api/user/server";
 
 export namespace CalendarPage {
     export type Props = never;
 }
 
 export async function CalendarPage() {
+    const session = await getSession();
+
     const todayEvents = await getUserCalendarEvents({
         startDate: format(startOfToday(), "yyyy-MM-dd"),
         endDate: format(endOfToday(), "yyyy-MM-dd"),
@@ -101,7 +104,7 @@ export async function CalendarPage() {
                     href={"/profile"}
                     className={styles.header__avatar}
                 >
-                    <Avatar image={"/assets/temp/avatar.png"} />
+                    <Avatar image={session?.profile?.picture} />
                 </Link>
                 <h2 className={styles.header__title}>
                     Today, 7 Sep

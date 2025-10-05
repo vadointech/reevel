@@ -10,6 +10,36 @@ const pictures = [
     "/assets/temp/avatars/avatar5.png",
 ];
 
+function seedSingleEventAttendees(event: EventsEntity): EventsEntity {
+    const seed = [...event.id].reduce((acc, char) => acc + char.charCodeAt(0), 0);
+
+    const participantsCount = (seed % 4) + 2;
+
+    const ticketPictures = Array.from({ length: participantsCount }).map((_, i) => {
+        const index = (seed + i + 1) % pictures.length;
+        return pictures[index];
+    });
+
+    return {
+        ...event,
+        tickets: ticketPictures.map((picture, index) => ({
+            eventId: event.id,
+            userId: `${event.id}_${index}_ticket_user_id`,
+            user: {
+                id: `${event.id}_${index}_ticket_user_id`,
+                email: `${event.id}_${index}_ticket_user_email`,
+                profile: {
+                    id: `${event.id}_${index}_ticket_user_profile_id`,
+                    userId: `${event.id}_${index}_ticket_user_id`,
+                    completed: -1,
+                    fullName: "Reevel Team",
+                    picture,
+                },
+            },
+        })) as EventTicketsEntity[],
+    };
+}
+
 function seedSingleEvent(event: EventsEntity): EventsEntity {
     const seed = [...event.id].reduce((acc, char) => acc + char.charCodeAt(0), 0);
 
@@ -67,5 +97,15 @@ export function seedEventUsers(data: EventsEntity | EventsEntity[]): EventsEntit
         return data.map(seedSingleEvent);
     } else {
         return seedSingleEvent(data);
+    }
+}
+
+export function seedEventAttendees(data: EventsEntity): EventsEntity;
+export function seedEventAttendees(data: EventsEntity[]): EventsEntity[];
+export function seedEventAttendees(data: EventsEntity | EventsEntity[]): EventsEntity | EventsEntity[] {
+    if(Array.isArray(data)) {
+        return data.map(seedSingleEventAttendees);
+    } else {
+        return seedSingleEventAttendees(data);
     }
 }

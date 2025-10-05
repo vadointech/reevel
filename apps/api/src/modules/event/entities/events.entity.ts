@@ -9,6 +9,11 @@ export enum EventVisibility {
     PRIVATE = "PRIVATE",
 }
 
+export enum EventParticipationType {
+    HOSTING = "hosting",
+    ATTENDING = "attending",
+}
+
 @Entity("events")
 export class EventsEntity {
     @PrimaryGeneratedColumn("uuid")

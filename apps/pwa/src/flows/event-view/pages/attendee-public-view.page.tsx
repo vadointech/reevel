@@ -4,13 +4,12 @@ import { EventDrawerContent, EventDrawerRoot } from "@/components/drawers/event"
 import { InterestButton, OptionsList, OptionsListItem } from "@/components/ui";
 import { ReviewsSection, ScrollSection, Section } from "@/components/sections";
 import { IconReport } from "@/components/icons";
+import { BASE_URL } from "@/auth.config";
 
 import { Event, WithContext } from "schema-dts";
 
 import styles from "../styles/event-view-page.module.scss";
 import cx from "classnames";
-import { BASE_URL } from "@/auth.config";
-import { seedEventUsers } from "@/features/event/utils";
 
 export namespace EventAttendeePublicViewPage {
     export type Props = {
@@ -19,13 +18,11 @@ export namespace EventAttendeePublicViewPage {
 }
 
 export async function EventAttendeePublicViewPage({ eventId }: EventAttendeePublicViewPage.Props) {
-    let event = await getEvent({ eventId });
+    const event = await getEvent({ eventId });
 
     if(!event) {
         return null;
     }
-
-    event = seedEventUsers(event);
 
     const jsonLd: WithContext<Event> = {
         "@context": "https://schema.org",

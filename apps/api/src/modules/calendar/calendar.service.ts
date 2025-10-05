@@ -1,13 +1,14 @@
 import { Injectable } from "@nestjs/common";
-import {
-    GetUserCalendarParamsDto,
-    GetUserCalendarResponseDto,
-    ParticipationType,
-} from "@/modules/calendar/dto/calendar.dto";
 import { Brackets } from "typeorm";
 import { EventRepository } from "@/modules/event/repositories/event.repository";
 import { ServerSession } from "@/types";
-import { seedEventUsers } from "@/utils/users";
+import { seedEventAttendees } from "@/utils/users";
+import { EventParticipationType } from "@/modules/event/entities/events.entity";
+import {
+    GetUserCalendarParamsDto,
+    GetUserCalendarResponseDto,
+    GetUserCalendarResponseEventsDto,
+} from "@/modules/calendar/dto";
 
 @Injectable()
 export class CalendarService {
@@ -35,28 +36,24 @@ export class CalendarService {
             skip = (page - 1) * limit;
         }
 
-        // Створюємо базовий запит з усіма фільтрами
         const qb = this.eventRepository
             .queryBuilder("event")
             .leftJoin("event.hosts", "hostRelation")
             .leftJoin("event.tickets", "ticketRelation");
 
-        // Основний фільтр: події, де користувач є організатором АБО має квиток
         qb.where(
             new Brackets((subQuery) => {
                 subQuery.where("hostRelation.userId = :userId", { userId }).orWhere("ticketRelation.userId = :userId", { userId });
             }),
         );
 
-        // Фільтрація за типом участі
-        if(participationType === ParticipationType.HOSTING) {
+        if(participationType === EventParticipationType.HOSTING) {
             qb.andWhere("hostRelation.userId = :userId", { userId });
         }
-        if(participationType === ParticipationType.ATTENDING) {
+        if(participationType === EventParticipationType.ATTENDING) {
             qb.andWhere("ticketRelation.userId = :userId", { userId });
         }
 
-        // Фільтрація за датою
         if(startDate) {
             qb.andWhere("COALESCE(event.endDate, event.startDate) >= :startDate", { startDate });
         }
@@ -66,15 +63,12 @@ export class CalendarService {
             qb.andWhere("event.startDate <= :endOfDay", { endOfDay });
         }
 
-        // Пошук за назвою
         if(search) {
             qb.andWhere("event.title ILIKE :search", { search: `%${search}%` });
         }
 
-        // Отримуємо загальну кількість унікальних подій (до пагінації)
         const totalItems = await qb.getCount();
 
-        // Тепер вибираємо тільки унікальні ID з сортуванням та пагінацією
         qb.select(["event.id", "event.startDate"])
             .distinct(true)
             .orderBy("event.startDate", "ASC")
@@ -88,22 +82,38 @@ export class CalendarService {
             return new GetUserCalendarResponseDto();
         }
 
-        // --- ЕТАП 2: Отримуємо повні дані для знайдених ID ---
-        const data = await this.eventRepository
+        let events = await this.eventRepository
             .queryBuilder("event")
             .leftJoinAndSelect("event.hosts", "hostRelation")
             .leftJoinAndSelect("hostRelation.user", "hostUser")
             .leftJoinAndSelect("event.tickets", "ticketRelation")
             .leftJoinAndSelect("ticketRelation.user", "ticketUser")
             .where("event.id IN (:...eventIds)", { eventIds })
-            .orderBy("event.startDate", "ASC") // Важливо зберегти те ж сортування
+            .orderBy("event.startDate", "ASC")
             .getMany();
 
+        events = seedEventAttendees(events);
 
-        const events = seedEventUsers(data);
+        const transformedEvents: GetUserCalendarResponseEventsDto[] = events.map((event) => {
+            const isHost = event.hosts.some(host => host.userId === userId);
+            const isAttendee = event.tickets.some(ticket => ticket.userId === userId);
+
+            let participationType: EventParticipationType | null = null;
+
+            if(isHost) {
+                participationType = EventParticipationType.HOSTING;
+            } else if(isAttendee) {
+                participationType = EventParticipationType.ATTENDING;
+            }
+
+            return {
+                ...event,
+                participationType,
+            };
+        });
 
         return new GetUserCalendarResponseDto({
-            events,
+            events: transformedEvents,
             pagination: {
                 currentPage: page,
                 totalPages: limit ? Math.ceil(totalItems / limit) : undefined,
