@@ -4,7 +4,6 @@ import { Avatar, EventCard, InterestButton, OptionsList } from "@/components/ui"
 import { Link } from "@/i18n/routing";
 
 import { ScrollSection } from "@/components/sections";
-import { DiscoverStaticCollections } from "@/features/discover/config";
 import { TabsBody, TabsRoot } from "@/components/shared/tabs";
 import { EventListItemCard } from "@/components/ui";
 
@@ -39,10 +38,8 @@ export async function CalendarPage() {
         participationType: EventParticipationType.ATTENDING,
     });
 
-    const tabsContent: TabsBody.Content[] = [];
-
-    if(upcomingEvents.events.length > 0) {
-        tabsContent.push({
+    const tabsContent: TabsBody.Content[] = [
+        {
             label: `Upcoming • ${upcomingEvents.pagination.totalItems}`,
             value: (
                 <OptionsList>
@@ -50,7 +47,7 @@ export async function CalendarPage() {
                         upcomingEvents.events.slice(0, 3).map(event => (
                             <Link
                                 key={event.id}
-                                href={DiscoverStaticCollections.Root + "/event/" + event.id}
+                                href={"/calendar/event/" + event.id}
                             >
                                 <EventListItemCard event={event} />
                             </Link>
@@ -58,11 +55,9 @@ export async function CalendarPage() {
                     }
                 </OptionsList>
             ),
-        });
-    }
+        },
 
-    if(hostingEvents.events.length > 0) {
-        tabsContent.push({
+        {
             label: `Hosting • ${hostingEvents.pagination.totalItems}`,
             value: (
                 <OptionsList>
@@ -70,7 +65,7 @@ export async function CalendarPage() {
                         hostingEvents.events.map(event => (
                             <Link
                                 key={event.id}
-                                href={DiscoverStaticCollections.Root + "/event/" + event.id}
+                                href={"/calendar/event/" + event.id}
                             >
                                 <EventListItemCard event={event} />
                             </Link>
@@ -78,11 +73,9 @@ export async function CalendarPage() {
                     }
                 </OptionsList>
             ),
-        });
-    }
+        },
 
-    if(attendingEvents.events.length > 0) {
-        tabsContent.push({
+        {
             label: `Attending • ${attendingEvents.pagination.totalItems}`,
             value: (
                 <OptionsList>
@@ -90,7 +83,7 @@ export async function CalendarPage() {
                         attendingEvents.events.map(event => (
                             <Link
                                 key={event.id}
-                                href={DiscoverStaticCollections.Root + "/event/" + event.id}
+                                href={"/calendar/event/" + event.id}
                             >
                                 <EventListItemCard event={event} />
                             </Link>
@@ -98,8 +91,8 @@ export async function CalendarPage() {
                     }
                 </OptionsList>
             ),
-        });
-    }
+        },
+    ];
 
     return (
         <div className={styles.page}>
@@ -128,7 +121,7 @@ export async function CalendarPage() {
                     todayEvents.events.map(event => (
                         <Link
                             key={event.id}
-                            href={DiscoverStaticCollections.Root + "/event/" + event.id}
+                            href={"/calendar/event/" + event.id}
                         >
                             <EventCard event={event} />
                         </Link>
