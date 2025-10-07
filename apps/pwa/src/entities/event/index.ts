@@ -3,7 +3,6 @@ import { UserEntity } from "@/entities/user";
 import { InterestEntity } from "../interests";
 
 export enum EventVisibility {
-    HOST = "HOST",
     PUBLIC = "PUBLIC",
     PRIVATE = "PRIVATE",
 }

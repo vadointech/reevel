@@ -192,6 +192,12 @@
             margin-top: mixins.rem(6);
         }
     }
+    &_calendar {
+        svg {
+            height: mixins.rem(20);
+            margin-top: mixins.rem(4);
+        }
+    }
 
     &_accept {
         svg {

@@ -15,6 +15,7 @@ import { FileUploadInterceptor } from "@/modules/uploads/uploads.interceptor";
 import { UpdateEventDto } from "@/modules/event/dto/update-event.dto";
 import { GetNearbyEventsDto } from "@/modules/event/dto/get-nearby.dto";
 import { ISessionUser, ServerSession } from "@/types";
+import { GetEventResponseDto } from "@/modules/event/dto";
 
 @Controller("events")
 export class EventController {
@@ -66,17 +67,18 @@ export class EventController {
     }
 
 
-    @Public()
     @Get()
-    getEvents() {
-        return this.eventService.getEvents();
+    getEvents(
+        @Session() session: ServerSession,
+    ): Promise<GetEventResponseDto[]> {
+        return this.eventService.getEvents(session);
     }
 
-    @Public()
     @Get(":eventId")
     async getEventById(
         @Param("eventId") eventId: string,
-    ) {
-        return this.eventService.getEventById(eventId);
+        @Session() session: ServerSession,
+    ): Promise<GetEventResponseDto | null> {
+        return this.eventService.getEventById(session, eventId);
     }
 }

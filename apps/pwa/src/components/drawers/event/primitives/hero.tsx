@@ -25,10 +25,10 @@ export const EventDrawerContentHero = ({
     title,
     locationTitle,
     ticketPrice,
-    visibility,
     description,
     tickets,
     startDate,
+    ...event
 }: EventDrawerContentHero.Props) => {
     const {
         config,
@@ -94,7 +94,11 @@ export const EventDrawerContentHero = ({
                     </div>
                 </div>
                 <div className={styles.hero__buttons}>
-                    <EventDrawerHeroButtons visibility={visibility} />
+                    <EventDrawerHeroButtons
+                        eventId={event.id}
+                        visibility={event.visibility}
+                        participationType={event.participationType}
+                    />
                 </div>
                 <div className={styles.hero__price}>
                     {
