@@ -1,7 +1,7 @@
 import cx from "classnames";
 import {
     IconTicket,
-    IconShare,
+    IconShareOutline,
     IconEllipsisHorizontal,
     IconCheck,
     IconClose,
@@ -11,9 +11,11 @@ import {
 } from "@/components/icons";
 import styles from "../styles.module.scss";
 import { EventParticipationType, EventVisibility } from "@/entities/event";
-import { useReserveTicket } from "@/features/event/booking/hooks";
-import { Link } from "@/i18n/routing";
+import { useTicketReservation } from "@/features/event/booking/hooks";
+import { Link, useRouter } from "@/i18n/routing";
 import { PropsWithChildren } from "react";
+
+import { EventMoreActionsDrawer } from "./more-drawer.componsent";
 
 export type EventDrawerHeroButtonsProps = {
     eventId: string;
@@ -45,7 +47,7 @@ export const EventDrawerHeroButtons = ({
                         styles.button_share,
                     )}
                 >
-                    <IconShare />
+                    <IconShareOutline />
                     Invite guests
                 </button>
                 <button
@@ -88,19 +90,16 @@ export const EventDrawerHeroButtons = ({
                         )}
                         onClick={onShare}
                     >
-                        <IconShare />
+                        <IconShareOutline />
                         Share
                     </button>
-                    <button
-                        className={cx(
-                            styles.button,
-                            styles.button_more,
-                        )}
-                        onClick={onMore}
+                    <EventMoreActionsDrawer
+                        eventId={eventId}
+                        participationType={participationType}
                     >
                         <IconEllipsisHorizontal />
                         More
-                    </button>
+                    </EventMoreActionsDrawer>
                 </>
             );
         case EventVisibility.PRIVATE:
@@ -163,7 +162,7 @@ export const EventDrawerHeroButtons = ({
                         )}
                         onClick={onShare}
                     >
-                        <IconShare />
+                        <IconShareOutline />
                         Share
                     </button>
                     <button
@@ -182,9 +181,17 @@ export const EventDrawerHeroButtons = ({
 };
 
 const JoinEventButton = ({ eventId }: { eventId: string }) => {
+    const router = useRouter();
     const {
         handleReserveTicket,
-    } = useReserveTicket(eventId);
+    } = useTicketReservation(
+        eventId,
+        {
+            onTicketReserved: () => {
+                router.refresh();
+            },
+        },
+    );
 
     return (
         <button

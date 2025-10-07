@@ -1,1 +1,1 @@
-export * from "./use-reserve-ticket.hook";
+export * from "./use-ticket-reservation.hook";

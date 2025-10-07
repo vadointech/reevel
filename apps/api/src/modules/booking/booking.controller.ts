@@ -1,4 +1,4 @@
-import { Controller, Param, Post } from "@nestjs/common";
+import { Controller, Delete, Param, Post } from "@nestjs/common";
 import { BookingService } from "./booking.service";
 import { Session } from "@/decorators";
 import { ServerSession } from "@/types";
@@ -15,5 +15,12 @@ export class BookingController {
         @Session() session: ServerSession,
     ) {
         return this.bookingService.reserveTicket(session, eventId);
+    }
+
+    @Delete("cancel/:eventId")
+    async cancelReservation(
+        @Param("eventId") eventId: string,
+    ) {
+        return this.bookingService.cancelReservation(eventId);
     }
 }

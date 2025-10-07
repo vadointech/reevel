@@ -3,6 +3,12 @@
 @use "@/theme/colors";
 @use "@/theme/motions";
 
+.moreDrawer {
+    &__gap {
+        margin-bottom: mixins.rem(12);
+    }
+}
+
 .handle {
     width: 100%;
     padding-top: 0 !important;

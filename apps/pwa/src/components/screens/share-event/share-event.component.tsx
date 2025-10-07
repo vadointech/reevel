@@ -5,7 +5,7 @@ import { ComponentProps, CSSProperties } from "react";
 import { useHtmlDownload } from "@/hooks/use-html-download";
 
 import { Button, Carousel, Container, Header } from "@/components/ui";
-import { IconArrowLeft, IconLogoInstagram, IconShare } from "@/components/icons";
+import { IconArrowLeft, IconLogoInstagram, IconShareOutline } from "@/components/icons";
 import { Toast } from "@/components/shared/toast";
 
 import styles from "./styles.module.scss";
@@ -91,7 +91,7 @@ export const ShareEvent = ({
             <div className={styles.buttons}>
                 <Button
                     variant="outline"
-                    iconBefore={<IconShare />}
+                    iconBefore={<IconShareOutline />}
                     className={styles.buttons__share}
                     onClick={() => shareLink()}
                 >
