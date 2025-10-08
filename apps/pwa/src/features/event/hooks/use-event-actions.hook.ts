@@ -4,6 +4,7 @@ import { IBottomSheetRootController } from "@/components/shared/bottom-sheet/typ
 
 export function useEventActions(event: EventEntity) {
     const bottomSheetController = useRef<IBottomSheetRootController | null>(null);
+    const reportDrawerController = useRef<IBottomSheetRootController | null>(null);
 
     const handleShareEvent = useCallback(async() => {
         try {
@@ -31,10 +32,17 @@ export function useEventActions(event: EventEntity) {
         }
     }, []);
 
+    const handleReport = useCallback(() => {
+        bottomSheetController.current?.close();
+        reportDrawerController.current?.open();
+    }, []);
+
     return {
         bottomSheetController,
+        reportDrawerController,
 
         handleShareEvent,
         handleCopyLocation,
+        handleReport,
     };
 }

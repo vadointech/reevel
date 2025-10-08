@@ -30,8 +30,11 @@ export const EventMoreActionsDrawer = ({
 
     const {
         bottomSheetController,
+        reportDrawerController,
+      
         handleShareEvent,
         handleCopyLocation,
+        handleReport,
     } = useEventActions(event);
 
     const {
@@ -47,73 +50,78 @@ export const EventMoreActionsDrawer = ({
     );
 
     return (
-        <BottomSheetRoot
-            snapPoints={["fit-content"]}
-            fadeThreshold={0}
-            zIndex={40}
-            externalController={bottomSheetController}
-        >
-            <BottomSheetTrigger
-                className={cx(
-                    styles.button,
-                    styles.button_more,
-                )}
+        <>
+            <ReportDrawer
+                eventId={event.id}
+                controller={reportDrawerController}
+            />
+            <BottomSheetRoot
+                snapPoints={["fit-content"]}
+                fadeThreshold={0}
+                zIndex={40}
+                externalController={bottomSheetController}
             >
-                { children }
-            </BottomSheetTrigger>
-            <BottomSheetPortal>
-                <BottomSheetBody>
-                    <BottomSheetContent>
-                        <BottomSheetHandle></BottomSheetHandle>
-                        <Section container className={styles.moreDrawer__gap}>
-                            <OptionsList>
-                                <OptionsListItem
-                                    label={"Share event"}
-                                    contentLeft={<IconShare />}
-                                    contentRight={null}
-                                    onClick={handleShareEvent}
-                                />
-                                <OptionsListItem
-                                    label={"Copy location"}
-                                    contentLeft={<IconCopy />}
-                                    contentRight={null}
-                                    onClick={handleCopyLocation}
-                                />
-                                {
-                                    event.participationType === EventParticipationType.ATTENDING && (
-                                        <OptionsListItem
-                                            label={"Cancel reservation"}
-                                            contentLeft={<IconExit />}
-                                            contentRight={null}
-                                            variant={"danger"}
-                                            onClick={handleCancelTicketReservation}
-                                        />
-                                    )
-                                }
-                            </OptionsList>
-                        </Section>
+                <BottomSheetTrigger
+                    className={cx(
+                        styles.button,
+                        styles.button_more,
+                    )}
+                >
+                    { children }
+                </BottomSheetTrigger>
+                <BottomSheetPortal>
+                    <BottomSheetBody>
+                        <BottomSheetContent>
+                            <BottomSheetHandle />
+                            <Section container className={styles.moreDrawer__gap}>
+                                <OptionsList>
+                                    <OptionsListItem
+                                        label={"Share event"}
+                                        contentLeft={<IconShare />}
+                                        contentRight={null}
+                                        onClick={handleShareEvent}
+                                    />
+                                    <OptionsListItem
+                                        label={"Copy location"}
+                                        contentLeft={<IconCopy />}
+                                        contentRight={null}
+                                        onClick={handleCopyLocation}
+                                    />
+                                    {
+                                        event.participationType === EventParticipationType.ATTENDING && (
+                                            <OptionsListItem
+                                                label={"Cancel reservation"}
+                                                contentLeft={<IconExit />}
+                                                contentRight={null}
+                                                variant={"danger"}
+                                                onClick={handleCancelTicketReservation}
+                                            />
+                                        )
+                                    }
+                                </OptionsList>
+                            </Section>
 
-                        <Section container>
-                            <OptionsList>
-                                <OptionsListItem
-                                    label={"View profile"}
-                                    contentLeft={<IconProfile />}
-                                    contentRight={null}
-                                    href={"/profile"}
-                                />
-                                <ReportDrawer eventId={event.id}>
+                            <Section container>
+                                <OptionsList>
+                                    <OptionsListItem
+                                        label={"View profile"}
+                                        contentLeft={<IconProfile />}
+                                        contentRight={null}
+                                        href={"/profile"}
+                                    />
                                     <OptionsListItem
                                         label={"Report"}
                                         contentLeft={<IconReport />}
                                         contentRight={null}
                                         variant={"danger"}
+                                        onClick={handleReport}
                                     />
-                                </ReportDrawer>
-                            </OptionsList>
-                        </Section>
-                    </BottomSheetContent>
-                </BottomSheetBody>
-            </BottomSheetPortal>
-        </BottomSheetRoot>
+                                </OptionsList>
+                            </Section>
+                        </BottomSheetContent>
+                    </BottomSheetBody>
+                </BottomSheetPortal>
+            </BottomSheetRoot>
+        </>
     );
 };

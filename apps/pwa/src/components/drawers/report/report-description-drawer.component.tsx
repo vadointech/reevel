@@ -14,12 +14,12 @@ import { ReportFromSchemaValues } from "@/features/reports/report-form.schema";
 import { EventReportLabels } from "@/features/reports/config/event-report.config";
 import { ReportType } from "@/entities/reports";
 
-import styles from "./styles.module.scss";
 import { useEventReport } from "@/features/reports/hooks";
-import { ButtonProps } from "react-day-picker";
+
+import styles from "./styles.module.scss";
 
 export namespace ReportDescriptionDrawer {
-    export type SubmitButtonProps = ButtonProps & {
+    export type SubmitButtonProps = Button.Props & {
         onSubmit?: () => void;
     };
 
@@ -38,7 +38,6 @@ export const ReportDescriptionDrawer = ({
 }: ReportDescriptionDrawer.Props) => {
     return (
         <BottomSheetRoot
-            overlay={false}
             snapPoints={["fit-content"]}
             fadeThreshold={0}
             zIndex={40}
@@ -62,7 +61,7 @@ export const ReportDescriptionDrawer = ({
                             </Header>
                         </BottomSheetHandle>
 
-                        <Section container className={styles.section}>
+                        <Section container>
                             <Controller<ReportFromSchemaValues, "description">
                                 name={"description"}
                                 render={({ field }) => (

@@ -16,9 +16,14 @@ import { ReportFormProvider } from "@/features/reports";
 import { EventReportMessages } from "@/features/reports/config/event-report.config";
 
 import styles from "./styles.module.scss";
+import { BottomSheetExternalController } from "@/components/shared/bottom-sheet/types";
 
 export namespace ReportDrawer {
-    export type Props = BottomSheetTrigger.Props & {
+    export type FormProps = BottomSheetTrigger.Props & {
+        overlay?: boolean;
+        controller?: BottomSheetExternalController
+    };
+    export type Props = FormProps & {
         eventId: string;
     };
 }
@@ -40,7 +45,11 @@ export const ReportDrawer = ({
     );
 };
 
-const ReportForm = (props: BottomSheetTrigger.Props) => {
+const ReportForm = ({
+    overlay,
+    controller,
+    ...props
+}: ReportDrawer.FormProps) => {
     const {
         reportDrawerController,
         reportDescriptionDrawerController,
@@ -48,7 +57,7 @@ const ReportForm = (props: BottomSheetTrigger.Props) => {
         handleReportEvent,
         handleCancelReport,
         handleSubmitReport,
-    } = useEventReportDrawer();
+    } = useEventReportDrawer(controller);
 
     return (
         <>
@@ -59,13 +68,17 @@ const ReportForm = (props: BottomSheetTrigger.Props) => {
             >
             </ReportDescriptionDrawer>
             <BottomSheetRoot
-                overlay={false}
+                overlay={overlay}
                 externalController={reportDrawerController}
                 snapPoints={["fit-content"]}
                 fadeThreshold={0}
                 zIndex={40}
             >
-                <BottomSheetTrigger {...props} />
+                {
+                    typeof controller === "undefined" && (
+                        <BottomSheetTrigger {...props} />
+                    )
+                }
                 <BottomSheetPortal>
                     <BottomSheetBody>
                         <BottomSheetContent>
