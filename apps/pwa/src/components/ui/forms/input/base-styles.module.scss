@@ -18,6 +18,14 @@
         pointer-events: none;
     }
 
+    &__hint {
+        margin-top: mixins.rem(6);
+        @include typography.font("xs");
+        color: colors.$secondary;
+        padding-inline: 1rem;
+        pointer-events: none;
+    }
+
     input, textarea {
         flex-grow: 1;
 

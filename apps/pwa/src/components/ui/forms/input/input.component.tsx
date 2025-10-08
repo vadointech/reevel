@@ -8,32 +8,44 @@ import cx from "classnames";
 export namespace Input {
     export type Props = ComponentProps<"input"> & {
         label?: string;
+        hint?: string;
     };
 }
 
 export const Input = ({
     label,
+    hint,
     ...props
 }: Input.Props) => {
     return (
-        <label
-            className={cx(
-                baseStyles.input,
-                styles.input,
-            )}
-        >
+        <div>
+            <label
+                className={cx(
+                    baseStyles.input,
+                    styles.input,
+                    label !== undefined && styles.input_label,
+                )}
+            >
+                {
+                    label ? (
+                        <span className={baseStyles.input__label}>
+                            { label }
+                        </span>
+                    ) : null
+                }
+                <input
+                    type={"text"}
+                    {...props}
+                />
+            </label>
             {
-                label ? (
-                    <span className={baseStyles.input__label}>
-                        { label }
-                    </span>
+                hint ? (
+                    <p className={baseStyles.input__hint}>
+                        { hint }
+                    </p>
                 ) : null
             }
-            <input
-                type={"text"}
-                {...props}
-            />
-        </label>
+        </div>
     );
 };
 

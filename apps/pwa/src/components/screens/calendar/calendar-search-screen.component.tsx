@@ -8,7 +8,6 @@ import {
 } from "@/components/screens/search";
 import { Section } from "@/components/sections";
 import { EventListItemCard, OptionsList } from "@/components/ui";
-import { DiscoverStaticCollections } from "@/features/discover/config";
 import Link from "next/link";
 import { EventEntity } from "@/entities/event";
 import { useCalendarContext } from "@/features/calendar";
@@ -92,7 +91,7 @@ const RecommendationList = observer(({
                                 upcomingEvents.map(event => (
                                     <Link
                                         key={event.id}
-                                        href={DiscoverStaticCollections.Root + "/event/" + event.id}
+                                        href={"/calendar/event/" + event.id}
                                     >
                                         <EventListItemCard event={event} />
                                     </Link>
@@ -111,7 +110,7 @@ const RecommendationList = observer(({
                                 hostingEvents.map(event => (
                                     <Link
                                         key={event.id}
-                                        href={DiscoverStaticCollections.Root + "/event/" + event.id}
+                                        href={"/calendar/event/" + event.id}
                                     >
                                         <EventListItemCard event={event} />
                                     </Link>
@@ -130,7 +129,7 @@ const RecommendationList = observer(({
                                 attendingEvents.map(event => (
                                     <Link
                                         key={event.id}
-                                        href={DiscoverStaticCollections.Root + "/event/" + event.id}
+                                        href={"/calendar/event/" + event.id}
                                     >
                                         <EventListItemCard event={event} />
                                     </Link>
@@ -159,7 +158,7 @@ const SearchResultsList = observer(() => {
                                     calendar.store.searchResults?.map(event => (
                                         <Link
                                             key={event.id}
-                                            href={DiscoverStaticCollections.Root + "/event/" + event.id}
+                                            href={"/calendar/event/" + event.id}
                                         >
                                             <EventListItemCard event={event} />
                                         </Link>

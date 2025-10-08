@@ -10,6 +10,7 @@ import { Event, WithContext } from "schema-dts";
 
 import styles from "../styles/event-view-page.module.scss";
 import cx from "classnames";
+import { ReportDrawer } from "@/components/drawers/report";
 
 export namespace EventAttendeePublicViewPage {
     export type Props = {
@@ -80,10 +81,12 @@ export async function EventAttendeePublicViewPage({ eventId }: EventAttendeePubl
 
                     <Section container>
                         <OptionsList>
-                            <OptionsListItem
-                                label={"Report"}
-                                contentLeft={<IconReport />}
-                            />
+                            <ReportDrawer eventId={event.id}>
+                                <OptionsListItem
+                                    label={"Report"}
+                                    contentLeft={<IconReport />}
+                                />
+                            </ReportDrawer>
                         </OptionsList>
                     </Section>
                 </EventDrawerContent>

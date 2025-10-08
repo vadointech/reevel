@@ -3,6 +3,7 @@ import { EventInterestsEntity } from "./event-interests.entity";
 import { EventHostsEntity } from "./event-hosts.entity";
 import { EventTicketsEntity } from "@/modules/event/entities/event-tickets.entity";
 import { SupportedCurrencies } from "@/modules/payment/entities/payment.entity";
+import { ReportsEntity } from "@/modules/reports/entities/reports.entity";
 
 export enum EventVisibility {
     PUBLIC = "PUBLIC",
@@ -73,4 +74,7 @@ export class EventsEntity {
 
     @OneToMany(() => EventTicketsEntity, ticket => ticket.event)
     tickets: EventTicketsEntity[];
+
+    @OneToMany(() => ReportsEntity, report => report.event)
+    reports?: ReportsEntity[];
 }

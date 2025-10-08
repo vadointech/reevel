@@ -4,38 +4,40 @@ import {
     BottomSheetPortal, BottomSheetRoot,
     BottomSheetTrigger,
 } from "@/components/shared/bottom-sheet";
-import { IconCopy, IconExit, IconProfile, IconQRCode, IconReport, IconShare } from "@/components/icons";
+import { IconCopy, IconExit, IconProfile, IconReport, IconShare } from "@/components/icons";
 import { Section } from "@/components/sections";
 import { OptionsList, OptionsListItem } from "@/components/ui";
-import { PropsWithChildren, useRef } from "react";
+import { PropsWithChildren } from "react";
 
 import { useTicketReservation } from "@/features/event/booking/hooks";
-import { EventParticipationType } from "@/entities/event";
+import { useEventActions } from "@/features/event/hooks";
+import { EventEntity, EventParticipationType } from "@/entities/event";
 import { useRouter } from "@/i18n/routing";
-import { IBottomSheetRootController } from "@/components/shared/bottom-sheet/types";
 
 import styles from "../styles.module.scss";
 import cx from "classnames";
+import { ReportDrawer } from "@/components/drawers/report";
 
 export namespace EventMoreActionsDrawer {
-    export type Props = PropsWithChildren<{
-        eventId: string;
-        participationType: EventParticipationType | null;
-    }>;
+    export type Props = PropsWithChildren<EventEntity>;
 }
 
 export const EventMoreActionsDrawer = ({
     children,
-    eventId,
-    participationType,
+    ...event
 }: EventMoreActionsDrawer.Props) => {
     const router = useRouter();
-    const bottomSheetController = useRef<IBottomSheetRootController | null>(null);
+
+    const {
+        bottomSheetController,
+        handleShareEvent,
+        handleCopyLocation,
+    } = useEventActions(event);
 
     const {
         handleCancelTicketReservation,
     } = useTicketReservation(
-        eventId,
+        event.id,
         {
             onTicketCancelled: () => {
                 bottomSheetController.current?.close();
@@ -69,18 +71,21 @@ export const EventMoreActionsDrawer = ({
                                     label={"Share event"}
                                     contentLeft={<IconShare />}
                                     contentRight={null}
+                                    onClick={handleShareEvent}
                                 />
                                 <OptionsListItem
                                     label={"Copy location"}
                                     contentLeft={<IconCopy />}
                                     contentRight={null}
+                                    onClick={handleCopyLocation}
                                 />
                                 {
-                                    participationType === EventParticipationType.ATTENDING && (
+                                    event.participationType === EventParticipationType.ATTENDING && (
                                         <OptionsListItem
                                             label={"Cancel reservation"}
                                             contentLeft={<IconExit />}
                                             contentRight={null}
+                                            variant={"danger"}
                                             onClick={handleCancelTicketReservation}
                                         />
                                     )
@@ -94,17 +99,16 @@ export const EventMoreActionsDrawer = ({
                                     label={"View profile"}
                                     contentLeft={<IconProfile />}
                                     contentRight={null}
+                                    href={"/profile"}
                                 />
-                                <OptionsListItem
-                                    label={"QR code"}
-                                    contentLeft={<IconQRCode />}
-                                    contentRight={null}
-                                />
-                                <OptionsListItem
-                                    label={"Report"}
-                                    contentLeft={<IconReport />}
-                                    contentRight={null}
-                                />
+                                <ReportDrawer eventId={event.id}>
+                                    <OptionsListItem
+                                        label={"Report"}
+                                        contentLeft={<IconReport />}
+                                        contentRight={null}
+                                        variant={"danger"}
+                                    />
+                                </ReportDrawer>
                             </OptionsList>
                         </Section>
                     </BottomSheetContent>

@@ -10,34 +10,25 @@ import {
     IconSettings,
 } from "@/components/icons";
 import styles from "../styles.module.scss";
-import { EventParticipationType, EventVisibility } from "@/entities/event";
+import { EventEntity, EventParticipationType, EventVisibility } from "@/entities/event";
 import { useTicketReservation } from "@/features/event/booking/hooks";
 import { Link, useRouter } from "@/i18n/routing";
 import { PropsWithChildren } from "react";
 
 import { EventMoreActionsDrawer } from "./more-drawer.componsent";
+import { useEventActions } from "@/features/event/hooks";
 
-export type EventDrawerHeroButtonsProps = {
-    eventId: string;
-    visibility: EventVisibility;
-    participationType: EventParticipationType | null;
-    onShare?: () => void;
-    onMore?: () => void;
-    onDecline?: () => void;
-    onSuggest?: () => void;
-};
 
-export const EventDrawerHeroButtons = ({
-    visibility = EventVisibility.PUBLIC,
-    participationType,
-    eventId,
-    onShare,
-    onMore,
-    onDecline,
-    onSuggest,
-}: EventDrawerHeroButtonsProps) => {
+export namespace EventDrawerHeroButtons {
+    export type Props = EventEntity;
+}
 
-    if(participationType === EventParticipationType.HOSTING) {
+export const EventDrawerHeroButtons = (event: EventDrawerHeroButtons.Props) => {
+    const {
+        handleShareEvent,
+    } = useEventActions(event);
+
+    if(event.participationType === EventParticipationType.HOSTING) {
         return (
             <>
                 <button
@@ -55,7 +46,6 @@ export const EventDrawerHeroButtons = ({
                         styles.button,
                         styles.button_settings,
                     )}
-                    onClick={onDecline}
                 >
                     <IconSettings />
                     Settings
@@ -65,22 +55,22 @@ export const EventDrawerHeroButtons = ({
     }
 
 
-    switch (visibility) {
+    switch (event.visibility) {
         case EventVisibility.PUBLIC:
             return (
                 <>
                     {
-                        participationType === EventParticipationType.ATTENDING ? (
+                        event.participationType === EventParticipationType.ATTENDING ? (
                             <ViewInCalendarButton>
                                 Going
                             </ViewInCalendarButton>
                         ) :
-                            participationType === EventParticipationType.HOSTING ? (
+                            event.participationType === EventParticipationType.HOSTING ? (
                                 <ViewInCalendarButton>
                                     Hosting
                                 </ViewInCalendarButton>
                             ) : (
-                                <JoinEventButton eventId={eventId} />
+                                <JoinEventButton eventId={event.id} />
                             )
                     }
                     <button
@@ -88,15 +78,12 @@ export const EventDrawerHeroButtons = ({
                             styles.button,
                             styles.button_share,
                         )}
-                        onClick={onShare}
+                        onClick={handleShareEvent}
                     >
                         <IconShareOutline />
                         Share
                     </button>
-                    <EventMoreActionsDrawer
-                        eventId={eventId}
-                        participationType={participationType}
-                    >
+                    <EventMoreActionsDrawer {...event}>
                         <IconEllipsisHorizontal />
                         More
                     </EventMoreActionsDrawer>
@@ -106,12 +93,12 @@ export const EventDrawerHeroButtons = ({
             return (
                 <>
                     {
-                        participationType === EventParticipationType.ATTENDING ? (
+                        event.participationType === EventParticipationType.ATTENDING ? (
                             <ViewInCalendarButton>
                                 Hosting
                             </ViewInCalendarButton>
                         ) : (
-                            participationType === EventParticipationType.HOSTING ? (
+                            event.participationType === EventParticipationType.HOSTING ? (
                                 <ViewInCalendarButton>
                                     Hosting
                                 </ViewInCalendarButton>
@@ -134,7 +121,6 @@ export const EventDrawerHeroButtons = ({
                             styles.button,
                             styles.button_decline,
                         )}
-                        onClick={onDecline}
                     >
                         <IconClose />
                         Decline
@@ -144,7 +130,6 @@ export const EventDrawerHeroButtons = ({
                             styles.button,
                             styles.button_suggest,
                         )}
-                        onClick={onSuggest}
                     >
                         <IconCycle />
                         Suggest
@@ -154,27 +139,21 @@ export const EventDrawerHeroButtons = ({
         default:
             return (
                 <>
-                    <JoinEventButton eventId={eventId} />
+                    <JoinEventButton eventId={event.id} />
                     <button
                         className={cx(
                             styles.button,
                             styles.button_share,
                         )}
-                        onClick={onShare}
+                        onClick={handleShareEvent}
                     >
                         <IconShareOutline />
                         Share
                     </button>
-                    <button
-                        className={cx(
-                            styles.button,
-                            styles.button_more,
-                        )}
-                        onClick={onMore}
-                    >
+                    <EventMoreActionsDrawer {...event}>
                         <IconEllipsisHorizontal />
                         More
-                    </button>
+                    </EventMoreActionsDrawer>
                 </>
             );
     }
