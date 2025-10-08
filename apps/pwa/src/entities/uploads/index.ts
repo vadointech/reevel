@@ -10,6 +10,7 @@ export enum SupportedFileTypes {
 export enum SupportedFileCollections {
     EVENT_POSTER = "event_posters",
     PROFILE_PICTURE = "profile_pictures",
+    BACKGROUND_PICTURE = "profile_backgrounds",
     UNKNOWN = "unknown",
 }
 

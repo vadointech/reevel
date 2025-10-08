@@ -1,12 +1,13 @@
 "use client";
 
-import { useOnboardingAvatarUploader } from "@/features/onboarding/hooks";
-
 import { UploadDrawer } from "@/components/drawers/upload";
 import { Button } from "@/components/ui";
 
-import { GetUserUploads } from "@/api/user/uploads";
 import { Controller } from "react-hook-form";
+import { useProfileAvatarUploader } from "@/features/profile/update/hooks";
+
+import { GetUserUploads } from "@/api/user/uploads";
+import { EditProfileFormSchemaValues } from "@/features/profile/update";
 
 export namespace OnboardingAvatarUploader {
     export type Props = {
@@ -24,13 +25,14 @@ export const OnboardingAvatarUploader = ({
         handleDeleteAvatar,
         handleSelectFile,
         uploadDrawerController,
-    } = useOnboardingAvatarUploader(cropperPageUrl);
+    } = useProfileAvatarUploader(cropperPageUrl);
 
     return (
-        <Controller
-            name={"picture"}
+        <Controller<EditProfileFormSchemaValues, "avatar">
+            name={"avatar"}
             render={({ field }) => (
                 <UploadDrawer
+                    title="Profile picture"
                     uploads={uploads}
                     gridVariant={"rounded"}
                     selectedImageUrl={field.value}

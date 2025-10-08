@@ -13,6 +13,7 @@ import { IconLocation, IconVerified } from "@/components/icons";
 
 import styles from "../styles.module.scss";
 import { Avatar } from "@/components/ui";
+import { useProfile } from "../../profile-context";
 
 export namespace ProfileHeroUser {
     export type Props = never;
@@ -20,6 +21,7 @@ export namespace ProfileHeroUser {
 
 export const ProfileHeroUser = () => {
     const profileContentDragYPx = useProfileContentDragYProgress();
+    const user = useProfile();
 
     const avatarScale = useTransform(
         profileContentDragYPx,
@@ -103,7 +105,7 @@ export const ProfileHeroUser = () => {
                 }}
                 className={styles.hero__avatar}
             >
-                <Avatar image={"/assets/temp/avatar.png"} />
+                <Avatar image={user?.picture} />
             </motion.div>
             <motion.div
                 style={{
@@ -121,14 +123,14 @@ export const ProfileHeroUser = () => {
                 >
                     <div className={styles.hero__user}>
                         <h1 className={styles.hero__name}>
-                            Jimmy Smith
+                            {user?.fullName}
                         </h1>
                         <IconVerified />
                     </div>
 
                     <div className={styles.hero__location}>
                         <IconLocation />
-                        Vinnitsa
+                        {user?.location?.placeName}
                     </div>
                 </motion.div>
             </motion.div>

@@ -20,7 +20,7 @@ export class AuthService {
         private readonly subscriptionRepository: SubscriptionRepository,
 
         private readonly dataSource: DataSource,
-    ) {}
+    ) { }
 
     async register(input: RegisterUserDto): Promise<SessionResponseDto> {
         try {

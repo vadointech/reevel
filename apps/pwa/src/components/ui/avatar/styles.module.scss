@@ -1,5 +1,5 @@
-@use "@/theme/mixins";
-@use "@/theme/colors";
+@use '@/theme/mixins';
+@use '@/theme/colors';
 
 .avatar {
     height: 100%;
@@ -25,6 +25,30 @@
         &_outline {
             outline: mixins.rem(1.5) colors.$static-foreground solid;
             outline-offset: mixins.rem(3);
+        }
+        &_edit {
+            position: relative;
+            width: 100%;
+            height: 100%;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            z-index: 1;
+            &::after {
+                content: '';
+                position: absolute;
+                inset: 0;
+                background: colors.$primary;
+                opacity: 0.2;
+                z-index: 1;
+            }
+
+            svg {
+                position: relative;
+                z-index: 2; // щоб іконка була над затемненням
+            }
         }
     }
 }

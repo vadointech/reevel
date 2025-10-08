@@ -9,6 +9,9 @@ import { useProfileContentDragYProgress } from "../motion-values";
 
 import { IconArrowLeft, IconEllipsisVertical, IconSettings, IconVerified } from "@/components/icons";
 import { Avatar } from "@/components/ui";
+import Link from "next/link";
+
+import { useProfile } from "../profile-context";
 
 import styles from "./styles.module.scss";
 import cx from "classnames";
@@ -26,6 +29,7 @@ export const ProfilePageHeader = ({
     variant,
     overlayVariant = "light",
 }: ProfilePageHeader.Props) => {
+    const user = useProfile();
 
     const profileContentDragYPx = useProfileContentDragYProgress();
 
@@ -45,7 +49,7 @@ export const ProfilePageHeader = ({
         private: <IconSettings className={cx(styles.header__navigation_control, styles.header__navigation_control_right)} />,
         public: <IconEllipsisVertical className={cx(styles.header__navigation_control, styles.header__navigation_control_right)} />,
     };
-  
+
     return (
         <motion.div className={styles.header}>
             <div
@@ -55,25 +59,32 @@ export const ProfilePageHeader = ({
                     styles[`header__navigation_overlay_${overlayVariant}`],
                 )}
             >
-                <IconArrowLeft className={styles.header__navigation_control} />
+                <Link href={"/discover"}>
+                    <IconArrowLeft className={styles.header__navigation_control} />
+                </Link >
                 <div />
-                { IconControlRight[variant] }
+                {IconControlRight[variant]}
             </div>
             <motion.div
                 style={{ opacity: headerOpacity }}
                 className={styles.header__navigation}
             >
-                <IconArrowLeft className={styles.header__navigation_control} />
+                <Link href={"/discover"}>
+                    <IconArrowLeft className={styles.header__navigation_control} />
+                </Link >
                 <div className={styles.header__info}>
-                    <Avatar image={"/assets/temp/avatar.png"} />
+                    <Avatar image={user?.picture || "/assets/temp/avatar.png"} />
                     <div className={styles.header__user}>
                         <h2 className={styles.header__name}>
-                            Jimmy Smith
+                            {user?.fullName}
                         </h2>
                         <IconVerified />
                     </div>
                 </div>
-                { IconControlRight[variant] }
+                {variant === "private"
+                    ? <Link href={"/profile/settings"}>{IconControlRight[variant]}</Link>
+                    : IconControlRight[variant]
+                }
             </motion.div>
         </motion.div>
     );

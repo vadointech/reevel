@@ -1,0 +1,1 @@
+export * from "./confirm-bottom-header.component";

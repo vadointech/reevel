@@ -29,8 +29,9 @@ export function useInterestsPicker(callbacks: Partial<CallBacks> = {}) {
     ) => {
         const selected = controller.isInterestSelected(item.slug);
 
-        if(selected) {
+        if (selected) {
             handleRemoveInterest(item);
+
         } else {
             handleSelectInterest(item);
         }
@@ -39,7 +40,7 @@ export function useInterestsPicker(callbacks: Partial<CallBacks> = {}) {
     useEffect(() => {
         const disposers: IReactionDisposer[] = [];
 
-        if(callbacks.onChange) {
+        if (callbacks.onChange) {
             disposers.push(
                 reaction(
                     () => store.selectedInterests,

@@ -2,8 +2,9 @@
 
 import { Controller } from "react-hook-form";
 import { FormField, InterestButton } from "@/components/ui";
+import { useFormInterestsPicker } from "@/features/interests/picker/hooks";
 
-import { CreateEventFormSchemaValues, useCreateEventFormInterestsPicker } from "@/features/event/create";
+import { CreateEventFormSchemaValues } from "@/features/event/create";
 import { InterestEntity } from "@/entities/interests";
 
 import styles from "../styles/interests-picker.module.scss";
@@ -22,7 +23,7 @@ export const CreateEventFormInterestsPicker = ({
         interests,
         isSelected,
         handleToggle,
-    } = useCreateEventFormInterestsPicker(interestsInit);
+    } = useFormInterestsPicker<CreateEventFormSchemaValues>(interestsInit);
     return (
         <Controller<CreateEventFormSchemaValues, "interests">
             name={"interests"}

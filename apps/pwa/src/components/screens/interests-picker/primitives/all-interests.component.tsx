@@ -39,7 +39,7 @@ export const SearchInterestsAll = () => {
     } = useInterestsPicker({
         onSelect: async({ slug }) => {
             const related = await getRelated(slug);
-            if(isExist(related)) {
+            if (isExist(related)) {
                 store.setSearchTerm("");
             }
         },

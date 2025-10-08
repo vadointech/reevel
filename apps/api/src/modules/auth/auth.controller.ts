@@ -28,10 +28,11 @@ export class AuthController {
     @Public()
     @Get("/google/redirect")
     async getOAuthUser(
+
         @Query("code") code: string,
         @Res({ passthrough: true }) response: Response,
     ) {
-        if(!code) {
+        if (!code) {
             return response.redirect(this.configService.env("PWA_PUBLIC_URL") + "/login");
         }
 

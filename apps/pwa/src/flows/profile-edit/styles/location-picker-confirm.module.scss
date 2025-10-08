@@ -1,0 +1,6 @@
+@use "@/theme/mixins";
+
+.textBlock {
+    margin-top: mixins.rem(64);
+    margin-bottom: mixins.rem(64);
+}

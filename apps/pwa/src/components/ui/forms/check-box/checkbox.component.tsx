@@ -26,6 +26,7 @@ export const Checkbox = ({
             {...props}
         >
             <input
+                disabled
                 type={"checkbox"}
             />
             <IconCheck />
