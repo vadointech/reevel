@@ -2,7 +2,6 @@
 
 import { PropsWithChildren } from "react";
 import Link from "next/link";
-import { useMotionValue } from "motion/react";
 
 import {
     BottomSheetBody,
@@ -14,28 +13,39 @@ import {
 } from "@/components/shared/bottom-sheet";
 
 import { Carousel } from "@/components/shared/carousel";
-import { EventListItemCard, Header, InterestButton, OptionsList } from "@/components/ui";
-import { IconArrowLeft, IconSearch } from "@/components/icons";
+import { Button, EventListItemCard, Header, InterestButton, OptionsList, Placeholder } from "@/components/ui";
+import { IconArrowLeft, IconCalendarCross, IconSearch } from "@/components/icons";
 
-import { EventEntity } from "@/entities/event";
+import { EventEntity, EventParticipationType } from "@/entities/event";
 
 import styles from "./styles.module.scss";
+import { observer } from "mobx-react-lite";
+import { useCalendarContext } from "@/features/calendar";
 
 export namespace CalendarMapViewDrawer {
     export type Data = {
-        events: EventEntity[]
+        upcomingEvents: EventEntity[];
+        hostingEvents: EventEntity[];
+        attendingEvents: EventEntity[];
     };
     export type Props = PropsWithChildren<Data> & {
-        collection: string;
+        handleSelectParticipationType: (type: EventParticipationType | null) => void;
     };
+
+    export type ParticipationTypeButtonProps = PropsWithChildren<{
+        type: EventParticipationType | null;
+        events: EventEntity[];
+        onChange: (type: EventParticipationType | null) => void;
+    }>;
 }
 
 export const CalendarMapViewDrawer = ({
     children,
-    events,
+    upcomingEvents,
+    hostingEvents,
+    attendingEvents,
+    handleSelectParticipationType,
 }: CalendarMapViewDrawer.Props) => {
-    const dragYProgress = useMotionValue(0);
-
     return (
         <BottomSheetRoot
             defaultOpen
@@ -46,7 +56,7 @@ export const CalendarMapViewDrawer = ({
             defaultSnapPointIndex={2}
         >
             <BottomSheetPortal>
-                <BottomSheetBody dragYProgress={dragYProgress} style={{ height: "100%" }} >
+                <BottomSheetBody style={{ height: "100%" }} >
                     <div
                         className={styles.drawer__scroll}
                         style={{ position: "relative", height: 38 }}
@@ -58,17 +68,22 @@ export const CalendarMapViewDrawer = ({
                                     layout={"icon"}
                                 />
                             </Link>
-                            <InterestButton>
-                                Upcoming • 3
-                            </InterestButton>
 
-                            <InterestButton>
-                                Hosting • 2
-                            </InterestButton>
+                            <ParticipationTypeButton
+                                type={EventParticipationType.HOSTING}
+                                events={hostingEvents}
+                                onChange={handleSelectParticipationType}
+                            >
+                                Hosting
+                            </ParticipationTypeButton>
 
-                            <InterestButton>
-                                Attending • 9
-                            </InterestButton>
+                            <ParticipationTypeButton
+                                type={EventParticipationType.ATTENDING}
+                                events={attendingEvents}
+                                onChange={handleSelectParticipationType}
+                            >
+                                Attending
+                            </ParticipationTypeButton>
                         </Carousel>
                     </div>
                     <BottomSheetContent>
@@ -87,7 +102,23 @@ export const CalendarMapViewDrawer = ({
                         <BottomSheetScrollable className={styles.drawer__list}>
                             <OptionsList>
                                 {
-                                    events.map(event => (
+                                    upcomingEvents.length === 0 ? (
+                                        <Placeholder
+                                            size={"small"}
+                                            icon={<IconCalendarCross />}
+                                            title={"No upcoming events"}
+                                            description={"Create one and plan ahead"}
+                                        >
+                                            <Button
+                                                size={"xsmall"}
+                                                href={"/discover"}
+                                                variant={"secondary-muted"}
+                                                className={styles.no__cta}
+                                            >
+                                                Discover events
+                                            </Button>
+                                        </Placeholder>
+                                    ) : upcomingEvents.map(event => (
                                         <Link
                                             key={event.id}
                                             href={`/discover/event/${event.id}`}
@@ -104,3 +135,23 @@ export const CalendarMapViewDrawer = ({
         </BottomSheetRoot>
     );
 };
+
+const ParticipationTypeButton = observer(({
+    type,
+    events,
+    children,
+    onChange,
+}: CalendarMapViewDrawer.ParticipationTypeButtonProps) => {
+    const calendar = useCalendarContext();
+
+    return (
+        <InterestButton
+            variant={
+                calendar.store.participationType === type ? "primary" : "default"
+            }
+            onClick={() => onChange(type)}
+        >
+            { children } • { events.length }
+        </InterestButton>
+    );
+});

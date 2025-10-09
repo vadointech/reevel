@@ -9,10 +9,10 @@ export function useBottomSheetDrag() {
     const dragYProgress = useTransform(
         dragY,
         [
-            controller.current.dragConstraints.top === controller.current.dragConstraints.bottom
-                ? controller.current.internalConfig.clientHeight
-                : controller.current.dragConstraints.bottom,
-            controller.current.dragConstraints.top,
+            controller.dragConstraints.top === controller.dragConstraints.bottom
+                ? controller.internalConfig.clientHeight
+                : controller.dragConstraints.bottom,
+            controller.dragConstraints.top,
         ],
         [0, 1],
     );
@@ -20,19 +20,19 @@ export function useBottomSheetDrag() {
     const contentOpacity = useTransform(
         dragY,
         [
-            controller.current.internalConfig.clientHeight,
-            controller.current.internalConfig.clientHeight - 100,
+            controller.internalConfig.clientHeight,
+            controller.internalConfig.clientHeight - 100,
         ],
         [0, 1],
     );
 
     const handleDragEnd = (_: any, info: PanInfo) => {
         if(Math.abs(info.offset.x) > Math.abs(info.offset.y)) return;
-        controller.current.drag(info);
+        controller.drag(info);
     };
 
     const handleAnimationComplete = () => {
-        controller.current.settleSnapPoint();
+        controller.settleSnapPoint();
     };
 
     return {

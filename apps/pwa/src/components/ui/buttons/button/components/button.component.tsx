@@ -1,5 +1,3 @@
-"use client";
-
 import { ComponentProps, HTMLAttributeAnchorTarget, ReactNode } from "react";
 import { Link } from "@/i18n/routing";
 import { Spinner } from "./spinner.component";

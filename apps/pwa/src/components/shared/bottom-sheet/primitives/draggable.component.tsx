@@ -10,7 +10,7 @@ export namespace BottomSheetDraggable {
 export const BottomSheetDraggable = ({ ...props }: BottomSheetDraggable.Props) => {
     const { controller } = useBottomSheet();
     const handlePointerDown = (event: PointerEvent<HTMLDivElement>) => {
-        controller.current.dragControls.start(event);
+        controller.dragControls.start(event);
         event.stopPropagation();
     };
     return (

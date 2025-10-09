@@ -1,0 +1,53 @@
+@use "@/theme/mixins";
+@use "@/theme/colors";
+@use "@/theme/typography";
+
+.placeholder {
+    width: 100%;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    color: colors.$secondary;
+    text-align: center;
+
+    &__size {
+        &_default {}
+        &_small {}
+    }
+
+    &__icon {
+        .placeholder__size_default & {
+            height: mixins.rem(82);
+            margin-bottom: mixins.rem(8);
+        }
+        .placeholder__size_small & {
+            height: mixins.rem(64);
+            margin-bottom: mixins.rem(6);
+        }
+
+        & > * {
+            height: 100%;
+        }
+    }
+
+    &__title {
+        .placeholder__size_default & {
+            @include typography.font("lg", 500);
+        }
+        .placeholder__size_small & {
+            @include typography.font("base", 500);
+        }
+    }
+
+    &__description {
+        @include typography.font("sm");
+        margin-bottom: mixins.rem(12);
+    }
+
+    &__cta {
+        width: fit-content;
+    }
+}

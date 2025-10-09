@@ -32,7 +32,7 @@ export const BottomSheetPortal = observer(({ children }: BottomSheetPortal.Props
     if(store.open) {
         if(main.current) {
             main.current.style.overflow = "hidden";
-            if(!controller.current.internalConfig.touchEvents) {
+            if(!controller.internalConfig.touchEvents) {
                 main.current.style.pointerEvents = "none";
             }
         }

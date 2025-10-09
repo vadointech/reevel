@@ -48,7 +48,7 @@ export class BottomSheetRootConfig implements IBottomSheetInternalConfig {
             top: 0;
             left: 0;
             width: 1px;
-            height: 100dvh; /* Ось наша магія */
+            height: 100dvh;
             pointer-events: none;
             visibility: hidden;
             z-index: -1;

@@ -1,5 +1,6 @@
+import { IMobxStore } from "@/lib/mobx";
 
-export interface IBottomSheetStore {
+export interface IBottomSheetStore extends IMobxStore {
     positionPx: number;
 
     open: boolean;

@@ -3,9 +3,13 @@ import { UserEntity } from "@/entities/user";
 import { InterestEntity } from "../interests";
 
 export enum EventVisibility {
-    HOST = "HOST",
     PUBLIC = "PUBLIC",
     PRIVATE = "PRIVATE",
+}
+
+export enum EventParticipationType {
+    HOSTING = "hosting",
+    ATTENDING = "attending",
 }
 
 export type EventEntity = {
@@ -27,6 +31,8 @@ export type EventEntity = {
     hosts: EventHostEntity[];
     interests: EventInterestEntity[];
     tickets: EventTicketEntity[];
+
+    participationType: EventParticipationType | null;
 
     createdAt: Date;
     updatedAt?: Date;

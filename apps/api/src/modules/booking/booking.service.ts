@@ -108,6 +108,14 @@ export class BookingService {
         }
     }
 
+    async cancelReservation(eventId: string) {
+        try {
+            return this.eventTicketsRepository.delete({ eventId });
+        } catch {
+            return false;
+        }
+    }
+
     async reclaimTickets(eventId: string, entityManager?: EntityManager) {
         try {
 

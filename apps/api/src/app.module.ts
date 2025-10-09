@@ -5,6 +5,7 @@ import { TypeOrmModule } from "@nestjs/typeorm";
 import { APP_GUARD } from "@nestjs/core";
 import { AccessTokenGuard } from "@/modules/auth/guards/access-token.guard";
 import { EventEmitterModule } from "@nestjs/event-emitter";
+import { ReportsModule } from './modules/reports/reports.module';
 
 import modules from "@/modules";
 import dbConfig from "@/config/db.config";
@@ -15,6 +16,7 @@ import dbConfig from "@/config/db.config";
         ConfigModule,
         EventEmitterModule.forRoot(),
         TypeOrmModule.forRootAsync(dbConfig.masterConnection.provider),
+        ReportsModule,
     ],
     providers: [
         {

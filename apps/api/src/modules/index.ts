@@ -9,12 +9,14 @@ import { EventModule } from "@/modules/event/event.module";
 import { BookingModule } from "@/modules/booking/booking.module";
 import { PaymentModule } from "@/modules/payment/payment.module";
 import { SubscriptionModule } from "@/modules/subscription/subscription.module";
+import { CalendarModule } from "./calendar/calendar.module";
 
 export default [
     AuthModule.forRoot(),
     GoogleModule,
     UserModule,
     ProfileModule,
+    CalendarModule,
     InterestsModule,
     EventModule,
     BookingModule,

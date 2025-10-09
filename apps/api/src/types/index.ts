@@ -15,3 +15,7 @@ export interface ISessionUser extends ISessionBaseUser {
 export interface ServerSession<Session extends ISessionBaseUser = ISessionBaseUser> {
     user: Session
 }
+
+export interface EmptyServerSession<Session extends ISessionBaseUser = ISessionBaseUser> {
+    user: Partial<Session>
+}

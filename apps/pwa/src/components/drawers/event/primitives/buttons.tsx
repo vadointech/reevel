@@ -1,86 +1,126 @@
 import cx from "classnames";
 import {
-    IconTicket, IconShare, IconEllipsisHorizontal, IconCheck, IconClose,
-    IconSettings,
+    IconTicket,
+    IconShareOutline,
+    IconEllipsisHorizontal,
+    IconCheck,
+    IconClose,
     IconCycle,
+    IconCalendarOutline,
+    IconSettings,
 } from "@/components/icons";
 import styles from "../styles.module.scss";
-import { EventVisibility } from "@/entities/event";
+import { EventEntity, EventParticipationType, EventVisibility } from "@/entities/event";
+import { useTicketReservation } from "@/features/event/booking/hooks";
+import { Link, useRouter } from "@/i18n/routing";
+import { PropsWithChildren } from "react";
 
-export type EventDrawerHeroButtonsProps = {
-    visibility?: EventVisibility;
-    onJoin?: () => void;
-    onShare?: () => void;
-    onMore?: () => void;
-    onDecline?: () => void;
-    onSuggest?: () => void;
-};
+import { EventMoreActionsDrawer } from "./more-drawer.componsent";
+import { useEventActions } from "@/features/event/hooks";
 
-export const EventDrawerHeroButtons = ({
-    visibility = EventVisibility.PUBLIC,
-    onJoin,
-    onShare,
-    onMore,
-    onDecline,
-    onSuggest,
-}: EventDrawerHeroButtonsProps) => {
-    switch (visibility) {
+
+export namespace EventDrawerHeroButtons {
+    export type Props = EventEntity;
+}
+
+export const EventDrawerHeroButtons = (event: EventDrawerHeroButtons.Props) => {
+    const {
+        handleShareEvent,
+    } = useEventActions(event);
+
+    if(event.participationType === EventParticipationType.HOSTING) {
+        return (
+            <>
+                <button
+                    className={cx(
+                        styles.button,
+                        styles.button_primary,
+                        styles.button_share,
+                    )}
+                >
+                    <IconShareOutline />
+                    Invite guests
+                </button>
+                <button
+                    className={cx(
+                        styles.button,
+                        styles.button_settings,
+                    )}
+                >
+                    <IconSettings />
+                    Settings
+                </button>
+            </>
+        );
+    }
+
+
+    switch (event.visibility) {
         case EventVisibility.PUBLIC:
             return (
                 <>
-                    <button
-                        className={cx(
-                            styles.button,
-                            styles.button_primary,
-                            styles.button_join,
-                        )}
-                        onClick={onJoin}
-                    >
-                        <IconTicket />
-                        Join
-                    </button>
+                    {
+                        event.participationType === EventParticipationType.ATTENDING ? (
+                            <ViewInCalendarButton>
+                                Going
+                            </ViewInCalendarButton>
+                        ) :
+                            event.participationType === EventParticipationType.HOSTING ? (
+                                <ViewInCalendarButton>
+                                    Hosting
+                                </ViewInCalendarButton>
+                            ) : (
+                                <JoinEventButton eventId={event.id} />
+                            )
+                    }
                     <button
                         className={cx(
                             styles.button,
                             styles.button_share,
                         )}
-                        onClick={onShare}
+                        onClick={handleShareEvent}
                     >
-                        <IconShare />
+                        <IconShareOutline />
                         Share
                     </button>
-                    <button
-                        className={cx(
-                            styles.button,
-                            styles.button_more,
-                        )}
-                        onClick={onMore}
-                    >
+                    <EventMoreActionsDrawer {...event}>
                         <IconEllipsisHorizontal />
                         More
-                    </button>
+                    </EventMoreActionsDrawer>
                 </>
             );
         case EventVisibility.PRIVATE:
             return (
                 <>
-                    <button
-                        className={cx(
-                            styles.button,
-                            styles.button_primary,
-                            styles.button_accept,
-                        )}
-                        onClick={onJoin}
-                    >
-                        <IconCheck />
-                        Going
-                    </button>
+                    {
+                        event.participationType === EventParticipationType.ATTENDING ? (
+                            <ViewInCalendarButton>
+                                Hosting
+                            </ViewInCalendarButton>
+                        ) : (
+                            event.participationType === EventParticipationType.HOSTING ? (
+                                <ViewInCalendarButton>
+                                    Hosting
+                                </ViewInCalendarButton>
+                            ) : (
+                                <button
+                                    className={cx(
+                                        styles.button,
+                                        styles.button_primary,
+                                        styles.button_accept,
+                                    )}
+                                >
+                                    <IconCheck />
+                                    Going
+                                </button>
+                            )
+                        )
+                    }
                     <button
                         className={cx(
                             styles.button,
                             styles.button_decline,
                         )}
-                        onClick={onDecline}
                     >
                         <IconClose />
                         Decline
@@ -90,40 +130,74 @@ export const EventDrawerHeroButtons = ({
                             styles.button,
                             styles.button_suggest,
                         )}
-                        onClick={onSuggest}
                     >
                         <IconCycle />
                         Suggest
                     </button>
                 </>
             );
-        case EventVisibility.HOST:
+        default:
             return (
                 <>
+                    <JoinEventButton eventId={event.id} />
                     <button
                         className={cx(
                             styles.button,
-                            styles.button_primary,
                             styles.button_share,
                         )}
-                        onClick={onJoin}
+                        onClick={handleShareEvent}
                     >
-                        <IconShare />
-                        Invite guests
+                        <IconShareOutline />
+                        Share
                     </button>
-                    <button
-                        className={cx(
-                            styles.button,
-                            styles.button_settings,
-                        )}
-                        onClick={onDecline}
-                    >
-                        <IconSettings />
-                        Settings
-                    </button>
+                    <EventMoreActionsDrawer {...event}>
+                        <IconEllipsisHorizontal />
+                        More
+                    </EventMoreActionsDrawer>
                 </>
             );
-        default:
-            return null;
     }
+};
+
+const JoinEventButton = ({ eventId }: { eventId: string }) => {
+    const router = useRouter();
+    const {
+        handleReserveTicket,
+    } = useTicketReservation(
+        eventId,
+        {
+            onTicketReserved: () => {
+                router.refresh();
+            },
+        },
+    );
+
+    return (
+        <button
+            className={cx(
+                styles.button,
+                styles.button_primary,
+                styles.button_join,
+            )}
+            onClick={handleReserveTicket}
+        >
+            <IconTicket />
+            Join
+        </button>
+    );
+};
+
+const ViewInCalendarButton = ({ children }: PropsWithChildren) => {
+    return (
+        <Link
+            href={"/calendar"}
+            className={cx(
+                styles.button,
+                styles.button_calendar,
+            )}
+        >
+            <IconCalendarOutline />
+            { children }
+        </Link>
+    );
 };

@@ -18,6 +18,8 @@ import { UpdateEventDto } from "./dto/update-event.dto";
 import { ISessionUser, ServerSession } from "@/types";
 import { SupportedFileCollections } from "@/modules/uploads/entities/uploads.entity";
 import { GetNearbyEventsDto } from "@/modules/event/dto/get-nearby.dto";
+import { getEventParticipationType } from "@/modules/event/utils";
+import { GetEventResponseDto } from "@/modules/event/dto";
 
 @Injectable()
 export class EventService {
@@ -37,8 +39,16 @@ export class EventService {
         private dataSource: DataSource,
     ) {}
 
-    async getEvents() {
-        return this.eventRepository.findMany();
+    async getEvents(session: ServerSession) {
+        const events = await this.eventRepository.findMany();
+
+        return events.map(event => {
+            const participationType = getEventParticipationType(event, session.user.id);
+            return new GetEventResponseDto({
+                ...event,
+                participationType,
+            });
+        });
     }
     
     async createEvent(session: ServerSession<ISessionUser>, input: CreateEventDto): Promise<EventsEntity> {
@@ -151,8 +161,8 @@ export class EventService {
         );
     }
 
-    async getEventById(eventId: string) {
-        return this.eventRepository.findOne({
+    async getEventById(session: ServerSession, eventId: string) {
+        const event = await this.eventRepository.findOne({
             where: { id: eventId },
             relations: {
                 hosts: {
@@ -169,6 +179,17 @@ export class EventService {
                     },
                 },
             },
+        });
+
+        if(!event) {
+            return null;
+        }
+
+        const participationType = getEventParticipationType(event, session.user.id);
+
+        return new GetEventResponseDto({
+            ...event,
+            participationType,
         });
     }
 

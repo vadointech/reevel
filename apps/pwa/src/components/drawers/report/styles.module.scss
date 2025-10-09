@@ -1,0 +1,9 @@
+@use "@/theme/mixins";
+
+.handle {
+    margin-bottom: mixins.rem(22);
+}
+
+.section {
+    margin-bottom: mixins.rem(22);
+}

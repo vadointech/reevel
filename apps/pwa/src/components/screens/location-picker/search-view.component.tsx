@@ -2,7 +2,7 @@
 
 import { ComponentProps, useMemo } from "react";
 import { observer } from "mobx-react-lite";
-import { AnimatePresence, HTMLMotionProps, motion } from "motion/react";
+import { AnimatePresence, motion } from "motion/react";
 
 import { useMotionRef } from "@/lib/motion";
 import { useLocationPickerSearch } from "@/features/location/picker/hooks";
@@ -13,6 +13,7 @@ import {
     SearchScreenContent,
     SearchScreenSearchBar,
     SearchScreenLoadMoreButton,
+    SearchScreenMotionListContent,
 } from "@/components/screens/search";
 
 import { IconLocation } from "@/components/icons";
@@ -140,7 +141,7 @@ const NearbyList = observer(({
         <AnimatePresence>
             {
                 visible && (
-                    <MotionListSection>
+                    <SearchScreenMotionListContent>
                         <Section
                             title={"Around Vinnitsa"}
                             cta={"See all"}
@@ -156,7 +157,7 @@ const NearbyList = observer(({
                                 <SearchScreenLoadMoreButton onClick={onLoadMore} />
                             ) : null
                         }
-                    </MotionListSection>
+                    </SearchScreenMotionListContent>
                 )
             }
         </AnimatePresence>
@@ -177,7 +178,7 @@ const AllList = observer(({
         <AnimatePresence>
             {
                 visible && (
-                    <MotionListSection>
+                    <SearchScreenMotionListContent>
                         <Section
                             title={"All results"}
                             cta={"See in Vinnitsa"}
@@ -193,7 +194,7 @@ const AllList = observer(({
                                 <SearchScreenLoadMoreButton onClick={onLoadMore} />
                             ) : null
                         }
-                    </MotionListSection>
+                    </SearchScreenMotionListContent>
                 )
             }
         </AnimatePresence>
@@ -218,42 +219,5 @@ const SearchResultsList = ({ points, onLocationPick }: LocationSearch.ListProps)
                 )
             }
         </OptionsList>
-    );
-};
-
-const MotionListSection = (props: HTMLMotionProps<"div">) => {
-    return (
-        <motion.div
-            key={"results"}
-            initial={{
-                opacity: 0,
-                scale: 0.96,
-                y: 20,
-                filter: "blur(6px)",
-            }}
-            animate={{
-                opacity: 1,
-                scale: 1,
-                y: 0,
-                filter: "blur(0px)",
-                transition: {
-                    delay: 0.2,
-                    duration: 0.6,
-                    ease: [0.22, 1, 0.36, 1],
-                },
-            }}
-            exit={{
-                opacity: 0,
-                scale: 0.95,
-                y: -10,
-                filter: "blur(4px)",
-            }}
-            transition={{
-                duration: 0.6,
-                ease: [0.22, 1, 0.36, 1],
-            }}
-            className={styles.screen__block}
-            {...props}
-        />
     );
 };

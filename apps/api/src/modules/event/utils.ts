@@ -1,3 +1,5 @@
+import { EventParticipationType, EventsEntity } from "@/modules/event/entities/events.entity";
+
 export function polygonToWkt(polygon: any): string | null {
     if (!polygon || !polygon.coordinates || !polygon.coordinates[0]) {
         return null;
@@ -22,4 +24,25 @@ export function shuffleArray<T>(array: T[]): T[] {
         [array[i], array[j]] = [array[j], array[i]];
     }
     return array;
+}
+
+export function getEventParticipationType(event: EventsEntity, userId?: string): EventParticipationType | null {
+    if(!userId) {
+        return null;
+    }
+
+    const isHost = event.hosts.some(host => host.userId === userId);
+    const isAttendee = event.tickets.some(ticket => ticket.userId === userId);
+
+    console.log(isHost, isAttendee);
+
+    let participationType: EventParticipationType | null = null;
+
+    if(isHost) {
+        participationType = EventParticipationType.HOSTING;
+    } else if(isAttendee) {
+        participationType = EventParticipationType.ATTENDING;
+    }
+
+    return participationType;
 }

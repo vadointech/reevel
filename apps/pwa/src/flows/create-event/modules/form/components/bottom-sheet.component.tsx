@@ -86,7 +86,7 @@ export const CreateEventFormBottomSheetContent = ({
                                         variant={"secondary-muted"}
                                         onClick={(event) => {
                                             onReset?.(event);
-                                            controller.current.close();
+                                            controller.close();
                                         }}
                                     >
                                         Reset
@@ -99,7 +99,7 @@ export const CreateEventFormBottomSheetContent = ({
                                         variant={"primary"}
                                         onClick={(event) => {
                                             onSubmit?.(event);
-                                            controller.current.close();
+                                            controller.close();
                                         }}
                                     >
                                         Confirm

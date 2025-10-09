@@ -5,6 +5,7 @@ import { EventTicketsEntity } from "@/modules/event/entities/event-tickets.entit
 import { PaymentsEntity } from "@/modules/payment/entities/payment.entity";
 import { SubscriptionEntity } from "@/modules/subscription/entities/subscription.entity";
 import { UserUploadsEntity } from "@/modules/uploads/entities/uploads.entity";
+import { ReportsEntity } from "@/modules/reports/entities/reports.entity";
 
 @Entity("users")
 export class UserEntity {
@@ -34,4 +35,7 @@ export class UserEntity {
 
     @OneToMany(() => UserUploadsEntity, upload => upload.user)
     uploads: UserUploadsEntity[];
+
+    @OneToMany(() => ReportsEntity, report => report.user)
+    reports: ReportsEntity[];
 }

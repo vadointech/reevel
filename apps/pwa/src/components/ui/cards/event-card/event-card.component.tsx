@@ -3,11 +3,11 @@ import Image from "next/image";
 import { hexToRgba } from "@/utils/hex-to-rgba";
 
 import { Badge, DateBadge } from "@/components/ui";
-import { IconLock, IconGlobe, IconCalendar } from "@/components/icons";
+import { IconLock, IconGlobe, IconCalendar, IconCrown } from "@/components/icons";
 import { LocationBadge, AttendeesBadge } from "@/components/ui";
 import { dateTime } from "@/features/event/utils";
 
-import { EventEntity, EventVisibility } from "@/entities/event";
+import { EventEntity, EventParticipationType, EventVisibility } from "@/entities/event";
 import { UISize } from "@/types/common";
 
 import styles from "./styles.module.scss";
@@ -15,7 +15,7 @@ import cx from "classnames";
 
 export namespace EventCard {
     type Data = {
-        event: EventEntity
+        event: EventEntity;
     };
 
     export type Props = ComponentProps<"div"> & Data & {
@@ -68,7 +68,17 @@ export const EventCard = ({
             >
                 {
                     displayMode === "location" ? (
-                        <VisibilityIndicator visibility={event.visibility} />
+                        event.participationType === EventParticipationType.HOSTING ? (
+                            <Badge
+                                variant={"ghost"}
+                                size={"small"}
+                                iconBefore={<IconCrown />}
+                            >
+                                Hosted by you
+                            </Badge>
+                        ) : (
+                            <VisibilityIndicator visibility={event.visibility} />
+                        )
                     ) : (
                         <Badge
                             variant={"ghost"}

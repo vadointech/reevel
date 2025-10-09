@@ -20,16 +20,7 @@ export namespace EventDrawerContentHero {
     export type Props = Data;
 }
 
-export const EventDrawerContentHero = ({
-    primaryColor = "red",
-    title,
-    locationTitle,
-    ticketPrice,
-    visibility,
-    description,
-    tickets,
-    startDate,
-}: EventDrawerContentHero.Props) => {
+export const EventDrawerContentHero = (event: EventDrawerContentHero.Props) => {
     const {
         config,
         drawerContentDragYProgress,
@@ -59,53 +50,53 @@ export const EventDrawerContentHero = ({
                     style={{
                         background: `linear-gradient(
                             to top,
-                            ${hexToRgba(primaryColor, 1)} 30%,
-                            ${hexToRgba(primaryColor, 0.8)} 38%,
-                            ${hexToRgba(primaryColor, 0.6)} 52%,
-                            ${hexToRgba(primaryColor, 0.4)} 66%,
-                            ${hexToRgba(primaryColor, 0.2)} 80%,
-                            ${hexToRgba(primaryColor, 0.05)} 92%,
-                            ${hexToRgba(primaryColor, 0)} 100%
+                            ${hexToRgba(event.primaryColor, 1)} 30%,
+                            ${hexToRgba(event.primaryColor, 0.8)} 38%,
+                            ${hexToRgba(event.primaryColor, 0.6)} 52%,
+                            ${hexToRgba(event.primaryColor, 0.4)} 66%,
+                            ${hexToRgba(event.primaryColor, 0.2)} 80%,
+                            ${hexToRgba(event.primaryColor, 0.05)} 92%,
+                            ${hexToRgba(event.primaryColor, 0)} 100%
                         )`,
                     }}
                 />
 
                 <div
                     className={styles.hero__background_solid}
-                    style={{ background: primaryColor }}
+                    style={{ background: event.primaryColor }}
                 />
             </div>
 
             <div className={styles.hero__content}>
                 <motion.div style={{ opacity: titleOpacity }}>
                     <h1 className={styles.hero__title}>
-                        { title }
+                        { event.title }
                     </h1>
                 </motion.div>
 
                 <div className={styles.hero__date}>
                     <div className={styles.hero__date_item}>
                         <IconLocation />
-                        { locationTitle }
+                        { event.locationTitle }
                     </div>
                     <div className={styles.hero__date_item}>
                         <IconCalendar />
-                        { formatter.formatDate(startDate) }
+                        { formatter.formatDate(event.startDate) }
                     </div>
                 </div>
                 <div className={styles.hero__buttons}>
-                    <EventDrawerHeroButtons visibility={visibility} />
+                    <EventDrawerHeroButtons {...event}/>
                 </div>
                 <div className={styles.hero__price}>
                     {
-                        ticketPrice ? (
-                            ticketPrice + " ₴"
+                        event.ticketPrice ? (
+                            event.ticketPrice + " ₴"
                         ) : "Free"
                     }
-                    <AttendeesBadge users={tickets.map(item => item.user.profile)} />
+                    <AttendeesBadge users={event.tickets.map(item => item.user.profile)} />
                 </div>
                 <EventDrawerContentDescription>
-                    { description }
+                    { event.description }
                 </EventDrawerContentDescription>
             </div>
         </div>

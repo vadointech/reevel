@@ -10,7 +10,7 @@ export function useEventDrawer() {
 
     const handleClose = useCallback(() => {
         map.controller.current.selectPoint(null);
-        bottomSheet.controller.current?.closeAsync()
+        bottomSheet.controller?.closeAsync()
             .then(() => router.back());
     }, []);
 

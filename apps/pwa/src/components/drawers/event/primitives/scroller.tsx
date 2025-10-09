@@ -23,8 +23,8 @@ export const EventDrawerContentScroller = ({ children }: EventDrawerContentScrol
 
         const calculateBounds = () => {
             const offset =
-              bottomSheet.controller.current.internalConfig.clientHeight -
-              bottomSheet.controller.current.dragConstraints.top -
+              bottomSheet.controller.internalConfig.clientHeight -
+              bottomSheet.controller.dragConstraints.top -
               element.clientHeight -
               config.heroSectionOffset;
 
@@ -50,7 +50,7 @@ export const EventDrawerContentScroller = ({ children }: EventDrawerContentScrol
         if(bottomSheet.store.activeSnapPoint === 0) {
             dragControls.start(event);
         } else {
-            bottomSheet.controller.current.dragControls.start(event);
+            bottomSheet.controller.dragControls.start(event);
         }
         event.stopPropagation();
     };
