@@ -58,6 +58,7 @@ export const CreateEventPreview = ({
             }
             <div className={styles.screen__buttons}>
                 <UploadDrawer
+                    title="Event poster"
                     uploads={uploads}
                     onImagePick={handlePosterPick}
                     onImageDelete={handlePosterDelete}
@@ -92,7 +93,7 @@ const PosterPicker = ({
         return uploads.find(item => item.id === formValues?.poster?.id);
     }, [uploads, formValues]);
 
-    if(pickerCarouselData?.colorPalette && pickerCarouselData.colorPalette.length > 1) {
+    if (pickerCarouselData?.colorPalette && pickerCarouselData.colorPalette.length > 1) {
         return (
             <div
                 className={cx(

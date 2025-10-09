@@ -1,0 +1,85 @@
+@use '@/theme/mixins';
+@use '@/theme/colors';
+@use '@/theme/spacing';
+
+$submit-btn-height: 68;
+
+.form {
+    flex: 1 1 auto;
+    position: relative;
+    overflow: hidden;
+
+    &__content {
+        position: relative;
+        z-index: 0;
+
+        height: 100%;
+        overflow-y: auto;
+
+        padding: 1rem 0 mixins.rem($submit-btn-height);
+
+        @include mixins.no-scrollbar;
+    }
+
+    &__hero {
+        position: relative;
+        margin-bottom: mixins.rem(64);
+
+        &__background {
+            width: 100%;
+            height: 261px;
+            aspect-ratio: 1;
+            flex-shrink: 0;
+
+            position: relative;
+        }
+
+        &__avatar {
+            width: mixins.rem(126);
+            height: mixins.rem(126);
+
+            border: mixins.rem(5.5) colors.$background solid;
+            border-radius: 50%;
+
+            transform-origin: top left;
+
+            margin-bottom: 0.5rem;
+            position: absolute;
+            left: 1rem;
+            right: 0;
+            bottom: 0;
+            transform: translateY(50%);
+
+            z-index: 1;
+        }
+    }
+
+    &__gap {
+        margin-bottom: mixins.rem(24);
+        &_sm {
+            margin-bottom: mixins.rem(12);
+        }
+    }
+
+    &__interests {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.5rem;
+    }
+
+    &__submit {
+        height: mixins.rem($submit-btn-height);
+        padding: spacing.$container spacing.$container 0;
+
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        right: 0;
+
+        background: linear-gradient(
+            to top,
+            colors.$foreground 20%,
+            transparent 100%
+        );
+    }
+}

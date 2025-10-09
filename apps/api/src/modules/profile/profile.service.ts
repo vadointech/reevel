@@ -18,7 +18,7 @@ export class ProfileService {
         private readonly uploadsService: UploadsService,
 
         private dataSource: DataSource,
-    ) {}
+    ) { }
 
     async updateProfile(userId: string, input: UpdateProfileDto): Promise<ProfileEntity> {
         const dbProfile = await this.profileRepository.findOne({
@@ -36,17 +36,19 @@ export class ProfileService {
             locationCenter,
             locationBbox,
             interests,
+            placeName,
             ...newData
         } = input;
 
-        return this.dataSource.transaction(async(entityManager) => {
-            for(const [key, value] of Object.entries(newData)) {
+        return this.dataSource.transaction(async (entityManager) => {
+
+            for (const [key, value] of Object.entries(newData)) {
                 if (value !== undefined) {
                     dbProfile[key] = value;
                 }
             }
 
-            if(locationCenter && locationBbox) {
+            if (locationCenter && locationBbox) {
                 if (dbProfile.location) {
                     await this.profileLocationsRepository.delete({ id: dbProfile.location.id }, entityManager);
                 }
@@ -65,6 +67,7 @@ export class ProfileService {
                             [locationBbox[0], locationBbox[1]],  // Back to SW to close polygon
                         ]],
                     },
+                    placeName: placeName,
                 });
             }
 

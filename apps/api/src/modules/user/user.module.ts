@@ -5,6 +5,7 @@ import { UserService } from "./user.service";
 import { ProfileInterestsRepository } from "@/modules/profile/repositories/profile-interests.repository";
 import { UploadsRepository } from "@/modules/uploads/repositories/uploads.repository";
 import { ProfileRepository } from "@/modules/profile/repositories/profile.repository";
+import { EventHostsRepository } from "@/modules/event/repositories/event-hosts.repository";
 
 @Module({
     controllers: [UserController],
@@ -15,6 +16,7 @@ import { ProfileRepository } from "@/modules/profile/repositories/profile.reposi
         ProfileRepository,
         ProfileInterestsRepository,
         UploadsRepository,
+        EventHostsRepository,
     ],
 })
-export class UserModule {}
+export class UserModule { }

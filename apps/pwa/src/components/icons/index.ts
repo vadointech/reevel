@@ -36,3 +36,5 @@ export * from "./picture";
 export * from "./verified";
 export * from "./places";
 export * from "./exit";
+
+export * from "./camera";

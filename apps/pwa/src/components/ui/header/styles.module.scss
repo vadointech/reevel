@@ -1,6 +1,6 @@
-@use "@/theme/mixins";
-@use "@/theme/colors";
-@use "@/theme/typography";
+@use '@/theme/mixins';
+@use '@/theme/colors';
+@use '@/theme/typography';
 
 .header {
     width: 100%;
@@ -10,7 +10,7 @@
     padding-inline: 1rem;
 
     svg path {
-        fill: colors.$primary
+        fill: colors.$primary;
     }
 
     &_size {
@@ -33,7 +33,6 @@
 
     &_variant {
         &_default {
-
         }
         &_search {
             display: flex;
@@ -61,13 +60,13 @@
     &__title {
         text-align: center;
         .header_size_small & {
-            @include typography.font("lg", 500);
+            @include typography.font('lg', 500);
         }
         .header_size_default & {
-            @include typography.font("xl", 500);
+            @include typography.font('xl', 500);
         }
         .header_size_large & {
-            @include typography.font("xl", 700);
+            @include typography.font('xl', 700);
         }
     }
 }

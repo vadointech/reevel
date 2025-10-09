@@ -20,6 +20,7 @@ export type ProfileInterestsEntity = {
 export type ProfileLocationsEntity = {
     id: string;
     profileId: string;
+    placeName: string;
     center: {
         type: "Point";
         coordinates: [number, number];

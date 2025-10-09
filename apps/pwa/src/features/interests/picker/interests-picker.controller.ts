@@ -15,7 +15,7 @@ export class InterestsPickerController implements IInterestsPickerController {
         this._store.setInterests([
             ...new ObjectUnique(interests, "slug"),
         ]);
-        if(interests.length === 0) {
+        if (interests.length === 0) {
             this._store.setNextPageToken(undefined);
         } else {
             this._store.setNextPageToken(nextPageToken);

@@ -89,7 +89,7 @@ export const CreatePrivateEventForm = ({
                                     <OptionsListItem
                                         label={"Location"}
                                         description={(() => {
-                                            if(!field.value) return "Required";
+                                            if (!field.value) return "Required";
                                             return `${field.value.properties.label} • ${field.value.properties.address}`;
                                         })()}
                                         contentLeft={<IconLocation />}

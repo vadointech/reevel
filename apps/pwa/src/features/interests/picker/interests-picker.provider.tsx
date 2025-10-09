@@ -6,6 +6,8 @@ import { InterestsPickerContext } from "./interests-picker.context";
 import { InterestsPickerStore } from "./interests-picker.store";
 import { InterestsPickerController } from "./interests-picker.controller";
 import { IInterestsPickerStore, InterestsPickerRootConfigParams } from "./types";
+import { useSingleton } from "@/hooks";
+import { useMobxStore } from "@/lib/mobx";
 
 export namespace InterestsPickerProvider {
     export type Props = Partial<IInterestsPickerStore> & InterestsPickerRootConfigParams & {
@@ -22,12 +24,12 @@ export const InterestsPickerProvider = ({
 }: InterestsPickerProvider.Props) => {
     const form = useFormContext();
     const interestsPickerStoreInit: ConstructorParameters<typeof InterestsPickerStore> = useMemo(() => {
-        if(syncFormField) {
+        if (syncFormField) {
             initStore.selectedInterests = form.getValues(syncFormField);
             return [
                 initStore,
                 (value) => {
-                    if(syncFormField && form) {
+                    if (syncFormField && form) {
                         form.setValue(syncFormField, value);
                     }
                 },
@@ -37,13 +39,8 @@ export const InterestsPickerProvider = ({
         return [initStore];
     }, []);
 
-    const store = useMemo(() => {
-        return new InterestsPickerStore(...interestsPickerStoreInit);
-    }, [interestsPickerStoreInit]);
-
-    const controller = useMemo(() => {
-        return new InterestsPickerController(store);
-    }, [store]);
+    const store = useMobxStore(InterestsPickerStore, ...interestsPickerStoreInit);
+    const controller = useSingleton(InterestsPickerController, store);
 
     return (
         <InterestsPickerContext.Provider
@@ -55,7 +52,7 @@ export const InterestsPickerProvider = ({
                 },
             }}
         >
-            { children }
+            {children}
         </InterestsPickerContext.Provider>
     );
 };

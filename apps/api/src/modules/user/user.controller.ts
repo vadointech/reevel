@@ -8,7 +8,7 @@ import { ISessionUser, ServerSession } from "@/types";
 export class UserController {
     constructor(
         private readonly userService: UserService,
-    ) {}
+    ) { }
 
     @Get("/me")
     async getSession(
@@ -31,6 +31,14 @@ export class UserController {
     ) {
         console.log(">>> getting interests");
         return this.userService.getUserInterests(session);
+    }
+
+    @Get("/me/events")
+    async getUserEvents(
+        @Session() session: ServerSession,
+    ) {
+        console.log(">>> getting user events");
+        return this.userService.getUserEvents(session);
     }
 
     @Get("/me/uploads")

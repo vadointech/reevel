@@ -30,6 +30,7 @@ export const LocationPickerConfirmationDrawer = ({
     onClose,
 }: LocationPickerConfirmationDrawer.Props) => {
     const { config } = useLocationPicker();
+
     return (
         <BottomSheetRoot
             touchEvents={false}
@@ -63,10 +64,10 @@ export const LocationPickerConfirmationDrawer = ({
                                                 }
                                             </h1>
                                             <p className={styles.screen__subtitle}>
-                                                { dataRef.current?.primaryTypeDisplayName }
+                                                {dataRef.current?.primaryTypeDisplayName}
                                             </p>
                                             <p className={styles.screen__subtitle}>
-                                                { dataRef.current?.formattedAddress }
+                                                {dataRef.current?.formattedAddress}
                                             </p>
                                         </div>
 

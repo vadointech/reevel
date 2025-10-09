@@ -121,7 +121,7 @@ export default async function(request: NextRequest) {
                 name: AuthJwtTokens.RefreshToken,
                 ...authCookiesParams,
             });
-
+            
             return response;
         }
     }

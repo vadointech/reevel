@@ -3,10 +3,10 @@
 import { useCallback, useEffect, useRef } from "react";
 import { observer } from "mobx-react-lite";
 
-import { useOnboardingFormContext } from "@/features/onboarding";
 
 import { CircularCarousel, Carousel } from "@/components/shared/circular-carousel";
 import { ActiveScale } from "@/components/shared/circular-carousel/plugins";
+import { useEditProfileFormContext } from "@/features/profile/update";
 
 import { Avatar } from "@/components/ui";
 
@@ -25,7 +25,7 @@ export namespace OnboardingAvatarPickerCarousel {
 export const OnboardingAvatarPickerCarousel = observer(({
     defaultAvatars,
 }: OnboardingAvatarPickerCarousel.Props) => {
-    const form = useOnboardingFormContext();
+    const form = useEditProfileFormContext();
     const controller = useRef<Carousel | null>(null);
 
     const _forceRerender = form.store.version;
@@ -45,7 +45,7 @@ export const OnboardingAvatarPickerCarousel = observer(({
     const handleSlideChange = useCallback((carousel: Carousel) => {
         const snapIndex = carousel.api.selectedScrollSnap();
         if(!snapIndex || snapIndex < 0 || snapIndex >= avatars.length) return;
-        form.setValue("picture", avatars[snapIndex]);
+        form.setValue("avatar", avatars[snapIndex]);
     }, []);
 
 
@@ -66,7 +66,7 @@ export const OnboardingAvatarPickerCarousel = observer(({
     useEffect(() => {
         return () => {
             form.store.setPictureToSelect(
-                form.getValues("picture"),
+                form.getValues("avatar"),
             );
         };
     }, []);

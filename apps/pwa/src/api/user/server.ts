@@ -5,6 +5,7 @@ import { getAccessToken } from "@/api/server";
 import * as GetSession from "./session";
 import * as GetCurrentUserProfile from "./profile";
 import * as GetCurrentUserInterests from "./interests";
+import * as GetCurrentUserEvents from "./events";
 import { logout } from "@/api/auth/server";
 
 export async function getSession() {
@@ -17,7 +18,7 @@ export async function getSession() {
         },
     });
 
-    if(response.data === null) {
+    if (response.data === null) {
         await logout();
         return null;
     }
@@ -50,4 +51,18 @@ export async function getCurrentUserInterests() {
     });
 
     return response.data.map(item => item.interest);
+}
+
+export async function getCurrentUserEvents() {
+    const accessToken = await getAccessToken();
+
+    const response = await GetCurrentUserEvents.getCurrentUserEvents({
+        authorization: {
+            method: "Bearer",
+            token: accessToken,
+        },
+        fallback: [],
+    });
+
+    return response.data;
 }
