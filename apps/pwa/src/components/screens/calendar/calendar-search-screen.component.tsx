@@ -7,7 +7,7 @@ import {
     SearchScreenSearchBar,
 } from "@/components/screens/search";
 import { Section } from "@/components/sections";
-import { EventListItemCard, OptionsList } from "@/components/ui";
+import { EventListItemCard, OptionsList, Placeholder } from "@/components/ui";
 import Link from "next/link";
 import { EventEntity } from "@/entities/event";
 import { useCalendarContext } from "@/features/calendar";
@@ -15,6 +15,7 @@ import { observer } from "mobx-react-lite";
 import { AnimatePresence } from "motion/react";
 import { useMotionRef } from "@/lib/motion";
 import { useCalendarEventsSearch } from "@/features/calendar/hooks";
+import { IconSearchCross } from "@/components/icons";
 
 export namespace CalendarSearchScreen {
     export type RecommendationListProps = {
@@ -155,7 +156,13 @@ const SearchResultsList = observer(() => {
                         <Section title={"Upcoming"}>
                             <OptionsList>
                                 {
-                                    calendar.store.searchResults?.map(event => (
+                                    calendar.store.searchResults?.length === 0 ? (
+                                        <Placeholder
+                                            title={"No results found"}
+                                            icon={<IconSearchCross />}
+                                            description={"Try a different keyword"}
+                                        />
+                                    ) : calendar.store.searchResults?.map(event => (
                                         <Link
                                             key={event.id}
                                             href={"/calendar/event/" + event.id}

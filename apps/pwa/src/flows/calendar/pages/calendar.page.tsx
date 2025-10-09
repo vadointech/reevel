@@ -1,11 +1,13 @@
-import { IconMap, IconSearch } from "@/components/icons";
+import { IconCalendarCross, IconMap, IconSearch } from "@/components/icons";
 
-import { Avatar, EventCard, InterestButton, OptionsList } from "@/components/ui";
+import { Avatar, Button, EventCard, InterestButton, OptionsList, Placeholder } from "@/components/ui";
 import { Link } from "@/i18n/routing";
 
 import { ScrollSection } from "@/components/sections";
 import { TabsBody, TabsRoot } from "@/components/shared/tabs";
 import { EventListItemCard } from "@/components/ui";
+import { getSession } from "@/api/user/server";
+import { CreateEventDrawer } from "@/components/drawers/create-event";
 
 import { getUserCalendarEvents } from "@/api/calendar/server";
 
@@ -13,7 +15,6 @@ import { format, startOfToday, endOfToday } from "date-fns";
 import { EventParticipationType } from "@/entities/event";
 
 import styles from "../styles/calendar-page.module.scss";
-import { getSession } from "@/api/user/server";
 
 export namespace CalendarPage {
     export type Props = never;
@@ -21,6 +22,8 @@ export namespace CalendarPage {
 
 export async function CalendarPage() {
     const session = await getSession();
+
+    const today = format(new Date(), "d MMM");
 
     const todayEvents = await getUserCalendarEvents({
         startDate: format(startOfToday(), "yyyy-MM-dd"),
@@ -47,7 +50,23 @@ export async function CalendarPage() {
             value: (
                 <OptionsList>
                     {
-                        upcomingEvents.events.slice(0, 3).map(event => (
+                        upcomingEvents.events.length === 0 ? (
+                            <Placeholder
+                                size={"small"}
+                                icon={<IconCalendarCross />}
+                                title={"No upcoming events"}
+                                description={"Create one and plan ahead"}
+                            >
+                                <Button
+                                    size={"xsmall"}
+                                    href={"/discover"}
+                                    variant={"secondary-muted"}
+                                    className={styles.no__cta}
+                                >
+                                    Discover events
+                                </Button>
+                            </Placeholder>
+                        ) : upcomingEvents.events.map(event => (
                             <Link
                                 key={event.id}
                                 href={"/calendar/event/" + event.id}
@@ -65,7 +84,23 @@ export async function CalendarPage() {
             value: (
                 <OptionsList>
                     {
-                        hostingEvents.events.map(event => (
+                        hostingEvents.events.length === 0 ? (
+                            <Placeholder
+                                size={"small"}
+                                icon={<IconCalendarCross />}
+                                title={"You’re not hosting anything"}
+                                description={"Create an event and invite others"}
+                            >
+                                <CreateEventDrawer>
+                                    <Button
+                                        size={"xsmall"}
+                                        variant={"secondary-muted"}
+                                    >
+                                        New Event
+                                    </Button>
+                                </CreateEventDrawer>
+                            </Placeholder>
+                        ) : hostingEvents.events.map(event => (
                             <Link
                                 key={event.id}
                                 href={"/calendar/event/" + event.id}
@@ -83,7 +118,23 @@ export async function CalendarPage() {
             value: (
                 <OptionsList>
                     {
-                        attendingEvents.events.map(event => (
+                        attendingEvents.events.length === 0 ? (
+                            <Placeholder
+                                size={"small"}
+                                icon={<IconCalendarCross />}
+                                title={"You’re not attending any events"}
+                                description={"Find something that interests you and join in!"}
+                            >
+                                <Button
+                                    size={"xsmall"}
+                                    href={"/discover"}
+                                    variant={"secondary-muted"}
+                                    className={styles.no__cta}
+                                >
+                                    Discover events
+                                </Button>
+                            </Placeholder>
+                        ) : attendingEvents.events.map(event => (
                             <Link
                                 key={event.id}
                                 href={"/calendar/event/" + event.id}
@@ -107,7 +158,7 @@ export async function CalendarPage() {
                     <Avatar image={session?.profile?.picture} />
                 </Link>
                 <h2 className={styles.header__title}>
-                    Today, 7 Sep
+                    Today, { today }
                 </h2>
                 <div className={styles.header__controls}>
                     <Link href={"/calendar/map"}>
@@ -121,7 +172,23 @@ export async function CalendarPage() {
                 className={styles.page__gap}
             >
                 {
-                    todayEvents.events.map(event => (
+                    todayEvents.events.length === 0 ? (
+                        <Placeholder
+                            icon={<IconCalendarCross />}
+                            title={"You’re free today"}
+                            description={"Add a new event to your calendar"}
+                            className={styles.placeholder}
+                        >
+                            <CreateEventDrawer>
+                                <Button
+                                    size={"xsmall"}
+                                    variant={"secondary-muted"}
+                                >
+                                    New Event
+                                </Button>
+                            </CreateEventDrawer>
+                        </Placeholder>
+                    ) : todayEvents.events.map(event => (
                         <Link
                             key={event.id}
                             href={"/calendar/event/" + event.id}

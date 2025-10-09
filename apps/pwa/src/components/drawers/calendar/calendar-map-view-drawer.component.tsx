@@ -13,8 +13,8 @@ import {
 } from "@/components/shared/bottom-sheet";
 
 import { Carousel } from "@/components/shared/carousel";
-import { EventListItemCard, Header, InterestButton, OptionsList } from "@/components/ui";
-import { IconArrowLeft, IconSearch } from "@/components/icons";
+import { Button, EventListItemCard, Header, InterestButton, OptionsList, Placeholder } from "@/components/ui";
+import { IconArrowLeft, IconCalendarCross, IconSearch } from "@/components/icons";
 
 import { EventEntity, EventParticipationType } from "@/entities/event";
 
@@ -24,6 +24,7 @@ import { useCalendarContext } from "@/features/calendar";
 
 export namespace CalendarMapViewDrawer {
     export type Data = {
+        upcomingEvents: EventEntity[];
         hostingEvents: EventEntity[];
         attendingEvents: EventEntity[];
     };
@@ -40,6 +41,7 @@ export namespace CalendarMapViewDrawer {
 
 export const CalendarMapViewDrawer = ({
     children,
+    upcomingEvents,
     hostingEvents,
     attendingEvents,
     handleSelectParticipationType,
@@ -100,7 +102,23 @@ export const CalendarMapViewDrawer = ({
                         <BottomSheetScrollable className={styles.drawer__list}>
                             <OptionsList>
                                 {
-                                    hostingEvents.map(event => (
+                                    upcomingEvents.length === 0 ? (
+                                        <Placeholder
+                                            size={"small"}
+                                            icon={<IconCalendarCross />}
+                                            title={"No upcoming events"}
+                                            description={"Create one and plan ahead"}
+                                        >
+                                            <Button
+                                                size={"xsmall"}
+                                                href={"/discover"}
+                                                variant={"secondary-muted"}
+                                                className={styles.no__cta}
+                                            >
+                                                Discover events
+                                            </Button>
+                                        </Placeholder>
+                                    ) : upcomingEvents.map(event => (
                                         <Link
                                             key={event.id}
                                             href={`/discover/event/${event.id}`}

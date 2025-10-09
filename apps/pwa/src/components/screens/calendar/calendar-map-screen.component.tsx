@@ -24,6 +24,7 @@ export const CalendarMapScreen = ({
 
     return (
         <CalendarMapViewDrawer
+            upcomingEvents={upcomingEvents}
             hostingEvents={hostingEvents}
             attendingEvents={attendingEvents}
             handleSelectParticipationType={handleSelectParticipationType}
