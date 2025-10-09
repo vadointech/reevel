@@ -43,7 +43,6 @@ yarn-error.log*
 # Build output
 *.jsx
 *.jsx.map
-*.d.ts
 
 # Misc
 .DS_Store

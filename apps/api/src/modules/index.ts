@@ -10,6 +10,7 @@ import { BookingModule } from "@/modules/booking/booking.module";
 import { PaymentModule } from "@/modules/payment/payment.module";
 import { SubscriptionModule } from "@/modules/subscription/subscription.module";
 import { CalendarModule } from "./calendar/calendar.module";
+import { ReportsModule } from "@/modules/reports/reports.module";
 
 export default [
     AuthModule.forRoot(),
@@ -17,6 +18,7 @@ export default [
     UserModule,
     ProfileModule,
     CalendarModule,
+    ReportsModule,
     InterestsModule,
     EventModule,
     BookingModule,
