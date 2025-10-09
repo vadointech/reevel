@@ -1,34 +1,31 @@
 import { useCallback, useRef } from "react";
 import { ReportType } from "@/entities/reports";
-import { BottomSheetExternalController, IBottomSheetRootController } from "@/components/shared/bottom-sheet/types";
 import { useReportFormContext } from "@/features/reports";
+import { BottomSheetControllersGroup } from "@/components/shared/bottom-sheet/group";
 
-export function useEventReportDrawer(controller?: BottomSheetExternalController) {
-    const reportDrawerController = controller ? controller : useRef<IBottomSheetRootController | null>(null);
-
-    const reportDescriptionDrawerController = useRef<IBottomSheetRootController | null>(null);
-
+export function useEventReportDrawer() {
+    const controllers = useRef<BottomSheetControllersGroup<"report" | "description">>({});
 
     const reportForm = useReportFormContext();
 
     const handleReportEvent = useCallback((type: ReportType) => {
         reportForm.setValue("type", type);
-        reportDrawerController.current?.close();
-        reportDescriptionDrawerController.current?.open();
+
+        controllers.current.report?.close();
+        controllers.current.description?.open();
     }, []);
 
     const handleCancelReport = useCallback(() => {
-        reportDescriptionDrawerController.current?.close();
-        reportDrawerController.current?.open();
+        controllers.current.description?.close();
+        controllers.current.report?.open();
     }, []);
 
     const handleSubmitReport = useCallback(() => {
-        reportDescriptionDrawerController.current?.close();
+        controllers.current.description?.close();
     }, []);
 
     return {
-        reportDrawerController,
-        reportDescriptionDrawerController,
+        controllers,
 
         handleReportEvent,
         handleCancelReport,

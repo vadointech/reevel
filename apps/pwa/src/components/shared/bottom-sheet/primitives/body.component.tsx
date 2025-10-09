@@ -11,11 +11,10 @@ import {
 } from "../config/transition.config";
 
 import { BottomSheetOverlay } from "./overlay.component";
-
+import { BottomSheetDisplayMode } from "../types";
 
 import styles from "../styles.module.scss";
 import cx from "classnames";
-import { BottomSheetDisplayMode } from "@/components/shared/bottom-sheet/types";
 
 export namespace BottomSheetBody {
     export type Props = HTMLMotionProps<"div"> & {
@@ -34,7 +33,7 @@ export const BottomSheetBody = ({
     const [ready, setReady] = useState(false);
 
     const containerRef = useCallback((element: HTMLElement | null) => {
-        controller.current.attach(element);
+        controller.attach(element);
         setReady(true);
     }, [controller]);
 
@@ -61,29 +60,29 @@ export const BottomSheetBody = ({
 
     useEffect(() => {
         if(ready && store.open) {
-            controller.current.open();
+            controller.open();
         }
     }, [ready]);
 
     const [bottomSheetRef] = useOutsideEvent<HTMLDivElement>(
         ["pointerdown"], {
-            activate: controller.current.internalConfig.dismissible,
+            activate: controller.internalConfig.dismissible,
             handleEvent: () => {
-                controller.current.close();
+                controller.close();
             },
         },
     );
 
-    const isStandalone = controller.current.internalConfig.displayMode === BottomSheetDisplayMode.Standalone;
+    const isStandalone = controller.internalConfig.displayMode === BottomSheetDisplayMode.Standalone;
 
     return (
         <>
             {
-                controller.current.internalConfig.overlay && (
+                controller.internalConfig.overlay && (
                     <BottomSheetOverlay
                         dragYProgress={dragYProgress}
-                        zIndex={controller.current.internalConfig.zIndex - 1}
-                        threshold={controller.current.internalConfig.fadeThreshold}
+                        zIndex={controller.internalConfig.zIndex - 1}
+                        threshold={controller.internalConfig.fadeThreshold}
                     />
                 )
             }
@@ -93,21 +92,21 @@ export const BottomSheetBody = ({
                     y: dragY,
                     height: "100%",
                     touchAction: "none",
-                    zIndex: controller.current.internalConfig.zIndex,
-                    paddingBottom: controller.current.dragConstraints.top,
+                    zIndex: controller.internalConfig.zIndex,
+                    paddingBottom: controller.dragConstraints.top,
                 }}
                 dragListener={false}
                 ref={bottomSheetRef}
-                dragControls={controller.current.dragControls}
+                dragControls={controller.dragControls}
                 transition={generateBottomSheetTransitionParams(0)}
-                initial={{ y: controller.current.internalConfig.clientHeight }}
-                exit={{ y: controller.current.internalConfig.clientHeight }}
-                animate={controller.current.animationControls}
+                initial={{ y: controller.internalConfig.clientHeight }}
+                exit={{ y: controller.internalConfig.clientHeight }}
+                animate={controller.animationControls}
                 dragDirectionLock
-                dragConstraints={controller.current.dragConstraints}
+                dragConstraints={controller.dragConstraints}
                 dragElastic={{
                     top: .07,
-                    bottom: controller.current.internalConfig.snapPointsCount === 1 ? .2 : .07,
+                    bottom: controller.internalConfig.snapPointsCount === 1 ? .2 : .07,
                 }}
                 onDragEnd={handleDragEnd}
                 onAnimationComplete={handleAnimationComplete}
@@ -125,8 +124,8 @@ export const BottomSheetBody = ({
                         className,
                     )}
                     onPointerDown={(event) => {
-                        if(controller.current.internalConfig.dragListener) {
-                            controller.current.dragControls.start(event);
+                        if(controller.internalConfig.dragListener) {
+                            controller.dragControls.start(event);
                         }
                         event.stopPropagation();
                     }}

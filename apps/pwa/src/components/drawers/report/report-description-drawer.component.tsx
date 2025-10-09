@@ -5,7 +5,6 @@ import {
     BottomSheetRoot,
 } from "@/components/shared/bottom-sheet";
 import { Button, ButtonsBlock, FormField, Header, Input } from "@/components/ui";
-import { BottomSheetExternalController } from "@/components/shared/bottom-sheet/types";
 import { Section } from "@/components/sections";
 import { IconArrowLeft } from "@/components/icons";
 import { ReactNode } from "react";
@@ -24,7 +23,7 @@ export namespace ReportDescriptionDrawer {
     };
 
     export type Props = {
-        controller?: BottomSheetExternalController;
+        id?: string;
         onCancel?: () => void;
         onSubmit?: () => void;
         children?: ReactNode;
@@ -32,16 +31,16 @@ export namespace ReportDescriptionDrawer {
 }
 
 export const ReportDescriptionDrawer = ({
-    controller,
+    id,
     onCancel,
     onSubmit,
 }: ReportDescriptionDrawer.Props) => {
     return (
         <BottomSheetRoot
+            id={id}
             snapPoints={["fit-content"]}
             fadeThreshold={0}
-            zIndex={40}
-            externalController={controller}
+            zIndex={30}
         >
             <BottomSheetPortal>
                 <BottomSheetBody>

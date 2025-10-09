@@ -18,8 +18,8 @@ export const BottomSheetHandle = ({
 }: BottomSheetHandle.Props) => {
     const { controller } = useBottomSheet();
     const handlePointerDown = (event: PointerEvent<HTMLDivElement>) => {
-        if(controller.current.internalConfig.handleOnly) {
-            controller.current.dragControls.start(event);
+        if(controller.internalConfig.handleOnly) {
+            controller.dragControls.start(event);
         }
         onPointerDown?.(event);
     };

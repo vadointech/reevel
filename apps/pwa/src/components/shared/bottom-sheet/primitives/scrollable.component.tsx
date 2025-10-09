@@ -49,7 +49,7 @@ export const BottomSheetScrollable = ({
     const handlePointerDown = (event: PointerEvent<HTMLDivElement>) => {
         if(isScrollable.current) {
             if(store.activeSnapPoint !== 0) {
-                controller.current.dragControls.start(event);
+                controller.dragControls.start(event);
             }
             event.stopPropagation();
         }

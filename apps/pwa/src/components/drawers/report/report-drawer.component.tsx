@@ -13,10 +13,12 @@ import { useEventReportDrawer } from "@/features/event/hooks";
 import { ReportType } from "@/entities/reports";
 import { ReportDescriptionDrawer } from "@/components/drawers/report/report-description-drawer.component";
 import { ReportFormProvider } from "@/features/reports";
+import { BottomSheetGroupProvider } from "@/components/shared/bottom-sheet/group";
 import { EventReportMessages } from "@/features/reports/config/event-report.config";
 
-import styles from "./styles.module.scss";
 import { BottomSheetExternalController } from "@/components/shared/bottom-sheet/types";
+
+import styles from "./styles.module.scss";
 
 export namespace ReportDrawer {
     export type FormProps = BottomSheetTrigger.Props & {
@@ -51,28 +53,30 @@ const ReportForm = ({
     ...props
 }: ReportDrawer.FormProps) => {
     const {
-        reportDrawerController,
-        reportDescriptionDrawerController,
+        controllers,
 
         handleReportEvent,
         handleCancelReport,
         handleSubmitReport,
-    } = useEventReportDrawer(controller);
+    } = useEventReportDrawer();
 
     return (
-        <>
+        <BottomSheetGroupProvider
+            controllers={controllers}
+        >
             <ReportDescriptionDrawer
-                controller={reportDescriptionDrawerController}
+                id={"description"}
                 onCancel={handleCancelReport}
                 onSubmit={handleSubmitReport}
             >
             </ReportDescriptionDrawer>
             <BottomSheetRoot
+                id={"report"}
                 overlay={overlay}
-                externalController={reportDrawerController}
+                externalController={controller}
                 snapPoints={["fit-content"]}
                 fadeThreshold={0}
-                zIndex={40}
+                zIndex={20}
             >
                 {
                     typeof controller === "undefined" && (
@@ -107,6 +111,6 @@ const ReportForm = ({
                     </BottomSheetBody>
                 </BottomSheetPortal>
             </BottomSheetRoot>
-        </>
+        </BottomSheetGroupProvider>
     );
 };
