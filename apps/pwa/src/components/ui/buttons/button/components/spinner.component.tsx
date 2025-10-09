@@ -1,4 +1,5 @@
 import styles from "../styles/spinner.module.scss";
+import buttonStyles from "../styles/button.module.scss";
 import cx from "classnames";
 
 export namespace Spinner {
@@ -14,6 +15,7 @@ export const Spinner = ({
         <span
             className={cx(
                 styles.wrapper,
+                buttonStyles["button__icon-before"],
                 loading && styles.wrapper_visible,
             )}
         >

@@ -47,14 +47,28 @@ export const Button = ({
     const buttonContent = (
         <>
             <Spinner loading={loading} />
-            { iconBefore }
+            {
+                (iconBefore && !loading) ? (
+                    <div className={styles["button__icon-before"]}>
+                        { iconBefore }
+                    </div>
+                ) : null
+            }
             <span>
                 { children }
             </span>
-            {iconAfter}
+
+            {
+                iconAfter ? (
+                    <div className={styles["button__icon-after"]}>
+                        { iconAfter }
+                    </div>
+                ) : null
+            }
+
             {
                 arrowAfter ? (
-                    <div className={styles["button__arrow-after"]}>
+                    <div className={cx(styles["button__icon-after"], styles["button__arrow-after"])}>
                         { arrowAfter }
                     </div>
                 ) : null
