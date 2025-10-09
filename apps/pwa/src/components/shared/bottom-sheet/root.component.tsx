@@ -39,7 +39,6 @@ export const BottomSheetRoot = ({
         rootConfig,
         store,
         animationControls,
-        group?.store,
     );
 
     useEffect(() => {
