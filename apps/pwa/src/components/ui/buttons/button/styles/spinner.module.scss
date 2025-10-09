@@ -1,6 +1,8 @@
 @use "@/theme/mixins";
 @use "@/theme/motions";
 
+$spinner-width: 20;
+
 .wrapper {
     display: inline-block;
     width: 0;
@@ -12,15 +14,16 @@
             opacity motions.$motion-duration-mid motions.$motion-ease-in-out;
 
     &_visible {
-        width: mixins.rem(20);
+        width: mixins.rem($spinner-width + 8); // + 8px margin
         opacity: 1;
     }
 }
 
 .spinner {
     display: inline-block;
-    width: mixins.rem(20);
-    height: mixins.rem(20);
+    float: left;
+    width: mixins.rem($spinner-width);
+    height: mixins.rem($spinner-width);
     border-radius: 9999px;
     border: mixins.rem(2) solid currentColor;
     border-left-color: transparent;
