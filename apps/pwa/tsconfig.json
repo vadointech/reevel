@@ -1,25 +1,20 @@
 {
   "extends": "../../tsconfig.json",
   "compilerOptions": {
+    "baseUrl": "./",
     "allowJs": true,
     "noEmit": true,
     "jsx": "preserve",
     "moduleResolution": "node",
+    "composite": false,
     "plugins": [
-      {
-        "name": "next"
-      }
+      { "name": "next" }
     ],
-    "paths": {
-      "@/*": [
-        "./src/*"
-      ]
-    }
   },
   "include": [
-    "**/*.ts",
-    "**/*.tsx",
-    "next-env.d.ts",
-    ".next/types/**/*.ts"
+      "**/*.ts",
+      "**/*.tsx",
+      "next-env.d.ts",
+      ".next/types/**/*.ts"
   ]
 }

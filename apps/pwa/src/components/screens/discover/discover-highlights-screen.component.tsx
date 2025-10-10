@@ -23,7 +23,7 @@ export const DiscoverHighlightsScreen = ({
         handleEventSlideChange,
     } = useDiscoverDrawerMap({
         collection,
-        eventsInit: events,
+        eventsInit: [],
         queryBuilder: GetCityHighlightsQueryBuilder,
     });
 

@@ -60,3 +60,18 @@ export type EventCollectionEntity = {
     events: EventEntity[];
     interests: InterestEntity[];
 };
+
+export type EventPointEntity = {
+    id: string;
+    type: "Feature";
+    geometry: {
+        type: "Point";
+        coordinates: [number, number];
+    };
+    properties: {
+        id: string;
+        label: string;
+        imageUrl: string;
+        primaryColor: string | undefined;
+    };
+};

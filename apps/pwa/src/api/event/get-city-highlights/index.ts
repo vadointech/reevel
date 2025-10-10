@@ -1,11 +1,19 @@
 import { fetcherClient } from "@/api/client";
 import { EventEntity } from "@/entities/event";
-import { GetNearbyEvents } from "@/api/event";
 
 export namespace GetEventCityHighlightsCollection {
-    export type TInput = GetNearbyEvents.TInput;
+    export type TInput = {
+        circle: {
+            center: {
+                longitude: number;
+                latitude: number;
+            };
+            radius: number;
+        }
+        take?: number;
+        interests?: string[]
+    };
     export type TOutput = EventEntity[];
-    export const queryKey = ["events/collections/highlights"];
 }
 
 export const getEventCityHighlightsCollection = fetcherClient.fetch<GetEventCityHighlightsCollection.TInput, GetEventCityHighlightsCollection.TOutput>({

@@ -1,0 +1,19 @@
+{
+  "name": "@repo/spatial-grid",
+  "version": "1.0.0",
+  "private": true,
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "scripts": {
+    "build": "tsc",
+    "dev": "tsc --watch"
+  },
+  "dependencies": {
+    "ngeohash": "^0.6.3",
+    "@repo/geo": "workspace:*"
+  },
+  "devDependencies": {
+    "@types/ngeohash": "^0.6.8",
+    "typescript": "^5.0.0"
+  }
+}

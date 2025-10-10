@@ -1,10 +1,5 @@
 import { DiscoverCollectionScreen } from "@/components/screens/discover";
-import { extractUniqueInterests } from "@/features/discover/utils";
-import { GetNearbyEventsQueryBuilder } from "@/features/discover/queries";
-import { getUserMapInternalConfig } from "@/components/shared/map/utils";
-import { MapRootProvider } from "@/components/shared/map/map.provider";
 import { DiscoverStaticCollections } from "@/features/discover/config";
-import { seedEventUsers } from "@/features/event/utils";
 
 export namespace DiscoverCollectionPage {
     export type Props = {
@@ -13,35 +8,13 @@ export namespace DiscoverCollectionPage {
 }
 
 export async function DiscoverCollectionPage({ collectionId }: DiscoverCollectionPage.Props) {
-    const mapConfig = await getUserMapInternalConfig();
-    const mapProvider = new MapRootProvider(mapConfig);
-
-    const { bounds, center } = mapProvider.internalConfig.viewState;
-    const radius = mapProvider.getHorizontalRadius(bounds, center);
-
-    let events = await GetNearbyEventsQueryBuilder.queryFunc({
-        center,
-        radius,
-        filter: collectionId,
-    });
-    events = seedEventUsers(events);
-
-    const interests = extractUniqueInterests(events);
-
-    let interestTitle = "Discover Interest";
-
-    const collectionInterest = interests.find(item => item.slug = collectionId);
-    if(collectionInterest) {
-        interestTitle = `Discover ${collectionInterest.title_uk}`;
-    }
-
     return (
         <DiscoverCollectionScreen
-            events={events}
-            interests={interests}
+            events={[]}
+            interests={[]}
             collection={DiscoverStaticCollections.Root + `/${collectionId}`}
         >
-            { interestTitle }
+            Discover
         </DiscoverCollectionScreen>
     );
 }

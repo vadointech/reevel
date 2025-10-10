@@ -1,7 +1,6 @@
 import { MapProviderGL } from "@/components/shared/map/types";
 import { EventEntity } from "@/entities/event";
 import { QueryBuilderQuery } from "@/lib/react-query";
-import { GetRandomizedEvents } from "@/api/event";
 import { getRandomizedEvents } from "@/api/event/server";
 
 export namespace GetRandomizedEventsQueryBuilder {
@@ -38,5 +37,5 @@ GetRandomizedEventsQueryBuilder.queryFunc = (input) => {
 };
 
 GetRandomizedEventsQueryBuilder.queryKey = (params = []) => {
-    return [...GetRandomizedEvents.queryKey, ...params];
+    return ["events/collections/randomized/", ...params];
 };

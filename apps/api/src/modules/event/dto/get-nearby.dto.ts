@@ -1,46 +1,23 @@
 import { Type } from "class-transformer";
 import {
-    IsArray,
-    IsLatitude,
-    IsLongitude,
-    IsNotEmptyObject,
-    IsNumber,
+    IsNotEmpty,
     IsOptional,
+    IsString,
     Min,
-    ValidateNested,
+    Max,
 } from "class-validator";
 
-class CenterPointDto {
-    @IsLongitude()
-    longitude: number;
-
-    @IsLatitude()
-    latitude: number;
-}
-
-class CircleDto {
-    @ValidateNested()
-    @Type(() => CenterPointDto)
-    @IsNotEmptyObject()
-    center: CenterPointDto;
-
-    @IsNumber()
-    @Min(1)
-    radius: number;
-}
-
 export class GetNearbyEventsDto {
-    @ValidateNested()
-    @Type(() => CircleDto)
-    @IsNotEmptyObject()
-    circle: CircleDto;
+    @IsString()
+    @IsNotEmpty()
+    tileId: string;
 
-    @IsNumber()
-    @IsOptional()
-    @Min(1)
-    take?: number;
+    @Type(() => Number)
+    @Min(9)
+    @Max(18)
+    zoom: number;
 
-    @IsArray()
+    @IsString()
     @IsOptional()
-    interests?: string[];
+    filter?: string;
 }

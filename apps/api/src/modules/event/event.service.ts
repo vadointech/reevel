@@ -10,7 +10,7 @@ import { EventInterestsRepository } from "./repositories/event-interests.reposit
 import { EventTicketsRepository } from "@/modules/event/repositories/event-tickets.repository";
 import { SubscriptionRegistry } from "@/modules/subscription/registry/subscription.registry";
 
-import { EventsEntity } from "./entities/events.entity";
+import { EventsEntity, EventVisibility } from "./entities/events.entity";
 
 import { CreateEventDto } from "./dto/create-event.dto";
 import { UpdateEventDto } from "./dto/update-event.dto";
@@ -19,11 +19,16 @@ import { ISessionUser, ServerSession } from "@/types";
 import { SupportedFileCollections } from "@/modules/uploads/entities/uploads.entity";
 import { GetNearbyEventsDto } from "@/modules/event/dto/get-nearby.dto";
 import { getEventParticipationType } from "@/modules/event/utils";
-import { GetEventResponseDto } from "@/modules/event/dto";
+import { EventPointResponseDto, GetEventResponseDto } from "@/modules/event/dto";
+
+import { SpatialGrid } from "@repo/spatial-grid";
+
+import * as geohash from "ngeohash";
 
 @Injectable()
 export class EventService {
     private logger = new Logger(EventService.name);
+    private readonly spatialGrid = new SpatialGrid();
 
     constructor(
         private readonly uploadService: UploadsService,
@@ -193,55 +198,49 @@ export class EventService {
         });
     }
 
-    async getNearbyEvents(input: GetNearbyEventsDto): Promise<EventsEntity[]> {
-        const { center, radius } = input.circle;
-        const limit = input.take || 10;
-        const interestsFilter = input.interests; // Отримуємо масив інтересів
+    async getNearbyEvents(input: GetNearbyEventsDto): Promise<EventPointResponseDto[]> {
+        const {
+            tileId,
+            zoom,
+            filter,
+        } = input;
 
-        // --- Крок 1: Отримати ID подій з урахуванням фільтрів ---
-        const eventIdsQueryBuilder = this.eventRepository.queryBuilder("event")
-        // --- ВИПРАВЛЕНО ТУТ ---
-            .select("event.id", "id") // Явно вказуємо псевдонім "id"
-            .where("ST_DWithin(event.locationPoint, ST_SetSRID(ST_MakePoint(:lon, :lat), 4326)::geography, :radius)")
-            .orderBy("\"event\".\"startDate\"", "DESC");
-            // .andWhere("\"event\".\"startDate\" > NOW()")
-            // .andWhere("\"event\".\"visibility\" = 'PUBLIC'");
+        const config = this.spatialGrid.getBreakpointForZoom(zoom);
+        const neighborHashes = geohash.neighbors(tileId);
+        const allHashes = [tileId, ...neighborHashes];
 
-        if (interestsFilter && interestsFilter.length > 0) {
-            eventIdsQueryBuilder
-                .innerJoin("event.interests", "interestLink")
-                .andWhere("interestLink.interestId IN (:...interests)", { interests: interestsFilter });
-        }
-
-        // Встановлюємо всі параметри в кінці, щоб уникнути перезаписування
-        eventIdsQueryBuilder.setParameters({
-            lon: center.longitude,
-            lat: center.latitude,
-            radius: radius,
-            interests: interestsFilter, // TypeORM проігнорує цей параметр, якщо він не використовується в запиті
+        const whereClauses = allHashes.map((hash) => {
+            const bbox = geohash.decode_bbox(hash); // [minlat, minlon, maxlat, maxlon]
+            return `ST_Intersects(event.locationPoint, ST_MakeEnvelope(${bbox[1]}, ${bbox[0]}, ${bbox[3]}, ${bbox[2]}, 4326))`;
         });
 
-        // ВИПРАВЛЕНО: Використовуємо getRawMany для ефективності
-        const eventIdsResult = await eventIdsQueryBuilder
-            .limit(limit)
-            .getRawMany<{ id: string }>();
 
-        const eventIds = eventIdsResult.map(e => e.id);
-        if (eventIds.length === 0) {
-            return [];
+        const queryBuilder =
+            this.eventRepository.queryBuilder("event")
+                .select([
+                    "event.id",
+                    "event.title",
+                    "event.poster",
+                    "event.primaryColor",
+                    "event.visibility",
+                    "event.locationPoint",
+                ])
+                .where(`(${whereClauses.join(" OR ")})`)
+                .andWhere("event.visibility = :visibility", { visibility: EventVisibility.PUBLIC });
+        // .andWhere("event.startDate > :now", { now: new Date() })
+
+        if(filter) {
+            queryBuilder
+                .innerJoin("event.interests", "interestLink")
+                .andWhere("interestLink.interestId = :interest", { interest: filter });
         }
 
-        // --- Крок 2: Завантажити повні дані для знайдених ID ---
-        return this.eventRepository.queryBuilder("event")
-            .leftJoinAndSelect("event.hosts", "host")
-            .leftJoinAndSelect("host.user", "hostUser")
-            .leftJoinAndSelect("hostUser.profile", "userProfile")
-            .leftJoinAndSelect("event.interests", "interestLink")
-            .leftJoinAndSelect("interestLink.interest", "interestData")
-            .leftJoinAndSelect("event.tickets", "ticket")
-            .leftJoinAndSelect("ticket.user", "ticketUser")
-            .leftJoinAndSelect("ticketUser.profile", "ticketProfile")
-            .where("event.id IN (:...eventIds)", { eventIds })
-            .getMany();
+        if(config.dataLimit) {
+            queryBuilder.limit(config.dataLimit);
+        }
+
+        const events = await queryBuilder.getMany();
+
+        return events.map(item => new EventPointResponseDto(item));
     }
 }

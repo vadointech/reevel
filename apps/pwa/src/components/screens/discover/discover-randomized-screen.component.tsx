@@ -23,7 +23,7 @@ export const DiscoverRandomizedScreen = ({
         handleEventSlideChange,
     } = useDiscoverDrawerMap({
         collection,
-        eventsInit: events,
+        eventsInit: [],
         queryBuilder: GetRandomizedEventsQueryBuilder,
     });
 

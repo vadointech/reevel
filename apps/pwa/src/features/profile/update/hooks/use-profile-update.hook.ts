@@ -30,8 +30,8 @@ export function useProfileUpdate() {
 
             router.push("/profile");
         },
-        onError: (error) => {
-            console.error("Failed to update profile:", error);
+        onError: () => {
+            // console.error("Failed to update profile:", error);
         },
     });
 

@@ -1,11 +1,19 @@
 import { fetcherClient } from "@/api/client";
 import { EventEntity } from "@/entities/event";
-import { GetNearbyEvents } from "@/api/event";
 
 export namespace GetRandomizedEvents {
-    export type TInput = GetNearbyEvents.TInput;
+    export type TInput = {
+        circle: {
+            center: {
+                longitude: number;
+                latitude: number;
+            };
+            radius: number;
+        }
+        take?: number;
+        interests?: string[]
+    };
     export type TOutput = EventEntity[];
-    export const queryKey = ["events/collections/randomized"];
 }
 
 export const getRandomizedEvents = fetcherClient.fetch<GetRandomizedEvents.TInput, GetRandomizedEvents.TOutput>({

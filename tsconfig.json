@@ -13,12 +13,15 @@
     "noImplicitAny": false,
     "useUnknownInCatchVariables": false,
 
+    "composite": true,
     "declaration": true,
     "sourceMap": true,
     "incremental": true,
 
     "paths": {
       "@/*": ["./src/*"],
+      "@/repo/geo": ["./packages/geo/src"],
+      "@/repo/spatial-grid": ["./packages/spatial-grid/src"]
     },
 
     "removeComments": true,

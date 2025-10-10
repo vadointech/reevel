@@ -61,7 +61,7 @@ export async function uploadEventPoster(input: UploadEventPoster.UploadEventPost
 }
 
 
-export async function getNearbyEvents(input: GetNearbyEvents.GetNearbyEvents.TInput) {
+export async function getNearbyEvents(input: GetNearbyEvents.GetNearbyEvents.TParams) {
     const accessToken = await getAccessToken();
 
     const response = await GetNearbyEvents.getNearbyEvents({
@@ -69,7 +69,7 @@ export async function getNearbyEvents(input: GetNearbyEvents.GetNearbyEvents.TIn
             method: "Bearer",
             token: accessToken,
         },
-        body: input,
+        params: input,
         fallback: [],
     });
 

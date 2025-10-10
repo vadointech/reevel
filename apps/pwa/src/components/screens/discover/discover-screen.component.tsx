@@ -13,7 +13,6 @@ export namespace DiscoverScreen {
         interestsInit: InterestEntity[];
         collectionsInit: InterestEntity[];
         cityHighlights: EventEntity[];
-        eventsInit: EventEntity[];
     };
     export type Props = Data & {
         collection: DiscoverStaticCollections;
@@ -21,7 +20,6 @@ export namespace DiscoverScreen {
 }
 
 export const DiscoverScreen = ({
-    eventsInit,
     interestsInit,
     collectionsInit,
     cityHighlights,
@@ -32,7 +30,7 @@ export const DiscoverScreen = ({
         handleEventInterestPick,
     } = useDiscoverDrawerMap({
         collection,
-        eventsInit: eventsInit,
+        eventsInit: [],
         queryBuilder: GetNearbyEventsQueryBuilder,
     });
 

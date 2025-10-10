@@ -1,10 +1,10 @@
 import {
     Body,
     Controller,
-    Delete, Get, HttpCode, HttpStatus,
+    Delete, Get,
     Param,
     Patch,
-    Post,
+    Post, Query,
     Req,
     UseInterceptors,
 } from "@nestjs/common";
@@ -15,7 +15,7 @@ import { FileUploadInterceptor } from "@/modules/uploads/uploads.interceptor";
 import { UpdateEventDto } from "@/modules/event/dto/update-event.dto";
 import { GetNearbyEventsDto } from "@/modules/event/dto/get-nearby.dto";
 import { ISessionUser, ServerSession } from "@/types";
-import { GetEventResponseDto } from "@/modules/event/dto";
+import { EventPointResponseDto, GetEventResponseDto } from "@/modules/event/dto";
 
 @Controller("events")
 export class EventController {
@@ -58,14 +58,13 @@ export class EventController {
         return this.eventService.deleteEvent(session, eventId);
     }
 
-    @Post("nearby")
-    @HttpCode(HttpStatus.OK)
+    @Public()
+    @Get("nearby")
     async getNearbyEvents(
-        @Body() body: GetNearbyEventsDto,
-    ) {
-        return this.eventService.getNearbyEvents(body);
+        @Query() params: GetNearbyEventsDto,
+    ): Promise<EventPointResponseDto[]> {
+        return this.eventService.getNearbyEvents(params);
     }
-
 
     @Get()
     getEvents(

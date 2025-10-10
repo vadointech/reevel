@@ -1,6 +1,5 @@
 import { EventEntity } from "@/entities/event";
 import { QueryBuilderQuery } from "@/lib/react-query";
-import { GetEventCityHighlightsCollection } from "@/api/event";
 import { MapProviderGL } from "@/components/shared/map/types";
 import { getEventCityHighlightsCollection } from "@/api/event/server";
 
@@ -38,5 +37,5 @@ GetCityHighlightsQueryBuilder.queryFunc = (input) => {
 };
 
 GetCityHighlightsQueryBuilder.queryKey = (params = []) => {
-    return [...GetEventCityHighlightsCollection.queryKey, ...params];
+    return ["events/collections/highlights/", ...params];
 };

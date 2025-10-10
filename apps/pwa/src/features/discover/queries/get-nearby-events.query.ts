@@ -1,42 +1,36 @@
 import { QueryBuilderQuery } from "@/lib/react-query";
-import { MapProviderGL } from "@/components/shared/map/types";
-import { EventEntity } from "@/entities/event";
-import { GetNearbyEvents } from "@/api/event";
-import { getNearbyEvents } from "@/api/event/server";
+import { EventPointEntity } from "@/entities/event";
+import { getNearbyEvents } from "@/api/event";
 
 export namespace GetNearbyEventsQueryBuilder {
     export type TInput = {
-        center: MapProviderGL.LngLat,
-        radius: number,
-        regionId?: string,
-        filter?: string,
+        tileId: string;
+        zoom: number;
+        filter?: string;
     };
-    export type TOutput = EventEntity[];
+    export type TOutput = EventPointEntity[];
 }
 
 export const GetNearbyEventsQueryBuilder: QueryBuilderQuery<GetNearbyEventsQueryBuilder.TInput, GetNearbyEventsQueryBuilder.TOutput> = (
     input,
 ) => {
     return {
-        queryKey: GetNearbyEventsQueryBuilder.queryKey([input.regionId]),
+        queryKey: GetNearbyEventsQueryBuilder.queryKey([input.tileId, input.zoom, input.filter]),
         queryFn: () => GetNearbyEventsQueryBuilder.queryFunc(input),
     };
 };
 
 GetNearbyEventsQueryBuilder.queryKey = (params = []) => {
-    return [...GetNearbyEvents.queryKey, ...params];
+    return ["events/nearby/", ...params];
 };
 
 GetNearbyEventsQueryBuilder.queryFunc = (input) => {
     return getNearbyEvents({
-        take: input.filter ? 20 : 10,
-        interests: input.filter ? [input.filter] : undefined,
-        circle: {
-            radius: input.radius,
-            center: {
-                longitude: input.center.lng,
-                latitude: input.center.lat,
-            },
+        params: {
+            tileId: input.tileId,
+            zoom: input.zoom,
+            filter: input.filter,
         },
-    });
+        fallback: [],
+    }).then(response => response.data);
 };

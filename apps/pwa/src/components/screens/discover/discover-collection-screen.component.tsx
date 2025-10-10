@@ -24,7 +24,7 @@ export const DiscoverCollectionScreen = ({
         handleEventSlideChange,
     } = useDiscoverDrawerMap({
         collection,
-        eventsInit: events,
+        eventsInit: [],
         queryBuilder: GetNearbyEventsQueryBuilder,
     });
 

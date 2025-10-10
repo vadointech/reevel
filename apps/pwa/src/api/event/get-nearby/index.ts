@@ -1,25 +1,18 @@
-import { EventEntity } from "@/entities/event";
+import { EventPointEntity } from "@/entities/event";
 import { fetcherClient } from "@/api/client";
 
 export namespace GetNearbyEvents {
-    export type TInput = {
-        circle: {
-            center: {
-                longitude: number;
-                latitude: number;
-            };
-            radius: number;
-        }
-        take?: number;
-        interests?: string[]
+    export type TInput = null;
+    export type TParams = {
+        tileId: string;
+        zoom: number;
+        filter?: string;
     };
-    export type TOutput = EventEntity[];
-
-    export const queryKey = ["events/nearby"];
+    export type TOutput = EventPointEntity[];
 }
 
-export const getNearbyEvents = fetcherClient.fetch<GetNearbyEvents.TInput, GetNearbyEvents.TOutput>({
+export const getNearbyEvents = fetcherClient.fetch<GetNearbyEvents.TInput, GetNearbyEvents.TOutput, GetNearbyEvents.TParams>({
     fetcherFunc: (fetcher, input) => {
-        return fetcher.post("/events/nearby", input);
+        return fetcher.get("/events/nearby", input);
     },
 });
