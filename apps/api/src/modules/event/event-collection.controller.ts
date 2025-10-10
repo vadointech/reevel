@@ -7,7 +7,7 @@ import {
 import { Session } from "@/decorators";
 import { EventCollectionService } from "@/modules/event/event-collection.service";
 import { GetNearbyEventsDto } from "@/modules/event/dto/get-nearby.dto";
-import { ServerSession } from "@/types";
+import { ISessionUser, ServerSession } from "@/types";
 
 @Controller("events/collections")
 export class EventCollectionController {
@@ -15,12 +15,11 @@ export class EventCollectionController {
         private eventCollectionService: EventCollectionService,
     ) {}
 
-    @Post("highlights")
-    @HttpCode(HttpStatus.OK)
+    @Get("highlights")
     async getCityHighlights(
-        @Body() body: GetNearbyEventsDto,
+        @Session() session: ServerSession<ISessionUser>,
     ) {
-        return this.eventCollectionService.getEventCityHighlightsCollection(body);
+        return this.eventCollectionService.getEventCityHighlightsCollection(session);
     }
 
     @Post("randomized")

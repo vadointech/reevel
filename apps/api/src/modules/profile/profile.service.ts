@@ -2,19 +2,20 @@ import { Injectable, NotFoundException } from "@nestjs/common";
 import { DataSource } from "typeorm";
 import { UpdateProfileDto } from "@/modules/profile/dto/update-profile.dto";
 import { ProfileRepository } from "@/modules/profile/repositories/profile.repository";
-import { ProfileLocationRepository } from "@/modules/profile/repositories/profile-location.repository";
 import { ServerSession } from "@/types";
 import { SupportedFileCollections } from "@/modules/uploads/entities/uploads.entity";
 import { UploadsService } from "@/modules/uploads/uploads.service";
 import { ProfileInterestsRepository } from "@/modules/profile/repositories/profile-interests.repository";
 import { ProfileEntity } from "@/modules/profile/entities/profile.entity";
+import { CitiesRepository } from "@/modules/cities/repositories";
+import { BoundingBox, LngLat } from "@repo/geo";
 
 @Injectable()
 export class ProfileService {
     constructor(
         private readonly profileRepository: ProfileRepository,
-        private readonly profileLocationsRepository: ProfileLocationRepository,
         private readonly profileInterestsRepository: ProfileInterestsRepository,
+        private readonly citiesRepository: CitiesRepository,
         private readonly uploadsService: UploadsService,
 
         private dataSource: DataSource,
@@ -33,14 +34,14 @@ export class ProfileService {
         }
 
         const {
-            locationCenter,
-            locationBbox,
             interests,
-            placeName,
+            locationId,
+            locationName,
+            locationBbox,
             ...newData
         } = input;
 
-        return this.dataSource.transaction(async (entityManager) => {
+        return this.dataSource.transaction(async(entityManager) => {
 
             for (const [key, value] of Object.entries(newData)) {
                 if (value !== undefined) {
@@ -48,27 +49,40 @@ export class ProfileService {
                 }
             }
 
-            if (locationCenter && locationBbox) {
-                if (dbProfile.location) {
-                    await this.profileLocationsRepository.delete({ id: dbProfile.location.id }, entityManager);
+            if(locationId && locationName && locationBbox) {
+                const dbCity = await this.citiesRepository.findOneBy({ mapboxId: locationId });
+
+                if(dbCity) {
+                    dbProfile.locationId = dbCity.id;
+                } else {
+                    const [swLng, swLat, neLng, neLat] = locationBbox;
+                    const bbox = new BoundingBox(
+                        new LngLat(swLng, swLat),
+                        new LngLat(neLng, neLat),
+                    );
+                    const center = bbox.getCenter();
+
+                    const city =  await this.citiesRepository.createAndSave({
+                        name: locationName,
+                        mapboxId: locationId,
+                        center: {
+                            type: "Point",
+                            coordinates: [center.lng, center.lat],
+                        },
+                        bbox: {
+                            type: "Polygon",
+                            coordinates: [[
+                                [swLng, swLat], // SW corner
+                                [swLng, neLat], // NW corner
+                                [neLng, neLat], // NE corner
+                                [neLng, swLat], // SE corner
+                                [swLng, swLat], // Back to SW to close polygon
+                            ]],
+                        },
+                    }, entityManager);
+
+                    dbProfile.locationId = city.id;
                 }
-                dbProfile.location = this.profileLocationsRepository.create({
-                    center: {
-                        type: "Point",
-                        coordinates: locationCenter,
-                    },
-                    bbox: {
-                        type: "Polygon",
-                        coordinates: [[
-                            [locationBbox[0], locationBbox[1]], // SW corner
-                            [locationBbox[0], locationBbox[3]], // NW corner
-                            [locationBbox[2], locationBbox[3]], // NE corner
-                            [locationBbox[2], locationBbox[1]], // SE corner
-                            [locationBbox[0], locationBbox[1]],  // Back to SW to close polygon
-                        ]],
-                    },
-                    placeName: placeName,
-                });
             }
 
             if (interests) {

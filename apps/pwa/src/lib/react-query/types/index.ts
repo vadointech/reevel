@@ -3,10 +3,19 @@ import { FetchQueryOptions } from "@tanstack/react-query";
 export interface IQueryBuilderMethods<TInput, TData, TInjected = null> {
     queryKey: (params?: unknown[]) => unknown[];
     queryFunc:
-    TInjected extends object
-        ? (input: TInput & TInjected) => Promise<TData>
-        : (input: TInput) => Promise<TData>;
+    TInjected extends object ?
+        TInput extends null ?
+            (input: TInjected) => Promise<TData> :
+            (input: TInput & TInjected) => Promise<TData> :
+        TInput extends null ?
+            () => Promise<TData> :
+            (input: TInput) => Promise<TData>;
 }
+
+export type QueryBuilderQueryFunc<TInput, TData> =
+  TInput extends null ?
+      () => FetchQueryOptions<TData> :
+      (input: TInput) => FetchQueryOptions<TData>;
 
 export type QueryBuilderQuery<
     TInput,

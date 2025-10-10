@@ -6,7 +6,7 @@ import { useLocationPicker } from "../location-picker.context";
 import { useLocationAccessRequest } from "@/features/location/search/hooks";
 
 import { GetNearbyPlacesQueryBuilder, SearchLocationQueryBuilder } from "../queries";
-import { GetLocationByCoordinatesQueryBuilder } from "@/features/location/search/queries";
+import { SearchCityQuery } from "@/features/cities/queries";
 
 import { placeLocationEntityMapper } from "@/entities/place/mapper";
 
@@ -162,11 +162,7 @@ export function useConfirmationDrawer(placesInit: PlaceLocationEntity[]) {
     };
 
     const { handleRequestLocationAccess } = useLocationAccessRequest({
-        queryBuilder: GetLocationByCoordinatesQueryBuilder({
-            accessToken: map.provider.current.internalConfig.accessToken,
-            types: "place",
-            language: "uk",
-        }),
+        queryBuilder: SearchCityQuery,
         onSuccess: (place) => {
             const [point] = placeLocationEntityMapper.toIconPoint([place]);
             if(!point) return;

@@ -3,7 +3,7 @@
 import { DiscoverCollectionDrawer } from "@/components/drawers/discover";
 import { EventCollectionEntity } from "@/entities/event";
 import { useDiscoverDrawerMap } from "@/features/discover/hooks";
-import { GetCityHighlightsQueryBuilder } from "@/features/discover/queries";
+import { GetCityHighlightsQuery } from "@/features/discover/queries";
 import { DiscoverStaticCollections } from "@/features/discover/config";
 
 export namespace DiscoverHighlightsScreen {
@@ -24,7 +24,7 @@ export const DiscoverHighlightsScreen = ({
     } = useDiscoverDrawerMap({
         collection,
         eventsInit: [],
-        queryBuilder: GetCityHighlightsQueryBuilder,
+        queryBuilder: GetCityHighlightsQuery,
     });
 
     return (

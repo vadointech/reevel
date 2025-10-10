@@ -11,9 +11,12 @@ import { PaymentModule } from "@/modules/payment/payment.module";
 import { SubscriptionModule } from "@/modules/subscription/subscription.module";
 import { CalendarModule } from "./calendar/calendar.module";
 import { ReportsModule } from "@/modules/reports/reports.module";
+import { CitiesModule } from "@/modules/cities/cities.module";
 
 export default [
     AuthModule.forRoot(),
+    CitiesModule,
+
     GoogleModule,
     UserModule,
     ProfileModule,

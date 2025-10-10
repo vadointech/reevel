@@ -1,9 +1,9 @@
 import { QueryClient } from "@tanstack/react-query";
 
 import { LocationSearchScreen } from "@/components/screens/location-search";
-import { GetBatchLocationByNameQueryBuilder } from "@/features/location/search/queries";
 
 import { Locale } from "@/types/common";
+import { SearchCityQuery } from "@/features/cities/queries";
 
 const cities = [
     "Вінниця", "Дніпро", "Донецьк", "Житомир", "Запоріжжя", "Івано-Франківськ",
@@ -21,18 +21,13 @@ export namespace OnboardingLocationPickerPage {
 export async function OnboardingLocationPickerPage() {
     const queryClient = new QueryClient();
 
-    const places = await queryClient.fetchQuery(
-        GetBatchLocationByNameQueryBuilder({
-            accessToken: process.env.MAPBOX_SECRET_ACCESS_TOKEN!,
-            request: cities.map(item => ({
-                q: item,
-                limit: 1,
-                types: "place",
-                country: "ua",
-                language: "uk",
-            })),
-        }),
-    );
+    const placesPromises = cities.map(item => {
+        return queryClient.fetchQuery(
+            SearchCityQuery({ q: item, limit: 1 }),
+        );
+    });
+
+    const places = await Promise.all(placesPromises).then(response => response.flat());
 
     return (
         <LocationSearchScreen initialResults={places} />

@@ -2,7 +2,7 @@ import { Injectable, Logger } from "@nestjs/common";
 import { EventRepository } from "@/modules/event/repositories/event.repository";
 import { UserRepository } from "@/modules/user/repositories/user.repository";
 import { InterestsRepository } from "@/modules/interests/repositories/interests.repository";
-import { ServerSession } from "@/types";
+import { ISessionUser, ServerSession } from "@/types";
 import { polygonToWkt } from "./utils";
 import { EventsEntity } from "@/modules/event/entities/events.entity";
 import { InterestsEntity } from "@/modules/interests/entities/interests.entity";
@@ -18,7 +18,8 @@ export class EventCollectionService {
         private readonly interestsRepository: InterestsRepository,
     ) {}
 
-    async getEventCityHighlightsCollection(input: GetNearbyEventsDto): Promise<EventsEntity[]> {
+    async getEventCityHighlightsCollection(session: ServerSession<ISessionUser>): Promise<EventsEntity[]> {
+        // console.log(session);
         // const { center, radius } = input.circle;
         // const limit = input.take || 10;
         // const interestsFilter = input.interests;

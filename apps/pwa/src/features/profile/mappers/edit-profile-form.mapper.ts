@@ -15,12 +15,9 @@ export class EditProfileFormMapper {
             picture: avatar,
         };
 
-        if (location) {
-            output.placeName = location.displayName;
-            output.locationCenter = [
-                location.location.longitude,
-                location.location.latitude,
-            ];
+        if(location) {
+            output.locationId = location.id;
+            output.locationName = location.displayName;
             output.locationBbox = location.bbox;
         }
 

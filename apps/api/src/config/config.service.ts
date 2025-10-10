@@ -26,6 +26,7 @@ const environmentVariables = [
     // Providers
     "GOOGLE_CLIENT_ID",
     "GOOGLE_CLIENT_SECRET",
+    "MAPBOX_ACCESS_TOKEN",
 
     // File uploading
     "CLOUDINARY_NAME",

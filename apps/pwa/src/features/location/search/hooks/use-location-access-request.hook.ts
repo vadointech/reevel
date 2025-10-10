@@ -8,13 +8,14 @@ interface IQueryBuilderResponse {
     id: string;
 }
 
-type IQueryBuilderInput = {
-    longitude: number;
-    latitude: number;
+type Metadata = {
+    lng: number;
+    lat: number;
+    limit?: number;
 };
 
 type ConfigParams<TData extends unknown[]> = {
-    queryBuilder: QueryBuilderQuery<IQueryBuilderInput, TData, null>;
+    queryBuilder: QueryBuilderQuery<Metadata, TData>;
     onSuccess?: (place: TData[number]) => void;
     onFailure?: () => void;
 };
@@ -32,8 +33,9 @@ export function useLocationAccessRequest<TData extends IQueryBuilderResponse[]>(
                 async({ coords }) => {
                     const place = await queryClient.fetchQuery(
                         queryBuilder({
-                            longitude: coords.longitude,
-                            latitude: coords.latitude,
+                            lng: coords.longitude,
+                            lat: coords.latitude,
+                            limit: 1,
                         }),
                     ).then(response => response[0]);
 

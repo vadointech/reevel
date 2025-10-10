@@ -1,7 +1,7 @@
-import { Column, Entity, JoinColumn, OneToMany, OneToOne, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, JoinColumn, ManyToOne, OneToMany, OneToOne, PrimaryGeneratedColumn } from "typeorm";
 import { UserEntity } from "@/modules/user/entities/user.entity";
 import { ProfileInterestsEntity } from "@/modules/profile/entities/profile-interests.entity";
-import { ProfileLocationsEntity } from "@/modules/profile/entities/profile-location.entity";
+import { CitiesEntity } from "@/modules/cities/entities/cities.entity";
 
 @Entity("profiles")
 export class ProfileEntity {
@@ -17,12 +17,14 @@ export class ProfileEntity {
     @Column({ nullable: true })
     picture?: string;
 
-    @OneToOne(() => ProfileLocationsEntity, location => location.profile, {
-        cascade: true,
+    @Column({ nullable: true })
+    locationId?: string;
+    @JoinColumn({ name: "locationId" })
+    @ManyToOne(() => CitiesEntity, city => city.profiles, {
         nullable: true,
         onDelete: "SET NULL",
     })
-    location?: ProfileLocationsEntity;
+    location?: CitiesEntity;
 
     @Column({ default: 0 })
     completed: number; // "current step" | "-1" (means profile completed)

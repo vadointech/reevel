@@ -91,7 +91,7 @@ export async function getRandomizedEvents(input: GetRandomizedEvents.GetRandomiz
     return response.data;
 }
 
-export async function getEventCityHighlightsCollection(input: GetEventCityHighlights.GetEventCityHighlightsCollection.TInput) {
+export async function getEventCityHighlightsCollection() {
     const accessToken = await getAccessToken();
 
     const response = await GetEventCityHighlights.getEventCityHighlightsCollection({
@@ -99,7 +99,6 @@ export async function getEventCityHighlightsCollection(input: GetEventCityHighli
             method: "Bearer",
             token: accessToken,
         },
-        body: input,
         fallback: [],
     });
 

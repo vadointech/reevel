@@ -14,21 +14,17 @@ export class UpdateProfileDto {
     @IsOptional()
     picture?: string;
 
-    @IsString()
-    @IsOptional()
-    placeName?: string;
-
     @IsArray()
     @IsOptional()
     interests?: string[];
 
-    @IsArray()
+    @IsString()
     @IsOptional()
-    @ArrayMinSize(2)
-    @ArrayMaxSize(2)
-    @IsNumber({}, { each: true })
-    @Type(() => Number)
-    locationCenter: [number, number];
+    locationId?: string;
+
+    @IsString()
+    @IsOptional()
+    locationName?: string;
 
     @IsArray()
     @IsOptional()

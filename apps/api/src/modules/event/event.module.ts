@@ -9,7 +9,6 @@ import { SubscriptionRegistry } from "@/modules/subscription/registry/subscripti
 import { EventTicketsRepository } from "@/modules/event/repositories/event-tickets.repository";
 import { PaymentRepository } from "@/modules/payment/repositories/payment.repository";
 import { BookingModule } from "@/modules/booking/booking.module";
-import { ProfileLocationRepository } from "@/modules/profile/repositories/profile-location.repository";
 import { UserRepository } from "@/modules/user/repositories/user.repository";
 import { InterestsRepository } from "@/modules/interests/repositories/interests.repository";
 import { InterestsRelationsRepository } from "@/modules/interests/repositories/interests-relations.repository";
@@ -33,7 +32,6 @@ import { EventCollectionService } from "@/modules/event/event-collection.service
         PaymentRepository,
 
         UserRepository,
-        ProfileLocationRepository,
         InterestsRepository,
         InterestsRelationsRepository,
 

@@ -7,9 +7,9 @@ export namespace UpdateProfile {
         fullName: string;
         picture: string;
         completed: number;
-        placeName: string;
-        locationCenter: number[],
-        locationBbox?: number[],
+        locationId: string;
+        locationName: string;
+        locationBbox: number[];
         interests: string[];
     }>;
     export type TOutput = UserProfileEntity | null;
