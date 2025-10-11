@@ -5,7 +5,7 @@ import { useDiscoverDrawerMap } from "@/features/discover/hooks";
 
 import { EventEntity } from "@/entities/event";
 import { InterestEntity } from "@/entities/interests";
-import { GetNearbyEventsQueryBuilder } from "@/features/discover/queries";
+import { GetNearbyEventsQuery } from "@/features/discover/queries";
 import { DiscoverStaticCollections } from "@/features/discover/config";
 
 export namespace DiscoverScreen {
@@ -31,7 +31,7 @@ export const DiscoverScreen = ({
     } = useDiscoverDrawerMap({
         collection,
         eventsInit: [],
-        queryBuilder: GetNearbyEventsQueryBuilder,
+        queryBuilder: GetNearbyEventsQuery,
     });
 
     return (

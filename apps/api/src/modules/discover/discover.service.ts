@@ -19,6 +19,7 @@ import { ServerSession } from "@/types";
 import { ProfileRepository } from "@/modules/profile/repositories/profile.repository";
 import { InterestsRepository } from "@/modules/interests/repositories/interests.repository";
 import { InterestsEntity } from "@/modules/interests/entities/interests.entity";
+import { seedEventAttendees } from "@/utils/users";
 
 @Injectable()
 export class DiscoverService {
@@ -228,7 +229,9 @@ export class DiscoverService {
 
         const [events, total] = await queryBuilder.getManyAndCount();
 
-        return new ResponseWithPaginationDto(events, { page, limit, total });
+        const eventsWithAttendees = seedEventAttendees(events);
+
+        return new ResponseWithPaginationDto(eventsWithAttendees, { page, limit, total });
     }
 
     async getInterestsFeed(session: ServerSession): Promise<InterestsEntity[]> {

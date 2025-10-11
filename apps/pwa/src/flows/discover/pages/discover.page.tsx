@@ -1,26 +1,28 @@
-import { getCurrentUserInterests } from "@/api/user/server";
 import { DiscoverScreen } from "@/components/screens/discover";
-import { getEventCollectionsFeed } from "@/api/event/server";
 import { DiscoverStaticCollections } from "@/features/discover/config";
 import { Navigation, NavigationRoutes } from "@/components/shared/navigation";
-// import { GetCityHighlightsQuery } from "@/features/discover/queries";
+import { eventsWithPaginationFallback, getCityHighlights, getInterestsFeed } from "@/api/discover";
 
 export namespace DiscoverPage {
     export type Props = never;
 }
 
 export async function DiscoverPage() {
-    const interests = await getCurrentUserInterests();
-    const collectionsInit = await getEventCollectionsFeed();
+    const { data: interestsFeed } = await getInterestsFeed({
+        fallback: [],
+    });
 
-    // const cityHighlights = await GetCityHighlightsQuery.queryFunc();
+    const { data: highlights } = await getCityHighlights({
+        params: {},
+        fallback: eventsWithPaginationFallback,
+    });
 
     return (
         <>
             <DiscoverScreen
-                interestsInit={interests}
-                collectionsInit={collectionsInit || []}
-                cityHighlights={[]}
+                interestsInit={interestsFeed}
+                collectionsInit={interestsFeed}
+                cityHighlights={highlights?.data}
                 collection={DiscoverStaticCollections.Root}
             />
             <Navigation currentPage={NavigationRoutes.Discover} />

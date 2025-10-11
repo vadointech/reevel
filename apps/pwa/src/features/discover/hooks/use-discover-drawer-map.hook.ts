@@ -1,6 +1,6 @@
 import { usePersistentMap } from "@/components/shared/map";
 import { useCallback, useEffect, useRef } from "react";
-import { EventEntity, EventPointEntity } from "@/entities/event";
+import { EventPointEntity } from "@/entities/event";
 import { useRouter } from "@/i18n/routing";
 import { useDiscoverContext } from "@/features/discover";
 import { QueryBuilderQuery } from "@/lib/react-query";
@@ -15,7 +15,7 @@ const PICKER_MAP_PADDING = {
 
 type Params = {
     collection: string;
-    queryBuilder: QueryBuilderQuery<any, EventEntity[], any>
+    queryBuilder: QueryBuilderQuery<any, EventPointEntity[]>
     eventsInit: EventPointEntity[];
 };
 

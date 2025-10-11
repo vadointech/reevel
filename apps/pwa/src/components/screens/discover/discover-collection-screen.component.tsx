@@ -1,9 +1,7 @@
 "use client";
 
 import { DiscoverCollectionDrawer } from "@/components/drawers/discover";
-import { useDiscoverDrawerMap } from "@/features/discover/hooks";
 import { EventCollectionEntity } from "@/entities/event";
-import { GetNearbyEventsQueryBuilder } from "@/features/discover/queries";
 import { PropsWithChildren } from "react";
 
 export namespace DiscoverCollectionScreen {
@@ -18,23 +16,13 @@ export const DiscoverCollectionScreen = ({
     interests,
     collection,
 }: DiscoverCollectionScreen.Props) => {
-
-    const {
-        handleEventInterestPick,
-        handleEventSlideChange,
-    } = useDiscoverDrawerMap({
-        collection,
-        eventsInit: [],
-        queryBuilder: GetNearbyEventsQueryBuilder,
-    });
-
     return (
         <DiscoverCollectionDrawer
             events={events}
             interests={interests}
             collection={collection}
-            onEventInterestPick={handleEventInterestPick}
-            onEventSlideChange={handleEventSlideChange}
+            onEventInterestPick={() => {}}
+            onEventSlideChange={() => {}}
         >
             { children }
         </DiscoverCollectionDrawer>

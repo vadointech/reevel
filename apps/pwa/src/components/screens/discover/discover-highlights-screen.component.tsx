@@ -2,8 +2,6 @@
 
 import { DiscoverCollectionDrawer } from "@/components/drawers/discover";
 import { EventCollectionEntity } from "@/entities/event";
-import { useDiscoverDrawerMap } from "@/features/discover/hooks";
-import { GetCityHighlightsQuery } from "@/features/discover/queries";
 import { DiscoverStaticCollections } from "@/features/discover/config";
 
 export namespace DiscoverHighlightsScreen {
@@ -17,23 +15,13 @@ export const DiscoverHighlightsScreen = ({
     interests,
     collection,
 }: DiscoverHighlightsScreen.Props) => {
-
-    const {
-        handleEventInterestPick,
-        handleEventSlideChange,
-    } = useDiscoverDrawerMap({
-        collection,
-        eventsInit: [],
-        queryBuilder: GetCityHighlightsQuery,
-    });
-
     return (
         <DiscoverCollectionDrawer
             events={events}
             interests={interests}
             collection={collection}
-            onEventInterestPick={handleEventInterestPick}
-            onEventSlideChange={handleEventSlideChange}
+            onEventInterestPick={() => {}}
+            onEventSlideChange={() => {}}
         >
             Don't Miss in Vinnitsa
         </DiscoverCollectionDrawer>

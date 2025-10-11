@@ -1,9 +1,7 @@
 "use client";
 
 import { DiscoverCollectionDrawer } from "@/components/drawers/discover";
-import { useDiscoverDrawerMap } from "@/features/discover/hooks";
 import { EventCollectionEntity } from "@/entities/event";
-import { GetRandomizedEventsQueryBuilder } from "@/features/discover/queries";
 import { DiscoverStaticCollections } from "@/features/discover/config";
 
 export namespace DiscoverRandomizedScreen {
@@ -17,23 +15,13 @@ export const DiscoverRandomizedScreen = ({
     interests,
     collection,
 }: DiscoverRandomizedScreen.Props) => {
-
-    const {
-        handleEventInterestPick,
-        handleEventSlideChange,
-    } = useDiscoverDrawerMap({
-        collection,
-        eventsInit: [],
-        queryBuilder: GetRandomizedEventsQueryBuilder,
-    });
-
     return (
         <DiscoverCollectionDrawer
             events={events}
             interests={interests}
             collection={collection}
-            onEventInterestPick={handleEventInterestPick}
-            onEventSlideChange={handleEventSlideChange}
+            onEventInterestPick={() => {}}
+            onEventSlideChange={() => {}}
         >
             Randomized
         </DiscoverCollectionDrawer>

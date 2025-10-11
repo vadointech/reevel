@@ -35,7 +35,7 @@ export function useSpatialGrid<TData extends unknown[], TInput extends object = 
     );
     const debouncer = useRef(new RequestDebouncer());
 
-    const fetchSpatialData = useCallback((input: TFetchInput<TInput>, debounce: boolean = true) => {
+    const fetchSpatialData = useCallback((input: TFetchInput<TInput>, debounce: boolean = true): Promise<TData> => {
         const { viewState, filter } = input;
 
         const tile = spatialCache.current.getTile(

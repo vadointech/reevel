@@ -1,8 +1,8 @@
 import { QueryBuilderQuery } from "@/lib/react-query";
 import { EventPointEntity } from "@/entities/event";
-import { getNearbyEvents } from "@/api/event";
+import { getNearbyEvents } from "@/api/discover";
 
-export namespace GetNearbyEventsQueryBuilder {
+export namespace GetNearbyEventsQuery {
     export type TInput = {
         tileId: string;
         zoom: number;
@@ -11,20 +11,20 @@ export namespace GetNearbyEventsQueryBuilder {
     export type TOutput = EventPointEntity[];
 }
 
-export const GetNearbyEventsQueryBuilder: QueryBuilderQuery<GetNearbyEventsQueryBuilder.TInput, GetNearbyEventsQueryBuilder.TOutput> = (
+export const GetNearbyEventsQuery: QueryBuilderQuery<GetNearbyEventsQuery.TInput, GetNearbyEventsQuery.TOutput> = (
     input,
 ) => {
     return {
-        queryKey: GetNearbyEventsQueryBuilder.queryKey([input.tileId, input.zoom, input.filter]),
-        queryFn: () => GetNearbyEventsQueryBuilder.queryFunc(input),
+        queryKey: GetNearbyEventsQuery.queryKey([input.tileId, input.zoom, input.filter]),
+        queryFn: () => GetNearbyEventsQuery.queryFunc(input),
     };
 };
 
-GetNearbyEventsQueryBuilder.queryKey = (params = []) => {
+GetNearbyEventsQuery.queryKey = (params = []) => {
     return ["events/nearby/", ...params];
 };
 
-GetNearbyEventsQueryBuilder.queryFunc = (input) => {
+GetNearbyEventsQuery.queryFunc = (input) => {
     return getNearbyEvents({
         params: {
             tileId: input.tileId,
