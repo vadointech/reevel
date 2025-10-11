@@ -3,6 +3,8 @@
 @use "@/theme/motions";
 @use "@/theme/typography";
 
+$icon-gap: .5rem;
+
 @mixin active($color) {
     &:active {
         background-color: $color;
@@ -40,28 +42,18 @@
             opacity motions.$motion-duration-mid motions.$motion-ease-in-out;
     -webkit-tap-highlight-color: rgba(0,0,0,0);
 
-    &__arrow-after {
-        display: flex;
+    &__icon-before, &__icon-after {
         svg {
-            height: mixins.rem(14);
-            path {
-                fill: colors.$foreground
-            }
+            height: 100%;
         }
     }
 
     &__icon-before {
-        margin-right: .5rem;
-        svg {
-            height: 100%;
-        }
+        margin-right: $icon-gap;
     }
 
     &__icon-after {
-        margin-left: .5rem;
-        svg {
-            height: 100%;
-        }
+        margin-left: $icon-gap;
     }
 
     &_size {
@@ -76,10 +68,10 @@
             .button__icon-before, .button__icon-after {
                 height: mixins.rem(20);
             }
-            //svg {
-            //    max-height: mixins.rem(20);
-            //    width: mixins.rem(20);
-            //}
+
+            .button__arrow-after {
+                height: mixins.rem(16);
+            }
         }
         &_small {
             height: mixins.rem(44);
@@ -90,11 +82,8 @@
             }
 
             .button__icon-before, .button__icon-after {
-                width: mixins.rem(18);
+                height: mixins.rem(18);
             }
-            //svg {
-            //    width: mixins.rem(18);
-            //}
         }
 
         &_xsmall {
@@ -105,11 +94,8 @@
             }
 
             .button__icon-before, .button__icon-after {
-                width: mixins.rem(18);
+                height: mixins.rem(18);
             }
-            //svg {
-            //    width: mixins.rem(18);
-            //}
         }
     }
 
