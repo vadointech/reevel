@@ -196,7 +196,7 @@
       {
         "name_en": "Diving",
         "name_ua": "Дайвінг",
-        "related_to": ["Swimming", "Snorkeling"],
+        "related_to": ["Swimming", "Rowing", "Boating"],
         "icon": "🤿",
         "primaryColor": "#2F4A6F",
         "secondaryColor": "#6F8DBF"
@@ -248,6 +248,14 @@
         "icon": "🏋️‍♂️",
         "primaryColor": "#4F5A3F",
         "secondaryColor": "#7F8D6F"
+      },
+      {
+        "name_en": "Bodybuilding",
+        "name_ua": "Бодібілдінг",
+        "related_to": ["Fitness Training", "Weightlifting"],
+        "icon": "💪",
+        "primaryColor": "#4F3A5A",
+        "secondaryColor": "#7F6A8D"
       }
     ]
   },
@@ -416,7 +424,7 @@
       {
         "name_en": "Robotics",
         "name_ua": "Робототехніка",
-        "related_to": ["Programming", "Engineering"],
+        "related_to": ["Programming", "Game Development"],
         "icon": "🤖",
         "primaryColor": "#3F5A6F",
         "secondaryColor": "#6F8DBF"
@@ -658,7 +666,7 @@
       {
         "name_en": "Blogging",
         "name_ua": "Блогерство",
-        "related_to": ["Journalism", "Vlogging"],
+        "related_to": ["Journalism", "Streaming"],
         "icon": "💻",
         "primaryColor": "#4A5F3F",
         "secondaryColor": "#7A9F6F"
@@ -712,7 +720,7 @@
       {
         "name_en": "Physics",
         "name_ua": "Фізика",
-        "related_to": ["Astronomy", "Engineering"],
+        "related_to": ["Astronomy", "Mechanics"],
         "icon": "⚛️",
         "primaryColor": "#3F4A5F",
         "secondaryColor": "#6F7A8D"
@@ -807,7 +815,7 @@
       {
         "name_en": "Streaming",
         "name_ua": "Стрімінг",
-        "related_to": ["Esports", "Vlogging"],
+        "related_to": ["Esports", "Podcasting"],
         "icon": "📡",
         "primaryColor": "#5A3F4F",
         "secondaryColor": "#8D6F7F"
@@ -839,7 +847,7 @@
       {
         "name_en": "Magic Tricks",
         "name_ua": "Фокуси",
-        "related_to": ["Card Games", "Performing"],
+        "related_to": ["Card Games", "Circus Arts"],
         "icon": "🎩",
         "primaryColor": "#4A3F6F",
         "secondaryColor": "#7A6F9F"
@@ -1073,7 +1081,7 @@
       {
         "name_en": "Beauty Blogging",
         "name_ua": "Блогінг про красу",
-        "related_to": ["Makeup", "Vlogging"],
+        "related_to": ["Makeup", "Blogging"],
         "icon": "💅",
         "primaryColor": "#4A3F5F",
         "secondaryColor": "#7A6F9F"
@@ -1121,7 +1129,7 @@
       {
         "name_en": "Jewelry Making",
         "name_ua": "Виготовлення прикрас",
-        "related_to": ["Fashion Design", "Crafts"],
+        "related_to": ["Fashion Design", "DIY Projects"],
         "icon": "💍",
         "primaryColor": "#3F4A5A",
         "secondaryColor": "#6F7A8D"
@@ -1465,7 +1473,7 @@
       {
         "name_en": "Equestrian Sports",
         "name_ua": "Кінний спорт",
-        "related_to": ["Horseback Riding", "Outdoor Activities"],
+        "related_to": ["Horseback Riding"],
         "icon": "🏇",
         "primaryColor": "#4A5F3F",
         "secondaryColor": "#7A9F6F"
@@ -1535,7 +1543,7 @@
       {
         "name_en": "Research",
         "name_ua": "Дослідження",
-        "related_to": ["Psychology", "Science"],
+        "related_to": ["Psychology"],
         "icon": "🔬",
         "primaryColor": "#4A3F5A",
         "secondaryColor": "#7A6F8D"
@@ -1613,7 +1621,7 @@
       {
         "name_en": "Mechanics",
         "name_ua": "Механіка",
-        "related_to": ["Car Restoration", "Engineering"],
+        "related_to": ["Car Restoration", "Robotics"],
         "icon": "🔩",
         "primaryColor": "#3F5A4F",
         "secondaryColor": "#6F8D7F"
@@ -2089,7 +2097,7 @@
       {
         "name_en": "Tech Reviewing",
         "name_ua": "Огляд технологій",
-        "related_to": ["Gadget Collecting", "Vlogging"],
+        "related_to": ["Gadget Collecting", "Blogging"],
         "icon": "🎤",
         "primaryColor": "#4A3F5A",
         "secondaryColor": "#7A6F8D"
@@ -2255,7 +2263,7 @@
       {
         "name_en": "Archery",
         "name_ua": "Стрільба з лука",
-        "related_to": ["Shooting", "Outdoor Activities"],
+        "related_to": ["Shooting", "Hunting"],
         "icon": "🏹",
         "primaryColor": "#4F5A3F",
         "secondaryColor": "#7F8D6F"
@@ -2279,7 +2287,7 @@
       {
         "name_en": "Golf",
         "name_ua": "Гольф",
-        "related_to": ["Team Sports", "Outdoor Activities"],
+        "related_to": ["Team Sports", "Golf"],
         "icon": "⛳",
         "primaryColor": "#4A5F3A",
         "secondaryColor": "#7A9F6F"
@@ -2295,7 +2303,7 @@
       {
         "name_en": "Beach Volleyball",
         "name_ua": "Пляжний волейбол",
-        "related_to": ["Volleyball", "Outdoor Activities"],
+        "related_to": ["Volleyball"],
         "icon": "🏝️",
         "primaryColor": "#4A5F7F",
         "secondaryColor": "#7A9FBF"
@@ -2303,7 +2311,7 @@
       {
         "name_en": "Table Tennis",
         "name_ua": "Настільний теніс",
-        "related_to": ["Tennis", "Competitive Sports"],
+        "related_to": ["Tennis"],
         "icon": "🏓",
         "primaryColor": "#5A3F4F",
         "secondaryColor": "#8D6F7F"
@@ -2405,7 +2413,7 @@
       {
         "name_en": "Disc Golf",
         "name_ua": "Диск-гольф",
-        "related_to": ["Golf", "Outdoor Activities"],
+        "related_to": ["Golf"],
         "icon": "🥏",
         "primaryColor": "#4F5A3F",
         "secondaryColor": "#7F8D6F"
@@ -2725,7 +2733,7 @@
       {
         "name_en": "Hunting",
         "name_ua": "Полювання",
-        "related_to": ["Shooting", "Outdoor Activities"],
+        "related_to": ["Shooting", "Tracking"],
         "icon": "🏹",
         "primaryColor": "#5A4F3F",
         "secondaryColor": "#8D7F6F"
@@ -2741,7 +2749,7 @@
       {
         "name_en": "Origami",
         "name_ua": "Орігамі",
-        "related_to": ["Crafts", "Puzzle Solving"],
+        "related_to": ["DIY Projects", "Puzzle Solving"],
         "icon": "🦢",
         "primaryColor": "#4F5A3F",
         "secondaryColor": "#7F8D6F"
@@ -2773,7 +2781,7 @@
       {
         "name_en": "Scrapbooking",
         "name_ua": "Скрапбукінг",
-        "related_to": ["Crafts", "Journaling"],
+        "related_to": ["DIY Projects", "Journaling"],
         "icon": "📔",
         "primaryColor": "#5F4A3F",
         "secondaryColor": "#8F7A6F"
@@ -2781,7 +2789,7 @@
       {
         "name_en": "Whittling",
         "name_ua": "Різьблення по дереву",
-        "related_to": ["Woodworking", "Crafts"],
+        "related_to": ["Woodworking", "DIY Projects"],
         "icon": "🔪",
         "primaryColor": "#6F4A3F",
         "secondaryColor": "#9F7A6F"
@@ -2789,7 +2797,7 @@
       {
         "name_en": "Candle Making",
         "name_ua": "Виготовлення свічок",
-        "related_to": ["Crafts", "Aromatherapy"],
+        "related_to": ["DIY Projects", "Aromatherapy"],
         "icon": "🕯️",
         "primaryColor": "#4A5F3F",
         "secondaryColor": "#7A9F6F"
@@ -2921,7 +2929,7 @@
       {
         "name_en": "Trumpet Playing",
         "name_ua": "Гра на трубі",
-        "related_to": ["Orchestra", "Jazz"],
+        "related_to": ["Orchestra", "Blues Music"],
         "icon": "🎺",
         "primaryColor": "#5F3F4A",
         "secondaryColor": "#8F6F7A"
@@ -2945,7 +2953,7 @@
       {
         "name_en": "Saxophone Playing",
         "name_ua": "Гра на саксофоні",
-        "related_to": ["Jazz", "Orchestra"],
+        "related_to": ["Blues Music", "Orchestra"],
         "icon": "🎷",
         "primaryColor": "#3F4A6F",
         "secondaryColor": "#6F7A9F"
@@ -3195,7 +3203,7 @@
       {
         "name_en": "Evening Walks",
         "name_ua": "Вечірні прогулянки",
-        "related_to": ["Walking", "Mindfulness"],
+        "related_to": ["Hiking", "Mindfulness"],
         "icon": "🌜",
         "primaryColor": "#3F4A6F",
         "secondaryColor": "#6F7A9F"
@@ -3204,7 +3212,7 @@
         "name_en": "Shopping",
         "name_ua": "Шопінг",
         "category": "Everyday Activities",
-        "related_to": ["Thrifting", "Fashion Design", "Budgeting", "Online Shopping"],
+        "related_to": ["Thrifting", "Fashion Design", "Budgeting"],
         "icon": "🛍️",
         "primaryColor": "#5F3F4A",
         "secondaryColor": "#8F6F7A"

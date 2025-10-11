@@ -4,6 +4,8 @@ import slugify from "slugify";
 import { InterestsRelationsRepository } from "@/modules/interests/repositories/interests-relations.repository";
 import { InterestsCategoriesRepository } from "@/modules/interests/repositories/interests-categories.repository";
 import { InterestsRepository } from "@/modules/interests/repositories/interests.repository";
+import { InterestCategoriesEntity } from "@/modules/interests/entities/interest-category.entity";
+import { InterestRelationsEntity } from "@/modules/interests/entities/interest-relations.entity";
 
 @Injectable()
 export class InterestsSeedService {
@@ -14,17 +16,24 @@ export class InterestsSeedService {
     ) {}
 
     async seedInterests() {
-        for(const category of data) {
-            const newCategory = this.interestCategoriesRepository.create({
+        const categoriesToCreate: InterestCategoriesEntity[] = data.map(category =>
+            this.interestCategoriesRepository.create({
                 name_en: category.name_en,
                 name_uk: category.name_ua,
-            });
+            }),
+        );
+        const savedCategories = await this.interestCategoriesRepository.createAndSaveMany(categoriesToCreate);
+        console.log(`✅ Збережено ${savedCategories.length} категорій.`);
 
-            const dbCategory = await this.interestCategoriesRepository.save(newCategory);
+        const categoryMap = new Map<string, string>();
+        savedCategories.forEach(c => categoryMap.set(c.name_en, c.id));
 
-            const categoryInterests = category.interests.map((interest) => {
+        const interestsToCreate = data.flatMap(category => {
+            const categoryId = categoryMap.get(category.name_en);
+            if (!categoryId) return [];
+
+            return category.interests.map(interest => {
                 const slug = this.createSlug(interest.name_en);
-
                 return this.interestsRepository.create({
                     slug,
                     title_en: interest.name_en,
@@ -32,33 +41,66 @@ export class InterestsSeedService {
                     icon: interest.icon,
                     primaryColor: interest.primaryColor,
                     secondaryColor: interest.secondaryColor,
-                    categoryId: dbCategory.id,
+                    categoryId: categoryId,
                 });
             });
+        });
 
-            await this.interestsRepository.saveMany(categoryInterests);
-        }
+        await this.interestsRepository.saveMany(interestsToCreate, undefined, { chunk: 200 });
+        console.log(`✅ Збережено ${interestsToCreate.length} інтересів.`);
     }
 
     async seedRelations() {
-        for (const category of data) {
-            for (const interest of category.interests) {
-                const sourceSlug = this.createSlug(interest.name_en);
-                const relationSlugs = interest.related_to.map((rel) => this.createSlug(rel));
+        const allInterests = await this.interestsRepository.findMany({ select: ["slug"] });
+        const existingSlugs = new Set(allInterests.map(i => i.slug));
+        console.log(`Знайдено ${existingSlugs.size} унікальних slug'ів у базі даних для валідації.`);
 
-                for (const relationSlug of relationSlugs) {
-                    try {
-                        const newRelation = this.interestRelationsRepository.create({
-                            sourceInterestSlug: sourceSlug,
-                            relatedInterestSlug: relationSlug,
-                        });
-                        await this.interestRelationsRepository.save(newRelation);
-                    } catch (error) {
-                        console.log(`Пропущено зв’язок: ${sourceSlug} -> ${relationSlug}. Помилка: ${error.message}`);
-                        continue;
+        const relationsToCreate: InterestRelationsEntity[] = [];
+        const badRelations: { source: string; related: string }[] = [];
+
+        for(const category of data) {
+            for(const interest of category.interests) {
+                if (!interest.related_to || interest.related_to.length === 0) continue;
+
+                const sourceSlug = this.createSlug(interest.name_en);
+                const relationSlugs = interest.related_to.map(rel => this.createSlug(rel));
+
+                for(const relationSlug of relationSlugs) {
+                    if(existingSlugs.has(sourceSlug) && existingSlugs.has(relationSlug)) {
+                        relationsToCreate.push(
+                            this.interestRelationsRepository.create({
+                                sourceInterestSlug: sourceSlug,
+                                relatedInterestSlug: relationSlug,
+                            }),
+                        );
+                    } else {
+                        badRelations.push({ source: sourceSlug, related: relationSlug });
                     }
                 }
             }
+        }
+
+        if(badRelations.length > 0) {
+            console.error(`❌ Знайдено ${badRelations.length} невалідних зв’язків. Вони не будуть збережені.`);
+            badRelations.forEach(({ source, related }) => {
+                const sourceExists = existingSlugs.has(source);
+                const relatedExists = existingSlugs.has(related);
+                if(!sourceExists) console.error(`   - Slug '${source}' не існує.`);
+                if(!relatedExists) console.error(`   - Slug '${related}' (зі списку related_to для '${source}') не існує.`);
+            });
+            console.log("Будь ласка, виправте ці помилки у ваших вихідних даних.");
+        }
+
+        if(relationsToCreate.length === 0) {
+            console.log("Немає валідних зв’язків для створення.");
+            return;
+        }
+
+        try {
+            await this.interestRelationsRepository.saveMany(relationsToCreate, undefined, { chunk: 500 });
+            console.log(`✅ Успішно збережено ${relationsToCreate.length} валідних зв’язків.`);
+        } catch (error) {
+            console.error(`Помилка під час масового збереження зв’язків: ${error.message}`);
         }
     }
 

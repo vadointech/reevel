@@ -1,23 +1,42 @@
 import data from "../data/events.json";
 import { Injectable } from "@nestjs/common";
+import { DeepPartial } from "typeorm";
 
 import { EventRepository } from "@/modules/event/repositories";
-import { EventVisibility } from "@/modules/event/entities/events.entity";
+import { EventsEntity, EventVisibility } from "@/modules/event/entities/events.entity";
 import { EventInterestsRepository } from "@/modules/event/repositories/event-interests.repository";
-import { InterestsRepository } from "@/modules/interests/repositories/interests.repository";
+import { EventInterestsEntity } from "@/modules/event/entities/event-interests.entity";
+
+import { startOfToday, isBefore, add, differenceInSeconds } from "date-fns";
 
 @Injectable()
 export class EventSeedService {
     constructor(
         private readonly eventRepository: EventRepository,
         private readonly eventInterestsRepository: EventInterestsRepository,
-        private readonly interestsRepository: InterestsRepository,
-
     ) {}
 
     async seedEvents() {
-        const createdEvents = this.eventRepository.createAndSaveMany(
-            data.map(item => ({
+        const today = startOfToday();
+
+        const eventsData: DeepPartial<EventsEntity>[] = data.map(item => {
+            const originalStartDate = new Date(item.startDate);
+            const originalEndDate = item.endDate ? new Date(item.endDate) : undefined;
+
+            let finalStartDate = originalStartDate;
+            let finalEndDate = originalEndDate;
+
+            if (isBefore(originalStartDate, today)) {
+                const daysToAdd = Math.floor(Math.random() * 14) + 1;
+                finalStartDate = add(today, { days: daysToAdd });
+
+                if(originalEndDate) {
+                    const durationSec = differenceInSeconds(originalEndDate, originalStartDate);
+                    finalEndDate = add(finalStartDate, { seconds: durationSec });
+                }
+            }
+
+            return {
                 title: item.title,
                 description: item.description,
                 poster: item.poster,
@@ -28,48 +47,32 @@ export class EventSeedService {
                     coordinates: item.location.coordinates,
                 },
                 locationTitle: item.locationTitle,
-                ticketsAvailable: Number(item.ticketsAvailable),
-                ticketPrice: Number(item.ticketPrice),
+                ticketsAvailable: item.ticketsAvailable ? Number(item.ticketsAvailable) : undefined,
+                ticketPrice: item.ticketPrice ? Number(item.ticketPrice) : undefined,
                 visibility: EventVisibility.PUBLIC,
-                startDate: new Date(item.startDate),
-                endDate: new Date(item.endDate),
-                isFeatured: item.isFeatured,
-            })),
-        );
+                startDate: finalStartDate,
+                endDate: finalEndDate,
+            };
+        });
 
-        await this.seedEventInterests(await createdEvents);
+        const createdEvents = await this.eventRepository.createAndSaveMany(eventsData);
+
+        await this.seedEventInterests(createdEvents);
 
         return createdEvents;
     }
 
-    private async seedEventInterests(events: any[]) {
-        for (let i = 0; i < events.length; i++) {
-            const event = events[i];
-            const eventData = data[i];
+    private async seedEventInterests(events: EventsEntity[]) {
+        const eventInterests: EventInterestsEntity[] = events.map((item, index) => {
+            const interests = [...new Set(data[index].interests)];
+            return interests.map(interest => {
+                return this.eventInterestsRepository.create({
+                    eventId: item.id,
+                    interestId: interest,
+                });
+            });
+        }).flat();
 
-            if (eventData.interests && eventData.interests.length > 0) {
-                for (const interestSlug of eventData.interests) {
-                    try {
-                        const interest = await this.interestsRepository.findOne({
-                            where: { slug: interestSlug },
-                        });
-
-                        if (interest) {
-                            const eventInterest = this.eventInterestsRepository.create({
-                                eventId: event.id,
-                                interestId: interest.slug,
-                            });
-
-                            await this.eventInterestsRepository.save(eventInterest);
-                        } else {
-                            console.log(`Інтерес з slug "${interestSlug}" не знайдено для події "${event.title}"`);
-                        }
-                    } catch (error) {
-                        console.log(`Помилка при створенні зв'язку для події "${event.title}" та інтересу "${interestSlug}": ${error.message}`);
-                        continue;
-                    }
-                }
-            }
-        }
+        return this.eventInterestsRepository.createAndSaveMany(eventInterests);
     }
 }
