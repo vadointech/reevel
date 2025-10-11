@@ -1,14 +1,26 @@
+interface PaginationDtoParams {
+    page: number;
+    total: number;
+    limit: number;
+}
+
 class PaginationDto {
     page: number = 1;
-    total: number = 0;
     limit: number = 10;
-    lastPage: number = 1;
+    totalPages: number = 1;
+    totalItems: number = 10;
 
-    constructor(input: Partial<PaginationDto> = {}) {
+    constructor(input: Partial<PaginationDtoParams> = {}) {
         if(input.page) this.page = input.page;
-        if(input.total) this.total = input.total;
-        if(input.limit) this.limit = input.limit;
-        if(input.lastPage) this.lastPage = input.lastPage;
+        if(input.total) this.totalItems = input.total;
+
+        if(input.limit) {
+            this.limit = input.limit;
+
+            if(input.total) {
+                this.totalPages = Math.ceil(input.total/ input.limit);
+            }
+        }
     }
 }
 
@@ -16,7 +28,7 @@ export class ResponseWithPaginationDto<Data> {
     data: Data;
     pagination: PaginationDto;
 
-    constructor(data: Data, pagination: Partial<PaginationDto> = {}) {
+    constructor(data: Data, pagination: Partial<PaginationDtoParams> = {}) {
         this.data = data;
         this.pagination = new PaginationDto(pagination);
     }

@@ -38,5 +38,5 @@ export class ProfileEntity {
     @OneToMany(() => ProfileInterestsEntity, interests => interests.profile, {
         cascade: true,
     })
-    interests: ProfileInterestsEntity[];
+    interests?: ProfileInterestsEntity[];
 }

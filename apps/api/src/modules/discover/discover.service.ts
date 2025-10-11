@@ -5,24 +5,77 @@ import geohash from "ngeohash";
 import { EventRepository } from "@/modules/event/repositories";
 import { EventsEntity, EventVisibility } from "@/modules/event/entities/events.entity";
 import {
+    GetEventsDto,
     EventPointResponseDto,
     GetCityHighlightsDto,
     GetNearbyEventsDto,
-    GetRandomizedEventsDto,
 } from "@/modules/discover/dto";
 import { eventEntityToEventPointResponse } from "@/modules/discover/mappers/event-point-response.mapper";
 import { ResponseWithPaginationDto } from "@/dtos";
 import { CitiesRepository } from "@/modules/cities/repositories";
 import { BoundingBox } from "@repo/geo";
 import { endOfWeek } from "date-fns";
+import { ServerSession } from "@/types";
+import { ProfileRepository } from "@/modules/profile/repositories/profile.repository";
+import { InterestsRepository } from "@/modules/interests/repositories/interests.repository";
+import { InterestsEntity } from "@/modules/interests/entities/interests.entity";
 
 @Injectable()
 export class DiscoverService {
     private readonly spatialGrid = new SpatialGrid();
+
     constructor(
         private readonly eventRepository: EventRepository,
         private readonly citiesRepository: CitiesRepository,
+        private readonly profileRepository: ProfileRepository,
+        private readonly interestRepository: InterestsRepository,
     ) {}
+
+    async getEvents(input: GetEventsDto): Promise<ResponseWithPaginationDto<EventsEntity[]>> {
+        const {
+            cityId,
+            interestId,
+            page = 1,
+            limit = 10,
+        } = input;
+
+        const skip = (page - 1) * limit;
+
+        const queryBuilder = this.eventRepository.queryBuilder("event")
+            .leftJoinAndSelect("event.hosts", "host")
+            .leftJoinAndSelect("host.user", "hostUser")
+            .leftJoinAndSelect("hostUser.profile", "userProfile")
+            .leftJoinAndSelect("event.interests", "interestLink")
+            .leftJoinAndSelect("interestLink.interest", "interestData")
+            .leftJoinAndSelect("event.tickets", "ticket")
+            .leftJoinAndSelect("ticket.user", "ticketUser")
+            .leftJoinAndSelect("ticketUser.profile", "ticketProfile")
+
+            .where("event.visibility = :visibility", { visibility: EventVisibility.PUBLIC })
+            .andWhere("event.startDate > :now", { now: new Date() });
+
+        if(interestId) {
+            queryBuilder.andWhere("interestLink.interestId = :interest", { interest: interestId });
+        }
+
+        if(cityId) {
+            const city = await this.citiesRepository.findOneBy({ id: cityId });
+            if(!city) {
+                throw new NotFoundException();
+            }
+            const bbox = BoundingBox.fromPolygon(city.bbox.coordinates);
+
+            queryBuilder.andWhere(`ST_Intersects(event.locationPoint, ST_MakeEnvelope(${bbox.sw.lng}, ${bbox.sw.lat}, ${bbox.ne.lng}, ${bbox.ne.lat}, 4326))`);
+        }
+
+        queryBuilder
+            .skip(skip)
+            .take(limit);
+
+        const [events, total] = await queryBuilder.getManyAndCount();
+
+        return new ResponseWithPaginationDto(events, { page, limit, total });
+    }
 
     async getNearbyEvents(input: GetNearbyEventsDto): Promise<EventPointResponseDto[]> {
         const {
@@ -69,7 +122,7 @@ export class DiscoverService {
         return events.map(eventEntityToEventPointResponse);
     }
 
-    async getRandomizedEvent(input: GetRandomizedEventsDto): Promise<EventsEntity[]> {
+    async getRandomizedEvent(input: GetEventsDto): Promise<EventsEntity[]> {
         const {
             cityId,
             interestId,
@@ -88,7 +141,7 @@ export class DiscoverService {
         if(cityId) {
             const city = await this.citiesRepository.findOneBy({ id: cityId });
             if(!city) {
-                throw new NotFoundException("City not found");
+                throw new NotFoundException();
             }
             const bbox = BoundingBox.fromPolygon(city.bbox.coordinates);
 
@@ -175,11 +228,30 @@ export class DiscoverService {
 
         const [events, total] = await queryBuilder.getManyAndCount();
 
-        return new ResponseWithPaginationDto(events, {
-            total,
-            page,
-            limit,
-            lastPage: Math.ceil(total / limit),
+        return new ResponseWithPaginationDto(events, { page, limit, total });
+    }
+
+    async getInterestsFeed(session: ServerSession): Promise<InterestsEntity[]> {
+        const profile = await this.profileRepository.findOne({
+            where: { userId: session.user.id },
+            relations: {
+                interests: true,
+            },
         });
+
+        if(!profile) {
+            throw new NotFoundException();
+        }
+
+        if(!profile.interests || profile.interests.length === 0) {
+            return [];
+        }
+
+        const userInterestSlugs = profile.interests.map(item => item.interestId);
+
+        const queryBuilder = this.interestRepository.queryBuilder("interest")
+            .where("interest.slug IN (:...userInterestSlugs)", { userInterestSlugs });
+
+        return queryBuilder.getMany();
     }
 }

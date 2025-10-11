@@ -10,25 +10,19 @@ import { EventInterestsRepository } from "./repositories/event-interests.reposit
 import { EventTicketsRepository } from "@/modules/event/repositories/event-tickets.repository";
 import { SubscriptionRegistry } from "@/modules/subscription/registry/subscription.registry";
 
-import { EventsEntity, EventVisibility } from "./entities/events.entity";
+import { EventsEntity } from "./entities/events.entity";
 
 import { CreateEventDto } from "./dto/create-event.dto";
 import { UpdateEventDto } from "./dto/update-event.dto";
 
 import { ISessionUser, ServerSession } from "@/types";
 import { SupportedFileCollections } from "@/modules/uploads/entities/uploads.entity";
-import { GetNearbyEventsDto } from "@/modules/event/dto/get-nearby.dto";
 import { getEventParticipationType } from "@/modules/event/utils";
-import { EventPointResponseDto, GetEventResponseDto } from "@/modules/event/dto";
-
-import { SpatialGrid } from "@repo/spatial-grid";
-
-import * as geohash from "ngeohash";
+import { GetEventResponseDto } from "@/modules/event/dto";
 
 @Injectable()
 export class EventService {
     private logger = new Logger(EventService.name);
-    private readonly spatialGrid = new SpatialGrid();
 
     constructor(
         private readonly uploadService: UploadsService,
@@ -43,18 +37,6 @@ export class EventService {
 
         private dataSource: DataSource,
     ) {}
-
-    async getEvents(session: ServerSession) {
-        const events = await this.eventRepository.findMany();
-
-        return events.map(event => {
-            const participationType = getEventParticipationType(event, session.user.id);
-            return new GetEventResponseDto({
-                ...event,
-                participationType,
-            });
-        });
-    }
     
     async createEvent(session: ServerSession<ISessionUser>, input: CreateEventDto): Promise<EventsEntity> {
         try {
@@ -196,50 +178,5 @@ export class EventService {
             ...event,
             participationType,
         });
-    }
-
-    async getNearbyEvents(input: GetNearbyEventsDto): Promise<EventPointResponseDto[]> {
-        const {
-            tileId,
-            zoom,
-            filter,
-        } = input;
-
-        const config = this.spatialGrid.getBreakpointForZoom(zoom);
-        const neighborHashes = geohash.neighbors(tileId);
-        const allHashes = [tileId, ...neighborHashes];
-
-        const whereClauses = allHashes.map((hash) => {
-            const bbox = geohash.decode_bbox(hash); // [minlat, minlon, maxlat, maxlon]
-            return `ST_Intersects(event.locationPoint, ST_MakeEnvelope(${bbox[1]}, ${bbox[0]}, ${bbox[3]}, ${bbox[2]}, 4326))`;
-        });
-
-        const queryBuilder =
-            this.eventRepository.queryBuilder("event")
-                .select([
-                    "event.id",
-                    "event.title",
-                    "event.poster",
-                    "event.primaryColor",
-                    "event.visibility",
-                    "event.locationPoint",
-                ])
-                .where(`(${whereClauses.join(" OR ")})`)
-                .andWhere("event.visibility = :visibility", { visibility: EventVisibility.PUBLIC });
-        // .andWhere("event.startDate > :now", { now: new Date() })
-
-        if(filter) {
-            queryBuilder
-                .innerJoin("event.interests", "interestLink")
-                .andWhere("interestLink.interestId = :interest", { interest: filter });
-        }
-
-        if(config.dataLimit) {
-            queryBuilder.limit(config.dataLimit);
-        }
-
-        const events = await queryBuilder.getMany();
-
-        return events.map(item => new EventPointResponseDto(item));
     }
 }

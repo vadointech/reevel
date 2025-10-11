@@ -1,4 +1,3 @@
-import { GoogleModule } from "./google/google.module";
 import { UserModule } from "./user/user.module";
 import { AuthModule } from "./auth/auth.module";
 import { ProfileModule } from "./profile/profile.module";
@@ -12,16 +11,18 @@ import { SubscriptionModule } from "@/modules/subscription/subscription.module";
 import { CalendarModule } from "./calendar/calendar.module";
 import { ReportsModule } from "@/modules/reports/reports.module";
 import { CitiesModule } from "@/modules/cities/cities.module";
+import { DiscoverModule } from "@/modules/discover/discover.module";
 
 export default [
     AuthModule.forRoot(),
     CitiesModule,
 
-    GoogleModule,
+    DiscoverModule,
+    ReportsModule,
+
     UserModule,
     ProfileModule,
     CalendarModule,
-    ReportsModule,
     InterestsModule,
     EventModule,
     BookingModule,

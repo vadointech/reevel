@@ -4,18 +4,17 @@ import {
     Delete, Get,
     Param,
     Patch,
-    Post, Query,
+    Post,
     Req,
     UseInterceptors,
 } from "@nestjs/common";
 import { EventService } from "./event.service";
 import { CreateEventDto } from "./dto/create-event.dto";
-import { Public, Session } from "@/decorators";
+import { Session } from "@/decorators";
 import { FileUploadInterceptor } from "@/modules/uploads/uploads.interceptor";
 import { UpdateEventDto } from "@/modules/event/dto/update-event.dto";
-import { GetNearbyEventsDto } from "@/modules/event/dto/get-nearby.dto";
 import { ISessionUser, ServerSession } from "@/types";
-import { EventPointResponseDto, GetEventResponseDto } from "@/modules/event/dto";
+import { GetEventResponseDto } from "@/modules/event/dto";
 
 @Controller("events")
 export class EventController {
@@ -30,7 +29,15 @@ export class EventController {
     ) {
         return this.eventService.createEvent(session, body);
     }
-    
+
+    @Get(":eventId")
+    async getEventById(
+        @Param("eventId") eventId: string,
+        @Session() session: ServerSession,
+    ): Promise<GetEventResponseDto | null> {
+        return this.eventService.getEventById(session, eventId);
+    }
+
     @Post("poster")
     @UseInterceptors(FileUploadInterceptor)
     async uploadPoster(
@@ -56,13 +63,5 @@ export class EventController {
         @Session() session: ServerSession,
     ) {
         return this.eventService.deleteEvent(session, eventId);
-    }
-
-    @Get(":eventId")
-    async getEventById(
-        @Param("eventId") eventId: string,
-        @Session() session: ServerSession,
-    ): Promise<GetEventResponseDto | null> {
-        return this.eventService.getEventById(session, eventId);
     }
 }

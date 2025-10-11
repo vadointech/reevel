@@ -12,8 +12,6 @@ import { BookingModule } from "@/modules/booking/booking.module";
 import { UserRepository } from "@/modules/user/repositories/user.repository";
 import { InterestsRepository } from "@/modules/interests/repositories/interests.repository";
 import { InterestsRelationsRepository } from "@/modules/interests/repositories/interests-relations.repository";
-import { EventCollectionController } from "@/modules/event/event-collection.controller";
-import { EventCollectionService } from "@/modules/event/event-collection.service";
 import { CitiesRepository } from "@/modules/cities/repositories";
 
 @Module({
@@ -21,10 +19,9 @@ import { CitiesRepository } from "@/modules/cities/repositories";
         UploadsModule,
         BookingModule,
     ],
-    controllers: [EventController, EventCollectionController],
+    controllers: [EventController],
     providers: [
         EventService,
-        EventCollectionService,
 
         EventRepository,
         EventTicketsRepository,
