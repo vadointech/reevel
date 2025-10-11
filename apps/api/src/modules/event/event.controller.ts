@@ -58,21 +58,6 @@ export class EventController {
         return this.eventService.deleteEvent(session, eventId);
     }
 
-    @Public()
-    @Get("nearby")
-    async getNearbyEvents(
-        @Query() params: GetNearbyEventsDto,
-    ): Promise<EventPointResponseDto[]> {
-        return this.eventService.getNearbyEvents(params);
-    }
-
-    @Get()
-    getEvents(
-        @Session() session: ServerSession,
-    ): Promise<GetEventResponseDto[]> {
-        return this.eventService.getEvents(session);
-    }
-
     @Get(":eventId")
     async getEventById(
         @Param("eventId") eventId: string,

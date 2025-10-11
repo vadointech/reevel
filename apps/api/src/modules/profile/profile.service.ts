@@ -71,13 +71,7 @@ export class ProfileService {
                         },
                         bbox: {
                             type: "Polygon",
-                            coordinates: [[
-                                [swLng, swLat], // SW corner
-                                [swLng, neLat], // NW corner
-                                [neLng, neLat], // NE corner
-                                [neLng, swLat], // SE corner
-                                [swLng, swLat], // Back to SW to close polygon
-                            ]],
+                            coordinates: bbox.getPolygon(),
                         },
                     }, entityManager);
 

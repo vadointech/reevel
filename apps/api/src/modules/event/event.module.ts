@@ -14,6 +14,7 @@ import { InterestsRepository } from "@/modules/interests/repositories/interests.
 import { InterestsRelationsRepository } from "@/modules/interests/repositories/interests-relations.repository";
 import { EventCollectionController } from "@/modules/event/event-collection.controller";
 import { EventCollectionService } from "@/modules/event/event-collection.service";
+import { CitiesRepository } from "@/modules/cities/repositories";
 
 @Module({
     imports: [
@@ -30,6 +31,7 @@ import { EventCollectionService } from "@/modules/event/event-collection.service
         EventInterestsRepository,
         EventHostsRepository,
         PaymentRepository,
+        CitiesRepository,
 
         UserRepository,
         InterestsRepository,

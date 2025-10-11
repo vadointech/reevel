@@ -1,7 +1,7 @@
 import data from "../data/events.json";
 import { Injectable } from "@nestjs/common";
 
-import { EventRepository } from "../../event/repositories/event.repository";
+import { EventRepository } from "@/modules/event/repositories";
 import { EventVisibility } from "@/modules/event/entities/events.entity";
 import { EventInterestsRepository } from "@/modules/event/repositories/event-interests.repository";
 import { InterestsRepository } from "@/modules/interests/repositories/interests.repository";
@@ -13,7 +13,7 @@ export class EventSeedService {
         private readonly eventInterestsRepository: EventInterestsRepository,
         private readonly interestsRepository: InterestsRepository,
 
-    ) { }
+    ) {}
 
     async seedEvents() {
         const createdEvents = this.eventRepository.createAndSaveMany(

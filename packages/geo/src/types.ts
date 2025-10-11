@@ -25,9 +25,17 @@ export interface IBoundingBox {
     getCenter(): IPoint
 
     /**
-     * Calculates and returns the horizontal radius based on the given center point.
+     * Calculates and returns the horizontal radius.
      *
      * @return {number} The horizontal radius, which is half the distance between the eastern and western longitudes at the given latitude.
      */
-    getHorizontalRadius(): number
+    getRadius(): number
+
+    /**
+     * Retrieves the polygon representation of the bounding box defined by southwest (sw) and northeast (ne) coordinates.
+     * The polygon is described as an array of arrays of coordinate pairs, forming a closed loop.
+     *
+     * @return {number[][][]} A nested array representing the polygon, where each sub-array contains latitude and longitude pairs in the format [[lng, lat], ...].
+     */
+    getPolygon(): number[][][]
 }

@@ -214,7 +214,6 @@ export class EventService {
             return `ST_Intersects(event.locationPoint, ST_MakeEnvelope(${bbox[1]}, ${bbox[0]}, ${bbox[3]}, ${bbox[2]}, 4326))`;
         });
 
-
         const queryBuilder =
             this.eventRepository.queryBuilder("event")
                 .select([

@@ -1,13 +1,13 @@
 import {
     Body,
     Controller,
-    Get, HttpCode, HttpStatus,
-    Post,
+    Get, HttpCode, HttpStatus, Param,
+    Post, Query,
 } from "@nestjs/common";
-import { Session } from "@/decorators";
+import { Public, Session } from "@/decorators";
 import { EventCollectionService } from "@/modules/event/event-collection.service";
 import { GetNearbyEventsDto } from "@/modules/event/dto/get-nearby.dto";
-import { ISessionUser, ServerSession } from "@/types";
+import { ServerSession } from "@/types";
 
 @Controller("events/collections")
 export class EventCollectionController {
@@ -15,11 +15,25 @@ export class EventCollectionController {
         private eventCollectionService: EventCollectionService,
     ) {}
 
+    @Public()
     @Get("highlights")
+    async getHighlights() {
+        return this.eventCollectionService.getHighlightsCollection();
+    }
+    @Public()
+    @Get("highlights/:cityId")
     async getCityHighlights(
-        @Session() session: ServerSession<ISessionUser>,
+        @Param("cityId") cityId: string,
     ) {
-        return this.eventCollectionService.getEventCityHighlightsCollection(session);
+        return this.eventCollectionService.getCityHighlightsCollection(cityId);
+    }
+    @Public()
+    @Get("highlights/:cityId/nearby")
+    async getNearbyCityHighlights(
+        @Param("cityId") cityId: string,
+        @Query() params: GetNearbyEventsDto,
+    ) {
+        return this.eventCollectionService.getNearbyCityHighlightsCollection(cityId, params);
     }
 
     @Post("randomized")
