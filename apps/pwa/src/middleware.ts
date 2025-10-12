@@ -32,7 +32,7 @@ export default async function(request: NextRequest) {
         }
     }
 
-    const isPublicRoute = publicRoutes.includes(nextUrl.pathname);
+    const isPublicRoute = publicRoutes.some(route => nextUrl.pathname.startsWith(route));
     const isLoginRoute = nextUrl.pathname.startsWith(StaticRoutes.Login);
     const isOnboardingRoute = nextUrl.pathname.startsWith(StaticRoutes.Onboarding);
 

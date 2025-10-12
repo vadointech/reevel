@@ -81,9 +81,14 @@ export const DiscoverDrawer = ({
                     <BottomSheetContent>
                         <BottomSheetHandle className={styles.drawer__handle}>
                             <Input.Search placeholder={"Search"} />
-                            <Link href={"/profile"}>
-                                <Avatar image={session.store.user?.profile?.picture}/>
-                            </Link>
+                            {
+                                session.store.user ? (
+                                    <Link href={"/profile"}>
+                                        <Avatar image={session.store.user?.profile?.picture}/>
+                                    </Link>
+
+                                ) : null
+                            }
                         </BottomSheetHandle>
                         <BottomSheetScrollable>
                             <ScrollSection

@@ -49,7 +49,10 @@ export enum StaticRoutes {
     Discover = "/discover",
 }
 
-export const publicRoutes: string[] = [];
+export const publicRoutes: string[] = [
+    StaticRoutes.Login,
+    StaticRoutes.Discover,
+];
 
 export const onboardingStepRoutes: string[] = [
     "/onboarding/photo",

@@ -21,7 +21,7 @@ export const GetNearbyEventsQuery: QueryBuilderQuery<GetNearbyEventsQuery.TInput
 };
 
 GetNearbyEventsQuery.queryKey = (params = []) => {
-    return ["events/nearby/", ...params];
+    return ["events/nearby/", ...params.filter(item => item !== undefined)];
 };
 
 GetNearbyEventsQuery.queryFunc = (input) => {
@@ -29,7 +29,7 @@ GetNearbyEventsQuery.queryFunc = (input) => {
         params: {
             tileId: input.tileId,
             zoom: input.zoom,
-            filter: input.filter,
+            interestId: input.filter,
         },
         fallback: [],
     }).then(response => response.data);

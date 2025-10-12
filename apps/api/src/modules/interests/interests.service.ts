@@ -33,7 +33,11 @@ export class InterestsService {
             "shopping",
         ];
 
-        return this.interestsRepository.findManyBy({ slug: In(slugs) });
+        const interests = await this.interestsRepository.findManyBy({ slug: In(slugs) });
+
+        return interests.sort((a, b) =>
+            slugs.indexOf(a.slug) - slugs.indexOf(b.slug),
+        );
     }
 
     async getRelatedInterests(slug: string): Promise<InterestsEntity[]> {

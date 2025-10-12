@@ -1,15 +1,16 @@
 "use client";
 
 import { DiscoverDrawer } from "@/components/drawers/discover";
-import { useDiscoverDrawerMap } from "@/features/discover/hooks";
+import { useDiscoverMap } from "@/features/discover/hooks";
 
-import { EventEntity } from "@/entities/event";
+import { EventEntity, EventPointEntity } from "@/entities/event";
 import { InterestEntity } from "@/entities/interests";
 import { GetNearbyEventsQuery } from "@/features/discover/queries";
 import { DiscoverStaticCollections } from "@/features/discover/config";
 
 export namespace DiscoverScreen {
     export type Data = {
+        eventsInit: EventPointEntity[];
         interestsInit: InterestEntity[];
         collectionsInit: InterestEntity[];
         cityHighlights: EventEntity[];
@@ -20,17 +21,19 @@ export namespace DiscoverScreen {
 }
 
 export const DiscoverScreen = ({
+    collection,
+    eventsInit,
     interestsInit,
     collectionsInit,
     cityHighlights,
-    collection,
 }: DiscoverScreen.Props) => {
+
     const {
-        handlePickerSnapPointChange,
-        handleEventInterestPick,
-    } = useDiscoverDrawerMap({
+        handlePickInterestFilter,
+        handleDrawerSnapPointChange,
+    } = useDiscoverMap({
         collection,
-        eventsInit: [],
+        eventsInit: eventsInit,
         queryBuilder: GetNearbyEventsQuery,
     });
 
@@ -39,8 +42,8 @@ export const DiscoverScreen = ({
             interests={interestsInit}
             collections={collectionsInit}
             cityHighlights={cityHighlights}
-            onSnapPointChange={handlePickerSnapPointChange}
-            onEventInterestPick={handleEventInterestPick}
+            onEventInterestPick={handlePickInterestFilter}
+            onSnapPointChange={handleDrawerSnapPointChange}
         />
     );
 };

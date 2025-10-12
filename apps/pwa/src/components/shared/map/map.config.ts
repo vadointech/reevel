@@ -16,7 +16,7 @@ export const MapProviderDefaultConfig: MapConfig.DefaultParams = {
             [28.375272, 49.190909],
         ]],
         /////////////////////
-        zoom: 12,
+        zoom: 10,
         pitch: 0,
         padding: {
             top: 0,

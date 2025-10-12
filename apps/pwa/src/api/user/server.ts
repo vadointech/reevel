@@ -6,7 +6,6 @@ import * as GetSession from "./session";
 import * as GetCurrentUserProfile from "./profile";
 import * as GetCurrentUserInterests from "./interests";
 import * as GetCurrentUserEvents from "./events";
-import { logout } from "@/api/auth/server";
 
 export async function getSession() {
     const accessToken = await getAccessToken();
@@ -17,11 +16,6 @@ export async function getSession() {
             token: accessToken,
         },
     });
-
-    if (response.data === null) {
-        await logout();
-        return null;
-    }
 
     return response.data;
 }

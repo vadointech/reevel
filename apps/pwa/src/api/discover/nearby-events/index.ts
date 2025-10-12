@@ -6,7 +6,7 @@ export namespace GetNearbyEvents {
     export type TParams = {
         tileId: string;
         zoom: number;
-        filter?: string;
+        interestId?: string;
     };
     export type TOutput = EventPointEntity[];
 }

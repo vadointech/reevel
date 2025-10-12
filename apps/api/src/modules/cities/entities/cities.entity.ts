@@ -20,5 +20,5 @@ export class CitiesEntity {
     bbox: Polygon;
 
     @OneToMany(() => ProfileEntity, profile => profile.location)
-    profiles: ProfileEntity[];
+    profiles?: ProfileEntity[];
 }

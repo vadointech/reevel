@@ -6,9 +6,9 @@ interface PaginationDtoParams {
 
 class PaginationDto {
     page: number = 1;
-    limit: number = 10;
+    limit: number = 1;
     totalPages: number = 1;
-    totalItems: number = 10;
+    totalItems: number = 1;
 
     constructor(input: Partial<PaginationDtoParams> = {}) {
         if(input.page) this.page = input.page;
