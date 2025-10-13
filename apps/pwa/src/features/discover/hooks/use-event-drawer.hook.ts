@@ -24,8 +24,6 @@ export function useEventDrawer(event: EventEntity) {
 
     const handleClose = useCallback(() => {
         map.controller.current.selectPoint(null);
-        bottomSheet.controller?.closeAsync()
-            .then(() => router.back());
     }, []);
 
     const handleSelectPoint = useCallback(() => {

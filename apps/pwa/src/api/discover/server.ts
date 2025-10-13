@@ -10,5 +10,5 @@ export async function getDefaultCity(): Promise<CitiesEntity | undefined> {
         return undefined;
     }
 
-    return response.data.data[0];
+    return response.data.data?.[0];
 }

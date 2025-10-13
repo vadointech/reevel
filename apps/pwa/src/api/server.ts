@@ -1,7 +1,7 @@
 "use server";
 
 import { cookies } from "next/headers";
-import { authCookiesParams, AuthJwtTokens } from "@/auth.config";
+import { authCookiesParams, AuthJwtTokens } from "@/config/auth.config";
 
 export async function getAccessToken() {
     const cookieStore = await cookies();

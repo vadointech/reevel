@@ -1,7 +1,7 @@
 import { Metadata } from "next";
 import { DiscoverHighlightsPage } from "@/flows/discover/pages";
-import { defaultMetadata } from "@/metadata.config";
-import { BASE_URL } from "@/auth.config";
+import { defaultMetadata } from "@/config/metadata.config";
+import { BASE_URL } from "@/config/env.config";
 
 export function generateMetadata(): Metadata {
     const title =  "Highlights – Best Events in Your City | Reevel";

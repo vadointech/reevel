@@ -2,8 +2,8 @@ import { DiscoverCollectionPage } from "@/flows/discover/pages";
 import { PropsWithParams } from "@/types/common";
 import { Metadata } from "next";
 import { capitalize } from "@/utils/capitalize";
-import { defaultMetadata } from "@/metadata.config";
-import { BASE_URL } from "@/auth.config";
+import { defaultMetadata } from "@/config/metadata.config";
+import { BASE_URL } from "@/config/env.config";
 
 export async function generateMetadata({ params }: PropsWithParams<{ slug: string }>): Promise<Metadata> {
     const { slug } = await params;

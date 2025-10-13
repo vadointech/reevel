@@ -3,7 +3,7 @@
 import { cookies } from "next/headers";
 import { getRefreshToken } from "@/api/server";
 import { refreshTokens } from "@/api/auth";
-import { authCookiesParams, AuthJwtTokens } from "@/auth.config";
+import { authCookiesParams, AuthJwtTokens } from "@/config/auth.config";
 import { ActionResponse } from "@/lib/action";
 
 export async function refreshSessionAction() {

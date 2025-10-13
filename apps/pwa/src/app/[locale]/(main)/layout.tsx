@@ -6,15 +6,12 @@ import { getSession } from "@/api/user/server";
 import { MapProviderDefaultConfig } from "@/components/shared/map/map.config";
 
 export default async function MainLayout({ children }: PropsWithChildren) {
-    const { user, accessToken } = await getSession();
+    const user = await getSession();
 
     const location = user?.profile?.location;
 
     return (
-        <SessionProvider
-            user={user}
-            accessToken={accessToken}
-        >
+        <SessionProvider user={user}>
             <ThemeProvider>
                 <PersistentMapProvider
                     accessToken={process.env.MAPBOX_ACESS_TOKEN || ""}

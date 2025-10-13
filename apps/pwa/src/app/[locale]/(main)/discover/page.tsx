@@ -1,6 +1,6 @@
 import { DiscoverPage } from "@/flows/discover/pages";
 import { Metadata } from "next";
-import { BASE_URL } from "@/auth.config";
+import { BASE_URL } from "@/config/env.config";
 
 export const revalidate = false;
 

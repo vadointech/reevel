@@ -11,10 +11,10 @@
     "build:sw": "node sw-build.mjs"
   },
   "dependencies": {
-    "@repo/spatial-grid": "workspace:*",
-    "@repo/geo": "workspace:*",
     "@hookform/resolvers": "^5.0.1",
     "@next/eslint-plugin-next": "^15.3.3",
+    "@repo/geo": "workspace:*",
+    "@repo/spatial-grid": "workspace:*",
     "@tanstack/react-query": "^5.66.9",
     "@tanstack/react-query-persist-client": "^5.79.2",
     "@uidotdev/usehooks": "^2.4.1",

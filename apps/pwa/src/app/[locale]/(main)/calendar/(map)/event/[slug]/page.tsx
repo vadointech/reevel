@@ -2,8 +2,8 @@ import { Metadata } from "next";
 import { PropsWithParams } from "@/types/common";
 import { EventAttendeePublicViewPage } from "@/flows/event-view/pages";
 import { getEvent } from "@/api/event/server";
-import { defaultMetadata } from "@/metadata.config";
-import { BASE_URL } from "@/auth.config";
+import { defaultMetadata } from "@/config/metadata.config";
+import { BASE_URL } from "@/config/env.config";
 
 export const revalidate = 86400;
 

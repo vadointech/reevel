@@ -34,8 +34,5 @@ export async function updateProfile(input: UpdateProfile.UpdateProfile.TInput) {
         body: input,
     });
 
-    console.log(input);
-    console.log(response);
-
     return response.data;
 }

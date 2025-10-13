@@ -3,7 +3,6 @@ import { UserEntity } from "@/entities/user";
 
 export interface SessionStoreInit {
     user: Maybe<UserEntity>;
-    accessToken: string | undefined;
     authenticated: boolean;
 }
 

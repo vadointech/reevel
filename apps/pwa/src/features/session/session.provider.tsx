@@ -1,6 +1,6 @@
 "use client";
 
-import { PropsWithChildren, useEffect } from "react";
+import { PropsWithChildren } from "react";
 import { useMobxStore } from "@/lib/mobx";
 import { useSingleton } from "@/hooks";
 
@@ -9,7 +9,6 @@ import { SessionController } from "./session.controller";
 import { SessionContext } from "./session.context";
 
 import { SessionStoreInit } from "./types";
-import { fetcherClient } from "@/api/client";
 
 export namespace SessionProvider {
     export type Props =  PropsWithChildren<Partial<SessionStoreInit>>;
@@ -21,17 +20,6 @@ export const SessionProvider = ({
 }: SessionProvider.Props) => {
     const store = useMobxStore(SessionStore, initStore);
     const controller = useSingleton(SessionController, store);
-
-    useEffect(() => {
-        fetcherClient.interceptor.request((request) => {
-            request.authorization = {
-                method: "Bearer",
-                token: store.accessToken,
-            };
-
-            return request;
-        });
-    }, []);
 
     return (
         <SessionContext.Provider

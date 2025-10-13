@@ -21,11 +21,6 @@ export function useDiscoverMap({ collection, eventPointsInit, queryBuilder }: Pa
     const router = useRouter();
 
     const preventMapUpdate = useRef(false);
-    const defaultViewState = useRef(
-        map.provider.current.getViewState(),
-    );
-    const prevViewState = useRef(defaultViewState.current);
-
     const { fetchSpatialData, precacheSpatialData } = useSpatialGrid<EventPointEntity[]>({
         queryBuilder: queryBuilder,
         prefetchedData: eventPointsInit,
@@ -41,7 +36,6 @@ export function useDiscoverMap({ collection, eventPointsInit, queryBuilder }: Pa
 
     const onMapReady = useCallback((viewState: MapInternalConfig.IViewStateConfig) => {
         preventMapUpdate.current = true;
-        prevViewState.current = viewState;
         precacheSpatialData(viewState);
     }, [precacheSpatialData]);
   
@@ -50,8 +44,6 @@ export function useDiscoverMap({ collection, eventPointsInit, queryBuilder }: Pa
             preventMapUpdate.current = false;
             return;
         }
-
-        prevViewState.current = viewState;
 
         fetchSpatialData({ viewState }).then(appendResponse);
     }, []);
@@ -76,6 +68,7 @@ export function useDiscoverMap({ collection, eventPointsInit, queryBuilder }: Pa
         }
 
         if(collection === DiscoverStaticCollections.Root) {
+            preventMapUpdate.current = true;
             map.provider.current.resetViewState();
         }
     }, []);
@@ -109,14 +102,10 @@ export function useDiscoverMap({ collection, eventPointsInit, queryBuilder }: Pa
         } else {
             discover.store.setInterestFilter(interest);
             fetchSpatialData(
-                {
-                    viewState: prevViewState.current,
-                    filter: interest,
-                },
+                { viewState, filter: interest },
                 collection === DiscoverStaticCollections.Root,
             ).then(replaceResponse);
         }
-
 
         if(viewState.zoom !== currentViewState.zoom) {
             new Promise(resolve => setTimeout(resolve, MAP_MOTION_TIMEOUT_MS))

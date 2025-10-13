@@ -14,7 +14,7 @@ import { IBottomSheetRootController } from "@/components/shared/bottom-sheet/typ
 import { FetcherErrorResponse } from "@/lib/fetcher/types";
 import { createEvent } from "@/api/event/server";
 import { useFileSelect, useUploadedFileDelete } from "@/features/uploader/hooks";
-import { StaticRoutes } from "@/auth.config";
+import { StaticRoutes } from "@/config/routes.config";
 import { useImageUploaderContext } from "@/features/uploader/image";
 
 type Params = {

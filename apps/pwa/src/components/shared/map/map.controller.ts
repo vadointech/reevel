@@ -94,9 +94,7 @@ export class MapRootController implements IMapRootController {
     selectPoint(pointId: string | null, params?: ISelectPointParams) {
         if(pointId === null) {
             this.unselectPoint();
-        }
-
-        if(pointId === this._store.selectedPoint) {
+        } else if(pointId === this._store.selectedPoint) {
             this.unselectPoint();
         } else {
             if(params?.clearUnactive) {

@@ -7,11 +7,9 @@ import { ISessionStore, SessionStoreInit } from "@/features/session/types";
 
 export class SessionStore implements ISessionStore {
     user: Maybe<UserEntity> = null;
-    accessToken: string | undefined = undefined;
 
     constructor(init: Partial<SessionStoreInit> = {}) {
         this.user = init.user;
-        this.accessToken = init.accessToken;
 
         makeObservable(this, {
             user: observable,

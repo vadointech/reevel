@@ -1,16 +1,16 @@
 import { PlaceLocationEntity } from "@/entities/place";
-import { ProfileLocationsEntity } from "@/entities/profile";
+import { CitiesEntity } from "@/entities/cities";
 
 export class ProfileLocationMapper {
-    static toPlaceLocationEntity(input: ProfileLocationsEntity): PlaceLocationEntity {
+    static toPlaceLocationEntity(input: CitiesEntity): PlaceLocationEntity {
         const [lng, lat] = input.center.coordinates;
         return {
             id: input.id,
             location: { latitude: lat, longitude: lng },
-            displayName: input.placeName,
+            displayName: input.name,
             primaryType: "",
             primaryTypeDisplayName: "",
-            formattedAddress: input.placeName,
+            formattedAddress: input.name,
             googleMapsUri: "",
             bbox: undefined,
         };

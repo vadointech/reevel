@@ -3,8 +3,8 @@ import { type Metadata, Viewport } from "next";
 import { NextIntlClientProvider } from "next-intl";
 import { getMessages, setRequestLocale } from "next-intl/server";
 
-import { fonts } from "@/fonts.config";
-import { defaultMetadata } from "@/metadata.config";
+import { fonts } from "@/config/fonts.config";
+import { defaultMetadata } from "@/config/metadata.config";
 
 import { ServiceWorkerProvider } from "@/service-worker/client";
 import { ReactQueryClientProvider } from "@/providers/react-query-provider";

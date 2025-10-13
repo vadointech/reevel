@@ -21,7 +21,7 @@ export namespace CalendarPage {
 }
 
 export async function CalendarPage() {
-    const { user } = await getSession();
+    const user = await getSession();
 
     const today = format(new Date(), "d MMM");
 

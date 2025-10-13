@@ -21,6 +21,7 @@ export class Fetcher implements IFetcher {
         private readonly interceptors?: FetcherInterceptor,
     ) {
         this.internalFetcher = {
+            request: this.request,
             get: (url, config) => this.request(url, { ...config, method: "GET", _isInternalCall: true }),
             post: (url, config) => this.request(url, { ...config, method: "POST", _isInternalCall: true }),
             patch: (url, config) => this.request(url, { ...config, method: "PATCH", _isInternalCall: true }),
@@ -32,7 +33,7 @@ export class Fetcher implements IFetcher {
         url: string,
         config: FetcherRequest<TInput, TParams, TOutput>,
     ): Promise<FetcherResponse<TOutput>> {
-        return this.request<TInput, TParams, TOutput>(url, {
+        return this.request<TInput, TOutput, TParams>(url, {
             ...config,
             method: "GET",
         });
@@ -42,7 +43,7 @@ export class Fetcher implements IFetcher {
         url: string,
         config: FetcherRequest<TInput, TParams, TOutput>,
     ): Promise<FetcherResponse<TOutput>> {
-        return this.request<TInput, TParams, TOutput>(url, {
+        return this.request<TInput, TOutput, TParams>(url, {
             ...config,
             method: "POST",
         });
@@ -52,7 +53,7 @@ export class Fetcher implements IFetcher {
         url: string,
         config: FetcherRequest<TInput, TParams, TOutput>,
     ): Promise<FetcherResponse<TOutput>> {
-        return this.request<TInput, TParams, TOutput>(url, {
+        return this.request<TInput, TOutput, TParams>(url, {
             ...config,
             method: "PATCH",
         });
@@ -62,13 +63,13 @@ export class Fetcher implements IFetcher {
         url: string,
         config: FetcherRequest<TInput, TParams, TOutput>,
     ): Promise<FetcherResponse<TOutput>> {
-        return this.request<TInput, TParams, TOutput>(url, {
+        return this.request<TInput, TOutput, TParams>(url, {
             ...config,
             method: "DELETE",
         });
     }
 
-    private async request<TInput, TParams, TOutput>(
+    async request<TInput, TOutput, TParams>(
         url: string,
         config: InternalRequest<TInput, TParams, TOutput>,
     ): Promise<FetcherResponse<TOutput>> {
@@ -114,7 +115,8 @@ export class Fetcher implements IFetcher {
                 requestInit.headers["Authorization"] = `${authorization.method} ${authorization.token}`;
             }
 
-            const fullURL = new URL(baseURL + url);
+            const combinedUrl = [baseURL?.replace(/\/$/, ""), url.replace(/^\//, "")].join("/");
+            const fullURL = new URL(combinedUrl);
 
             if(params) {
                 Object.entries(params).forEach(([key, value]) => {
@@ -130,15 +132,19 @@ export class Fetcher implements IFetcher {
                 credentials: credentials,
             };
 
-            if(body !== undefined) {
-                if(body instanceof FormData) {
-                    requestOptions.body = body;
-                } else {
-                    requestOptions.body = JSON.stringify(body);
-                    requestInit.headers["Content-Type"] = contentType;
+            if(requestInit.method !== "GET" && requestInit.method !== "HEAD") {
+                if(body !== undefined) {
+                    if(body instanceof FormData) {
+                        requestOptions.body = body;
+                    } else {
+                        requestOptions.body = JSON.stringify(body);
+                        if(!requestInit.headers["Content-Type"]) {
+                            requestInit.headers["Content-Type"] = contentType;
+                        }
+                    }
                 }
             }
-            
+
             const response = await fetch(fullURL.toString(), requestOptions);
 
             let fetcherResponse = await this.parseResponse(response, fallback);
@@ -162,6 +168,7 @@ export class Fetcher implements IFetcher {
                 status: 0,
                 statusText: error instanceof Error ? error.message : "Network Error",
                 redirected: false,
+                error: error,
             };
         }
     }

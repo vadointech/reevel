@@ -130,7 +130,7 @@ export const ProfileHeroUser = () => {
 
                     <div className={styles.hero__location}>
                         <IconLocation />
-                        {user?.location?.placeName}
+                        {user?.location?.name}
                     </div>
                 </motion.div>
             </motion.div>

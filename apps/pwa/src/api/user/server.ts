@@ -17,7 +17,7 @@ export async function getSession() {
         },
     });
 
-    return { user: response.data, accessToken };
+    return response.data;
 }
 
 export async function getCurrentUserProfile() {
@@ -43,8 +43,6 @@ export async function getCurrentUserInterests() {
         },
         fallback: [],
     });
-
-    console.log(response);
 
     return response.data.map(item => item.interest);
 }

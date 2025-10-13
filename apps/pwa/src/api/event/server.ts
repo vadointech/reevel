@@ -3,20 +3,12 @@
 import { getAccessToken } from "@/api/server";
 
 import * as GetEvent from "./get-one";
-import * as GetAllEvents from "./get-all";
 import * as CreateEvent from "./create";
 import * as UploadEventPoster from "./upload-poster";
 import * as GetNearbyEvents from "./get-nearby";
 import * as GetRandomizedEvents from "./get-randomized";
 import * as GetEventCityHighlights from "./get-city-highlights";
 import * as GetEventCollectionsFeed from "./get-collections-feed";
-
-export async function getAllEvents() {
-    const response = await GetAllEvents.getAllEvents({
-        fallback: [],
-    });
-    return response.data;
-}
 
 export async function getEvent(input: GetEvent.GetEvent.TInput) {
     const accessToken = await getAccessToken();

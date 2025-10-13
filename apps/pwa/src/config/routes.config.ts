@@ -1,31 +1,3 @@
-import { ResponseCookie } from "next/dist/compiled/@edge-runtime/cookies";
-
-export const ACCESS_JWT_SECRET = process.env.ACCESS_JWT_SECRET;
-export const BASE_URL = process.env.NEXT_PUBLIC_URL!;
-export const API_URL = process.env.NEXT_PUBLIC_API_URL!;
-
-export interface AuthAccessTokenPayload {
-    sub: string;
-    email: string;
-    completed: number;
-    subscription: string;
-    locationId: string | undefined;
-    locationCoordinates: number[] | undefined;
-}
-
-export enum AuthJwtTokens {
-    AccessToken = "access_token",
-    RefreshToken = "refresh_token",
-}
-
-export const authCookiesParams: Partial<ResponseCookie> = {
-    httpOnly: true,
-    path: "/",
-    secure: true,
-    sameSite: "none",
-    domain: process.env.DOMAIN,
-};
-
 export enum Devices {
     Mobile = "mobile",
     Desktop = "desktop",
@@ -50,7 +22,6 @@ export enum StaticRoutes {
 }
 
 export const publicRoutes: string[] = [
-    StaticRoutes.Login,
     StaticRoutes.Discover,
 ];
 

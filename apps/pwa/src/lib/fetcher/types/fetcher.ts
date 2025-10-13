@@ -15,4 +15,6 @@ export interface IFetcher {
     (url: string, config?: Partial<FetcherRequest<TInput, TParams>>): Promise<FetcherResponse<TOutput>>
     delete<TInput extends FetcherInput, TOutput extends FetcherOutput, TParams extends FetcherRequestParams>
     (url: string, config?: Partial<FetcherRequest<TInput, TParams>>): Promise<FetcherResponse<TOutput>>
+    request<TInput extends FetcherInput, TOutput extends FetcherOutput, TParams extends FetcherRequestParams>
+    (url: string, config?: Partial<FetcherRequest<TInput, TParams>>): Promise<FetcherResponse<TOutput>>
 }

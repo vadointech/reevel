@@ -1,16 +1,13 @@
 import * as jose from "jose";
 import { NextResponse, NextRequest, userAgent } from "next/server";
 import { intlMiddleware } from "@/i18n/middleware";
+import { ACCESS_JWT_SECRET } from "@/config/env.config";
 import {
     AuthJwtTokens,
-    StaticRoutes,
-    ACCESS_JWT_SECRET,
-    publicRoutes,
-    allowedDevices,
     AuthAccessTokenPayload,
-    onboardingStepRoutes, authCookiesParams,
-} from "@/auth.config";
-import { refreshTokens } from "@/api/auth";
+} from "@/config/auth.config";
+import { allowedDevices, onboardingStepRoutes, publicRoutes, StaticRoutes } from "@/config/routes.config";
+import { deleteAuthJwtTokens, refreshTokens, setAuthJwtTokens } from "@/auth";
 
 export default async function(request: NextRequest) {
     const { nextUrl } = request;
@@ -89,22 +86,15 @@ export default async function(request: NextRequest) {
                 throw new Error("No refresh token");
             }
 
-            const tokensResponse = await refreshTokens({
-                authorization: {
-                    method: "Bearer",
-                    token: refreshToken.value,
-                },
-            });
+            const tokensResponse = await refreshTokens(request, refreshToken.value);
 
-            if(!tokensResponse.ok || !tokensResponse.data) {
+            if(!tokensResponse) {
                 throw new Error("Failed to refresh token");
             }
 
             const response = isLoginRoute ? NextResponse.next() : intlMiddleware(request);
 
-            response.cookies.set(AuthJwtTokens.AccessToken, tokensResponse.data.accessToken, authCookiesParams);
-            response.cookies.set(AuthJwtTokens.RefreshToken, tokensResponse.data.refreshToken, authCookiesParams);
-
+            setAuthJwtTokens(response, tokensResponse);
             return response;
         } catch(error: any) {
             console.log("Refresh token verification failed: ", error.message);
@@ -113,15 +103,7 @@ export default async function(request: NextRequest) {
                 intlMiddleware(request) :
                 NextResponse.redirect(new URL(StaticRoutes.Login, nextUrl), 302);
 
-            response.cookies.delete({
-                name: AuthJwtTokens.AccessToken,
-                ...authCookiesParams,
-            });
-            response.cookies.delete({
-                name: AuthJwtTokens.RefreshToken,
-                ...authCookiesParams,
-            });
-            
+            deleteAuthJwtTokens(response);
             return response;
         }
     }

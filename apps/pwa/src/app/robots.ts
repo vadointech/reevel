@@ -1,5 +1,5 @@
 import { MetadataRoute } from "next";
-import { BASE_URL } from "@/auth.config";
+import { BASE_URL } from "@/config/env.config";
 
 export default function robots(): MetadataRoute.Robots {
     return {

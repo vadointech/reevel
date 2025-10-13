@@ -4,7 +4,7 @@ import { EventDrawerContent, EventDrawerRoot } from "@/components/drawers/event"
 import { InterestButton, OptionsList, OptionsListItem } from "@/components/ui";
 import { ReviewsSection, ScrollSection, Section } from "@/components/sections";
 import { IconReport } from "@/components/icons";
-import { BASE_URL } from "@/auth.config";
+import { BASE_URL } from "@/config/env.config";
 
 import { Event, WithContext } from "schema-dts";
 

@@ -1,6 +1,7 @@
 import { FetcherClient } from "@/lib/fetcher/client";
+import { BASE_URL } from "@/config/env.config";
 
 export const fetcherClient = new FetcherClient({
-    baseURL: process.env.NEXT_PUBLIC_API_URL,
+    baseURL: BASE_URL + "/api",
     credentials: "include",
 });

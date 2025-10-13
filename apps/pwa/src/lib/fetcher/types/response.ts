@@ -7,6 +7,7 @@ export interface FetcherResponse<TOutput> {
     headers?: Headers;
     type?: ResponseType;
     redirected: boolean;
+    error?: FetcherErrorResponse;
 }
 
 export interface FetcherSafeResponse<TOutput> extends FetcherResponse<TOutput> {

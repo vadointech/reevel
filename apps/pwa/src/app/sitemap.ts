@@ -1,6 +1,9 @@
 import { MetadataRoute } from "next";
-import { getAllEvents } from "@/api/event";
-import { API_URL, BASE_URL } from "@/auth.config";
+import { getHighlights } from "@/api/discover";
+import { paginationPlaceholder } from "@/entities/placeholders";
+import { getDefaultCity } from "@/api/discover/server";
+import { EventEntity } from "@/entities/event";
+import { BASE_URL } from "@/config/env.config";
 
 const rootRoute = "/discover";
 const staticRoutes = [
@@ -11,10 +14,23 @@ const staticRoutes = [
 const lastModified = new Date("2025-09-30");
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-    const { data: events } = await getAllEvents({
-        baseURL: API_URL,
-        fallback: [],
-    });
+    const city = await getDefaultCity();
+
+    let events: EventEntity[] = [];
+
+    if(city) {
+        const eventsResponse = await getHighlights({
+            params: {
+                cityId: city.id,
+            },
+            fallback: {
+                data: [],
+                pagination: paginationPlaceholder,
+            },
+        });
+        events = eventsResponse.data.data;
+    }
+
 
     const staticUrls = staticRoutes.map(route => ({
         url: `${BASE_URL}${route}`,
