@@ -2,7 +2,7 @@ import { RefObject } from "react";
 import { MapInternalConfig } from "../provider/config";
 import { IMapHandlers } from "../provider/handlers";
 import { BasePoint, Point } from "../point/point";
-import { IMapInitializationParams } from "@/components/shared/map/types";
+import { IMapInitializationParams, ISelectPointParams } from "@/components/shared/map/types";
 
 export interface IMapRootController {
     externalHandlers: Partial<IMapHandlers>
@@ -45,9 +45,10 @@ export interface IMapRootController {
      * Selects a specific point by its identifier.
      *
      * @param {string | null} pointId - The unique identifier of the point to be selected. If null, no specific point will be selected.
+     * @param params
      * @return {void} This method does not return a value.
      */
-    selectPoint(pointId: string | null): void;
+    selectPoint(pointId: string | null, params?: ISelectPointParams): void;
 
     /**
      * Sets the points to the given list of points.
@@ -74,4 +75,6 @@ export interface IMapRootController {
      * @return {Promise<void>} A promise that resolves after the points have been replaced and the specified delay has elapsed.
      */
     replacePoints(points: Point<BasePoint>[], duration?: number): Promise<void>
+
+    isPointOnMap(pointId: string): boolean;
 }

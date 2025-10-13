@@ -5,11 +5,15 @@ import {
     IMapHandlers, IMapInitializationParams,
     IMapProvider,
     IMapRootController,
-    IMapStore,
+    IMapStore, ISelectPointParams,
     MapInternalConfig,
     Point,
 } from "./types";
 import { MAP_MOTION_TIMEOUT_MS } from "@/components/shared/map/map.config";
+
+type Param = {
+
+};
 
 export class MapRootController implements IMapRootController {
     _externalHandlers: Partial<IMapHandlers> = {};
@@ -87,14 +91,33 @@ export class MapRootController implements IMapRootController {
         }
     }
 
-    selectPoint(pointId: string | null) {
+    selectPoint(pointId: string | null, params?: ISelectPointParams) {
+        if(pointId === null) {
+            this.unselectPoint();
+        }
+
         if(pointId === this._store.selectedPoint) {
-            this._store.setSelectedPoint(null);
-            this._externalHandlers.onPointSelect?.(null);
+            this.unselectPoint();
         } else {
+            if(params?.clearUnactive) {
+                this._store.pointsRef = [...this._store.points];
+                this.setPoints(
+                    this._store.points.filter(
+                        point => point.id === pointId,
+                    ),
+                );
+            }
             this._store.setSelectedPoint(pointId);
             this._externalHandlers.onPointSelect?.(pointId);
         }
+    }
+
+    private unselectPoint() {
+        this._store.setSelectedPoint(null);
+        // await new Promise((resolve) => setTimeout(resolve, MAP_MOTION_TIMEOUT_MS));
+        // this._store.setPoints(this._store.pointsRef);
+        this._store.pointsRef = [];
+        this._externalHandlers.onPointSelect?.(null);
     }
 
     setPoints(points: Point<BasePoint>[]) {
@@ -105,6 +128,7 @@ export class MapRootController implements IMapRootController {
 
     appendPoints(point: Point<BasePoint>[]) {
         if(point.length === 0) return;
+
         this._store.setPoints([
             ... new ObjectUnique(
                 [
@@ -116,6 +140,8 @@ export class MapRootController implements IMapRootController {
     }
 
     async replacePoints(points: Point<BasePoint>[], duration: number = MAP_MOTION_TIMEOUT_MS): Promise<void> {
+        if(points.length === 0) return;
+
         this._store.setPointsVisible(false);
 
         await new Promise((resolve) => setTimeout(resolve, duration));
@@ -124,5 +150,9 @@ export class MapRootController implements IMapRootController {
 
         await new Promise((resolve) => setTimeout(resolve, duration));
         this._store.setPoints(points);
+    }
+
+    isPointOnMap(pointId: string): boolean {
+        return this._store.points.some(point => point.id === pointId);
     }
 }

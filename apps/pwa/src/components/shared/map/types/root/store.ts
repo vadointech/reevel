@@ -6,6 +6,7 @@ export interface IMapStore {
      * An array of points that are displayed on the map.
      */
     points: Point<BasePoint>[];
+    pointsRef: Point<BasePoint>[];
     /**
      * A boolean variable that determines the visibility of ALL points on a map.
      * When set to true, the points are visible; when set to false, the points are hidden.

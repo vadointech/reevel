@@ -5,7 +5,7 @@ import { observer } from "mobx-react-lite";
 import MapboxGLMap, { MapRef, Marker } from "react-map-gl/mapbox";
 import { useMapbox, useMapboxCluster } from "./hooks";
 import { ClusterMarker, MapMarker } from "../../markers";
-import { IMapProvider, IMapRootController, IMapStore } from "./types";
+import { IMapProvider, IMapRootController, IMapStore, MapProviderCameraState } from "./types";
 
 import "mapbox-gl/dist/mapbox-gl.css";
 
@@ -19,7 +19,7 @@ export namespace MapboxComponent {
     };
 }
 
-export const MapboxComponent = memo(observer(forwardRef<MapRef, MapboxComponent.Props>(({
+export const MapboxComponent = memo(forwardRef<MapRef, MapboxComponent.Props>(({
     mapStyle,
     store,
     provider,
@@ -39,16 +39,6 @@ export const MapboxComponent = memo(observer(forwardRef<MapRef, MapboxComponent.
         onMapLoad,
     );
 
-    const {
-        clusters,
-        getClusterSize,
-        handleZoomToCluster,
-    } = useMapboxCluster(provider, {
-        bounds,
-        points: store.points,
-        zoom: viewState.zoom || 12,
-    });
-
     return (
         <MapboxGLMap
             {...viewState}
@@ -62,18 +52,52 @@ export const MapboxComponent = memo(observer(forwardRef<MapRef, MapboxComponent.
             mapboxAccessToken={provider.current.internalConfig.accessToken}
             style={{ width: "100%", height: "100%" }}
         >
+            <MapClusters
+                store={store}
+                provider={provider}
+                viewState={viewState}
+                bounds={bounds}
+                handleSelectPoint={handleSelectPoint}
+            />
+        </MapboxGLMap>
+    );
+}));
+
+const MapClusters = observer(({
+    store,
+    provider,
+    viewState,
+    bounds,
+    handleSelectPoint,
+}: {
+    store: IMapStore;
+    provider: RefObject<IMapProvider>;
+    viewState: Partial<MapProviderCameraState.ViewState>
+    bounds: MapProviderCameraState.Bounds;
+    handleSelectPoint: (id: string) => void;
+}) => {
+    const {
+        clusters,
+        getClusterSize,
+        handleZoomToCluster,
+    } = useMapboxCluster(provider, {
+        bounds,
+        points: store.points,
+        zoom: viewState.zoom || 10,
+    });
+
+    return (
+        <>
             {
                 clusters.map(cluster => {
                     const [longitude, latitude] = cluster.geometry.coordinates;
-
                     const isCluster = cluster.properties.cluster;
-                    const pointCount = cluster.properties.point_count || 0;
-                    const clusterSize = getClusterSize(pointCount, viewState.zoom);
-
-                    const selected = store.selectedPoint === cluster.properties.id;
-                    const active = (!store.selectedPoint || selected) && store.pointsVisible;
 
                     if(isCluster) {
+                        const pointCount = cluster.properties.point_count || 0;
+                        const clusterSize = getClusterSize(pointCount, viewState.zoom);
+                        const active = !store.selectedPoint && store.pointsVisible;
+
                         return (
                             <Marker
                                 key={`cluster-${cluster.id}`}
@@ -91,14 +115,19 @@ export const MapboxComponent = memo(observer(forwardRef<MapRef, MapboxComponent.
                         );
                     }
 
+                    const pointId = cluster.properties.id;
+
+                    const selected = store.selectedPoint === pointId;
+                    const active = (!store.selectedPoint || selected) && store.pointsVisible;
+
                     return (
                         <Marker
-                            key={`marker-${cluster.properties.id}`}
+                            key={`marker-${pointId}`}
                             longitude={longitude}
                             latitude={latitude}
-                            onClick={() => handleSelectPoint(cluster.properties.id)}
+                            onClick={() => handleSelectPoint(pointId)}
                             style={{
-                                zIndex: selected ? 1 : 0,
+                                zIndex: selected ? 2 : 0,
                             }}
                         >
                             <MapMarker
@@ -110,6 +139,6 @@ export const MapboxComponent = memo(observer(forwardRef<MapRef, MapboxComponent.
                     );
                 })
             }
-        </MapboxGLMap>
+        </>
     );
-})));
+});

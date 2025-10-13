@@ -5,6 +5,7 @@ export class MapStore implements IMapStore {
     isViewStateSynced: boolean = false;
   
     points: Point<BasePoint>[] = [];
+    pointsRef: Point<BasePoint>[] = [];
     pointsVisible: boolean = true;
     selectedPoint: string | null = null;
 

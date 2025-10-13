@@ -21,7 +21,7 @@ export function getMapEventsQueryBuilder(injected: EventEntity[] = [], queryKey:
                 event.interests.some(item => item.interestId === input.filter),
             ).map(eventEntityToEventPointEntity);
         } else {
-            return Promise.reject();
+            return Promise.resolve([]);
         }
     };
 

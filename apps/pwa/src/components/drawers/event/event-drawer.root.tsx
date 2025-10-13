@@ -46,7 +46,7 @@ export const EventDrawerRoot = ({
                 dismissible={false}
                 snapPoints={[.95, .5, .14]}
                 fadeThreshold={.6}
-                defaultSnapPointIndex={2}
+                defaultSnapPointIndex={0}
             >
                 <BottomSheetPortal>
                     <BottomSheetBody dragYProgress={drawerDragYProgress} style={{ height: "100%" }}>

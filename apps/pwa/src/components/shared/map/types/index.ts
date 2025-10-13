@@ -15,3 +15,7 @@ export interface IMapInitializationParams {
     resetViewStateOnMount: boolean;
     detachOnUnmount: boolean;
 }
+
+export interface ISelectPointParams {
+    clearUnactive?: boolean
+}
