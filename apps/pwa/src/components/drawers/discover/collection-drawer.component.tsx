@@ -136,7 +136,7 @@ export const DiscoverCollectionDrawer = ({
                                     layout={"icon"}
                                 />
                                 <DiscoverInterestsList
-                                    interests={interests}
+                                    interestsInit={interests}
                                     onEventInterestPick={onEventInterestPick}
                                 />
                             </Scroll>

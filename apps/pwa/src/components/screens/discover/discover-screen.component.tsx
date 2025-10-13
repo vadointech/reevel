@@ -7,13 +7,15 @@ import { EventEntity, EventPointEntity } from "@/entities/event";
 import { InterestEntity } from "@/entities/interests";
 import { GetNearbyEventsQuery } from "@/features/discover/queries";
 import { DiscoverStaticCollections } from "@/features/discover/config";
+import { CitiesEntity } from "@/entities/cities";
 
 export namespace DiscoverScreen {
     export type Data = {
-        eventsInit: EventPointEntity[];
+        cityInit?: CitiesEntity;
+        eventPointsInit: EventPointEntity[];
         interestsInit: InterestEntity[];
-        collectionsInit: InterestEntity[];
-        cityHighlights: EventEntity[];
+        interestCollectionsInit: InterestEntity[];
+        highlightsInit: EventEntity[];
     };
     export type Props = Data & {
         collection: DiscoverStaticCollections;
@@ -21,27 +23,28 @@ export namespace DiscoverScreen {
 }
 
 export const DiscoverScreen = ({
+    cityInit,
     collection,
-    eventsInit,
+    eventPointsInit,
     interestsInit,
-    collectionsInit,
-    cityHighlights,
+    interestCollectionsInit,
+    highlightsInit,
 }: DiscoverScreen.Props) => {
-
     const {
         handlePickInterestFilter,
         handleDrawerSnapPointChange,
     } = useDiscoverMap({
         collection,
-        eventsInit: eventsInit,
+        eventPointsInit,
         queryBuilder: GetNearbyEventsQuery,
     });
 
     return (
         <DiscoverDrawer
-            interests={interestsInit}
-            collections={collectionsInit}
-            cityHighlights={cityHighlights}
+            cityInit={cityInit}
+            interestsInit={interestsInit}
+            highlightsInit={highlightsInit}
+            interestCollectionsInit={interestCollectionsInit}
             onEventInterestPick={handlePickInterestFilter}
             onSnapPointChange={handleDrawerSnapPointChange}
         />

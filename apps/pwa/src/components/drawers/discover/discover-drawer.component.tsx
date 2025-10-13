@@ -8,9 +8,8 @@ import {
     BottomSheetRoot, BottomSheetScrollable,
 } from "@/components/shared/bottom-sheet";
 
-import { Avatar, CollectionCard, EventCard, Input, InterestButton, Scroll } from "@/components/ui";
+import { Avatar, Input, InterestButton, Scroll } from "@/components/ui";
 import { IconStars } from "@/components/icons";
-import { ScrollSection } from "@/components/sections";
 import { BottomSheetExternalController, BottomSheetSnapPoint } from "@/components/shared/bottom-sheet/types";
 
 import { EventEntity } from "@/entities/event";
@@ -20,15 +19,20 @@ import { Link } from "@/i18n/routing";
 import { DiscoverInterestsList } from "@/flows/discover/modules/interests-list";
 import { useSessionContext } from "@/features/session";
 import { DiscoverStaticCollections } from "@/features/discover/config";
+import { useStandaloneContext } from "@/providers/standalone.provider";
+import { HighlightsCollectionSlider, InterestsCollectionSlider } from "@/components/drawers/discover/components";
+import { CitiesEntity } from "@/entities/cities";
 
 import styles from "./styles/discover-drawer.module.scss";
-import { useStandaloneContext } from "@/providers/standalone.provider";
 
 export namespace DiscoverDrawer {
-    export type Props = {
-        interests: InterestEntity[];
-        collections: InterestEntity[];
-        cityHighlights: EventEntity[];
+    export type Data = {
+        cityInit?: CitiesEntity;
+        interestsInit: InterestEntity[];
+        interestCollectionsInit: InterestEntity[];
+        highlightsInit: EventEntity[];
+    };
+    export type Props = Data & {
         controller?: BottomSheetExternalController;
         onSnapPointChange?: (snapPointIndex: number) => void;
         onEventInterestPick: (pointId: string | null) => void;
@@ -36,9 +40,10 @@ export namespace DiscoverDrawer {
 }
 
 export const DiscoverDrawer = ({
-    interests,
-    collections,
-    cityHighlights,
+    cityInit,
+    interestsInit,
+    interestCollectionsInit,
+    highlightsInit,
     controller,
     onSnapPointChange,
     onEventInterestPick,
@@ -73,7 +78,7 @@ export const DiscoverDrawer = ({
                             </Link>
 
                             <DiscoverInterestsList
-                                interests={interests}
+                                interestsInit={interestsInit}
                                 onEventInterestPick={onEventInterestPick}
                             />
                         </Scroll>
@@ -82,7 +87,7 @@ export const DiscoverDrawer = ({
                         <BottomSheetHandle className={styles.drawer__handle}>
                             <Input.Search placeholder={"Search"} />
                             {
-                                session.store.user ? (
+                                session.store.authenticated ? (
                                     <Link href={"/profile"}>
                                         <Avatar image={session.store.user?.profile?.picture}/>
                                     </Link>
@@ -91,47 +96,13 @@ export const DiscoverDrawer = ({
                             }
                         </BottomSheetHandle>
                         <BottomSheetScrollable>
-                            <ScrollSection
-                                title={"Don’t Miss in Vinnitsa"}
-                                cta={"See all"}
-                                variant={"text-accent"}
-                                ctaHref={DiscoverStaticCollections.Highlights}
-                                className={styles.drawer__gap}
-                            >
-                                {
-                                    cityHighlights.map(event => (
-                                        <Link
-                                            key={event.id}
-                                            href={DiscoverStaticCollections.Root + "/event/" + event.id}
-                                        >
-                                            <EventCard
-                                                size={"small"}
-                                                displayMode={"date"}
-                                                event={event}
-                                            />
-                                        </Link>
-                                    ))
-                                }
-                            </ScrollSection>
-
-                            <ScrollSection
-                                title={"Events for You"}
-                                variant={"text-accent"}
-                            >
-                                {
-                                    collections.map(interest => (
-                                        <Link
-                                            key={interest.slug}
-                                            href={DiscoverStaticCollections.Root + "/" + interest.slug}
-                                        >
-                                            <CollectionCard
-                                                interest={interest}
-                                                location={"Vinnitsa"}
-                                            />
-                                        </Link>
-                                    ))
-                                }
-                            </ScrollSection>
+                            <HighlightsCollectionSlider
+                                cityInit={cityInit}
+                                eventsInit={highlightsInit}
+                            />
+                            <InterestsCollectionSlider
+                                interestsInit={interestCollectionsInit}
+                            />
                         </BottomSheetScrollable>
                     </BottomSheetContent>
                 </BottomSheetBody>

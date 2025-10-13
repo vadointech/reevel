@@ -12,13 +12,13 @@ import {
 import { EventsEntity } from "@/modules/event/entities/events.entity";
 import { InterestsEntity } from "@/modules/interests/entities/interests.entity";
 
-@Public()
 @Controller("discover")
 export class DiscoverController {
     constructor(
         private readonly discoverService: DiscoverService,
     ) {}
 
+    @Public()
     @Get("events")
     getEvents(
         @Query() params: GetEventsDto,
@@ -26,6 +26,7 @@ export class DiscoverController {
         return this.discoverService.getEvents(params);
     }
 
+    @Public()
     @Get("events/nearby")
     getNearbyEvents(
         @Query() params: GetNearbyEventsDto,
@@ -33,6 +34,7 @@ export class DiscoverController {
         return this.discoverService.getNearbyEvents(params);
     }
 
+    @Public()
     @Get("events/randomized")
     getRandomizedEvents(
         @Query() params: GetEventsDto,
@@ -40,6 +42,7 @@ export class DiscoverController {
         return this.discoverService.getRandomizedEvent(params);
     }
 
+    @Public()
     @Get("highlights")
     getHighlights(
         @Query() params: GetCityHighlightsDto,

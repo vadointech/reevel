@@ -2,6 +2,7 @@ import { RefObject } from "react";
 import { MapInternalConfig } from "../provider/config";
 import { IMapHandlers } from "../provider/handlers";
 import { BasePoint, Point } from "../point/point";
+import { IMapInitializationParams } from "@/components/shared/map/types";
 
 export interface IMapRootController {
     externalHandlers: Partial<IMapHandlers>
@@ -19,6 +20,7 @@ export interface IMapRootController {
             points: Point<BasePoint>[],
             viewState?: Partial<MapInternalConfig.IViewStateConfig>,
             handlers?: Partial<IMapHandlers>,
+            params?: Partial<IMapInitializationParams>
         }>
     ): void;
 
@@ -38,8 +40,6 @@ export interface IMapRootController {
      * Typically used to disassociate or clean up mappings within a program.
      */
     detachMap(): void;
-
-    syncViewState(viewState: MapInternalConfig.IViewStateConfig, forceRefresh?: boolean): void;
 
     /**
      * Selects a specific point by its identifier.

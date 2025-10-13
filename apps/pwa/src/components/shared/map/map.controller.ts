@@ -2,7 +2,7 @@ import React, { RefObject } from "react";
 import { ObjectUnique } from "@/utils/object";
 import {
     BasePoint,
-    IMapHandlers,
+    IMapHandlers, IMapInitializationParams,
     IMapProvider,
     IMapRootController,
     IMapStore,
@@ -31,6 +31,7 @@ export class MapRootController implements IMapRootController {
             points: Point<BasePoint>[],
             viewState?: Partial<MapInternalConfig.IViewStateConfig>,
             handlers?: Partial<IMapHandlers>,
+            params?: Partial<IMapInitializationParams>
         }>,
     ) {
         if(this.mapContainerRef.current && container.current) {
@@ -40,18 +41,27 @@ export class MapRootController implements IMapRootController {
                 this._provider.current.resetViewState(init.viewState, {
                     animate: false,
                 });
-
             }
 
             if(init.points) {
-                this._store.setPoints(init.points);
+                // this._store.setPoints(init.points);
             }
 
             if(init.handlers) {
                 this.attachHandlers(init.handlers);
             }
 
-            this.syncViewState(this._provider.current.internalConfig.viewState, true);
+            if(init.params?.resetViewStateOnMount) {
+                new Promise((resolve) => setTimeout(resolve, MAP_MOTION_TIMEOUT_MS))
+                    .then(() => {
+                        this._provider.current.resetViewState();
+                        this._store.setViewStateSynced(true);
+                        this._externalHandlers.onMapReady?.(this._provider.current.internalConfig.viewState);
+                    });
+            } else {
+                this._store.setViewStateSynced(true);
+                this._externalHandlers.onMapReady?.(this._provider.current.internalConfig.viewState);
+            }
         }
     }
 
@@ -73,22 +83,7 @@ export class MapRootController implements IMapRootController {
 
             this._externalHandlers = {};
             this._store.setPoints([]);
-            this._provider.current.resetViewState(undefined, { animate: false });
-        }
-    }
-
-    syncViewState(viewState: MapInternalConfig.IViewStateConfig, forceRefresh = false): void {
-        if(viewState.zoom === this._provider.current.defaultConfig.viewState.zoom) return;
-
-        if(forceRefresh) {
-            this._provider.current.internalConfig.viewState = viewState;
-            this._externalHandlers.onMapReady?.(viewState);
-            return;
-        }
-
-        if(this._provider.current.internalConfig.viewState.zoom === this._provider.current.defaultConfig.viewState.zoom) {
-            this._provider.current.internalConfig.viewState = viewState;
-            this._externalHandlers.onMapReady?.(viewState);
+            this._provider.current.resetViewState();
         }
     }
 

@@ -9,3 +9,9 @@ export * from "./provider/provider";
 export * from "./provider/camera";
 export * from "./provider/config";
 export * from "./provider/gl";
+
+
+export interface IMapInitializationParams {
+    resetViewStateOnMount: boolean;
+    detachOnUnmount: boolean;
+}

@@ -1,6 +1,7 @@
 import { BasePoint, Point } from "../point/point";
 
 export interface IMapStore {
+    isViewStateSynced: boolean;
     /**
      * An array of points that are displayed on the map.
      */
@@ -15,6 +16,7 @@ export interface IMapStore {
      */
     selectedPoint: string | null;
 
+    setViewStateSynced(synced: boolean): void;
     setPoints(points: Point<BasePoint>[]): void;
     setPointsVisible(visible: boolean): void;
     setSelectedPoint(pointId: string | null): void;

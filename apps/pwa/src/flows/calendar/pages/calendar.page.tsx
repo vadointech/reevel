@@ -21,7 +21,7 @@ export namespace CalendarPage {
 }
 
 export async function CalendarPage() {
-    const session = await getSession();
+    const { user } = await getSession();
 
     const today = format(new Date(), "d MMM");
 
@@ -155,7 +155,7 @@ export async function CalendarPage() {
                     href={"/profile"}
                     className={styles.header__avatar}
                 >
-                    <Avatar image={session?.profile?.picture} />
+                    <Avatar image={user?.profile?.picture} />
                 </Link>
                 <h2 className={styles.header__title}>
                     Today, { today }

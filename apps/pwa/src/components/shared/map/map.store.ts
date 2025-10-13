@@ -2,6 +2,8 @@ import { action, makeObservable, observable } from "mobx";
 import { BasePoint, Point, IMapStore } from "./types";
 
 export class MapStore implements IMapStore {
+    isViewStateSynced: boolean = false;
+  
     points: Point<BasePoint>[] = [];
     pointsVisible: boolean = true;
     selectedPoint: string | null = null;
@@ -16,6 +18,10 @@ export class MapStore implements IMapStore {
             setPointsVisible: action,
             setSelectedPoint: action,
         });
+    }
+
+    setViewStateSynced(state: boolean) {
+        this.isViewStateSynced = state;
     }
 
     setPoints(points: Point<BasePoint>[]) {

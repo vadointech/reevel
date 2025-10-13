@@ -54,8 +54,7 @@ $transition-func: cubic-bezier(0.34, 1.56, 0.64, 1);
 
     &_selected {
         & > div {
-            scale: 2.5;
-            transform: translateY(mixins.rem(-12));
+            transform: translateY(-100%) scale(2.5);
         }
         & > label {
             transform: translate(-50%, mixins.rem(12));

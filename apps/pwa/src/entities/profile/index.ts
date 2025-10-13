@@ -1,4 +1,5 @@
 import { InterestEntity } from "@/entities/interests";
+import { CitiesEntity } from "@/entities/cities";
 
 export type UserProfileEntity = {
     id: string;
@@ -7,7 +8,7 @@ export type UserProfileEntity = {
     bio?: string;
     picture?: string;
     completed: number;
-    location?: ProfileLocationsEntity;
+    location?: CitiesEntity;
     interests?: ProfileInterestsEntity[];
 };
 
@@ -15,18 +16,4 @@ export type ProfileInterestsEntity = {
     profileId: string;
     interestId: string;
     interest: InterestEntity;
-};
-
-export type ProfileLocationsEntity = {
-    id: string;
-    profileId: string;
-    placeName: string;
-    center: {
-        type: "Point";
-        coordinates: [number, number];
-    }
-    bbox: {
-        type: "Polygon";
-        coordinates: number[][][]
-    }
 };

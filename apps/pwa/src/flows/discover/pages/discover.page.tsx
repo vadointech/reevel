@@ -16,8 +16,8 @@ export async function DiscoverPage() {
         fallback: [],
     });
 
+    let eventPointsInit: EventPointEntity[] = [];
     let cityHighlights: EventEntity[] = [];
-    let eventInit: EventPointEntity[] = [];
 
     const city = await getDefaultCity();
 
@@ -45,17 +45,18 @@ export async function DiscoverPage() {
             }),
         ]);
 
-        eventInit = nearbyEventsResponse.data;
+        eventPointsInit = nearbyEventsResponse.data;
         cityHighlights = highlightsResponse.data.data;
     }
 
     return (
         <>
             <DiscoverScreen
-                eventsInit={eventInit}
+                cityInit={city}
+                eventPointsInit={eventPointsInit}
                 interestsInit={interests}
-                collectionsInit={interests}
-                cityHighlights={cityHighlights}
+                interestCollectionsInit={interests}
+                highlightsInit={cityHighlights}
                 collection={DiscoverStaticCollections.Root}
             />
             <Navigation currentPage={NavigationRoutes.Discover} />

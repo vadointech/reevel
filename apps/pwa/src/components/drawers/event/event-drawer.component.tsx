@@ -38,7 +38,7 @@ export const EventDrawerContent = ({ children, event }: EventDrawerContent.Props
         [config.heroSectionOffset, 0],
     );
 
-    const { handleClose } = useEventDrawer();
+    const { handleClose } = useEventDrawer(event);
 
     return (
         <>

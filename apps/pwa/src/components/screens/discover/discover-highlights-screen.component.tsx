@@ -5,7 +5,10 @@ import { EventEntity, EventPointEntity } from "@/entities/event";
 import { DiscoverStaticCollections } from "@/features/discover/config";
 import { InterestEntity } from "@/entities/interests";
 import { useDiscoverMap } from "@/features/discover/hooks";
-import { GetNearbyEventsQuery } from "@/features/discover/queries";
+import {
+    GetHighlightsQuery,
+    getMapEventsQueryBuilder,
+} from "@/features/discover/queries";
 
 export namespace DiscoverHighlightsScreen {
     export type Props = {
@@ -28,19 +31,21 @@ export const DiscoverHighlightsScreen = ({
         handlePickInterestFilter,
     } = useDiscoverMap({
         collection,
-        eventsInit: eventPointsInit,
-        queryBuilder: GetNearbyEventsQuery,
+        queryBuilder: getMapEventsQueryBuilder(eventsInit, GetHighlightsQuery.queryKey()),
+        eventPointsInit: eventPointsInit,
     });
 
     return (
-        <DiscoverCollectionDrawer
-            events={eventsInit}
-            interests={interestsInit}
-            collection={collection}
-            onEventSlideChange={handleEventSlideChange}
-            onEventInterestPick={handlePickInterestFilter}
-        >
-            Don't Miss in Vinnitsa
-        </DiscoverCollectionDrawer>
+        <>
+            <DiscoverCollectionDrawer
+                events={eventsInit}
+                interests={interestsInit}
+                collection={collection}
+                onEventSlideChange={handleEventSlideChange}
+                onEventInterestPick={handlePickInterestFilter}
+            >
+                Don't Miss in Vinnitsa
+            </DiscoverCollectionDrawer>
+        </>
     );
 };

@@ -20,7 +20,6 @@ export class MapboxProvider<T extends MapRef = MapRef> extends MapRootProvider i
     initialize(map?: RefObject<T>): void {
         if(map?.current) {
             this.mapRef.current = map.current;
-            this.resetViewState();
         }
     }
 

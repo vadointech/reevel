@@ -3,13 +3,16 @@
 import { observer } from "mobx-react-lite";
 import { InterestButton } from "@/components/ui";
 
+import { useQuery } from "@tanstack/react-query";
+import { useSessionContext } from "@/features/session";
+import { GetUserInterestsQuery } from "@/features/interests/queries";
 import { useDiscoverContext } from "@/features/discover";
 
 import { InterestEntity } from "@/entities/interests";
 
 export namespace DiscoverInterestsList {
     export type Data = {
-        interests: InterestEntity[]
+        interestsInit: InterestEntity[]
     };
     export type Props = Data & {
         onEventInterestPick: (pointId: string | null) => void;
@@ -17,12 +20,23 @@ export namespace DiscoverInterestsList {
 }
 
 export const DiscoverInterestsList = observer(({
-    interests,
+    interestsInit,
     onEventInterestPick,
 }: DiscoverInterestsList.Props) => {
     const discover = useDiscoverContext();
+    const session = useSessionContext();
 
-    return interests.map(interest => (
+    const { data: interests, isFetching } = useQuery({
+        enabled: session.store.authenticated,
+        placeholderData: interestsInit,
+        ...GetUserInterestsQuery(),
+    });
+
+    if(isFetching) {
+        return "Fetching...";
+    }
+
+    return interests?.map(interest => (
         <InterestButton
             key={interest.slug}
             icon={interest.icon}

@@ -21,8 +21,6 @@ export class CitiesService {
             limit = 10,
         } = input;
 
-        console.log(mapboxId);
-
         if(mapboxId) {
             const city = await this.citiesRepository.findOneBy({ mapboxId });
             if(!city) {

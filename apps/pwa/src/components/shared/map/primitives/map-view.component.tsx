@@ -6,6 +6,8 @@ import { BasePoint, Point, IMapHandlers, MapInternalConfig } from "../types";
 
 export namespace MapView {
     export type Props<P extends BasePoint> = ComponentProps<"div"> & Partial<IMapHandlers> & {
+        resetViewStateOnMount?: boolean;
+        detachOnUnmount?: boolean;
         points?: Point<P>[];
         viewState?: Partial<MapInternalConfig.IViewStateConfig>;
     };
@@ -16,6 +18,8 @@ export const MapView = ({
 
     points,
     viewState,
+    resetViewStateOnMount = true,
+    detachOnUnmount = true,
 
     onMapReady,
     onMoveEnd,
@@ -40,11 +44,17 @@ export const MapView = ({
                     onPointSelect,
                     onViewportChange,
                 },
+                params: {
+                    resetViewStateOnMount,
+                    detachOnUnmount,
+                },
             },
         );
 
         return () => {
-            controller.current.detachMap();
+            if(detachOnUnmount) {
+                controller.current.detachMap();
+            }
         };
     }, [controller]);
 

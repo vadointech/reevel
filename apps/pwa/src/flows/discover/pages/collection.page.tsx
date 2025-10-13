@@ -1,6 +1,8 @@
 import { DiscoverCollectionScreen } from "@/components/screens/discover";
 import { DiscoverStaticCollections } from "@/features/discover/config";
 import { eventsWithPaginationFallback, getEvents } from "@/api/discover";
+import { eventEntityToEventPointEntity } from "@/features/event/mappers";
+import { extractUniqueInterests } from "@/features/discover/utils";
 
 export namespace DiscoverCollectionPage {
     export type Props = {
@@ -16,10 +18,15 @@ export async function DiscoverCollectionPage({ collectionId }: DiscoverCollectio
         fallback: eventsWithPaginationFallback,
     });
 
+    const eventPointsInit = events.data.map(eventEntityToEventPointEntity);
+
+    const interests = extractUniqueInterests(events.data);
+
     return (
         <DiscoverCollectionScreen
-            events={events.data}
-            interests={[]}
+            eventsInit={events.data}
+            interestsInit={interests}
+            eventPointsInit={eventPointsInit}
             collection={DiscoverStaticCollections.Root + `/${collectionId}`}
         >
             Discover

@@ -5,26 +5,21 @@ export interface IQueryBuilderMethods<TInput, TData, TInjected = null> {
     queryFunc:
     TInjected extends object ?
         TInput extends null ?
-            (input: TInjected) => Promise<TData> :
-            (input: TInput & TInjected) => Promise<TData> :
+            (input: TInjected) => Promise<TData> : (input: TInput & TInjected) => Promise<TData> :
         TInput extends null ?
-            () => Promise<TData> :
-            (input: TInput) => Promise<TData>;
+            () => Promise<TData> : (input: TInput) => Promise<TData>;
 }
-
-export type QueryBuilderQueryFunc<TInput, TData> =
-  TInput extends null ?
-      () => FetchQueryOptions<TData> :
-      (input: TInput) => FetchQueryOptions<TData>;
 
 export type QueryBuilderQuery<
     TInput,
     TData = unknown,
     TMethods extends IQueryBuilderMethods<TInput, TData> | null = IQueryBuilderMethods<TInput, TData>,
 > = (
-  TMethods extends IQueryBuilderMethods<TInput, TData>
-      ? ((input: TInput) => FetchQueryOptions<TData>) & TMethods
-      : ((input: TInput) => FetchQueryOptions<TData>)
+  TInput extends null ?
+      TMethods extends IQueryBuilderMethods<TInput, TData> ?
+      (() => FetchQueryOptions<TData>) & TMethods : (() => FetchQueryOptions<TData>) :
+      TMethods extends IQueryBuilderMethods<TInput, TData>
+          ? ((input: TInput) => FetchQueryOptions<TData>) & TMethods : ((input: TInput) => FetchQueryOptions<TData>)
 );
 
 export type QueryBuilder<

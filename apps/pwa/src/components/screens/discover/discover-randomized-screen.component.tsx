@@ -5,7 +5,7 @@ import { EventEntity, EventPointEntity } from "@/entities/event";
 import { DiscoverStaticCollections } from "@/features/discover/config";
 import { useDiscoverMap } from "@/features/discover/hooks";
 import { InterestEntity } from "@/entities/interests";
-import { GetNearbyEventsQuery } from "@/features/discover/queries";
+import { getMapEventsQueryBuilder, GetRandomizedEventsQuery } from "@/features/discover/queries";
 
 export namespace DiscoverRandomizedScreen {
     export type Props = {
@@ -28,19 +28,21 @@ export const DiscoverRandomizedScreen = ({
         handlePickInterestFilter,
     } = useDiscoverMap({
         collection,
-        eventsInit: eventPointsInit,
-        queryBuilder: GetNearbyEventsQuery,
+        queryBuilder: getMapEventsQueryBuilder(eventsInit, GetRandomizedEventsQuery.queryKey()),
+        eventPointsInit: eventPointsInit,
     });
 
     return (
-        <DiscoverCollectionDrawer
-            events={eventsInit}
-            interests={interestsInit}
-            collection={collection}
-            onEventSlideChange={handleEventSlideChange}
-            onEventInterestPick={handlePickInterestFilter}
-        >
-            Randomized
-        </DiscoverCollectionDrawer>
+        <>
+            <DiscoverCollectionDrawer
+                events={eventsInit}
+                interests={interestsInit}
+                collection={collection}
+                onEventSlideChange={handleEventSlideChange}
+                onEventInterestPick={handlePickInterestFilter}
+            >
+                Randomized
+            </DiscoverCollectionDrawer>
+        </>
     );
 };

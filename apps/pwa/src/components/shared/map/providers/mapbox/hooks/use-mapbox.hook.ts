@@ -39,7 +39,6 @@ export function useMapbox(
 
     const handleMapMoveEnd = useCallback(() => {
         const viewState = provider.current.getViewState();
-        controller.current.syncViewState(viewState);
         controller.current.externalHandlers.onMoveEnd?.(viewState);
     }, []);
 

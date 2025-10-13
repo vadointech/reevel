@@ -1,41 +1,28 @@
-import { MapProviderGL } from "@/components/shared/map/types";
 import { EventEntity } from "@/entities/event";
 import { QueryBuilderQuery } from "@/lib/react-query";
-import { getRandomizedEvents } from "@/api/event/server";
+import { GetRandomizedEvents, getRandomizedEvents } from "@/api/discover";
 
-export namespace GetRandomizedEventsQueryBuilder {
-    export type TInput = {
-        center: MapProviderGL.LngLat,
-        radius: number,
-        regionId?: string,
-        filter?: string,
-    };
+export namespace GetRandomizedEventsQuery {
+    export type TInput = GetRandomizedEvents.TParams;
     export type TOutput = EventEntity[];
 }
 
-export const GetRandomizedEventsQueryBuilder: QueryBuilderQuery<GetRandomizedEventsQueryBuilder.TInput, GetRandomizedEventsQueryBuilder.TOutput> = (
+export const GetRandomizedEventsQuery: QueryBuilderQuery<GetRandomizedEventsQuery.TInput, GetRandomizedEventsQuery.TOutput> = (
     input,
 ) => {
     return {
-        queryKey: GetRandomizedEventsQueryBuilder.queryKey([input.regionId]),
-        queryFn: () => GetRandomizedEventsQueryBuilder.queryFunc(input),
+        queryKey: GetRandomizedEventsQuery.queryKey([input.cityId, input.interestId, input.limit, input.page]),
+        queryFn: () => GetRandomizedEventsQuery.queryFunc(input),
     };
 };
 
-GetRandomizedEventsQueryBuilder.queryFunc = (input) => {
-    return getRandomizedEvents({
-        take: input.filter ? 20 : 10,
-        interests: input.filter ? [input.filter] : undefined,
-        circle: {
-            radius: input.radius,
-            center: {
-                longitude: input.center.lng,
-                latitude: input.center.lat,
-            },
-        },
-    });
+GetRandomizedEventsQuery.queryKey = (params = []) => {
+    return ["events/randomized/", ...params.filter(Boolean)];
 };
 
-GetRandomizedEventsQueryBuilder.queryKey = (params = []) => {
-    return ["events/collections/randomized/", ...params];
+GetRandomizedEventsQuery.queryFunc = (input) => {
+    return getRandomizedEvents({
+        params: input,
+        fallback: [],
+    }).then(response => response.data);
 };
