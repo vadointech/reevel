@@ -1,4 +1,4 @@
-import { AnimationControls, BoundingBox, DragControls, PanInfo } from "motion/react";
+import { LegacyAnimationControls as AnimationControls, BoundingBox, DragControls, PanInfo } from "motion/react";
 import { BottomSheetSnapPointController } from "./snap-point.controller";
 
 import {

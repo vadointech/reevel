@@ -1,5 +1,5 @@
 import { useEffect, useRef } from "react";
-import { AnimationControls, useAnimation } from "motion/react";
+import { LegacyAnimationControls as AnimationControls, useAnimation } from "motion/react";
 
 export function useMotionRef<Ref, P = unknown>(
     params: P,

@@ -89,7 +89,7 @@ export const Button = ({
                 href={href}
                 target={target}
                 className={buttonClasses}
-                {...props as ComponentProps<"a">}
+                {...props as Omit<ComponentProps<"a">, "popover">}
             >
                 { buttonContent }
             </Link>

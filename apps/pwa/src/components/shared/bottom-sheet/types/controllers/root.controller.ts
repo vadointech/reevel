@@ -1,4 +1,4 @@
-import { AnimationControls, BoundingBox, DragControls, PanInfo } from "motion/react";
+import { LegacyAnimationControls as AnimationControls, BoundingBox, DragControls, PanInfo } from "motion/react";
 import { IBottomSheetInternalConfig } from "../root-config";
 import { IBottomSheetStore } from "@/components/shared/bottom-sheet/types";
 

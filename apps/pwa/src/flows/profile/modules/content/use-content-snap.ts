@@ -1,4 +1,4 @@
-import { AnimationControls, PanInfo } from "motion/react";
+import { LegacyAnimationControls as AnimationControls, PanInfo } from "motion/react";
 import { useEffect, useRef } from "react";
 
 import { profileContentDragYPx } from "../motion-values";
