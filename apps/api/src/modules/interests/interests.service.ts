@@ -1,4 +1,4 @@
-import { Injectable } from "@nestjs/common";
+import { Injectable, NotFoundException } from "@nestjs/common";
 import { InterestsEntity } from "./entities/interests.entity";
 import { In } from "typeorm";
 import { InterestsRepository } from "./repositories/interests.repository";
@@ -7,11 +7,19 @@ import { InterestsRelationsRepository } from "@/modules/interests/repositories/i
 
 @Injectable()
 export class InterestsService {
-
     constructor(
         private readonly interestsRepository: InterestsRepository,
         private readonly interestsRelationsRepository: InterestsRelationsRepository,
-    ) { }
+    ) {}
+
+    async getInterestById(id: string) {
+        const interest = await this.interestsRepository.findOneBy({ slug: id });
+        if(!interest) {
+            throw new NotFoundException();
+        }
+
+        return interest;
+    }
 
     async getInitialInterests(): Promise<InterestsEntity[]> {
         const slugs = [

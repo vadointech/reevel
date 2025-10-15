@@ -11,7 +11,7 @@ const staticRoutes = [
     "/discover/highlights",
 ];
 
-const lastModified = new Date("2025-09-30");
+const lastModified = new Date("2025-10-15");
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     const city = await getDefaultCity();

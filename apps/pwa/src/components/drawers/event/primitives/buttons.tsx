@@ -17,13 +17,16 @@ import { PropsWithChildren } from "react";
 
 import { EventMoreActionsDrawer } from "./more-drawer.componsent";
 import { useEventActions } from "@/features/event/hooks";
+import { observer } from "mobx-react-lite";
+import { useSessionContext } from "@/features/session";
 
 
 export namespace EventDrawerHeroButtons {
     export type Props = EventEntity;
 }
 
-export const EventDrawerHeroButtons = (event: EventDrawerHeroButtons.Props) => {
+export const EventDrawerHeroButtons = observer((event: EventDrawerHeroButtons.Props) => {
+    const session = useSessionContext();
     const {
         handleShareEvent,
     } = useEventActions(event);
@@ -70,7 +73,7 @@ export const EventDrawerHeroButtons = (event: EventDrawerHeroButtons.Props) => {
                                     Hosting
                                 </ViewInCalendarButton>
                             ) : (
-                                <JoinEventButton eventId={event.id} />
+                                session.store.authenticated && <JoinEventButton eventId={event.id} />
                             )
                     }
                     <button
@@ -157,7 +160,7 @@ export const EventDrawerHeroButtons = (event: EventDrawerHeroButtons.Props) => {
                 </>
             );
     }
-};
+});
 
 const JoinEventButton = ({ eventId }: { eventId: string }) => {
     const router = useRouter();

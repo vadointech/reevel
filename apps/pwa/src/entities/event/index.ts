@@ -56,11 +56,6 @@ export type EventTicketEntity = {
     user: UserEntity;
 };
 
-export type EventCollectionEntity = {
-    events: EventEntity[];
-    interests: InterestEntity[];
-};
-
 export type EventPointEntity = {
     id: string;
     type: "Feature";

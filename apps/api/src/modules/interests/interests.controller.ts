@@ -28,4 +28,11 @@ export class InterestsController {
     ) {
         return this.interestsService.getRelatedInterests(slug);
     }
+
+    @Get(":id")
+    async getInterestById(
+        @Param("id") id: string,
+    ) {
+        return this.interestsService.getInterestById(id);
+    }
 }
