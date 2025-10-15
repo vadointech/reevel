@@ -7,18 +7,22 @@ import { InterestsCategoriesRepository } from "@/modules/interests/repositories/
 import { EventSeedService } from "@/modules/seed/services/event.seed.service";
 import { EventRepository } from "@/modules/event/repositories/event.repository";
 import { EventInterestsRepository } from "../event/repositories/event-interests.repository";
+import { CitiesRepository } from "@/modules/cities/repositories";
+import { CitiesSeedService } from "@/modules/seed/services/cities-seed.service";
 
 @Module({
     controllers: [SeedController],
     providers: [
         InterestsSeedService,
         EventSeedService,
+        CitiesSeedService,
 
         InterestsRepository,
         EventInterestsRepository,
         InterestsRelationsRepository,
         InterestsCategoriesRepository,
         EventRepository,
+        CitiesRepository,
     ],
 })
 export class SeedModule { }
