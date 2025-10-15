@@ -4,6 +4,10 @@ import { EventAttendeePublicViewPage } from "@/flows/event-view/pages";
 import { getEvent } from "@/api/event/server";
 import { defaultMetadata } from "@/config/metadata.config";
 import { BASE_URL } from "@/config/env.config";
+import { getDefaultCity } from "@/api/discover/server";
+import { EventEntity } from "@/entities/event";
+import { getHighlights } from "@/api/discover";
+import { paginationPlaceholder } from "@/entities/placeholders";
 
 export const revalidate = 86400;
 
@@ -55,6 +59,27 @@ export async function generateMetadata({ params }: PropsWithParams<{ slug: strin
             ],
         },
     };
+}
+
+export async function generateStaticParams() {
+    const city = await getDefaultCity();
+
+    let events: EventEntity[] = [];
+
+    if(city) {
+        const eventsResponse = await getHighlights({
+            params: {
+                cityId: city.id,
+            },
+            fallback: {
+                data: [],
+                pagination: paginationPlaceholder,
+            },
+        });
+        events = eventsResponse.data.data;
+    }
+
+    return events.map(event => ({ slug: event.id }));
 }
 
 export default async function Page({ params }: PropsWithParams<{ slug: string }>) {
