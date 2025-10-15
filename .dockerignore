@@ -1,8 +1,7 @@
 .git
 .github
 
-apps/api/.env
-../../.env.api
+.env*
 
 node_modules
 **/node_modules
@@ -18,6 +17,7 @@ dist
 **/dist
 .next
 build
+tsconfig.tsbuildinfo
 
 .idea
 .vscode

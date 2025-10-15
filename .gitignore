@@ -43,6 +43,7 @@ yarn-error.log*
 # Build output
 *.jsx
 *.jsx.map
+tsconfig.tsbuildinfo
 
 # Misc
 .DS_Store
