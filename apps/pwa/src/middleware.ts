@@ -76,8 +76,8 @@ export default async function(request: NextRequest) {
         }
 
         return intlMiddleware(request);
-    } catch(error: any) {
-        console.log("Access token verification failed: ", error.message);
+    } catch {
+        // console.log("Access token verification failed: ", error.message);
 
         const refreshToken = request.cookies.get(AuthJwtTokens.RefreshToken);
 
@@ -96,8 +96,8 @@ export default async function(request: NextRequest) {
 
             setAuthJwtTokens(response, tokensResponse);
             return response;
-        } catch(error: any) {
-            console.log("Refresh token verification failed: ", error.message);
+        } catch {
+            // console.log("Refresh token verification failed: ", error.message);
 
             const response = isLoginRoute ?
                 intlMiddleware(request) :

@@ -1,7 +1,7 @@
 "use client";
 
 import { observer } from "mobx-react-lite";
-import { InterestButton } from "@/components/ui";
+import { InterestButton, InterestButtonSkeleton } from "@/components/ui";
 
 import { useQuery } from "@tanstack/react-query";
 import { useSessionContext } from "@/features/session";
@@ -32,8 +32,12 @@ export const DiscoverInterestsList = observer(({
         ...GetUserInterestsQuery(),
     });
 
-    if(isFetching) {
-        return "Fetching...";
+    const isLoading = isFetching || session.store.loading;
+
+    if(isLoading) {
+        return [...new Array(3).keys()].map((item) => (
+            <InterestButtonSkeleton key={`interest-button-skeleton-${item}`} />
+        ));
     }
 
     return interests?.map(interest => (

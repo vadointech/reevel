@@ -1,6 +1,6 @@
 "use client";
 
-import { PropsWithChildren } from "react";
+import { PropsWithChildren, useEffect } from "react";
 import { useMobxStore } from "@/lib/mobx";
 import { useSingleton } from "@/hooks";
 
@@ -8,18 +8,17 @@ import { SessionStore } from "./session.store";
 import { SessionController } from "./session.controller";
 import { SessionContext } from "./session.context";
 
-import { SessionStoreInit } from "./types";
-
 export namespace SessionProvider {
-    export type Props =  PropsWithChildren<Partial<SessionStoreInit>>;
+    export type Props =  PropsWithChildren;
 }
 
 export const SessionProvider = ({
     children,
-    ...initStore
 }: SessionProvider.Props) => {
-    const store = useMobxStore(SessionStore, initStore);
+    const store = useMobxStore(SessionStore);
     const controller = useSingleton(SessionController, store);
+
+    useEffect(() => controller.initSession(), []);
 
     return (
         <SessionContext.Provider

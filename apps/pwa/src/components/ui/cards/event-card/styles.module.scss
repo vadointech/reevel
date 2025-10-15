@@ -1,6 +1,7 @@
 @use "@/theme/mixins";
 @use "@/theme/colors";
 @use "@/theme/typography";
+@use "@/theme/skeleton";
 
 .card {
     flex-shrink: 0;
@@ -58,5 +59,31 @@
                 margin-bottom: mixins.rem(6);
             }
         }
+    }
+}
+
+
+.skeleton {
+    @include skeleton.base;
+
+    &__indicator {
+        @include skeleton.base;
+        width: 40%;
+        height: mixins.rem(26);
+        background-color: colors.$secondary-muted-highlight;
+    }
+
+    &__location {
+        @include skeleton.typography("xxs");
+        background-color: colors.$secondary-muted-highlight;
+        width: 60%;
+    }
+
+    &__title {
+        @include skeleton.typography("lg");
+        margin-top: mixins.rem(6);
+        margin-bottom: mixins.rem(8);
+        background-color: colors.$secondary-muted-highlight;
+        width: 90%;
     }
 }

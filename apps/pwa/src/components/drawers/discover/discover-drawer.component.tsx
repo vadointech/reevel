@@ -16,11 +16,10 @@ import { EventEntity } from "@/entities/event";
 import { InterestEntity } from "@/entities/interests";
 
 import { Link } from "@/i18n/routing";
-import { DiscoverInterestsList } from "@/flows/discover/modules/interests-list";
 import { useSessionContext } from "@/features/session";
 import { DiscoverStaticCollections } from "@/features/discover/config";
 import { useStandaloneContext } from "@/providers/standalone.provider";
-import { HighlightsCollectionSlider, InterestsCollectionSlider } from "@/components/drawers/discover/components";
+import { HighlightsCollectionSlider, InterestsCollectionSlider, DiscoverInterestsList } from "./components";
 import { CitiesEntity } from "@/entities/cities";
 
 import styles from "./styles/discover-drawer.module.scss";

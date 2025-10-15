@@ -2,14 +2,25 @@ import { NextRequest, NextResponse } from "next/server";
 
 import { authCookiesParams, AuthJwtTokens, IAuthJwtTokens, REFRESH_TOKEN_URL } from "@/config/auth.config";
 
-export async function refreshTokens(request: NextRequest, refreshToken: string): Promise<IAuthJwtTokens | null> {
+export function apiRequest(url: string | URL, request: RequestInit, token?: string) {
     const headers = new Headers(request.headers);
-    headers.set("Authorization", `Bearer ${refreshToken}`);
+    if(token) {
+        headers.set("Authorization", `Bearer ${token}`);
+    }
 
+    return fetch(url, {
+        ...request,
+        body: request.method !== "GET" && request.method !== "HEAD" ? request.body : undefined,
+        headers,
+    });
+}
+
+export async function refreshTokens(request: NextRequest, refreshToken: string): Promise<IAuthJwtTokens | null> {
     try {
-        const response = await fetch(REFRESH_TOKEN_URL, {
+        const response = await apiRequest(REFRESH_TOKEN_URL, {
+            ...request,
             method: "POST",
-        });
+        }, refreshToken);
 
         if(!response.ok) {
             return null;

@@ -1,5 +1,6 @@
 @use '@/theme/mixins';
 @use '@/theme/colors';
+@use '@/theme/skeleton';
 
 .avatar {
     height: 100%;
@@ -51,4 +52,10 @@
             }
         }
     }
+}
+
+.skeleton {
+    @include skeleton.base;
+    background-color: colors.$secondary-muted-highlight;
+    border-radius: 50%;
 }

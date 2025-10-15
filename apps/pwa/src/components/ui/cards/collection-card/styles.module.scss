@@ -1,6 +1,7 @@
 @use "@/theme/mixins";
 @use "@/theme/typography";
 @use "@/theme/colors";
+@use "@/theme/skeleton";
 
 .card {
     flex-shrink: 0;
@@ -21,7 +22,7 @@
 
     &__info {
         &__title {
-            @include typography.font("base", 500);
+            @include typography.font("6xl", 500);
             font-size: mixins.rem(42);
             text-wrap: nowrap;
             line-height: 1;
@@ -93,4 +94,26 @@
         text-wrap: nowrap;
         color: colors.$foreground;
     }
-}   
+}
+
+.skeleton {
+    @include skeleton.base;
+    &__title {
+        @include skeleton.typography("4xl");
+        margin-bottom: mixins.rem(12);
+        background-color: colors.$secondary-muted-highlight;
+        width: 90%;
+    }
+
+    &__location {
+        @include skeleton.typography;
+        background-color: colors.$secondary-muted-highlight;
+        width: 70%;
+    }
+
+    &__detailed {
+        @include skeleton.typography("sm");
+        background-color: colors.$secondary-muted-highlight;
+        width: 40%;
+    }
+}

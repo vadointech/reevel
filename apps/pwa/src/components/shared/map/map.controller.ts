@@ -11,10 +11,6 @@ import {
 } from "./types";
 import { MAP_MOTION_TIMEOUT_MS } from "@/components/shared/map/map.config";
 
-type Param = {
-
-};
-
 export class MapRootController implements IMapRootController {
     _externalHandlers: Partial<IMapHandlers> = {};
 
@@ -138,8 +134,6 @@ export class MapRootController implements IMapRootController {
     }
 
     async replacePoints(points: Point<BasePoint>[], duration: number = MAP_MOTION_TIMEOUT_MS): Promise<void> {
-        if(points.length === 0) return;
-
         this._store.setPointsVisible(false);
 
         await new Promise((resolve) => setTimeout(resolve, duration));

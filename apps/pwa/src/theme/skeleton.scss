@@ -1,0 +1,23 @@
+@use "sass:map";
+@use "mixins";
+@use "colors";
+@use "typography";
+
+@keyframes pulse {
+    50% {
+        opacity: 0.5;
+    }
+}
+
+@mixin base {
+    animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+    background-color: colors.$secondary-muted;
+}
+
+@mixin typography($font-size-key: "base") {
+    $font-data: map.get(typography.$font-size, $font-size-key);
+    width: 100%;
+    height: map.get($font-data, "height");
+    border-radius: mixins.rem(8);
+    @include base;
+}

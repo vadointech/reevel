@@ -6,7 +6,6 @@ import styles from "./styles.module.scss";
 import cx from "classnames";
 
 export namespace Section {
-    export type Variant = Button.Variant;
     export type Data = {
         title?: string;
         description?: string;

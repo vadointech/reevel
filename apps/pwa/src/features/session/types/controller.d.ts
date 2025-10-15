@@ -6,4 +6,5 @@ export interface ISessionController {
     setSession(session: Maybe<UserEntity>): void;
     updateSession(session: DeepPartial<UserEntity>): void;
     cleanSession(): Promise<void>;
+    initSession(): void;
 }

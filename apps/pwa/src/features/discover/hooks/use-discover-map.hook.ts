@@ -56,14 +56,13 @@ export function useDiscoverMap({ collection, eventPointsInit, queryBuilder }: Pa
             discover.store.setPointToPreview(null);
 
             replaceResponse(eventPointsInit);
-            return;
-        }
-
-        if(!discover.store.interestFilter) {
-            if(map.store.isViewStateSynced) {
-                appendResponse(eventPointsInit);
-            } else {
-                replaceResponse(eventPointsInit);
+        } else {
+            if(!discover.store.interestFilter) {
+                if(map.store.isViewStateSynced) {
+                    appendResponse(eventPointsInit);
+                } else {
+                    replaceResponse(eventPointsInit);
+                }
             }
         }
 
@@ -71,7 +70,7 @@ export function useDiscoverMap({ collection, eventPointsInit, queryBuilder }: Pa
             preventMapUpdate.current = true;
             map.provider.current.resetViewState();
         }
-    }, []);
+    }, [collection]);
 
     const handleDrawerSnapPointChange = useCallback((snapIndex: number) => {
         preventMapUpdate.current = true;

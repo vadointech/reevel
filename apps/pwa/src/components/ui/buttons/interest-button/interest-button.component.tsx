@@ -25,8 +25,6 @@ const interestButton = cva(styles.button, {
 });
 
 export namespace InterestButton {
-    export type Variant = "default" | "text" | "primary" | "outline";
-
     export type Props = ComponentProps<"div"> & VariantProps<typeof interestButton> & {
         icon?: string | ReactNode
     };

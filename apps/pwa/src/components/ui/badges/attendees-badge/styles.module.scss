@@ -1,6 +1,7 @@
 @use "@/theme/colors";
 @use "@/theme/typography";
 @use "@/theme/mixins";
+@use "@/theme/skeleton";
 
 .section {
     display: flex;
@@ -48,5 +49,30 @@
                 }
             }
         }
+    }
+}
+
+.skeleton {
+    @include skeleton.base;
+    border-radius: unset;
+    display: flex;
+    align-items: center;
+    column-gap: mixins.rem(6);
+
+    &__avatar {
+        height: 100%;
+        aspect-ratio: 1;
+        flex-shrink: 0;
+        border-radius: 50%;
+        background-color: colors.$secondary-muted-highlight;
+    }
+
+    &__more {
+        height: 100%;
+        position: relative;
+        z-index: 1;
+        width: mixins.rem(70);
+        border-radius: mixins.rem(50);
+        background-color: colors.$secondary-muted-highlight;
     }
 }

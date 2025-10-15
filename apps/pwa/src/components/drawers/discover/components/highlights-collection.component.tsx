@@ -4,13 +4,14 @@ import { useMemo } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { useSessionContext } from "@/features/session";
 import { GetHighlightsQuery } from "@/features/discover/queries";
-import { ScrollSection } from "@/components/sections";
+import { ScrollSection, ScrollSectionSkeleton } from "@/components/sections";
 import { DiscoverStaticCollections } from "@/features/discover/config";
 import { Link } from "@/i18n/routing";
-import { EventCard } from "@/components/ui";
+import { EventCard, EventCardSkeleton } from "@/components/ui";
 import { EventEntity } from "@/entities/event";
 import { CitiesEntity } from "@/entities/cities";
 import { paginationPlaceholder } from "@/entities/placeholders";
+import { observer } from "mobx-react-lite";
 
 import styles from "../styles/discover-drawer.module.scss";
 import cx from "classnames";
@@ -22,7 +23,7 @@ export namespace HighlightsCollectionSlider {
     };
 }
 
-export const HighlightsCollectionSlider = ({
+export const HighlightsCollectionSlider = observer(({
     cityInit,
     eventsInit,
     className,
@@ -48,8 +49,21 @@ export const HighlightsCollectionSlider = ({
         }),
     });
 
-    if(isFetching) {
-        return "Fetching...";
+    const isLoading = isFetching || session.store.loading;
+
+    if(isLoading) {
+        return (
+            <ScrollSectionSkeleton
+                title
+                className={cx(styles.drawer__gap, className)}
+            >
+                {
+                    [...new Array(3).keys()].map((item) => (
+                        <EventCardSkeleton key={`event-card-skeleton-${item}`} size={"small"} />
+                    ))
+                }
+            </ScrollSectionSkeleton>
+        );
     }
 
     return (
@@ -77,4 +91,4 @@ export const HighlightsCollectionSlider = ({
             }
         </ScrollSection>
     );
-};
+});

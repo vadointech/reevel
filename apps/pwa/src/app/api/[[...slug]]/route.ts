@@ -1,16 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
-import { cookies } from "next/headers";
 import { AuthJwtTokens } from "@/config/auth.config";
-import { deleteAuthJwtTokens, refreshTokens, setAuthJwtTokens } from "@/auth";
+import { apiRequest, deleteAuthJwtTokens, refreshTokens, setAuthJwtTokens } from "@/auth";
 import { API_URL } from "@/config/env.config";
-
-function apiRequest(url: string | URL, request: NextRequest, init: RequestInit = {}) {
-    return fetch(url, {
-        body: request.method !== "GET" && request.method !== "HEAD" ? request.clone().body : undefined,
-        credentials: "omit",
-        ...init,
-    });
-}
+import { cookies } from "next/headers";
 
 async function handler(request: NextRequest) {
     const cookieStore = await cookies();
@@ -22,34 +14,28 @@ async function handler(request: NextRequest) {
         url.searchParams.append(key, value);
     });
 
-    const headers = new Headers(request.headers);
-    if(accessToken) {
-        headers.set("Authorization", `Bearer ${accessToken.value}`);
-    }
-
     try {
-        let response = await apiRequest(url, request);
+        const response = await apiRequest(url, request, accessToken?.value);
 
         if(response.status === 401 && refreshToken) {
             const tokensResponse = await refreshTokens(request, refreshToken.value);
 
-            let finalResponse = new NextResponse();
-
             if(!tokensResponse) {
-                deleteAuthJwtTokens(finalResponse);
-                return new NextResponse(response.body, { status: 401 });
+                const response = new NextResponse(null, { status: 401 });
+                deleteAuthJwtTokens(response);
+                return response;
             }
 
-            response = await apiRequest(url, request);
+            const response = await apiRequest(url, request, accessToken?.value);
 
-            finalResponse = new NextResponse(response.body, {
+            const finalResponse = new NextResponse(response.body, {
                 status: response.status,
                 statusText: response.statusText,
                 headers: response.headers,
             });
 
-
             setAuthJwtTokens(finalResponse, tokensResponse);
+            console.log(finalResponse);
             return finalResponse;
         }
 

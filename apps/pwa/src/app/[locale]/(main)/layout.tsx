@@ -2,16 +2,13 @@ import { PropsWithChildren } from "react";
 import { PersistentMapProvider } from "@/components/shared/map";
 import { SessionProvider } from "@/features/session";
 import { ThemeProvider } from "@/features/theme";
-import { getSession } from "@/api/user/server";
 import { MapProviderDefaultConfig } from "@/components/shared/map/map.config";
 
+export const dynamic = "force-static";
+
 export default async function MainLayout({ children }: PropsWithChildren) {
-    const user = await getSession();
-
-    const location = user?.profile?.location;
-
     return (
-        <SessionProvider user={user}>
+        <SessionProvider>
             <ThemeProvider>
                 <PersistentMapProvider
                     accessToken={process.env.MAPBOX_ACESS_TOKEN || ""}
@@ -19,11 +16,9 @@ export default async function MainLayout({ children }: PropsWithChildren) {
                     mapStyleLight={process.env.MAPBOX_MAP_STYLE_LIGHT || ""}
                     viewState={{
                         ...MapProviderDefaultConfig.viewState,
-                        center: location?.center.coordinates,
-                        bboxPolygon: location?.bbox.coordinates,
                     }}
                 >
-                    {children}
+                    { children }
                 </PersistentMapProvider>
             </ThemeProvider>
         </SessionProvider>

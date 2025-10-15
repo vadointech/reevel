@@ -3,19 +3,24 @@
 import { UserEntity } from "@/entities/user";
 import { action, computed, makeObservable, observable, toJS } from "mobx";
 
-import { ISessionStore, SessionStoreInit } from "@/features/session/types";
+import { ISessionStore } from "@/features/session/types";
 
 export class SessionStore implements ISessionStore {
     user: Maybe<UserEntity> = null;
+    loading: boolean = true;
 
-    constructor(init: Partial<SessionStoreInit> = {}) {
-        this.user = init.user;
-
+    constructor() {
         makeObservable(this, {
             user: observable,
+            loading: observable,
             setUser: action,
+            setLoading: action,
             authenticated: computed,
         });
+    }
+
+    get authenticated() {
+        return !!this.user;
     }
 
     toPlainObject(): Pick<ISessionStore, "user"> {
@@ -30,7 +35,7 @@ export class SessionStore implements ISessionStore {
         this.user = user;
     }
 
-    get authenticated() {
-        return !!this.user;
+    setLoading(loading: boolean) {
+        this.loading = loading;
     }
 }

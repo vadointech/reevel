@@ -2,6 +2,7 @@
 @use "@/theme/colors";
 @use "@/theme/motions";
 @use "@/theme/typography";
+@use "@/theme/skeleton";
 
 .button {
     flex-shrink: 0;
@@ -62,4 +63,12 @@
             background: colors.$background;
         }
     }
+}
+
+.skeleton {
+    @include skeleton.base;
+    flex-shrink: 0;
+    height: mixins.rem(38);
+    width: mixins.rem(128);
+    border-radius: mixins.rem(100);
 }

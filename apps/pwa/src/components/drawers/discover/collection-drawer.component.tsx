@@ -17,7 +17,7 @@ import { IconArrowLeft, IconSearch } from "@/components/icons";
 import { InterestEntity } from "@/entities/interests";
 import { EventEntity } from "@/entities/event";
 
-import { DiscoverInterestsList } from "@/flows/discover/modules/interests-list";
+import { DiscoverInterestsList } from "./components";
 import { DiscoverEventsList } from "@/flows/discover/modules/events-list";
 import { useDiscoverContext } from "@/features/discover";
 import { useDiscoverCollectionDrawer } from "@/features/discover/hooks";
