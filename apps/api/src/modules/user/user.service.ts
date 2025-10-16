@@ -26,6 +26,9 @@ export class UserService {
             where: { userId: session.user.id },
             relations: {
                 location: true,
+                interests: {
+                    interest: true,
+                },
             },
         });
     }

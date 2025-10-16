@@ -1,4 +1,5 @@
 import { FetchQueryOptions } from "@tanstack/react-query";
+export * from "./mutation";
 
 export interface IQueryBuilderMethods<TInput, TData, TInjected = null> {
     queryKey: (params?: unknown[]) => unknown[];

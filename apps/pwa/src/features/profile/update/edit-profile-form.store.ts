@@ -1,24 +1,28 @@
 import { action, makeObservable, observable } from "mobx";
-import { EditProfileFormConfigParams, IEditProfileFormStore } from "./types";
+import { IEditProfileFormStore } from "./types";
 import { EditProfileFormSchemaValues } from "./edit-profile-form.schema";
 
 export class EditProfileFormStore implements IEditProfileFormStore {
-    pictureToSelect: string;
-    formValues: EditProfileFormSchemaValues;
+    pictureToSelect: string = "/assets/defaults/avatar.png";
+    formValues: Partial<EditProfileFormSchemaValues> = {};
     version: number = 0;
+    loading: boolean = true;
 
-    constructor(init: EditProfileFormConfigParams) {
-        this.pictureToSelect = init.pictureToSelect;
-        this.formValues = init.defaultValues;
-
+    constructor() {
         makeObservable(this, {
             version: observable,
+            loading: observable,
             pictureToSelect: observable,
             setPictureToSelect: action,
+            setLoading: action,
         });
     }
 
-    dispose() { }
+    dispose() {}
+
+    setLoading(loading: boolean) {
+        this.loading = loading;
+    }
 
     setPictureToSelect(pictures: string) {
         this.pictureToSelect = pictures;
@@ -26,9 +30,11 @@ export class EditProfileFormStore implements IEditProfileFormStore {
     }
 
     setFormValues(values: Partial<EditProfileFormSchemaValues>) {
-        this.formValues = {
-            ...this.formValues,
-            ...values,
-        };
+        if(this.formValues) {
+            this.formValues = {
+                ...this.formValues,
+                ...values,
+            };
+        }
     }
 }

@@ -5,12 +5,12 @@ import * as streamifier from "streamifier";
 
 @Injectable()
 export class CloudinaryService {
-    uploadFile(file: Express.Multer.File, options?: CloudinaryUploadOption): Promise<CloudinaryResponse> {
+    async uploadFile(file: Express.Multer.File, options?: CloudinaryUploadOption): Promise<CloudinaryResponse> {
         return new Promise<CloudinaryResponse>((resolve, reject) => {
             const uploadStream = cloudinary.uploader.upload_stream(
                 options,
                 (error, result) => {
-                    if(error || !result) return reject(null);
+                    if(error || !result) return reject(error);
                     resolve(result);
                 },
             );

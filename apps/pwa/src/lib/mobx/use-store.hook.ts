@@ -8,8 +8,6 @@ export function useMobxStore<Store extends IMobxStore, Args extends any[]>(Store
         return () => store.dispose();
     }, []);
 
-    
-
     return store;
 }
 

@@ -5,6 +5,7 @@ import { eventsWithPaginationFallback, getHighlights } from "@/api/discover";
 import { eventEntityToEventPointEntity } from "@/features/event/mappers";
 import { EventListSeoJsonSchema, EventSeoCardGroup } from "@/components/ui/cards/event-seo-card";
 import { getDefaultCity } from "@/api/discover/server";
+import { API_URL } from "@/config/env.config";
 
 const DiscoverHighlightsScreen = dynamic(() => import("@/components/screens/discover").then(module => module.DiscoverHighlightsScreen));
 
@@ -20,6 +21,7 @@ export async function DiscoverHighlightsPage() {
             cityId: city?.id,
         },
         fallback: eventsWithPaginationFallback,
+        baseURL: API_URL,
     });
 
     const eventPointsInit = cityHighlights.data.map(eventEntityToEventPointEntity);

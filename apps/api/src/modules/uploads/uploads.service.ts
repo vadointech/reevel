@@ -31,17 +31,16 @@ export class UploadsService {
                     folder,
                     ...options,
                 }),
-                this.extractColorPalette(file, colorPalette),
+                // this.extractColorPalette(file, colorPalette),
             ]);
         });
 
         const result = await Promise.all(uploadAndColorPromises);
 
-        const uploads: FileUploadResponse[] =  result.map(([cloudinary, palette]) => {
+        const uploads: FileUploadResponse[] =  result.map(([cloudinary]) => {
             if(cloudinary) {
                 return {
                     ...cloudinary,
-                    colorPalette: palette,
                 };
             }
             return null;

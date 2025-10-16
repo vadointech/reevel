@@ -33,10 +33,6 @@ export default async function(request: NextRequest) {
     const isLoginRoute = nextUrl.pathname.startsWith(StaticRoutes.Login);
     const isOnboardingRoute = nextUrl.pathname.startsWith(StaticRoutes.Onboarding);
 
-    if(isPublicRoute) {
-        return intlMiddleware(request);
-    }
-
     const accessToken = request.cookies.get(AuthJwtTokens.AccessToken);
 
     try {
@@ -77,7 +73,10 @@ export default async function(request: NextRequest) {
 
         return intlMiddleware(request);
     } catch {
-        // console.log("Access token verification failed: ", error.message);
+        if(isPublicRoute) {
+            return intlMiddleware(request);
+        }
+        // console.log("Access token verification failed: ");
 
         const refreshToken = request.cookies.get(AuthJwtTokens.RefreshToken);
 
@@ -86,7 +85,7 @@ export default async function(request: NextRequest) {
                 throw new Error("No refresh token");
             }
 
-            const tokensResponse = await refreshTokens(request, refreshToken.value);
+            const tokensResponse = await refreshTokens(refreshToken.value);
 
             if(!tokensResponse) {
                 throw new Error("Failed to refresh token");
@@ -97,7 +96,7 @@ export default async function(request: NextRequest) {
             setAuthJwtTokens(response, tokensResponse);
             return response;
         } catch {
-            // console.log("Refresh token verification failed: ", error.message);
+            // console.log("Refresh token verification failed: ");
 
             const response = isLoginRoute ?
                 intlMiddleware(request) :

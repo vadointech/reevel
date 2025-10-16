@@ -4,7 +4,7 @@ import { OnboardingStepPath } from "@/features/onboarding";
 import { usePathname, useRouter } from "@/i18n/routing";
 import { useLogout } from "@/features/session/hooks";
 import { useMutation } from "@tanstack/react-query";
-import { updateProfileAction } from "@/features/profile/update/actions";
+import { UpdateProfileMutation } from "@/features/profile/queries";
 
 export function useOnboardingProgress() {
 
@@ -15,9 +15,7 @@ export function useOnboardingProgress() {
 
     const step = OnboardingStepPath.indexOf(pathname as OnboardingStepPath);
 
-    const updateUserProfileMutation = useMutation({
-        mutationFn: updateProfileAction,
-    });
+    const updateUserProfileMutation = useMutation(UpdateProfileMutation);
 
     function getOnboardingProgress(step: OnboardingStepPath | number) {
         const stepIndex = function(){

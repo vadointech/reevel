@@ -9,9 +9,11 @@ export interface IEditProfileFormStore extends IMobxStore {
      *  even if `pictureToSelect` was set to the same string as before.
      */
     version: number;
+    loading: boolean;
     pictureToSelect: string;
-    formValues: EditProfileFormSchemaValues;
+    formValues: Partial<EditProfileFormSchemaValues>;
 
+    setLoading(loading: boolean): void;
     setPictureToSelect(pictures: string): void;
     setFormValues(values: Partial<EditProfileFormSchemaValues>): void;
 }

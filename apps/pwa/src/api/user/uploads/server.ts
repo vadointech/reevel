@@ -8,7 +8,7 @@ import * as DeleteUploadedFile from "./delete-uploaded-file";
 export async function getCurrentUserUploads(params: GetCurrentUserUploads.GetUserUploads.TParams) {
     const accessToken = await getAccessToken();
 
-    const response = await GetCurrentUserUploads.getCurrentUserUploads({
+    const response = await GetCurrentUserUploads.getUserUploads({
         params,
         authorization: {
             method: "Bearer",

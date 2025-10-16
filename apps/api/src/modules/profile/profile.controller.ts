@@ -25,6 +25,10 @@ export class ProfileController {
         @Req() request: Express.Request,
         @Session() session: ServerSession,
     ) {
-        return this.profileService.uploadAvatar(session, request.files as Express.Multer.File[]);
+        try {
+            return this.profileService.uploadAvatar(session, request.files as Express.Multer.File[]);
+        } catch(e) {
+            return [];
+        }
     }
 }

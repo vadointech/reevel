@@ -6,6 +6,7 @@ import { extractUniqueInterests } from "@/features/discover/utils";
 import { getInterestById } from "@/api/interests";
 import { EventSeoCardGroup } from "@/components/ui/cards/event-seo-card/event-seo-card.component";
 import { EventListSeoJsonSchema } from "@/components/ui/cards/event-seo-card";
+import { API_URL } from "@/config/env.config";
 
 const DiscoverCollectionScreen = dynamic(() => import("@/components/screens/discover").then(module => module.DiscoverCollectionScreen));
 
@@ -23,12 +24,14 @@ export async function DiscoverCollectionPage({ collectionId }: DiscoverCollectio
     ] = await Promise.all([
         getInterestById({
             body: collectionId,
+            baseURL: API_URL,
         }),
         getEvents({
             params: {
                 interestId: collectionId,
             },
             fallback: eventsWithPaginationFallback,
+            baseURL: API_URL,
         }),
     ]);
 

@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useRef } from "react";
+import { useCallback, useEffect, useMemo, useRef } from "react";
 import { observer } from "mobx-react-lite";
 
 
@@ -8,7 +8,7 @@ import { CircularCarousel, Carousel } from "@/components/shared/circular-carouse
 import { ActiveScale } from "@/components/shared/circular-carousel/plugins";
 import { useEditProfileFormContext } from "@/features/profile/update";
 
-import { Avatar } from "@/components/ui";
+import { Avatar, AvatarSkeleton } from "@/components/ui";
 
 import styles from "../styles/avatar-picker-carousel.module.scss";
 
@@ -38,9 +38,18 @@ export const OnboardingAvatarPickerCarousel = observer(({
         ...defaultAvatars,
     ];
 
-    const slides = avatars.map((item) => (
-        <SliderItem key={item} src={item} />
-    ));
+    const defaultSlides = useMemo(() => {
+        return defaultAvatars.map((item) => <SliderItem key={item} src={item} />);
+    }, [defaultAvatars]);
+
+    const slides = form.store.loading
+        ? [
+            <AvatarSkeleton size={100} />,
+            ...defaultSlides,
+            <AvatarSkeleton size={100} />,
+            ...defaultSlides,
+        ]
+        : avatars.map((item) => <SliderItem key={item} src={item} />);
 
     const handleSlideChange = useCallback((carousel: Carousel) => {
         const snapIndex = carousel.api.selectedScrollSnap();

@@ -1,7 +1,4 @@
-import { getInitialInterests } from "@/api/interests/server";
-import { getCurrentUserInterests } from "@/api/user/server";
-
-import { ObjectUnique } from "@/utils/object";
+import { getInitialInterests } from "@/api/interests";
 
 import { OnboardingNextStepButton, OnboardingProgressBar } from "../modules/progress";
 import { OnboardingTextBlock } from "../modules/text-block";
@@ -11,21 +8,17 @@ import { InterestsPickerProvider } from "@/features/interests/picker";
 import { ButtonsBlock } from "@/components/ui";
 
 import styles from "../styles/interests-picker-page.module.scss";
+import { API_URL } from "@/config/env.config";
 
 export namespace OnboardingInterestsPickerPage {
     export type Props = never;
 }
 
 export async function OnboardingInterestsPickerPage() {
-    const initialInterests = await getInitialInterests();
-    const currentInterests = await getCurrentUserInterests();
-
-    const interests = [
-        ...new ObjectUnique([
-            ...initialInterests,
-            ...currentInterests,
-        ], "slug"),
-    ];
+    const { data: initialInterests } = await getInitialInterests({
+        baseURL: API_URL,
+        fallback: [],
+    });
 
     return (
         <>
@@ -37,9 +30,8 @@ export async function OnboardingInterestsPickerPage() {
                     subtitle={"Pick the things you’re passionate about so we can show events that match your interests."}
                 />
                 <InterestsPickerProvider
-                    interests={interests}
+                    interests={initialInterests}
                     syncFormField={"interests"}
-                    selectedInterests={currentInterests}
                     callbackUrl={"/onboarding/interests"}
                 >
                     <OnboardingInterestsPicker />

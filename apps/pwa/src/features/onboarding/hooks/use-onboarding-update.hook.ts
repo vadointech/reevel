@@ -6,9 +6,11 @@ import { useOnboardingProgress } from "./use-onboarding-progress.hook";
 import { useSessionContext } from "@/features/session";
 import { ObjectDiff } from "@/utils/object";
 import { useMutation } from "@tanstack/react-query";
-import { updateProfileAction } from "@/features/profile/update/actions";
 import { useEditProfileFormContext } from "@/features/profile/update";
 import { EditProfileFormMapper } from "@/features/profile/mappers";
+import { UpdateProfileMutation } from "@/features/profile/queries";
+import { refreshTokens } from "@/api/auth";
+import { useRouter } from "@/i18n/routing";
 
 type ConfigParams = {
     revalidateQueryOnSuccess?: string[]
@@ -18,6 +20,7 @@ export function useOnboardingUpdate({
     revalidateQueryOnSuccess,
 }: ConfigParams = {}) {
     const session = useSessionContext();
+    const router = useRouter();
     const form = useEditProfileFormContext();
 
     const {
@@ -26,9 +29,15 @@ export function useOnboardingUpdate({
         getOnboardingProgress,
     } = useOnboardingProgress();
 
+    const updateSessionMutation = useMutation({
+        mutationFn: () => refreshTokens({}),
+        onSuccess: () => {
+            router.replace("/discover");
+        },
+    });
+
     const updateProfileMutation = useMutation({
-        mutationFn: updateProfileAction,
-        onSettled: handleNextStep,
+        ...UpdateProfileMutation,
         onSuccess: (data) => {
             if (!data) return;
 
@@ -39,6 +48,12 @@ export function useOnboardingUpdate({
             form.store.setFormValues(
                 form.getValues(),
             );
+
+            if(data.completed === -1) {
+                updateSessionMutation.mutate();
+            } else {
+                handleNextStep();
+            }
         },
     });
 
@@ -63,6 +78,6 @@ export function useOnboardingUpdate({
 
     return {
         handleUpdate,
-        isUpdating: updateProfileMutation.isPending,
+        isUpdating: updateProfileMutation.isPending || updateSessionMutation.isPending,
     };
 }

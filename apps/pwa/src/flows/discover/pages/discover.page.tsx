@@ -7,6 +7,7 @@ import { EventEntity, EventPointEntity } from "@/entities/event";
 import { eventsWithPaginationFallback, getHighlights, getNearbyEvents } from "@/api/discover";
 import { SpatialGrid } from "@repo/spatial-grid";
 import { EventListSeoJsonSchema, EventSeoCardGroup } from "@/components/ui/cards/event-seo-card";
+import { API_URL } from "@/config/env.config";
 
 const DiscoverScreen = dynamic(() => import("@/components/screens/discover").then(module => module.DiscoverScreen));
 
@@ -17,6 +18,7 @@ export namespace DiscoverPage {
 export async function DiscoverPage() {
     const { data: interests } = await getInitialInterests({
         fallback: [],
+        baseURL: API_URL,
     });
 
     let eventPointsInit: EventPointEntity[] = [];
@@ -41,10 +43,12 @@ export async function DiscoverPage() {
                     zoom: tile.zoom,
                 },
                 fallback: [],
+                baseURL: API_URL,
             }),
             getHighlights({
                 params: { cityId: city.id },
                 fallback: eventsWithPaginationFallback,
+                baseURL: API_URL,
             }),
         ]);
 

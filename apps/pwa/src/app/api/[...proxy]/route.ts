@@ -3,22 +3,27 @@ import { AuthJwtTokens } from "@/config/auth.config";
 import { apiRequest, deleteAuthJwtTokens, refreshTokens, setAuthJwtTokens } from "@/auth";
 import { API_URL } from "@/config/env.config";
 import { cookies } from "next/headers";
+import { PropsWithParams } from "@/types/common";
 
-async function handler(request: NextRequest) {
+async function handler(request: NextRequest, { params }: PropsWithParams<{ proxy: string[] }>) {
     const cookieStore = await cookies();
     const accessToken = cookieStore.get(AuthJwtTokens.AccessToken);
     const refreshToken = cookieStore.get(AuthJwtTokens.RefreshToken);
 
-    const url = new URL(request.nextUrl.pathname, API_URL);
+    const { proxy } = await params;
+
+    const pathSegments = proxy.join("/");
+    const url = new URL(`${API_URL}/${pathSegments}`);
+
     request.nextUrl.searchParams.forEach((value, key) => {
         url.searchParams.append(key, value);
     });
 
     try {
-        const response = await apiRequest(url, request, accessToken?.value);
+        let response = await apiRequest(url.toString(), request, accessToken?.value);
 
         if(response.status === 401 && refreshToken) {
-            const tokensResponse = await refreshTokens(request, refreshToken.value);
+            const tokensResponse = await refreshTokens(refreshToken.value);
 
             if(!tokensResponse) {
                 const response = new NextResponse(null, { status: 401 });
@@ -26,23 +31,28 @@ async function handler(request: NextRequest) {
                 return response;
             }
 
-            const response = await apiRequest(url, request, accessToken?.value);
+            response = await apiRequest(url.toString(), request, tokensResponse.accessToken);
 
-            const finalResponse = new NextResponse(response.body, {
+            const responseBody = await response.text();
+            const finalResponse = new NextResponse(responseBody, {
                 status: response.status,
                 statusText: response.statusText,
                 headers: response.headers,
             });
 
             setAuthJwtTokens(finalResponse, tokensResponse);
-            console.log(finalResponse);
             return finalResponse;
         }
 
         return response;
     } catch (error) {
-        console.error("Error in API proxy:", error);
-        return new NextResponse("Internal Server Error", { status: 500 });
+        return new NextResponse(
+            JSON.stringify({
+                error: "Internal Server Error",
+                message: error instanceof Error ? error.message : "Unknown error",
+            }),
+            { status: 500, headers: { "Content-Type": "application/json" } },
+        );
     }
 }
 

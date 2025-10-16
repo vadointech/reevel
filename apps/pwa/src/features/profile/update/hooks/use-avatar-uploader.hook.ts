@@ -1,9 +1,12 @@
 import { useCallback, useRef } from "react";
 import { useRouter } from "@/i18n/routing";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 
-import { uploadProfileAvatar } from "@/api/profile/server";
-import { deleteUploadedFile } from "@/api/user/uploads/server";
+import {
+    DeleteUploadedFileMutation,
+    GetCurrentUserUploadsQuery,
+    UploadAvatarMutation,
+} from "@/features/profile/queries";
 
 import { useFileSelect } from "@/features/uploader/hooks";
 import { useImageUploaderContext } from "@/features/uploader/image";
@@ -11,12 +14,13 @@ import { useImageUploaderContext } from "@/features/uploader/image";
 import { useEditProfileFormContext } from "../edit-profile-form.context";
 
 import { IBottomSheetRootController } from "@/components/shared/bottom-sheet/types";
-import { UserUploadsEntity } from "@/entities/uploads";
+import { SupportedFileCollections, UserUploadsEntity } from "@/entities/uploads";
 
 export function useProfileAvatarUploader(callbackUrl?: string) {
     const router = useRouter();
     const form = useEditProfileFormContext();
     const imageUploader = useImageUploaderContext();
+    const queryClient = useQueryClient();
 
     const uploadDrawerController = useRef<IBottomSheetRootController>(null);
 
@@ -28,9 +32,11 @@ export function useProfileAvatarUploader(callbackUrl?: string) {
     });
 
     const deleteAvatarMutation = useMutation({
-        mutationFn: deleteUploadedFile,
+        ...DeleteUploadedFileMutation,
         onSuccess: () => {
-            router.refresh();
+            queryClient.invalidateQueries({
+                queryKey: GetCurrentUserUploadsQuery.queryKey([SupportedFileCollections.PROFILE_PICTURE]),
+            });
         },
     });
     const handleDeleteAvatar = useCallback((upload: UserUploadsEntity) => {
@@ -38,8 +44,11 @@ export function useProfileAvatarUploader(callbackUrl?: string) {
     }, []);
 
     const uploadAvatarMutation = useMutation({
-        mutationFn: uploadProfileAvatar,
+        ...UploadAvatarMutation,
         onSuccess: (upload) => {
+            queryClient.invalidateQueries({
+                queryKey: GetCurrentUserUploadsQuery.queryKey([SupportedFileCollections.PROFILE_PICTURE]),
+            });
             if(upload) handlePickAvatar(upload);
             if(callbackUrl) router.replace(callbackUrl);
         },

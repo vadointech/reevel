@@ -6,18 +6,18 @@ import { Button } from "@/components/ui";
 import { Controller } from "react-hook-form";
 import { useProfileAvatarUploader } from "@/features/profile/update/hooks";
 
-import { GetUserUploads } from "@/api/user/uploads";
 import { EditProfileFormSchemaValues } from "@/features/profile/update";
+import { useQuery } from "@tanstack/react-query";
+import { GetCurrentUserUploadsQuery } from "@/features/profile/queries";
+import { SupportedFileCollections } from "@/entities/uploads";
 
 export namespace OnboardingAvatarUploader {
     export type Props = {
-        uploads: GetUserUploads.TOutput;
         cropperPageUrl: string;
     };
 }
 
 export const OnboardingAvatarUploader = ({
-    uploads,
     cropperPageUrl,
 }: OnboardingAvatarUploader.Props) => {
     const {
@@ -26,6 +26,12 @@ export const OnboardingAvatarUploader = ({
         handleSelectFile,
         uploadDrawerController,
     } = useProfileAvatarUploader(cropperPageUrl);
+
+    const { data: uploads } = useQuery(
+        GetCurrentUserUploadsQuery({
+            collection: SupportedFileCollections.PROFILE_PICTURE,
+        }),
+    );
 
     return (
         <Controller<EditProfileFormSchemaValues, "avatar">

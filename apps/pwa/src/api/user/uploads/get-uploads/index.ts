@@ -11,11 +11,9 @@ export namespace GetUserUploads {
     }>;
 
     export type TOutput = UserUploadsEntity[];
-
-    export const queryKey = ["user/uploads"];
 }
 
-export const getCurrentUserUploads = fetcherClient.fetch<GetUserUploads.TInput, GetUserUploads.TOutput, GetUserUploads.TParams>({
+export const getUserUploads = fetcherClient.fetch<GetUserUploads.TInput, GetUserUploads.TOutput, GetUserUploads.TParams>({
     fetcherFunc: (fetcher, input) => {
         return fetcher.get("/users/me/uploads", input);
     },

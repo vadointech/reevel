@@ -6,9 +6,8 @@ import { useRouter } from "next/navigation";
 
 import { ObjectDiff } from "@/utils/object";
 import { useSessionContext } from "@/features/session";
-import { updateProfileAction } from "@/features/profile/update/actions";
-
 import { useEditProfileFormContext } from "../edit-profile-form.context";
+import { UpdateProfileMutation } from "@/features/profile/queries";
 
 import { EditProfileFormMapper } from "@/features/profile/mappers";
 
@@ -18,7 +17,7 @@ export function useProfileUpdate() {
     const form = useEditProfileFormContext();
 
     const updateProfileMutation = useMutation({
-        mutationFn: updateProfileAction,
+        ...UpdateProfileMutation,
         onSuccess: (data) => {
             if (!data) return;
 

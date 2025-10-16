@@ -56,6 +56,11 @@ export function useDiscoverMap({ collection, eventPointsInit, queryBuilder }: Pa
             discover.store.setPointToPreview(null);
 
             replaceResponse(eventPointsInit);
+
+            if(collection === DiscoverStaticCollections.Root) {
+                preventMapUpdate.current = true;
+                map.provider.current.resetViewState();
+            }
         } else {
             if(!discover.store.interestFilter) {
                 if(map.store.isViewStateSynced) {
@@ -64,11 +69,6 @@ export function useDiscoverMap({ collection, eventPointsInit, queryBuilder }: Pa
                     replaceResponse(eventPointsInit);
                 }
             }
-        }
-
-        if(collection === DiscoverStaticCollections.Root) {
-            preventMapUpdate.current = true;
-            map.provider.current.resetViewState();
         }
     }, [collection]);
 

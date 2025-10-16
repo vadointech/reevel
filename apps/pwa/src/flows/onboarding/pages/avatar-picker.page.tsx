@@ -1,5 +1,3 @@
-import { getCurrentUserUploads } from "@/api/user/uploads/server";
-
 import { OnboardingNextStepButton, OnboardingProgressBar } from "../modules/progress";
 import {
     OnboardingAvatarPickerCarousel,
@@ -7,7 +5,6 @@ import {
 } from "../modules/avatar-picker";
 import { OnboardingTextBlock } from "../modules/text-block";
 import { ButtonsBlock, Container } from "@/components/ui";
-import { SupportedFileCollections } from "@/entities/uploads";
 
 import styles from "../styles/avatar-picker-page.module.scss";
 
@@ -26,10 +23,6 @@ export namespace OnboardingAvatarPickerPage {
 }
 
 export async function OnboardingAvatarPickerPage({ cropperPageUrl }: OnboardingAvatarPickerPage.Props) {
-    const uploads = await getCurrentUserUploads({
-        collection: SupportedFileCollections.PROFILE_PICTURE,
-    });
-
     return (
         <>
             <OnboardingProgressBar step={0} />
@@ -43,7 +36,6 @@ export async function OnboardingAvatarPickerPage({ cropperPageUrl }: OnboardingA
             </Container>
             <ButtonsBlock className={styles.buttons}>
                 <OnboardingAvatarUploader
-                    uploads={uploads}
                     cropperPageUrl={cropperPageUrl}
                 />
                 <OnboardingNextStepButton>

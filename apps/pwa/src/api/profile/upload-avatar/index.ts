@@ -4,10 +4,7 @@ import { UploadEventPoster } from "@/api/event/upload-poster";
 
 export namespace UploadProfileAvatar {
     export type TInput = Blob;
-
     export type TOutput = UserUploadsEntity[];
-
-    export const queryKey = ["uploads/profile/avatar"];
 }
 
 export const uploadProfileAvatar = fetcherClient.fetch<UploadProfileAvatar.TInput, UploadEventPoster.TOutput>({

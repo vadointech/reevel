@@ -5,6 +5,7 @@ import { getRandomizedEvents } from "@/api/discover";
 import { eventEntityToEventPointEntity } from "@/features/event/mappers";
 import { EventListSeoJsonSchema, EventSeoCardGroup } from "@/components/ui/cards/event-seo-card";
 import { getDefaultCity } from "@/api/discover/server";
+import { API_URL } from "@/config/env.config";
 
 const DiscoverRandomizedScreen = dynamic(() => import("@/components/screens/discover").then(module => module.DiscoverRandomizedScreen));
 
@@ -20,6 +21,7 @@ export async function DiscoverRandomizedPage() {
             cityId: city?.id,
         },
         fallback: [],
+        baseURL: API_URL,
     });
 
     const eventPointsInit = randomizedEvents.map(eventEntityToEventPointEntity);
