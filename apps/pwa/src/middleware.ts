@@ -18,14 +18,18 @@ export default async function(request: NextRequest) {
     const isAllowedDevice = allowedDevices.includes(deviceType);
     const isScanPage = nextUrl.pathname.startsWith(StaticRoutes.Scan);
 
-    if(!isAllowedDevice) {
-        if(!isScanPage) {
-            return NextResponse.redirect(new URL(StaticRoutes.Scan, nextUrl), 302);
-        }
-        return intlMiddleware(request);
-    } else {
-        if(isScanPage) {
-            return NextResponse.redirect(new URL(StaticRoutes.Discover, nextUrl), 302);
+    console.log(ua);
+
+    if(!ua.isBot) {
+        if(!isAllowedDevice) {
+            if(!isScanPage) {
+                return NextResponse.redirect(new URL(StaticRoutes.Scan, nextUrl), 302);
+            }
+            return intlMiddleware(request);
+        } else {
+            if(isScanPage) {
+                return NextResponse.redirect(new URL(StaticRoutes.Discover, nextUrl), 302);
+            }
         }
     }
 
