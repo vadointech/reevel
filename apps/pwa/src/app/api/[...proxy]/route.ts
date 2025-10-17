@@ -40,7 +40,8 @@ async function handler(request: NextRequest, { params }: PropsWithParams<{ proxy
         }
 
         return apiResponse(response);
-    } catch {
+    } catch(error) {
+        console.log(error);
         return apiResponse(null, { status: 500 });
     }
 }

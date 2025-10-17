@@ -1,33 +1,22 @@
-import { CalendarMapScreen } from "@/components/screens/calendar";
-import { getUserCalendarEvents } from "@/api/calendar/server";
-import { format, startOfToday } from "date-fns";
-import { EventParticipationType } from "@/entities/event";
+"use client";
+
+import { CalendarMapViewDrawer } from "@/components/drawers/calendar";
+import { useCalendarMap } from "@/features/calendar/hooks";
 
 export namespace CalendarMapPage {
     export type Props = never;
 }
 
-export async function CalendarMapPage() {
-    const upcomingEvents = await getUserCalendarEvents({
-        startDate: format(startOfToday(), "yyyy-MM-dd"),
-    });
-
-
-    const hostingEvents = await getUserCalendarEvents({
-        startDate: format(startOfToday(), "yyyy-MM-dd"),
-        participationType: EventParticipationType.HOSTING,
-    });
-
-    const attendingEvents = await getUserCalendarEvents({
-        startDate: format(startOfToday(), "yyyy-MM-dd"),
-        participationType: EventParticipationType.ATTENDING,
-    });
+export function CalendarMapPage() {
+    const {
+        handlePickParticipationType,
+    } = useCalendarMap();
 
     return (
-        <CalendarMapScreen
-            upcomingEvents={upcomingEvents.events}
-            hostingEvents={hostingEvents.events}
-            attendingEvents={attendingEvents.events}
-        />
+        <CalendarMapViewDrawer
+            handleSelectParticipationType={handlePickParticipationType}
+        >
+            Upcoming events
+        </CalendarMapViewDrawer>
     );
 }

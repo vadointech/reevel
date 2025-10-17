@@ -27,7 +27,6 @@ export async function EventAttendeePublicViewPage({ eventId }: EventAttendeePubl
         return notFound();
     }
 
-
     return (
         <>
             <EventDrawerRoot>

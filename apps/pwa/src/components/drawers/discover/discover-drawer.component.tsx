@@ -8,7 +8,7 @@ import {
     BottomSheetRoot, BottomSheetScrollable,
 } from "@/components/shared/bottom-sheet";
 
-import { Avatar, Input, InterestButton, Scroll } from "@/components/ui";
+import { Input, InterestButton, Scroll } from "@/components/ui";
 import { IconStars } from "@/components/icons";
 import { BottomSheetExternalController, BottomSheetSnapPoint } from "@/components/shared/bottom-sheet/types";
 
@@ -16,13 +16,13 @@ import { EventEntity } from "@/entities/event";
 import { InterestEntity } from "@/entities/interests";
 
 import { Link } from "@/i18n/routing";
-import { useSessionContext } from "@/features/session";
 import { DiscoverStaticCollections } from "@/features/discover/config";
 import { useStandaloneContext } from "@/providers/standalone.provider";
 import { HighlightsCollectionSlider, InterestsCollectionSlider, DiscoverInterestsList } from "./components";
 import { CitiesEntity } from "@/entities/cities";
 
 import styles from "./styles/discover-drawer.module.scss";
+import { SessionAvatar } from "@/components/shared/session-avatar";
 
 export namespace DiscoverDrawer {
     export type Data = {
@@ -47,7 +47,6 @@ export const DiscoverDrawer = ({
     onSnapPointChange,
     onEventInterestPick,
 }: DiscoverDrawer.Props) => {
-    const session = useSessionContext();
     const isStandalone = useStandaloneContext();
 
     const snapPoints: BottomSheetSnapPoint[] = isStandalone ? [.95, .5, "226px"] : [.95, .5, "206px"];
@@ -85,14 +84,7 @@ export const DiscoverDrawer = ({
                     <BottomSheetContent>
                         <BottomSheetHandle className={styles.drawer__handle}>
                             <Input.Search placeholder={"Search"} />
-                            {
-                                session.store.authenticated ? (
-                                    <Link href={"/profile"}>
-                                        <Avatar image={session.store.user?.profile?.picture}/>
-                                    </Link>
-
-                                ) : null
-                            }
+                            <SessionAvatar />
                         </BottomSheetHandle>
                         <BottomSheetScrollable>
                             <HighlightsCollectionSlider

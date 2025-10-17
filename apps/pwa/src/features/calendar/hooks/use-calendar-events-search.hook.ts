@@ -2,7 +2,8 @@ import { useCallback, useRef } from "react";
 import { useCalendarContext } from "../calendar.context";
 import { RequestDebouncer } from "@/lib/debouncer";
 import { useQueryClient } from "@tanstack/react-query";
-import { SearchCalendarEventsQuery } from "@/features/calendar/queries";
+import { GetUserCalendarEventsQuery } from "@/features/calendar/queries";
+import { GetUserCalendarEvents } from "@/api/calendar";
 
 export function useCalendarEventsSearch() {
     const calendar = useCalendarContext();
@@ -13,9 +14,9 @@ export function useCalendarEventsSearch() {
         return debouncer.current.debounceRequest(async() => {
             if(searchTerm.length > 2) {
                 return queryClient.fetchQuery(
-                    SearchCalendarEventsQuery(
-                        searchTerm.toLowerCase(),
-                    ),
+                    GetUserCalendarEventsQuery({
+                        search: searchTerm.toLowerCase(),
+                    }),
                 );
             } else {
                 return null;
@@ -23,11 +24,11 @@ export function useCalendarEventsSearch() {
         }, 700);
     }, []);
 
-    const setSearchResults = useCallback((results: SearchCalendarEventsQuery.TOutput | null) => {
+    const setSearchResults = useCallback((results: GetUserCalendarEvents.TOutput | null) => {
         if(results === null) {
             calendar.store.setSearchResults(null);
         } else {
-            calendar.store.setSearchResults(results.events);
+            calendar.store.setSearchResults(results.data);
         }
     }, []);
 

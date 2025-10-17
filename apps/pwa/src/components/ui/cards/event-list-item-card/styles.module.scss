@@ -1,11 +1,9 @@
 @use "@/theme/mixins";
 @use "@/theme/colors";
 @use "@/theme/typography";
+@use "@/theme/skeleton";
 
 .card {
-    //position: relative;
-    //z-index: 2;
-
     height: mixins.rem(100);
 
     display: flex;
@@ -42,5 +40,25 @@
     &__title {
         @include typography.font("base", 500);
         @include mixins.textEllipsis(2);
+    }
+}
+
+.skeleton {
+    &__image {
+        @include skeleton.base;
+        background-color: colors.$secondary-muted-highlight;
+    }
+
+    &__title {
+        @include skeleton.typography("base");
+        background-color: colors.$secondary-muted-highlight;
+        margin-bottom: mixins.rem(8);
+    }
+
+    &__date {
+        @include skeleton.typography("xxs");
+        background-color: colors.$secondary-muted-highlight;
+        width: 60%;
+        margin-bottom: mixins.rem(4);
     }
 }

@@ -54,6 +54,7 @@
 
 .skeleton {
     @include skeleton.base;
+    background-color: unset;
     border-radius: unset;
     display: flex;
     align-items: center;

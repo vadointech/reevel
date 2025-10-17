@@ -2,40 +2,47 @@ import { NextRequest, NextResponse } from "next/server";
 
 import { authCookiesParams, AuthJwtTokens, IAuthJwtTokens, REFRESH_TOKEN_URL } from "@/config/auth.config";
 
+/**
+ * A list of headers that are specific to a single client-server connection (hop-by-hop)
+ * We must exclude these headers when proxying a request.
+ */
 const HEADERS_TO_EXCLUDE = [
+    "host",
+    "connection",
     "content-encoding",
     "transfer-encoding",
-    "connection",
+    "content-length",
 ];
 
 export async function apiRequest(url: string, request: NextRequest, token?: string) {
-    const headers = new Headers();
-
-    request.headers.forEach((value, key) => {
-        if(!["host", "connection", "content-length"].includes(key.toLowerCase())) {
-            headers.set(key, value);
-        }
-    });
+    const headers = new Headers(request.headers);
+    HEADERS_TO_EXCLUDE.forEach(header => headers.delete(header));
 
     if(token) {
         headers.set("Authorization", `Bearer ${token}`);
     }
 
-    let body: BodyInit | null = null;
-    if (request.method !== "GET" && request.method !== "HEAD") {
-        try {
-            body = request.body;
-        } catch {
-            body = null;
-        }
-    }
-
-    return fetch(url, {
+    const requestInit: RequestInit = {
         method: request.method,
         headers,
-        body: body || undefined,
         cache: "no-store",
-    });
+    };
+
+    if(request.method !== "GET" && request.method !== "HEAD") {
+        requestInit.body = request.body;
+        /**
+         * This option is required by the Node.js `fetch` implementation when the
+         * request `body` is a `ReadableStream` (which `request.body` is).
+         *
+         * It specifies 'half-duplex' mode, which means the request body must be
+         * fully sent before the client can start reading the response. This is the
+         * standard behavior for most HTTP requests and prevents potential connection
+         * issues when streaming data.
+         */
+        requestInit["duplex"] = "half";
+    }
+
+    return fetch(url, requestInit);
 }
 
 export function apiResponse(response: Response | null, init: Partial<ResponseInit> = {}) {
@@ -43,20 +50,13 @@ export function apiResponse(response: Response | null, init: Partial<ResponseIni
         return new NextResponse(null, init);
     }
 
-    const responseHeaders = new Headers();
+    const headers = new Headers(response.headers);
+    HEADERS_TO_EXCLUDE.forEach(header => headers.delete(header));
 
-    if(response.headers) {
-        response.headers.forEach((value, key) => {
-            if(!HEADERS_TO_EXCLUDE.includes(key.toLowerCase())) {
-                responseHeaders.set(key, value);
-            }
-        });
-    }
-
-    return new NextResponse(response?.body, {
+    return new NextResponse(response.body, {
         status: response.status,
         statusText: response.statusText,
-        headers: responseHeaders,
+        headers: headers,
     });
 }
 

@@ -3,12 +3,12 @@ import { Brackets } from "typeorm";
 import { EventRepository } from "@/modules/event/repositories/event.repository";
 import { ServerSession } from "@/types";
 import { seedEventAttendees } from "@/utils/users";
-import { EventParticipationType } from "@/modules/event/entities/events.entity";
+import { EventParticipationType, EventsEntity } from "@/modules/event/entities/events.entity";
 import {
     GetUserCalendarParamsDto,
-    GetUserCalendarResponseDto,
     GetUserCalendarResponseEventsDto,
 } from "@/modules/calendar/dto";
+import { ResponseWithPaginationDto } from "@/dtos";
 
 @Injectable()
 export class CalendarService {
@@ -16,7 +16,7 @@ export class CalendarService {
         private readonly eventRepository: EventRepository,
     ) {}
 
-    async getUserCalendar(session: ServerSession, queryDto: GetUserCalendarParamsDto): Promise<GetUserCalendarResponseDto> {
+    async getUserCalendar(session: ServerSession, queryDto: GetUserCalendarParamsDto): Promise<ResponseWithPaginationDto<EventsEntity[]>> {
         const {
             id: userId,
         } = session.user;
@@ -67,8 +67,6 @@ export class CalendarService {
             qb.andWhere("event.title ILIKE :search", { search: `%${search}%` });
         }
 
-        const totalItems = await qb.getCount();
-
         qb.select(["event.id", "event.startDate"])
             .distinct(true)
             .orderBy("event.startDate", "ASC")
@@ -79,10 +77,10 @@ export class CalendarService {
         const eventIds = rawResults.map((result) => result.event_id);
 
         if(eventIds.length === 0) {
-            return new GetUserCalendarResponseDto();
+            return new ResponseWithPaginationDto([]);
         }
 
-        let events = await this.eventRepository
+        const [events, total] = await this.eventRepository
             .queryBuilder("event")
             .leftJoinAndSelect("event.hosts", "hostRelation")
             .leftJoinAndSelect("hostRelation.user", "hostUser")
@@ -90,11 +88,11 @@ export class CalendarService {
             .leftJoinAndSelect("ticketRelation.user", "ticketUser")
             .where("event.id IN (:...eventIds)", { eventIds })
             .orderBy("event.startDate", "ASC")
-            .getMany();
+            .getManyAndCount();
 
-        events = seedEventAttendees(events);
+        const eventsWithAttendees = seedEventAttendees(events);
 
-        const transformedEvents: GetUserCalendarResponseEventsDto[] = events.map((event) => {
+        const transformedEvents: GetUserCalendarResponseEventsDto[] = eventsWithAttendees.map((event) => {
             const isHost = event.hosts.some(host => host.userId === userId);
             const isAttendee = event.tickets.some(ticket => ticket.userId === userId);
 
@@ -112,15 +110,7 @@ export class CalendarService {
             };
         });
 
-        return new GetUserCalendarResponseDto({
-            events: transformedEvents,
-            pagination: {
-                currentPage: page,
-                totalPages: limit ? Math.ceil(totalItems / limit) : undefined,
-                totalItems,
-                limit,
-            },
-        });
+        return new ResponseWithPaginationDto(transformedEvents, { page, limit, total });
     }
 
 }

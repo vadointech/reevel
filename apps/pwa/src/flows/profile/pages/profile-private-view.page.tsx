@@ -16,7 +16,7 @@ export namespace ProfilePrivateViewPage {
     export type Props = never;
 }
 
-export async function ProfilePrivateViewPage() {
+export function ProfilePrivateViewPage() {
     const { data: profile } = useQuery(GetCurrentUserProfileQuery());
     const { data: events } = useQuery(GetCurrentUserEventsQuery());
 

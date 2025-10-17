@@ -1,6 +1,6 @@
 "use client";
 
-import { PropsWithChildren } from "react";
+import { memo, PropsWithChildren } from "react";
 import Link from "next/link";
 
 import {
@@ -13,37 +13,45 @@ import {
 } from "@/components/shared/bottom-sheet";
 
 import { Carousel } from "@/components/shared/carousel";
-import { Button, EventListItemCard, Header, InterestButton, OptionsList, Placeholder } from "@/components/ui";
+import {
+    Button,
+    EventListItemCard,
+    EventListItemCardSkeleton,
+    Header,
+    InterestButton,
+    OptionsList,
+    Placeholder,
+} from "@/components/ui";
 import { IconArrowLeft, IconCalendarCross, IconSearch } from "@/components/icons";
 
-import { EventEntity, EventParticipationType } from "@/entities/event";
+import { EventParticipationType } from "@/entities/event";
 
 import styles from "./styles.module.scss";
 import { observer } from "mobx-react-lite";
 import { useCalendarContext } from "@/features/calendar";
+import { useQuery } from "@tanstack/react-query";
+import { GetUserCalendarEventsQuery } from "@/features/calendar/queries";
+import { format, startOfToday } from "date-fns";
+import { paginationPlaceholder } from "@/entities/placeholders";
+import { useUpcomingEventsQuery } from "@/features/calendar/hooks";
 
 export namespace CalendarMapViewDrawer {
-    export type Data = {
-        upcomingEvents: EventEntity[];
-        hostingEvents: EventEntity[];
-        attendingEvents: EventEntity[];
-    };
-    export type Props = PropsWithChildren<Data> & {
+    export type Props = PropsWithChildren<{
         handleSelectParticipationType: (type: EventParticipationType | null) => void;
+    }>;
+
+    export type TabButtonProps = {
+        onSelect: (type: EventParticipationType | null) => void;
     };
 
-    export type ParticipationTypeButtonProps = PropsWithChildren<{
+    export type ParticipationTypeButtonProps = PropsWithChildren<TabButtonProps & {
         type: EventParticipationType | null;
-        events: EventEntity[];
-        onChange: (type: EventParticipationType | null) => void;
+        cont?: number;
     }>;
 }
 
-export const CalendarMapViewDrawer = ({
+export const CalendarMapViewDrawer = memo(({
     children,
-    upcomingEvents,
-    hostingEvents,
-    attendingEvents,
     handleSelectParticipationType,
 }: CalendarMapViewDrawer.Props) => {
     return (
@@ -68,22 +76,8 @@ export const CalendarMapViewDrawer = ({
                                     layout={"icon"}
                                 />
                             </Link>
-
-                            <ParticipationTypeButton
-                                type={EventParticipationType.HOSTING}
-                                events={hostingEvents}
-                                onChange={handleSelectParticipationType}
-                            >
-                                Hosting
-                            </ParticipationTypeButton>
-
-                            <ParticipationTypeButton
-                                type={EventParticipationType.ATTENDING}
-                                events={attendingEvents}
-                                onChange={handleSelectParticipationType}
-                            >
-                                Attending
-                            </ParticipationTypeButton>
+                            <HostingTabButton onSelect={handleSelectParticipationType} />
+                            <AttendingButton onSelect={handleSelectParticipationType} />
                         </Carousel>
                     </div>
                     <BottomSheetContent>
@@ -100,47 +94,121 @@ export const CalendarMapViewDrawer = ({
                             </Header>
                         </BottomSheetHandle>
                         <BottomSheetScrollable className={styles.drawer__list}>
-                            <OptionsList>
-                                {
-                                    upcomingEvents.length === 0 ? (
-                                        <Placeholder
-                                            size={"small"}
-                                            icon={<IconCalendarCross />}
-                                            title={"No upcoming events"}
-                                            description={"Create one and plan ahead"}
-                                        >
-                                            <Button
-                                                size={"xsmall"}
-                                                href={"/discover"}
-                                                variant={"secondary-muted"}
-                                                className={styles.no__cta}
-                                            >
-                                                Discover events
-                                            </Button>
-                                        </Placeholder>
-                                    ) : upcomingEvents.map(event => (
-                                        <Link
-                                            key={event.id}
-                                            href={`/discover/event/${event.id}`}
-                                        >
-                                            <EventListItemCard event={event} />
-                                        </Link>
-                                    ))
-                                }
-                            </OptionsList>
+                            <EventList />
                         </BottomSheetScrollable>
                     </BottomSheetContent>
                 </BottomSheetBody>
             </BottomSheetPortal>
         </BottomSheetRoot>
     );
+});
+
+const EventList = observer(() => {
+    const { upcomingEvents, isUpcomingEventsFetching } = useUpcomingEventsQuery();
+
+    if(isUpcomingEventsFetching) {
+        return (
+            <OptionsList>
+                <OptionsList>
+                    {
+                        [...new Array(3).keys()].map((item) => (
+                            <EventListItemCardSkeleton key={`event-card-skeleton-${item}`} />
+                        ))
+                    }
+                </OptionsList>
+            </OptionsList>
+        );
+    }
+
+    if(!upcomingEvents || upcomingEvents.pagination.totalItems === 0) {
+        return (
+            <OptionsList>
+                <Placeholder
+                    size={"small"}
+                    icon={<IconCalendarCross />}
+                    title={"No upcoming events"}
+                    description={"Create one and plan ahead"}
+                >
+                    <Button
+                        size={"xsmall"}
+                        href={"/discover"}
+                        variant={"secondary-muted"}
+                        className={styles.no__cta}
+                    >
+                        Discover events
+                    </Button>
+                </Placeholder>
+            </OptionsList>
+        );
+    }
+
+    return (
+        <OptionsList>
+            {
+                upcomingEvents.data.map((event) => (
+                    <Link
+                        key={event.id}
+                        href={`/discover/event/${event.id}`}
+                    >
+                        <EventListItemCard event={event} />
+                    </Link>
+                ))
+            }
+        </OptionsList>
+    );
+});
+
+const HostingTabButton = ({ onSelect }: CalendarMapViewDrawer.TabButtonProps) => {
+    const { data: hostingEvents } = useQuery({
+        ...GetUserCalendarEventsQuery({
+            startDate: format(startOfToday(), "yyyy-MM-dd"),
+            participationType: EventParticipationType.HOSTING,
+        }),
+        placeholderData: {
+            data: [],
+            pagination: paginationPlaceholder,
+        },
+    });
+  
+    return (
+        <ParticipationTypeButton
+            type={EventParticipationType.HOSTING}
+            cont={hostingEvents?.pagination.totalItems}
+            onSelect={onSelect}
+        >
+            Hosting
+        </ParticipationTypeButton>
+    );
+};
+
+const AttendingButton = ({ onSelect }: CalendarMapViewDrawer.TabButtonProps) => {
+    const { data: attendingEvents } = useQuery({
+        ...GetUserCalendarEventsQuery({
+            startDate: format(startOfToday(), "yyyy-MM-dd"),
+            participationType: EventParticipationType.ATTENDING,
+        }),
+        placeholderData: {
+            data: [],
+            pagination: paginationPlaceholder,
+        },
+    });
+
+    return (
+        <ParticipationTypeButton
+            type={EventParticipationType.ATTENDING}
+            cont={attendingEvents?.pagination.totalItems}
+            onSelect={onSelect}
+        >
+            Attending
+        </ParticipationTypeButton>
+    );
 };
 
 const ParticipationTypeButton = observer(({
     type,
-    events,
+    cont,
     children,
-    onChange,
+    onSelect,
 }: CalendarMapViewDrawer.ParticipationTypeButtonProps) => {
     const calendar = useCalendarContext();
 
@@ -149,9 +217,9 @@ const ParticipationTypeButton = observer(({
             variant={
                 calendar.store.participationType === type ? "primary" : "default"
             }
-            onClick={() => onChange(type)}
+            onClick={() => onSelect(type)}
         >
-            { children } • { events.length }
+            { children } • { cont || 0 }
         </InterestButton>
     );
 });

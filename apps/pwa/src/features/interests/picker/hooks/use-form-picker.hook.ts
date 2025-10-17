@@ -15,7 +15,7 @@ export function useFormInterestsPicker<T extends IFromValues>() {
     const { getValues } = useFormContext<IFromValues>();
 
     const formInterestsRef = useRef<InterestEntity[]>(
-        getValues("interests"),
+        getValues("interests") || [],
     );
 
     const getCurrentUserInterestsQuery = useQuery(GetCurrentUserInterestsQuery());
