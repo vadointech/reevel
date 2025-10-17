@@ -1,6 +1,6 @@
-import { NextRequest, NextResponse } from "next/server";
+import { NextRequest } from "next/server";
 import { AuthJwtTokens } from "@/config/auth.config";
-import { apiRequest, deleteAuthJwtTokens, refreshTokens, setAuthJwtTokens } from "@/auth";
+import { apiRequest, apiResponse, deleteAuthJwtTokens, refreshTokens, setAuthJwtTokens } from "../utils";
 import { API_URL } from "@/config/env.config";
 import { cookies } from "next/headers";
 import { PropsWithParams } from "@/types/common";
@@ -26,32 +26,22 @@ async function handler(request: NextRequest, { params }: PropsWithParams<{ proxy
             const tokensResponse = await refreshTokens(refreshToken.value);
 
             if(!tokensResponse) {
-                const response = new NextResponse(null, { status: 401 });
+                const response = apiResponse(null, { status: 401 });
                 deleteAuthJwtTokens(response);
                 return response;
             }
 
             response = await apiRequest(url.toString(), request, tokensResponse.accessToken);
 
-            const finalResponse = new NextResponse(response.body, {
-                status: response.status,
-                statusText: response.statusText,
-                headers: response.headers,
-            });
+            const finalResponse = apiResponse(response);
 
             setAuthJwtTokens(finalResponse, tokensResponse);
             return finalResponse;
         }
 
-        return response;
-    } catch (error) {
-        return new NextResponse(
-            JSON.stringify({
-                error: "Internal Server Error",
-                message: error instanceof Error ? error.message : "Unknown error",
-            }),
-            { status: 500, headers: { "Content-Type": "application/json" } },
-        );
+        return apiResponse(response);
+    } catch {
+        return apiResponse(null, { status: 500 });
     }
 }
 

@@ -2,6 +2,12 @@ import { NextRequest, NextResponse } from "next/server";
 
 import { authCookiesParams, AuthJwtTokens, IAuthJwtTokens, REFRESH_TOKEN_URL } from "@/config/auth.config";
 
+const HEADERS_TO_EXCLUDE = [
+    "content-encoding",
+    "transfer-encoding",
+    "connection",
+];
+
 export async function apiRequest(url: string, request: NextRequest, token?: string) {
     const headers = new Headers();
 
@@ -32,6 +38,28 @@ export async function apiRequest(url: string, request: NextRequest, token?: stri
     });
 }
 
+export function apiResponse(response: Response | null, init: Partial<ResponseInit> = {}) {
+    if(!response) {
+        return new NextResponse(null, init);
+    }
+
+    const responseHeaders = new Headers();
+
+    if(response.headers) {
+        response.headers.forEach((value, key) => {
+            if(!HEADERS_TO_EXCLUDE.includes(key.toLowerCase())) {
+                responseHeaders.set(key, value);
+            }
+        });
+    }
+
+    return new NextResponse(response?.body, {
+        status: response.status,
+        statusText: response.statusText,
+        headers: responseHeaders,
+    });
+}
+
 export async function refreshTokens(refreshToken: string): Promise<IAuthJwtTokens | null> {
     try {
         const response = await fetch(REFRESH_TOKEN_URL, {
@@ -44,13 +72,13 @@ export async function refreshTokens(refreshToken: string): Promise<IAuthJwtToken
         });
 
         if (!response.ok) {
-            console.error("Token refresh failed:", response.status);
+            // console.error("Token refresh failed:", response.status);
             return null;
         }
 
         return response.json();
-    } catch (error) {
-        console.error("Error refreshing tokens:", error);
+    } catch {
+        // console.error("Error refreshing tokens:", error);
         return null;
     }
 }

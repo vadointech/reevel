@@ -7,7 +7,7 @@ import {
     AuthAccessTokenPayload,
 } from "@/config/auth.config";
 import { allowedDevices, onboardingStepRoutes, publicRoutes, StaticRoutes } from "@/config/routes.config";
-import { deleteAuthJwtTokens, refreshTokens, setAuthJwtTokens } from "@/auth";
+import { deleteAuthJwtTokens, refreshTokens, setAuthJwtTokens } from "@/app/api/utils";
 
 export default async function(request: NextRequest) {
     const { nextUrl } = request;
