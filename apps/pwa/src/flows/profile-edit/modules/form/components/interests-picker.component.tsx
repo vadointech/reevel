@@ -5,24 +5,16 @@ import { FormField, InterestButton } from "@/components/ui";
 import { EditProfileFormSchemaValues } from "@/features/profile/update";
 import { useFormInterestsPicker } from "@/features/interests/picker/hooks";
 
-import { InterestEntity } from "@/entities/interests";
-
 import styles from "../styles/interests-picker.module.scss";
 
-
 export namespace EditProfileFormInterestsPicker {
-    export type Data = {
-        interests: InterestEntity[]
-    };
-    export type Props = Data;
+    export type Props = never;
 }
 
-export const EditProfileFormInterestsPicker = ({
-    interests: interestsInit,
-}: EditProfileFormInterestsPicker.Props) => {
+export const EditProfileFormInterestsPicker = () => {
     const {
         interests,
-    } = useFormInterestsPicker<EditProfileFormSchemaValues>(interestsInit);
+    } = useFormInterestsPicker<EditProfileFormSchemaValues>();
 
     return (
         <Controller<EditProfileFormSchemaValues, "interests">

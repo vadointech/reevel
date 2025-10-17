@@ -7,8 +7,6 @@ export namespace GetRelatedInterests {
     };
 
     export type TOutput = InterestEntity[];
-
-    export const queryKey = ["/interests/related"];
 }
 export const getRelatedInterests = fetcherClient.fetch<GetRelatedInterests.TInput, GetRelatedInterests.TOutput>({
     fetcherFunc: (fetcher, { body, ...input }) => {

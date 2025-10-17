@@ -1,17 +1,20 @@
-import { getGoogleOAuthLink } from "@/api/auth/server";
+import { getGoogleOAuthLink } from "@/api/auth";
 
 import { IconLogoApple, IconLogoGoogle } from "@/components/icons";
 import { Button, ButtonsBlock, Container } from "@/components/ui";
 import { AuthCarousel } from "@/flows/auth/modules/carousel";
 
 import styles from "../styles/login-page.module.scss";
+import { API_URL } from "@/config/env.config";
 
 export namespace AuthLoginPage {
     export type Props = never;
 }
 
 export async function AuthLoginPage() {
-    const link = await getGoogleOAuthLink();
+    const { data: googleOAuth } = await getGoogleOAuthLink({
+        baseURL: API_URL,
+    });
 
     return (
         <div className={styles.page}>
@@ -31,7 +34,7 @@ export async function AuthLoginPage() {
                     <Button
                         variant={"secondary-muted"}
                         iconBefore={<IconLogoGoogle />}
-                        href={link}
+                        href={googleOAuth?.link}
                     >
                         Sign in with Google
                     </Button>

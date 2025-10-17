@@ -4,18 +4,16 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { useRouter } from "@/i18n/routing";
 import { EventVisibility } from "@/entities/event";
 import { useMutation } from "@tanstack/react-query";
-import { CreateEvent } from "@/api/event/create";
 import { useFormContext } from "react-hook-form";
 import { createEventFormSchema, CreateEventFormSchemaValues } from "@/features/event/create";
 import { indexedDbService } from "@/lib/indexed-db.service";
 import { useSessionContext } from "@/features/session";
 import { UserUploadsEntity } from "@/entities/uploads";
 import { IBottomSheetRootController } from "@/components/shared/bottom-sheet/types";
-import { FetcherErrorResponse } from "@/lib/fetcher/types";
-import { createEvent } from "@/api/event/server";
 import { useFileSelect, useUploadedFileDelete } from "@/features/uploader/hooks";
 import { StaticRoutes } from "@/config/routes.config";
 import { useImageUploaderContext } from "@/features/uploader/image";
+import { CreateEventMutation } from "@/features/event/create/queries";
 
 type Params = {
     callbackUrl: string;
@@ -57,9 +55,8 @@ export function useCreateEventPreview(params: Params) {
         }
     }, []);
 
-    const createEventMutation = useMutation<CreateEvent.TOutput, FetcherErrorResponse, CreateEvent.TInput>({
-        mutationKey: CreateEvent.queryKey,
-        mutationFn: createEvent,
+    const createEventMutation = useMutation({
+        ...CreateEventMutation,
         onSuccess: () => {
             indexedDbService.removeItem("event_form_values");
             router.push(StaticRoutes.Discover);

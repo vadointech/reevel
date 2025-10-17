@@ -1,9 +1,9 @@
 import { Metadata } from "next";
 import { PropsWithParams } from "@/types/common";
 import { EventAttendeePublicViewPage } from "@/flows/event-view/pages";
-import { getEvent } from "@/api/event/server";
+import { getEvent } from "@/api/event";
 import { defaultMetadata } from "@/config/metadata.config";
-import { BASE_URL } from "@/config/env.config";
+import { API_URL, BASE_URL } from "@/config/env.config";
 import { getDefaultCity } from "@/api/discover/server";
 import { EventEntity } from "@/entities/event";
 import { getHighlights } from "@/api/discover";
@@ -13,8 +13,9 @@ export const revalidate = 86400;
 
 export async function generateMetadata({ params }: PropsWithParams<{ slug: string }>): Promise<Metadata> {
     const { slug } = await params;
-    const event = await getEvent({
-        eventId: slug,
+    const { data: event } = await getEvent({
+        body: { eventId: slug },
+        baseURL: API_URL,
     });
 
     if(!event) {

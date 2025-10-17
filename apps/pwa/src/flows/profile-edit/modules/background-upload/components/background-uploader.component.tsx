@@ -8,7 +8,7 @@ import { ProfileHeroCover } from "@/flows/profile/modules/hero/primitives";
 export namespace EditProfileBackGroundUploader {
     export type Props = {
         background?: string,
-        uploads: GetUserUploads.TOutput;
+        uploads?: GetUserUploads.TOutput;
         cropperPageUrl: string;
     };
 }

@@ -14,27 +14,27 @@ import { CreateEventFormSchemaValues } from "@/features/event/create";
 
 import styles from "./styles/create-event-preview.module.scss";
 import cx from "classnames";
+import { useQuery } from "@tanstack/react-query";
+import { GetCurrentUserUploadsQuery } from "@/features/profile/queries";
+import { SupportedFileCollections } from "@/entities/uploads";
 
 export namespace CreateEventPreview {
     export type Props = ComponentProps<"div"> & {
-        uploads: GetUserUploads.TOutput
         callbackUrl: string;
         cropperPageUrl?: string;
     };
 
     export type PickerProps = {
-        uploads: GetUserUploads.TOutput
+        uploads?: GetUserUploads.TOutput
         formValues: CreateEventFormSchemaValues;
         onPrimaryColorChange?: (color: string) => void;
     };
 }
 
 export const CreateEventPreview = ({
-    uploads,
     callbackUrl,
     cropperPageUrl,
 }: CreateEventPreview.Props) => {
-
     const {
         formValues,
         isPublishing,
@@ -45,6 +45,12 @@ export const CreateEventPreview = ({
         handlePosterPrimaryColorChange,
         uploadDrawerController,
     } = useCreateEventPreview({ callbackUrl, cropperPageUrl });
+
+    const { data: uploads } = useQuery(
+        GetCurrentUserUploadsQuery({
+            collection: SupportedFileCollections.EVENT_POSTER,
+        }),
+    );
 
     return (
         <>
@@ -90,7 +96,7 @@ const PosterPicker = ({
     const session = useSessionContext();
 
     const pickerCarouselData = useMemo(() => {
-        return uploads.find(item => item.id === formValues?.poster?.id);
+        return uploads?.find(item => item.id === formValues?.poster?.id);
     }, [uploads, formValues]);
 
     if (pickerCarouselData?.colorPalette && pickerCarouselData.colorPalette.length > 1) {

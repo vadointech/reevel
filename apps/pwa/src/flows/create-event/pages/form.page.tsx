@@ -2,14 +2,10 @@ import { ComponentType } from "react";
 
 import { Link } from "@/i18n/routing";
 
-import { getInitialInterests } from "@/api/interests/server";
-import { getCurrentUserInterests } from "@/api/user/server";
-
 import { Header } from "@/components/ui";
 import { IconArrowLeft } from "@/components/icons";
 
 import { EventVisibility } from "@/entities/event";
-import { InterestEntity } from "@/entities/interests";
 
 import styles from "../styles/page.module.scss";
 
@@ -20,18 +16,7 @@ export namespace CreateEventFormPage {
 }
 
 export async function CreateEventFormPage({ type }: CreateEventFormPage.Props) {
-    const currentUserInterests = await getCurrentUserInterests();
-
-    let interests: InterestEntity[] = [];
-
-    if(currentUserInterests.length > 0) {
-        interests = currentUserInterests;
-    } else {
-        const initialInterests = await getInitialInterests();
-        interests = initialInterests.slice(0, 6);
-    }
-
-    let FormComponent: ComponentType<{ interests: InterestEntity[] }>;
+    let FormComponent: ComponentType;
 
     switch(type) {
         case EventVisibility.PUBLIC:
@@ -57,7 +42,7 @@ export async function CreateEventFormPage({ type }: CreateEventFormPage.Props) {
                     Create event
                 </Header>
             </div>
-            <FormComponent interests={interests} />
+            <FormComponent />
         </div>
     );
 }

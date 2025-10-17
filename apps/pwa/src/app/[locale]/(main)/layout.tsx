@@ -14,9 +14,7 @@ export default async function MainLayout({ children }: PropsWithChildren) {
                     accessToken={process.env.MAPBOX_ACESS_TOKEN || ""}
                     mapStyleDark={process.env.MAPBOX_MAP_STYLE_DARK || ""}
                     mapStyleLight={process.env.MAPBOX_MAP_STYLE_LIGHT || ""}
-                    viewState={{
-                        ...MapProviderDefaultConfig.viewState,
-                    }}
+                    viewState={MapProviderDefaultConfig.viewState}
                 >
                     { children }
                 </PersistentMapProvider>

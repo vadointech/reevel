@@ -16,25 +16,25 @@ import { EditProfileBackGroundUploader } from "../background-upload";
 
 import { useRouter } from "@/i18n/routing";
 
-import { GetUserUploads } from "@/api/user/uploads";
-
 import styles from "./styles/edit-profile-form.module.scss";
+import { useQuery } from "@tanstack/react-query";
+import { GetCurrentUserUploadsQuery } from "@/features/profile/queries";
+import { SupportedFileCollections } from "@/entities/uploads";
 
 
 export namespace EditProfileForm {
-    export type Data = {
-        uploads: GetUserUploads.TOutput;
-    };
-    export type Props = ComponentProps<"form"> & Data;
+    export type Props = ComponentProps<"form">;
 }
 
-export const EditProfileForm = ({
-    uploads,
-    ...props
-}: EditProfileForm.Props) => {
-
+export const EditProfileForm = (props: EditProfileForm.Props) => {
     const { store } = useEditProfileFormContext();
     const router = useRouter();
+
+    const { data: uploads } = useQuery(
+        GetCurrentUserUploadsQuery({
+            collection: SupportedFileCollections.PROFILE_PICTURE,
+        }),
+    );
 
     return (
         <form
@@ -92,9 +92,9 @@ export const EditProfileForm = ({
                 >
                     <Controller
                         name={"interests"}
-                        render={({ field, fieldState }) => (
+                        render={({ fieldState }) => (
                             <FormField state={fieldState}>
-                                <EditProfileFormInterestsPicker interests={field.value} />
+                                <EditProfileFormInterestsPicker />
                             </FormField>
                         )}
                     />

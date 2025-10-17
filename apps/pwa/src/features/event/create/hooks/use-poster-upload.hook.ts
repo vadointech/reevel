@@ -3,13 +3,11 @@
 import { useCallback } from "react";
 import { useRouter } from "@/i18n/routing";
 import { useMutation } from "@tanstack/react-query";
-import { UploadFile } from "@/api/upload";
-import { UploadEventPoster } from "@/api/event";
 import { useFormContext } from "react-hook-form";
 import { CreateEventFormSchemaValues } from "@/features/event/create";
-import { uploadEventPoster } from "@/api/event/server";
 import { useImageUploaderContext } from "@/features/uploader/image";
 import { useFileSelect } from "@/features/uploader/hooks";
+import { UploadEventPosterMutation } from "@/features/event/create/queries";
 
 export function useCreateEventPosterUpload(callbackUrl?: string) {
     const router = useRouter();
@@ -22,9 +20,8 @@ export function useCreateEventPosterUpload(callbackUrl?: string) {
         },
     });
 
-    const uploadFileMutation = useMutation<UploadEventPoster.TOutput, unknown, UploadEventPoster.TInput>({
-        mutationKey: UploadFile.queryKey,
-        mutationFn: uploadEventPoster,
+    const uploadFileMutation = useMutation({
+        ...UploadEventPosterMutation,
         onSuccess: (data) => {
             if(data && data[0]) {
                 form.setValue("poster", {

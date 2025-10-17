@@ -1,6 +1,7 @@
 import { QueryBuilderQuery } from "@/lib/react-query";
-import { getCurrentUserInterests } from "@/api/user/server";
 import { InterestEntity } from "@/entities/interests";
+import { getCurrentUserInterests } from "@/api/user";
+import { profileInterestsToInterestsEntity } from "@/features/interests/mappers";
 
 export namespace GetUserInterestsQuery {
     export type TInput = null;
@@ -19,5 +20,8 @@ GetUserInterestsQuery.queryKey = (params = []) => {
 };
 
 GetUserInterestsQuery.queryFunc = () => {
-    return getCurrentUserInterests();
+    return getCurrentUserInterests({
+        fallback: [],
+    }).then(response => response.data)
+        .then(response => response.map(profileInterestsToInterestsEntity));
 };

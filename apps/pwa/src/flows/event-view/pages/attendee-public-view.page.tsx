@@ -1,4 +1,4 @@
-import { getEvent } from "@/api/event/server";
+import { getEvent } from "@/api/event";
 
 import { EventDrawerContent, EventDrawerRoot } from "@/components/drawers/event";
 import { InterestButton, OptionsList, OptionsListItem } from "@/components/ui";
@@ -8,6 +8,8 @@ import styles from "../styles/event-view-page.module.scss";
 import cx from "classnames";
 import { ReportDrawer } from "@/components/drawers/report";
 import { EventSeoCardGroup, EventSeoJsonSchema } from "@/components/ui/cards/event-seo-card";
+import { API_URL } from "@/config/env.config";
+import { notFound } from "next/navigation";
 
 export namespace EventAttendeePublicViewPage {
     export type Props = {
@@ -16,10 +18,13 @@ export namespace EventAttendeePublicViewPage {
 }
 
 export async function EventAttendeePublicViewPage({ eventId }: EventAttendeePublicViewPage.Props) {
-    const event = await getEvent({ eventId });
+    const { data: event } = await getEvent({
+        body: { eventId },
+        baseURL: API_URL,
+    });
 
     if(!event) {
-        return null;
+        return notFound();
     }
 
 

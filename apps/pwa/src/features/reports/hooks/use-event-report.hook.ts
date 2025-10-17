@@ -1,17 +1,17 @@
-import { useMutation, UseMutationOptions } from "@tanstack/react-query";
+import { useMutation } from "@tanstack/react-query";
 import { ReportEvent } from "@/api/reports";
-import { FetcherErrorResponse } from "@/lib/fetcher/types";
-import { reportEvent } from "@/api/reports/server";
 import { useReportFormContext } from "@/features/reports";
+import { ReportEventMutation } from "@/features/reports/queries";
+import { Mutation } from "@/lib/react-query";
 
-type Params = UseMutationOptions<ReportEvent.TOutput, FetcherErrorResponse, ReportEvent.TInput>;
+type Params = Mutation<ReportEvent.TInput, ReportEvent.TOutput>;
 
 export function useEventReport(params: Params = {}) {
     const reportForm = useReportFormContext();
   
     const reportEventMutation = useMutation({
-        mutationFn: reportEvent,
         ...params,
+        ...ReportEventMutation,
         onSuccess: (...args) => {
             reportForm.reset();
             params.onSuccess?.(...args);

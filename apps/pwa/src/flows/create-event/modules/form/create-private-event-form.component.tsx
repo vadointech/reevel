@@ -15,21 +15,13 @@ import { IconArrowNext, IconLocation } from "@/components/icons";
 import { Button, FormField, Input, OptionsList, OptionsListItem } from "@/components/ui";
 import { Section } from "@/components/sections";
 
-import { InterestEntity } from "@/entities/interests";
-
 import styles from "./styles/create-event-form.module.scss";
 
 export namespace CreatePrivateEventForm {
-    export type Data = {
-        interests: InterestEntity[]
-    };
-    export type Props = ComponentProps<"form"> & Data;
+    export type Props = ComponentProps<"form">;
 }
 
-export const CreatePrivateEventForm = ({
-    interests,
-    ...props
-}: CreatePrivateEventForm.Props) => {
+export const CreatePrivateEventForm = (props: CreatePrivateEventForm.Props) => {
     const { handleSubmit } = useCreateEventForm({
         nextStepUrl: "/event/private/create/preview",
     });
@@ -75,7 +67,7 @@ export const CreatePrivateEventForm = ({
                     cta={"See all"}
                     ctaHref={"/event/private/create/interests"}
                 >
-                    <CreateEventFormInterestsPicker interests={interests} />
+                    <CreateEventFormInterestsPicker />
                 </Section>
 
                 <Section className={styles.form__gap}>

@@ -1,10 +1,8 @@
-import { getInitialInterests } from "@/api/interests/server";
-import { getCurrentUserInterests } from "@/api/user/server";
+import { getInitialInterests } from "@/api/interests";
 
 import { InterestsPickerProvider } from "@/features/interests/picker";
 import { InterestsPickerContent } from "@/components/screens/interests-picker";
-
-import { ObjectUnique } from "@/utils/object";
+import { API_URL } from "@/config/env.config";
 
 export namespace CreateEventInterestsPickerPage {
     export type Props = {
@@ -13,19 +11,14 @@ export namespace CreateEventInterestsPickerPage {
 }
 
 export async function CreateEventInterestsPickerPage({ callbackUrl }: CreateEventInterestsPickerPage.Props) {
-    const initialInterests = await getInitialInterests();
-    const currentInterests = await getCurrentUserInterests();
-
-    const interests = [
-        ...new ObjectUnique([
-            ...initialInterests,
-            ...currentInterests,
-        ], "slug"),
-    ];
+    const { data: initialInterests } = await getInitialInterests({
+        baseURL: API_URL,
+        fallback: [],
+    });
 
     return (
         <InterestsPickerProvider
-            interests={interests}
+            interests={initialInterests}
             syncFormField={"interests"}
             callbackUrl={callbackUrl}
         >

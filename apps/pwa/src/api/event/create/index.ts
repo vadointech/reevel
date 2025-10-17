@@ -18,8 +18,6 @@ export namespace CreateEvent {
         interests?: string[];
     };
     export type TOutput = EventEntity | null;
-
-    export const queryKey = ["event/create"];
 }
 
 export const createEvent = fetcherClient.fetch<CreateEvent.TInput, CreateEvent.TOutput>({

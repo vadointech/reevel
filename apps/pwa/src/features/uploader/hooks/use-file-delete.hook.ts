@@ -1,16 +1,16 @@
-import { useMutation, UseMutationOptions } from "@tanstack/react-query";
+import { useMutation } from "@tanstack/react-query";
 import { DeleteUploadedFile } from "@/api/user/uploads";
 import { useCallback } from "react";
 import { UserUploadsEntity } from "@/entities/uploads";
-import { FetcherErrorResponse } from "@/lib/fetcher/types";
-import { deleteUploadedFile } from "@/api/user/uploads/server";
+import { DeleteUploadedFileMutation } from "@/features/profile/queries";
+import { Mutation } from "@/lib/react-query";
 
-type ConfigParams = Omit<UseMutationOptions<DeleteUploadedFile.TOutput, FetcherErrorResponse, DeleteUploadedFile.TInput>, "mutationFn">;
+type ConfigParams = Mutation<DeleteUploadedFile.TInput, DeleteUploadedFile.TOutput>;
 
 export function useUploadedFileDelete(params: ConfigParams = {}) {
-    const deleteUploadedFileMutation = useMutation<DeleteUploadedFile.TOutput, FetcherErrorResponse, DeleteUploadedFile.TInput>({
-        mutationFn: deleteUploadedFile,
+    const deleteUploadedFileMutation = useMutation({
         ...params,
+        ...DeleteUploadedFileMutation,
     });
 
     return useCallback((upload: UserUploadsEntity) => {

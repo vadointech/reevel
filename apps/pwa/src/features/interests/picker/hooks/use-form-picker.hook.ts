@@ -1,31 +1,33 @@
 "use client";
 
 import { InterestEntity } from "@/entities/interests";
-import { useRef, useState } from "react";
+import { useMemo, useRef } from "react";
 import { ControllerRenderProps, useFormContext } from "react-hook-form";
 import { ObjectUnique } from "@/utils/object";
+import { useQuery } from "@tanstack/react-query";
+import { GetCurrentUserInterestsQuery } from "@/features/profile/queries";
 
 interface IFromValues {
     interests: InterestEntity[];
 }
 
-export function useFormInterestsPicker<T extends IFromValues>(interestsInit: InterestEntity[]) {
+export function useFormInterestsPicker<T extends IFromValues>() {
     const { getValues } = useFormContext<IFromValues>();
 
     const formInterestsRef = useRef<InterestEntity[]>(
         getValues("interests"),
     );
 
-    const [interests] = useState<InterestEntity[]>(() => {
+    const getCurrentUserInterestsQuery = useQuery(GetCurrentUserInterestsQuery());
+
+    const interests = useMemo(() => {
         return [
-            ...new ObjectUnique(
-                [
-                    ...interestsInit,
-                    ...formInterestsRef.current,
-                ], "slug",
-            ),
+            ...new ObjectUnique([
+                ...getCurrentUserInterestsQuery.data || [],
+                ...formInterestsRef.current,
+            ], "slug"),
         ];
-    });
+    }, [getCurrentUserInterestsQuery.isFetched]);
 
     const handleAddInterest = (
         field: ControllerRenderProps<T>,
@@ -63,5 +65,6 @@ export function useFormInterestsPicker<T extends IFromValues>(interestsInit: Int
         interests,
         handleToggle,
         isSelected,
+        isLoading: getCurrentUserInterestsQuery.isFetching,
     };
 }

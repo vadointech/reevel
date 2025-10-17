@@ -9,7 +9,7 @@ import { IInterestsPickerStore, InterestsPickerRootConfigParams } from "./types"
 import { useSingleton } from "@/hooks";
 import { useMobxStore } from "@/lib/mobx";
 import { useQueryClient } from "@tanstack/react-query";
-import { GetCurrentUserProfileQuery } from "@/features/profile/queries";
+import { GetCurrentUserInterestsQuery } from "@/features/profile/queries";
 import { ObjectUnique } from "@/utils/object";
 
 export namespace InterestsPickerProvider {
@@ -49,22 +49,19 @@ export const InterestsPickerProvider = ({
     useEffect(() => {
         if(!initStore.interests) return;
 
-        queryClient.fetchQuery(GetCurrentUserProfileQuery())
-            .then(profile => {
-                if(!profile?.interests) return;
+        queryClient.fetchQuery(GetCurrentUserInterestsQuery())
+            .then(interests => {
                 if(!initStore.interests) return;
-
-                const profileInterests = profile.interests.map(item => item.interest);
-                if(initStore.interests.length === 0) return;
+                if(interests.length === 0) return;
 
                 store.setInterests([
                     ...new ObjectUnique([
                         ...initStore.interests,
-                        ...profileInterests,
+                        ...interests,
                     ], "slug"),
                 ]);
 
-                store.setSelectedInterests(profileInterests);
+                store.setSelectedInterests(interests);
             });
     }, []);
 

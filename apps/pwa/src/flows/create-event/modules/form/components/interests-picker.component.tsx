@@ -1,29 +1,24 @@
 "use client";
 
 import { Controller } from "react-hook-form";
-import { FormField, InterestButton } from "@/components/ui";
+import { FormField, InterestButton, InterestButtonSkeleton } from "@/components/ui";
 import { useFormInterestsPicker } from "@/features/interests/picker/hooks";
 
 import { CreateEventFormSchemaValues } from "@/features/event/create";
-import { InterestEntity } from "@/entities/interests";
 
 import styles from "../styles/interests-picker.module.scss";
 
 export namespace CreateEventFormInterestsPicker {
-    export type Data = {
-        interests: InterestEntity[]
-    };
-    export type Props = Data;
+    export type Props = never;
 }
 
-export const CreateEventFormInterestsPicker = ({
-    interests: interestsInit,
-}: CreateEventFormInterestsPicker.Props) => {
+export const CreateEventFormInterestsPicker = () => {
     const {
         interests,
         isSelected,
         handleToggle,
-    } = useFormInterestsPicker<CreateEventFormSchemaValues>(interestsInit);
+        isLoading,
+    } = useFormInterestsPicker<CreateEventFormSchemaValues>();
     return (
         <Controller<CreateEventFormSchemaValues, "interests">
             name={"interests"}
@@ -32,16 +27,20 @@ export const CreateEventFormInterestsPicker = ({
                     <FormField state={fieldState}>
                         <div className={styles.interestsPicker}>
                             {
-                                interests.map(item => (
-                                    <InterestButton
-                                        key={item.slug}
-                                        icon={item.icon}
-                                        variant={isSelected(item) ? "primary" : "default"}
-                                        onClick={() => handleToggle(field, item)}
-                                    >
-                                        { item.title_en }
-                                    </InterestButton>
-                                ))
+                                isLoading
+                                    ? [...new Array(3).keys()].map((item) => (
+                                        <InterestButtonSkeleton key={`interest-button-skeleton-${item}`} />
+                                    ))
+                                    : interests.map(item => (
+                                        <InterestButton
+                                            key={item.slug}
+                                            icon={item.icon}
+                                            variant={isSelected(item) ? "primary" : "default"}
+                                            onClick={() => handleToggle(field, item)}
+                                        >
+                                            { item.title_en }
+                                        </InterestButton>
+                                    ))
                             }
                         </div>
                     </FormField>

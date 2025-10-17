@@ -11,7 +11,7 @@ import { GetUserUploads } from "@/api/user/uploads";
 export namespace EditProfileAvatarUploader {
     export type Props = {
         avatar?: string,
-        uploads: GetUserUploads.TOutput;
+        uploads?: GetUserUploads.TOutput;
         cropperPageUrl: string;
     };
 }

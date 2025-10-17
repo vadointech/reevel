@@ -1,3 +1,5 @@
+"use client";
+
 import { ProfileHero } from "../modules/hero";
 import { ProfilePageHeader } from "../modules/header";
 import { ProfilePageContent } from "../modules/content";
@@ -7,29 +9,31 @@ import { ReviewsSection, ScrollSection } from "@/components/sections";
 import styles from "../styles/profile-page.module.scss";
 import cx from "classnames";
 import { ProfileProvider } from "../modules/profile-context";
-import { getCurrentUserEvents, getCurrentUserInterests, getCurrentUserProfile } from "@/api/user/server";
+import { useQuery } from "@tanstack/react-query";
+import { GetCurrentUserEventsQuery, GetCurrentUserProfileQuery } from "@/features/profile/queries";
 
 export namespace ProfilePrivateViewPage {
     export type Props = never;
 }
 
 export async function ProfilePrivateViewPage() {
-    const [user, interests, events] = await Promise.all([
-        getCurrentUserProfile(),
-        getCurrentUserInterests(),
-        getCurrentUserEvents(),
-    ]);
+    const { data: profile } = useQuery(GetCurrentUserProfileQuery());
+    const { data: events } = useQuery(GetCurrentUserEventsQuery());
+
+    if(!profile) {
+        return null;
+    }
 
     return (
         <>
-            <ProfileProvider user={user}>
+            <ProfileProvider user={profile}>
                 <ProfilePageHeader overlayVariant={"light"} variant={"private"} />
                 <ProfilePageContent>
                     <ProfileHero />
                     <div className={styles.content}>
                         <Container className={styles.content__gap_sm}>
                             <p className={styles.content__description}>
-                                {user?.bio}
+                                {profile?.bio}
                                 <span className={styles.content__description_more}>
                                     More
                                 </span>
@@ -53,16 +57,16 @@ export async function ProfilePrivateViewPage() {
                         <ScrollSection
                             size={"small"}
                             title={"My Interests"}
-                            cta={user?.interests?.length ? "See all" : false}
+                            cta={profile?.interests?.length ? "See all" : false}
                             className={styles.content__gap}
                         >
                             {
-                                interests?.length ? interests.map((event, index) => (
+                                profile.interests?.length ? profile.interests.map((event, index) => (
                                     <InterestButton
                                         key={index}
-                                        icon={event.icon}
+                                        icon={event.interest.icon}
                                     >
-                                        {event.title_en}
+                                        {event.interest.title_en}
                                     </InterestButton>
                                 ))
                                     : <div>Add your interests</div>
@@ -74,7 +78,7 @@ export async function ProfilePrivateViewPage() {
                             cta={"See all"}
                             className={styles.content__gap}
                         >
-                            {events.length ? events.map((event, i) => (
+                            {events?.length ? events.map((event, i) => (
                                 <EventCard
                                     key={i}
                                     size={"small"}

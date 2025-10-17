@@ -2,9 +2,6 @@ import { useCallback, useRef } from "react";
 import { useRouter } from "@/i18n/routing";
 import { useMutation } from "@tanstack/react-query";
 
-import { uploadProfileAvatar } from "@/api/profile/server";
-import { deleteUploadedFile } from "@/api/user/uploads/server";
-
 import { useFileSelect } from "@/features/uploader/hooks";
 import { useImageUploaderContext } from "@/features/uploader/image";
 
@@ -12,6 +9,7 @@ import { useEditProfileFormContext } from "../edit-profile-form.context";
 
 import { IBottomSheetRootController } from "@/components/shared/bottom-sheet/types";
 import { UserUploadsEntity } from "@/entities/uploads";
+import { DeleteUploadedFileMutation, UploadAvatarMutation } from "@/features/profile/queries";
 
 export function useProfileBackgroundUploader(callbackUrl?: string) {
     const router = useRouter();
@@ -28,7 +26,7 @@ export function useProfileBackgroundUploader(callbackUrl?: string) {
     });
 
     const deleteBackgroundMutation = useMutation({
-        mutationFn: deleteUploadedFile,
+        ...DeleteUploadedFileMutation,
         onSuccess: () => {
             router.refresh();
         },
@@ -38,7 +36,7 @@ export function useProfileBackgroundUploader(callbackUrl?: string) {
     }, []);
 
     const uploadBackgroundMutation = useMutation({
-        mutationFn: uploadProfileAvatar,
+        ...UploadAvatarMutation,
         onSuccess: (upload) => {
             if (upload) handlePickBackground(upload);
             if (callbackUrl) router.replace(callbackUrl);

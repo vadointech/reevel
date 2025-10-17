@@ -1,6 +1,6 @@
 import { useMutation } from "@tanstack/react-query";
-import { cancelTicketReservation, reserveTicket } from "@/api/booking/server";
 import { useCallback } from "react";
+import { CancelTicketReservationMutation, ReserveTicketMutation } from "@/features/event/booking/queries";
 
 type Params = {
     onTicketReserved: () => void;
@@ -9,14 +9,14 @@ type Params = {
 
 export function useTicketReservation(eventId: string, params: Partial<Params> = {}) {
     const reserverTicketMutation = useMutation({
-        mutationFn: reserveTicket,
+        ...ReserveTicketMutation,
         onSuccess: () => {
             params.onTicketReserved?.();
         },
     });
 
     const cancelReservationMutation = useMutation({
-        mutationFn: cancelTicketReservation,
+        ...CancelTicketReservationMutation,
         onSuccess: () => {
             params.onTicketCancelled?.();
         },

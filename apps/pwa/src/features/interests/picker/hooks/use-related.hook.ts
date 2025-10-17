@@ -6,6 +6,7 @@ import { useQueryClient } from "@tanstack/react-query";
 import { useInterestsPickerContext } from "../interests-picker.context";
 import { RequestDebouncer } from "@/lib/debouncer";
 import { GetRelatedInterestsQueryBuilder } from "../queries";
+import { GetRelatedInterests } from "@/api/interests";
 
 export function useRelatedInterests() {
     const { controller, store } = useInterestsPickerContext();
@@ -40,7 +41,7 @@ export function useRelatedInterests() {
     function removeRelated(key: string) {
         const queryKey = GetRelatedInterestsQueryBuilder.queryKey([key]);
 
-        const related = queryClient.getQueryData(queryKey) as GetRelatedInterestsQueryBuilder.TOutput;
+        const related = queryClient.getQueryData(queryKey) as GetRelatedInterests.TOutput;
         if (!related) return;
 
         const selected = related.some(item => controller.isInterestSelected(item.slug));
