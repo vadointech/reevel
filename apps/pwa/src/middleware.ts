@@ -18,8 +18,6 @@ export default async function(request: NextRequest) {
     const isAllowedDevice = allowedDevices.includes(deviceType);
     const isScanPage = nextUrl.pathname.startsWith(StaticRoutes.Scan);
 
-    console.log(ua);
-
     if(!ua.isBot) {
         if(!isAllowedDevice) {
             if(!isScanPage) {

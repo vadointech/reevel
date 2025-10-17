@@ -9,7 +9,9 @@ import { SpatialGrid } from "@repo/spatial-grid";
 import { EventListSeoJsonSchema, EventSeoCardGroup } from "@/components/ui/cards/event-seo-card";
 import { API_URL } from "@/config/env.config";
 
-const DiscoverScreen = dynamic(() => import("@/components/screens/discover").then(module => module.DiscoverScreen));
+const DiscoverScreen = dynamic(
+    () => import("@/components/screens/discover").then(module => module.DiscoverScreen),
+);
 
 export namespace DiscoverPage {
     export type Props = never;

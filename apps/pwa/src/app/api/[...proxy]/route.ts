@@ -33,8 +33,7 @@ async function handler(request: NextRequest, { params }: PropsWithParams<{ proxy
 
             response = await apiRequest(url.toString(), request, tokensResponse.accessToken);
 
-            const responseBody = await response.text();
-            const finalResponse = new NextResponse(responseBody, {
+            const finalResponse = new NextResponse(response.body, {
                 status: response.status,
                 statusText: response.statusText,
                 headers: response.headers,

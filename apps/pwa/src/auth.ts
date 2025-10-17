@@ -18,7 +18,7 @@ export async function apiRequest(url: string, request: NextRequest, token?: stri
     let body: BodyInit | null = null;
     if (request.method !== "GET" && request.method !== "HEAD") {
         try {
-            body = await request.blob();
+            body = request.body;
         } catch {
             body = null;
         }
