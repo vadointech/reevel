@@ -9,7 +9,6 @@ import { authCookiesParams, AuthJwtTokens, IAuthJwtTokens, REFRESH_TOKEN_URL } f
 const HEADERS_TO_EXCLUDE = [
     "host",
     "connection",
-    "content-encoding",
     "transfer-encoding",
     "content-length",
 ];

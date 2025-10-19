@@ -9,12 +9,10 @@ import {
     UseInterceptors,
 } from "@nestjs/common";
 import { EventService } from "./event.service";
-import { CreateEventDto } from "./dto/create-event.dto";
+import { CreateEventDto, GetEventResponseDto, ParticipationStatusResponseDto, UpdateEventDto } from "./dto";
 import { Public, Session } from "@/decorators";
 import { FileUploadInterceptor } from "@/modules/uploads/uploads.interceptor";
-import { UpdateEventDto } from "@/modules/event/dto/update-event.dto";
 import { ISessionUser, ServerSession } from "@/types";
-import { GetEventResponseDto } from "@/modules/event/dto";
 
 @Controller("events")
 export class EventController {
@@ -37,6 +35,14 @@ export class EventController {
         @Session() session: ServerSession,
     ): Promise<GetEventResponseDto | null> {
         return this.eventService.getEventById(session, eventId);
+    }
+
+    @Get(":eventId/participation")
+    async getParticipationStatus(
+        @Param("eventId") eventId: string,
+        @Session() session: ServerSession,
+    ): Promise<ParticipationStatusResponseDto> {
+        return this.eventService.getParticipationStatus(eventId, session.user.id);
     }
 
     @Post("poster")

@@ -12,11 +12,13 @@ import { PropsWithChildren } from "react";
 import { useTicketReservation } from "@/features/event/booking/hooks";
 import { useEventActions } from "@/features/event/hooks";
 import { EventEntity, EventParticipationType } from "@/entities/event";
-import { useRouter } from "@/i18n/routing";
 
 import styles from "../styles.module.scss";
 import cx from "classnames";
 import { ReportDrawer } from "@/components/drawers/report";
+import { useQuery } from "@tanstack/react-query";
+import { GetEventParticipationStatusQuery } from "@/features/event/queries";
+import { useSessionContext } from "@/features/session";
 
 export namespace EventMoreActionsDrawer {
     export type Props = PropsWithChildren<EventEntity>;
@@ -26,7 +28,16 @@ export const EventMoreActionsDrawer = ({
     children,
     ...event
 }: EventMoreActionsDrawer.Props) => {
-    const router = useRouter();
+    const session = useSessionContext();
+
+    const { data: participationInfo } = useQuery({
+        ...GetEventParticipationStatusQuery(event.id),
+        enabled: session.store.authenticated,
+        placeholderData: {
+            eventId: event.id,
+            participationStatus: null,
+        },
+    });
 
     const {
         bottomSheetController,
@@ -44,7 +55,6 @@ export const EventMoreActionsDrawer = ({
         {
             onTicketCancelled: () => {
                 bottomSheetController.current?.close();
-                router.refresh();
             },
         },
     );
@@ -88,7 +98,7 @@ export const EventMoreActionsDrawer = ({
                                         onClick={handleCopyLocation}
                                     />
                                     {
-                                        event.participationType === EventParticipationType.ATTENDING && (
+                                        participationInfo?.participationStatus === EventParticipationType.ATTENDING && (
                                             <OptionsListItem
                                                 label={"Cancel reservation"}
                                                 contentLeft={<IconExit />}

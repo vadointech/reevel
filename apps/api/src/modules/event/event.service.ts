@@ -10,15 +10,15 @@ import { EventInterestsRepository } from "./repositories/event-interests.reposit
 import { EventTicketsRepository } from "@/modules/event/repositories/event-tickets.repository";
 import { SubscriptionRegistry } from "@/modules/subscription/registry/subscription.registry";
 
-import { EventsEntity } from "./entities/events.entity";
+import { EventParticipationType, EventsEntity } from "./entities/events.entity";
 
 import { CreateEventDto } from "./dto/create-event.dto";
 import { UpdateEventDto } from "./dto/update-event.dto";
 
 import { ISessionUser, ServerSession } from "@/types";
 import { SupportedFileCollections } from "@/modules/uploads/entities/uploads.entity";
+import { GetEventResponseDto, ParticipationStatusResponseDto } from "@/modules/event/dto";
 import { getEventParticipationType } from "@/modules/event/utils";
-import { GetEventResponseDto } from "@/modules/event/dto";
 
 @Injectable()
 export class EventService {
@@ -178,5 +178,35 @@ export class EventService {
             ...event,
             participationType,
         });
+    }
+
+    async getParticipationStatus(eventId: string, userId: string) {
+        if(!eventId || !userId) {
+            throw new BadRequestException();
+        }
+
+        const isAttending = await this.eventTicketsRepository.exists({
+            where: {
+                eventId,
+                userId,
+            },
+        });
+
+        if(isAttending) {
+            return new ParticipationStatusResponseDto(eventId, EventParticipationType.ATTENDING);
+        }
+
+        const isHost = await this.eventHostsRepository.exists({
+            where: {
+                eventId,
+                userId,
+            },
+        });
+
+        if(isHost) {
+            return new ParticipationStatusResponseDto(eventId, EventParticipationType.HOSTING);
+        }
+
+        return new ParticipationStatusResponseDto(eventId, null);
     }
 }

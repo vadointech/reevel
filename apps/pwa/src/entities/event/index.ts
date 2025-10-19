@@ -32,7 +32,7 @@ export type EventEntity = {
     interests: EventInterestEntity[];
     tickets: EventTicketEntity[];
 
-    participationType: EventParticipationType | null;
+    participationType?: EventParticipationType | null;
 
     createdAt: Date;
     updatedAt?: Date;

@@ -31,10 +31,10 @@
         align-items: center;
         justify-content: center;
 
-        background: colors.$foreground;
+        background: colors.$static-foreground;
         border-radius: mixins.rem(50);
 
-        color: colors.$primary;
+        color: colors.$static-primary;
 
         @include typography.font("xxs");
 
