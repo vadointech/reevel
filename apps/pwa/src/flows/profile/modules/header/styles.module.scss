@@ -24,36 +24,16 @@
             height: mixins.rem(18);
         }
 
-        &_back {
-        }
-
         &_control {
-            path {
-                fill: colors.$primary;
-            }
-
-            &_right {
-                justify-self: flex-end;
-            }
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
 
         &_overlay {
             position: absolute;
             inset: 0;
-
             background: none;
-
-            &_light {
-                svg path {
-                    fill: colors.$foreground;
-                }
-            }
-
-            &_dark {
-                svg path {
-                    fill: colors.$primary;
-                }
-            }
         }
     }
 

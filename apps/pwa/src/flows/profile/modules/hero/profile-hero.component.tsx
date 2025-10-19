@@ -2,7 +2,7 @@
 
 import { motion, useTransform } from "motion/react";
 
-import { useProfileContentDragYProgress } from "../motion-values";
+import { profileContentDragYPx } from "../motion-values";
 import { PROFILE_PAGE_COVER_HEIGHT, PROFILE_PAGE_HEADER_HEIGHT, PROFILE_PAGE_HEADER_HEIGHT_DELTA } from "../config";
 
 import { ProfileHeroCover, ProfileHeroLinks, ProfileHeroUser } from "./primitives";
@@ -14,9 +14,6 @@ export namespace ProfileHero {
 }
 
 export const ProfileHero = () => {
-    const profileContentDragYPx = useProfileContentDragYProgress();
-
-
     const contentHeight = useTransform(
         profileContentDragYPx,
         [

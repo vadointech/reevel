@@ -5,7 +5,7 @@ import { ReactNode } from "react";
 import { motion, useTransform } from "motion/react";
 
 import { PROFILE_PAGE_COVER_HEIGHT, PROFILE_PAGE_HEADER_HEIGHT } from "../config";
-import { useProfileContentDragYProgress } from "../motion-values";
+import { profileContentDragYPx } from "../motion-values";
 
 import { IconArrowLeft, IconEllipsisVertical, IconSettings, IconVerified } from "@/components/icons";
 import { Avatar } from "@/components/ui";
@@ -31,8 +31,6 @@ export const ProfilePageHeader = ({
 }: ProfilePageHeader.Props) => {
     const user = useProfile();
 
-    const profileContentDragYPx = useProfileContentDragYProgress();
-
     const headerOpacity = useTransform(
         profileContentDragYPx,
         [
@@ -46,8 +44,12 @@ export const ProfilePageHeader = ({
     );
 
     const IconControlRight: Record<ProfilePageHeader.Variant, ReactNode> = {
-        private: <IconSettings className={cx(styles.header__navigation_control, styles.header__navigation_control_right)} />,
-        public: <IconEllipsisVertical className={cx(styles.header__navigation_control, styles.header__navigation_control_right)} />,
+        private: (
+            <Link href={"/"} className={styles.header__navigation_control}>
+                <IconSettings />
+            </Link>
+        ),
+        public: <IconEllipsisVertical className={styles.header__navigation_control} />,
     };
 
     return (
@@ -59,9 +61,7 @@ export const ProfilePageHeader = ({
                     styles[`header__navigation_overlay_${overlayVariant}`],
                 )}
             >
-                <Link href={"/discover"}>
-                    <IconArrowLeft className={styles.header__navigation_control} />
-                </Link >
+                <ButtonBack />
                 <div />
                 {IconControlRight[variant]}
             </div>
@@ -69,9 +69,7 @@ export const ProfilePageHeader = ({
                 style={{ opacity: headerOpacity }}
                 className={styles.header__navigation}
             >
-                <Link href={"/discover"}>
-                    <IconArrowLeft className={styles.header__navigation_control} />
-                </Link >
+                <ButtonBack />
                 <div className={styles.header__info}>
                     <Avatar image={user?.picture || "/assets/temp/avatar.png"} />
                     <div className={styles.header__user}>
@@ -81,11 +79,19 @@ export const ProfilePageHeader = ({
                         <IconVerified />
                     </div>
                 </div>
-                {variant === "private"
-                    ? <Link href={"/profile/settings"}>{IconControlRight[variant]}</Link>
-                    : IconControlRight[variant]
-                }
+                { IconControlRight[variant] }
             </motion.div>
         </motion.div>
+    );
+};
+
+const ButtonBack = () => {
+    return (
+        <Link
+            href={"/discover"}
+            className={styles.header__navigation_control}
+        >
+            <IconArrowLeft />
+        </Link >
     );
 };

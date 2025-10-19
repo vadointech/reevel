@@ -2,6 +2,11 @@
 @use "@/theme/colors";
 @use "@/theme/typography";
 
+.page {
+    overflow-y: auto;
+    @include mixins.no-scrollbar
+}
+
 .content {
     margin-top: mixins.rem(12);
 

@@ -2,7 +2,7 @@
 
 import { motion, useTransform } from "motion/react";
 
-import { useProfileContentDragYProgress } from "../../motion-values";
+import { profileContentDragYPx } from "../../motion-values";
 
 import {
     PROFILE_PAGE_COVER_HEIGHT,
@@ -20,7 +20,6 @@ export namespace ProfileHeroUser {
 }
 
 export const ProfileHeroUser = () => {
-    const profileContentDragYPx = useProfileContentDragYProgress();
     const user = useProfile();
 
     const avatarScale = useTransform(
@@ -39,7 +38,7 @@ export const ProfileHeroUser = () => {
     const avatarScaleY = useTransform(
         profileContentDragYPx,
         [
-            PROFILE_PAGE_COVER_HEIGHT / 2,
+            PROFILE_PAGE_COVER_HEIGHT / 3,
             PROFILE_PAGE_COVER_HEIGHT - PROFILE_PAGE_HEADER_HEIGHT,
         ],
         [

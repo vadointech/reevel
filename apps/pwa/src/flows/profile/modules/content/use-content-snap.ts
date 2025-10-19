@@ -1,54 +1,80 @@
-import { LegacyAnimationControls as AnimationControls, PanInfo } from "motion/react";
 import { useEffect, useRef } from "react";
 
-import { profileContentDragYPx } from "../motion-values";
-import { PROFILE_PAGE_COVER_HEIGHT } from "../config";
+// import { profileContentDragYPx } from "../motion-values";
 
-import { Transition } from "motion";
+// const VELOCITY_THRESHOLD = 500;
+//
+// const TRANSITION_PARAMS: Transition = {
+//     type: "tween",
+//     duration: 0.3,
+//     ease: "easeOut",
+// };
 
-const TRANSITION_PARAMS: Transition = {
-    type: "tween",
-    duration: 0.3,
-    ease: "easeOut",
-};
+export function useProfileContentSnap() {
+    // const hasSnapped = useRef(false);
+    const containerRef = useRef<HTMLDivElement | null>(null);
+    // const animation = useRef<AnimationPlaybackControls | null>(null);
 
-export function useProfileContentSnap(animate: AnimationControls) {
-    const hasSnapped = useRef(false);
-    const direction = useRef<"top" | "bottom">("top");
+    // const { scrollY } = useScroll({
+    //     container: containerRef,
+    // });
+
+    // const runSnapAnimation = (targetY: number) => {
+    //     if (!containerRef.current) return;
+    //
+    //     animation.current?.stop();
+    //
+    //     animation.current = animate(containerRef.current.scrollTop, targetY, {
+    //         ...TRANSITION_PARAMS,
+    //         onUpdate: (latest) => {
+    //             if (containerRef.current) {
+    //                 containerRef.current.scrollTop = latest;
+    //             }
+    //         },
+    //         onComplete: () => {
+    //             animation.current = null;
+    //         },
+    //     });
+    // };
 
     useEffect(() => {
-        const unsubscribe = profileContentDragYPx.on("change", (value) => {
-            const position = value * -1;
+        // const unsubscribe = scrollY.on("change", () => {
+        // const prev = profileContentDragYPx.get();
+        // const velocity = Math.abs(scrollY.getVelocity());
+        //
+        // const isAnimating = !!animation.current;
+        // // const isAnimating = true;
+        //
+        // if(!isAnimating) {
+        //     const direction = prev > position ? "top" : "bottom";
+        //
+        //     if(velocity < VELOCITY_THRESHOLD) {
+        //         if(direction === "bottom" && !hasSnapped.current) {
+        //             if(position >= PROFILE_PAGE_COVER_HEIGHT / 2 && position < PROFILE_PAGE_COVER_HEIGHT) {
+        //                 hasSnapped.current = true;
+        //                 runSnapAnimation(PROFILE_PAGE_COVER_HEIGHT);
+        //             }
+        //         }
+        //
+        //         if(direction === "top" && hasSnapped.current) {
+        //             if(position < PROFILE_PAGE_COVER_HEIGHT) {
+        //                 hasSnapped.current = false;
+        //                 runSnapAnimation(0);
+        //             }
+        //         }
+        //     }
+        // }
 
-            if(direction.current === "top" && !hasSnapped.current) {
-                if(position >= PROFILE_PAGE_COVER_HEIGHT / 2 && position < PROFILE_PAGE_COVER_HEIGHT) {
-                    hasSnapped.current = true;
-                    animate.start({ y: -PROFILE_PAGE_COVER_HEIGHT }, TRANSITION_PARAMS);
-                }
-                return;
-            }
+        // profileContentDragYPx.set(position);
+        // });
 
-            if(direction.current === "bottom" && hasSnapped.current) {
-                if(position < PROFILE_PAGE_COVER_HEIGHT) {
-                    hasSnapped.current = false;
-                    animate.start({ y: 0 }, TRANSITION_PARAMS);
-                }
-            }
-        });
-
-        return () => unsubscribe();
+        return () => {
+            // unsubscribe();
+            // animation.current?.stop();
+        };
     }, []);
 
-
-    const handleDragEnd = (_: any, info: PanInfo) => {
-        if(info.velocity.y > 0) {
-            direction.current = "bottom";
-        } else {
-            direction.current = "top";
-        }
-    };
-
     return {
-        handleDragEnd,
+        containerRef,
     };
 }
