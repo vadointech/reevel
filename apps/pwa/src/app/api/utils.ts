@@ -6,16 +6,21 @@ import { authCookiesParams, AuthJwtTokens, IAuthJwtTokens, REFRESH_TOKEN_URL } f
  * A list of headers that are specific to a single client-server connection (hop-by-hop)
  * We must exclude these headers when proxying a request.
  */
-const HEADERS_TO_EXCLUDE = [
+const REQ_HEADERS_TO_EXCLUDE = [
     "host",
     "connection",
     "transfer-encoding",
     "content-length",
 ];
+const RES_HEADERS_TO_EXCLUDE = [
+    "connection",
+    "transfer-encoding",
+];
 
 export async function apiRequest(url: string, request: NextRequest, token?: string) {
     const headers = new Headers(request.headers);
-    HEADERS_TO_EXCLUDE.forEach(header => headers.delete(header));
+    REQ_HEADERS_TO_EXCLUDE.forEach(header => headers.delete(header));
+    headers.set("Accept-Encoding", "identity");
 
     if(token) {
         headers.set("Authorization", `Bearer ${token}`);
@@ -50,7 +55,7 @@ export function apiResponse(response: Response | null, init: Partial<ResponseIni
     }
 
     const headers = new Headers(response.headers);
-    HEADERS_TO_EXCLUDE.forEach(header => headers.delete(header));
+    RES_HEADERS_TO_EXCLUDE.forEach(header => headers.delete(header));
 
     return new NextResponse(response.body, {
         status: response.status,
